@@ -37,84 +37,86 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="9113" _ulen="8827" >
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-'==============================================
-' 이미지
-'==============================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+ --==============================================
+ -- 이미지
+ --==============================================
 
-'==============================================
-' 컬러코드
-'==============================================
-' 기본 텍스트 컬러 (검정색)
-Dim g_szTxtColor_Normal 
+ --==============================================
+ -- 컬러코드
+ --==============================================
+ -- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal
 g_szTxtColor_Normal 	= "334"
 
-' 기본 텍스트 컬러 (회색)
-Dim g_szTxtColor_Grey 
+ -- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey
 g_szTxtColor_Grey 	= "333"
 
-' 기본 텍스트 컬러 (흰색)
-Dim g_szTxtColor_White 
+ -- 기본 텍스트 컬러 (흰색)
+local g_szTxtColor_White
 g_szTxtColor_White 	= "338"
 
-' 빨강
-Dim g_szTxtColor_Red 
+ -- 빨강
+local g_szTxtColor_Red
 g_szTxtColor_Red = "290"
 
-' 파랑
-Dim g_szTxtColor_Blue 
+ -- 파랑
+local g_szTxtColor_Blue
 g_szTxtColor_Blue = "291"
 
-' 기본 배경색상
-Dim g_szContBgColor
+ -- 기본 배경색상
+local g_szContBgColor
 g_szContBgColor = "320"
 
-' 기본 구분선 색상
-' 진한색
-Dim g_szLineColor
+ -- 기본 구분선 색상
+ -- 진한색
+local g_szLineColor
 g_szLineColor = "347"
-' 중간색
-Dim g_szLineColor2
+ -- 중간색
+local g_szLineColor2
 g_szLineColor2 = "256"
-' 연한색
-Dim g_szLineColor3
+ -- 연한색
+local g_szLineColor3
 g_szLineColor3 = "320"
 
 
-' 빨강
-Dim g_szBadgeBgColor_Red
+ -- 빨강
+local g_szBadgeBgColor_Red
 g_szBadgeBgColor_Red = "339"
 
-' 파랑
-Dim g_szBadgeBgColor_Blue
+ -- 파랑
+local g_szBadgeBgColor_Blue
 g_szBadgeBgColor_Blue = "340"
 
-'==============================================
-' 기타 전역변수
-'==============================================
-Dim g_szItemCd 
-Dim g_szExidCd
-Dim g_szOnlyCd
-Dim g_sExid3
-Dim g_szItemName
-Dim g_rtChk
+ --==============================================
+ -- 기타 전역변수
+ --==============================================
+local g_szItemCd
+local g_szExidCd
+local g_szOnlyCd
+local g_sExid3
+local g_szItemName
+local g_rtChk
 
-Dim g_szType
+local g_szType
 g_szType = "하드웨어 및 장비"
 
-Dim g_szTypeCd
+local g_szTypeCd
 g_szTypeCd = ""
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
 
-'===============================================
-' 컨트롤 초기설정
-'===============================================
-Function Init_Control()
-	contMain.setEnableScroll(false)
+ --===============================================
+ -- 컨트롤 초기설정
+ --===============================================
+function Init_Control()
+	contMain.SetEnableScroll(false)
 	
 	contMain.lblSubTitle0.paddinginfo = "0,0,0,0"
 	contMain.lblSubTitle0.fgcolor = g_szTxtColor_Normal
@@ -122,196 +124,197 @@ Function Init_Control()
 	contMain.lblExpand.fgcolor = g_szTxtColor_Grey
 	
 	contMain.lblDiv.bgcolor = g_szLineColor3
-'	
+ --	
 
-'	
-'	contMain.imgNotice.maintainratio = "1"
-'	
-'	contMain.lblInfo1.paddinginfo = "0,0,0,0"
-'	contMain.lblInfo1.maxlinecnt = "1"
-'	contMain.lblInfo1.fgcolor = g_szTxtColor_Red
-'	contMain.lblInfo1.visible = true
+ --	
+ --	contMain.imgNotice.maintainratio = "1"
+ --	
+ --	contMain.lblInfo1.paddinginfo = "0,0,0,0"
+ --	contMain.lblInfo1.maxlinecnt = "1"
+ --	contMain.lblInfo1.fgcolor = g_szTxtColor_Red
+ --	contMain.lblInfo1.visible = true
 	
 	
-End Function
+end
 
-Function Request_Tran_ohhts_news_001r()
+function Request_Tran_ohhts_news_001r()
 	contMain.Pannel0.rowcount = "0"
 	DATAMANAGER.ClearInputData(false, "ohhts_news_001r")
 	
-	szDate =  Form.GetSharedData("&HOST_DATE", false)
-'	DATAMANAGER.SetDataValue( 0, "ohhts_news_001r", "InBlock1", "FID_INPUT_NEWS_ITN_EXCP_CLCD"	, 0 , "00" )
-'	DATAMANAGER.SetDataValue( 0, "ohhts_news_001r", "InBlock1", "FID_INPUT_DATE"				, 0 , szDate )
+	szDate =  Form.GetSharedData("..HOST_DATE", false)
+ --	DATAMANAGER.SetDataValue( 0, "ohhts_news_001r", "InBlock1", "FID_INPUT_NEWS_ITN_EXCP_CLCD"	, 0 , "00" )
+ --	DATAMANAGER.SetDataValue( 0, "ohhts_news_001r", "InBlock1", "FID_INPUT_DATE"				, 0 , szDate )
 	DATAMANAGER.SetDataValue( 0, "ohhts_news_001r", "InBlock1", "FID_INPUT_NEWS_ITN_EXCP_CLCD"	, 0 , "Y" )
-	DATAMANAGER.SetDataValue( 0, "ohhts_news_001r", "InBlock2", "FID_NEW_INPUT_ISCD"			, 0 , g_sExid3 & g_szOnlyCd )
+	DATAMANAGER.SetDataValue( 0, "ohhts_news_001r", "InBlock2", "FID_NEW_INPUT_ISCD"			, 0 , g_sExid3 .. g_szOnlyCd )
 	
 	DATAMANAGER.RequestTranData("ohhts_news_001r")
-End Function
+end
 
-Function Process_Tran_ohhts_news_001r()
+function Process_Tran_ohhts_news_001r()
 	nDataCnt = DATAMANAGER.GetDataCount(false, "ohhts_news_001r", "OutBlock1")
 	
-	if nDataCnt == "" or Cint(nDataCnt) == 0 then
-		Exit Function
-	end if
+	if nDataCnt == "" or gf_Tonumber(nDataCnt) == 0 then
+		return
+	end
 	
-	if Cint(nDataCnt) > 3 then
+	if gf_Tonumber(nDataCnt) > 3 then
 		nDataCnt = 3
-	end if
+	end
 	
 	if nDataCnt > 0 then
 		nReduce = (3-nDataCnt) * 70
 		contMain.lblDiv.top = 245 - nReduce
 		
-		Form.triggerEvent("#", "CHANGE_LAYOUT_S13", 280 - nReduce)
+		Form.TriggerEvent("#", "CHANGE_LAYOUT_S13", 280 - nReduce)
 	else
-		Form.triggerEvent("#", "CHANGE_LAYOUT_S13", 0)
-	end if
+		Form.TriggerEvent("#", "CHANGE_LAYOUT_S13", 0)
+	end
 	
-	for i = 0 to nDataCnt-1
-		szData0 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_DATE" , i)				'뉴스일자
-		szData1 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_CNTG_HOUR" , i)			'뉴스시간
-		szData2 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_TITL", i)				'뉴스제목
-		szData3 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_NEWS_KEY", i)			'뉴스키
-		szData4 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_KOR_ISNM" , i)			'한글종목명
-		szData5 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_NEWS_OFER_ENTP_CODE" , i)	'뉴스제공업체코드
+	for i = 0, nDataCnt-1 do
+		szData0 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_DATE" , i)				 --뉴스일자
+		szData1 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_CNTG_HOUR" , i)			 --뉴스시간
+		szData2 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_TITL", i)				 --뉴스제목
+		szData3 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_NEWS_KEY", i)			 --뉴스키
+		szData4 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_KOR_ISNM" , i)			 --한글종목명
+		szData5 = DATAMANAGER.GetDataValue(false, "ohhts_news_001r", "OutBlock1", "FID_NEWS_OFER_ENTP_CODE" , i)	 --뉴스제공업체코드
 		
-		nIdx = contMain.Pannel0.addRow()
+		nIdx = contMain.Pannel0.AddRow()
 		
 		DisplaySetting_Pannel(nIdx, szData0, szData1, szData2, szData3, szData4, szData5) 
-	next
-End Function
+	end
+end
 
 
-Function DisplaySetting_Pannel(nIdx, szDate, szTime, szTitle, szNewsKey, szKorNm, szEntpCd) 
-	'상단 라인표시
-	if nIdx = 0 then
-		contMain.Pannel0.setPropCardCell("bgcolor","lblLine2", nIdx , g_szTxtColor_White)
+function DisplaySetting_Pannel(nIdx, szDate, szTime, szTitle, szNewsKey, szKorNm, szEntpCd)
+	 --상단 라인표시
+	if nIdx == 0 then
+		contMain.Pannel0.SetPropCardCell("bgcolor","lblLine2", nIdx , g_szTxtColor_White)
 	else
-		contMain.Pannel0.setPropCardCell("bgcolor","lblLine2", nIdx , g_szLineColor2)
-	end if
+		contMain.Pannel0.SetPropCardCell("bgcolor","lblLine2", nIdx , g_szLineColor2)
+	end
 
 
-	contMain.Pannel0.setPropCardCell("paddinginfo","lblNewsTitle",nIdx, "0,0,0,0")
-	contMain.Pannel0.setPropCardCell("fgcolor","lblNewsTitle",nIdx, g_szTxtColor_Normal)
-	contMain.Pannel0.setPropCardCell("maxlinecnt","lblNewsTitle",nIdx, "1^-1")
-	contMain.Pannel0.setPropCardCell("caption","lblNewsTitle",nIdx, szTitle)
+	contMain.Pannel0.SetPropCardCell("paddinginfo","lblNewsTitle",nIdx, "0,0,0,0")
+	contMain.Pannel0.SetPropCardCell("fgcolor","lblNewsTitle",nIdx, g_szTxtColor_Normal)
+	contMain.Pannel0.SetPropCardCell("maxlinecnt","lblNewsTitle",nIdx, "1^-1")
+	contMain.Pannel0.SetPropCardCell("caption","lblNewsTitle",nIdx, szTitle)
 	
 	
 	szDateTime = ""
 	
-	if szDate <> "" then
-		szDateTime = szDateTime & mid(szDate, 3, 2) & "." & mid(szDate, 5, 2) & "." & right(szDate, 2) & " "
-	end if
+	if szDate ~= "" then
+		szDateTime = szDateTime .. string.sub(szDate, 3, 3 + 2 - 1) .. "." .. string.sub(szDate, 5, 5 + 2 - 1) .. "." .. string.sub(szDate, -2) .. " "
+	end
 	
-	if szTime <> "" then
-		szDateTime = szDateTime & left(szTime, 2) & ":" & mid(szTime, 2, 2) & ":" & right(szTime, 2) 
-	end if
+	if szTime ~= "" then
+		szDateTime = szDateTime .. string.sub(szTime, 1, 2) .. ":" .. string.sub(szTime, 2, 2 + 2 - 1) .. ":" .. string.sub(szTime, -2) 
+	end
 	
-	contMain.Pannel0.setPropCardCell("paddinginfo","lblDateTime",nIdx, "0,0,0,0")
-	contMain.Pannel0.setPropCardCell("fgcolor","lblDateTime",nIdx, g_szTxtColor_Grey)
-	contMain.Pannel0.setPropCardCell("caption","lblDateTime",nIdx, szDateTime)
+	contMain.Pannel0.SetPropCardCell("paddinginfo","lblDateTime",nIdx, "0,0,0,0")
+	contMain.Pannel0.SetPropCardCell("fgcolor","lblDateTime",nIdx, g_szTxtColor_Grey)
+	contMain.Pannel0.SetPropCardCell("caption","lblDateTime",nIdx, szDateTime)
 	
 	
-	contMain.Pannel0.setPropCardCell("caption","lblHideData0",nIdx, szDate)
-	contMain.Pannel0.setPropCardCell("caption","lblHideData1",nIdx, szTime)
-	contMain.Pannel0.setPropCardCell("caption","lblHideData2",nIdx, szNewsKey)
-	contMain.Pannel0.setPropCardCell("caption","lblHideData3",nIdx, szKorNm)
-	contMain.Pannel0.setPropCardCell("caption","lblHideData4",nIdx, szEntpCd)
+	contMain.Pannel0.SetPropCardCell("caption","lblHideData0",nIdx, szDate)
+	contMain.Pannel0.SetPropCardCell("caption","lblHideData1",nIdx, szTime)
+	contMain.Pannel0.SetPropCardCell("caption","lblHideData2",nIdx, szNewsKey)
+	contMain.Pannel0.SetPropCardCell("caption","lblHideData3",nIdx, szKorNm)
+	contMain.Pannel0.SetPropCardCell("caption","lblHideData4",nIdx, szEntpCd)
 	
-End Function
-Function Convert_NatCd(szExidCd)
+end
+function Convert_NatCd(szExidCd)
 	szResult = ""
 	
-	Select Case szExidCd
-'		Case "NY", "AX", "OQ" 
-'			szResult = "US"
-		Case "SH", "SZ"
+	-- SELECT CASE 변환 (수동 보정 필요)
+ --		Case "NY", "AX", "OQ" 
+ --			szResult = "US"
+		if szExidCd == "SH" or szExidCd == "SZ" then
 			szResult = "CN"
-		Case "JP", "HK"
+		elseif szExidCd == "JP" or szExidCd == "HK" then
 			szResult = szExidCd
-'		Case Else
-'			szResult = ""
-	End Select
+ --		Case Else
+ --			szResult = ""
+	end
 	
 	return szResult
 	
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'===============================================
-' Form_OnTriggerEvent(종목코드 연동)
-'===============================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --===============================================
+ -- Form_OnTriggerEvent(종목코드 연동)
+ --===============================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	if sEventName == "INIT_CODE" then
-		if instr(sParam, "@") > 0 then
+		if string.find(sParam, "@") > 0 then
 			g_szItemCd = sParam
 			g_szExidCd = ""
-			sTemp = split(g_szItemCd, "@")
-			g_szExidCd = sTemp[0] '시장구분
-			g_szOnlyCd = sTemp[1] '종목코드 
-			g_sExid3 	= Form.GetItemCodeInfo(g_szItemCd, "exchcode3") '거래소 구분코드
+			sTemp = gf_Split(g_szItemCd, "@")
+			g_szExidCd = sTemp[0+1]  --시장구분
+			g_szOnlyCd = sTemp[1+1]  --종목코드 
+			g_sExid3 	= Form.GetItemCodeInfo(g_szItemCd, "exchcode3")  --거래소 구분코드
 			g_szItemName = Form.GetItemCodeInfo( sParam , "name")
 					
 			g_rtChk = Form.GetSharedData( "REALTIME_"..g_szExidCd, false )
 			
 			Request_Tran_ohhts_news_001r()
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-'===============================================
-' Form_OnFormInitBefore
-'===============================================
-Sub Form_OnFormInitBefore()
-End Sub
+ --===============================================
+ -- Form_OnFormInitBefore
+ --===============================================
+function Form_OnFormInitBefore()
+end
 
-'===============================================
-' Form_OnFormInit
-'===============================================
-Sub Form_OnFormInit()
+ --===============================================
+ -- Form_OnFormInit
+ --===============================================
+function Form_OnFormInit()
 	Init_Control()
-End Sub
+end
 
-'===============================================
-' DATAMANAGER_OnReceiveTranComplete
-'===============================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --===============================================
+ -- DATAMANAGER_OnReceiveTranComplete
+ --===============================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if szTranID == "ohhts_news_001r" then
 		Process_Tran_ohhts_news_001r()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
-	Form.triggerEvent("#", "CHANGE_LAYOUT_S13", 0)
-End Sub
+ --============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+	Form.TriggerEvent("#", "CHANGE_LAYOUT_S13", 0)
+end
 
-'============================================================================
-Sub contMain_Pannel0_OnClick(nIndex, sCellID)
-	szTitle 			= contMain.Pannel0.getPropCardCell("caption", "lblNewsTitle", nIndex)
-	szDate 			= contMain.Pannel0.getPropCardCell("caption", "lblHideData0", nIndex)
-	szTime 			= contMain.Pannel0.getPropCardCell("caption", "lblHideData1", nIndex)
-	szNewCorpName 	= contMain.Pannel0.getPropCardCell("caption", "lblHideData3", nIndex)
-	szNewKey 		= contMain.Pannel0.getPropCardCell("caption", "lblHideData2", nIndex)
-	szNewsCorpCode 	= contMain.Pannel0.getPropCardCell("caption", "lblHideData4", nIndex)
+ --============================================================================
+function contMain_Pannel0_OnClick(nIndex, sCellID)
+	szTitle 			= contMain.Pannel0.GetPropCardCell("caption", "lblNewsTitle", nIndex)
+	szDate 			= contMain.Pannel0.GetPropCardCell("caption", "lblHideData0", nIndex)
+	szTime 			= contMain.Pannel0.GetPropCardCell("caption", "lblHideData1", nIndex)
+	szNewCorpName 	= contMain.Pannel0.GetPropCardCell("caption", "lblHideData3", nIndex)
+	szNewKey 		= contMain.Pannel0.GetPropCardCell("caption", "lblHideData2", nIndex)
+	szNewsCorpCode 	= contMain.Pannel0.GetPropCardCell("caption", "lblHideData4", nIndex)
 
-	if szTitle <> "" and szDate <> "" and szTime <> "" and szTitle <> "" and szNewCorpName <> "" and szNewKey <> "" and szNewsCorpCode <> "" then
-		szMsg = szTitle & "|" & szDate & "|" & szTime & "|" & szNewCorpName & "|" & szNewKey & "|" & szNewsCorpCode & "|" & g_szItemName
-		Form.OpenPopup( "mhprc11000_p6" , "mhtro16000_t09"& "★" &szMsg, "" )
-	end if
-End Sub
+	if szTitle ~= "" and szDate ~= "" and szTime ~= "" and szTitle ~= "" and szNewCorpName ~= "" and szNewKey ~= "" and szNewsCorpCode ~= "" then
+		szMsg = szTitle .. "|" .. szDate .. "|" .. szTime .. "|" .. szNewCorpName .. "|" .. szNewKey .. "|" .. szNewsCorpCode .. "|" .. g_szItemName
+		Form.OpenPopup( "mhprc11000_p6" , "mhtro16000_t09".. "★" ..szMsg, "" )
+	end
+end
 
-'============================================================================
-Sub contMain_lblExpand_OnClick()
-	Form.triggerEvent("#", "RETURN_LAYOUT", "뉴스")
-End Sub
+ --============================================================================
+function contMain_lblExpand_OnClick()
+	Form.TriggerEvent("#", "RETURN_LAYOUT", "뉴스")
+end
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_news_001r" trcode="ohhts_news_001r" compress="1" encryption="1" inputcheck="1" useattr="0" />

@@ -419,105 +419,107 @@
 		<CHKBUTTON name="checkCost" fontsize="-2" chkcaption="비용포함" unchkcaption="비용포함" chkbtnimage="checkmenu_o.png" unchkbtnimage="checkmenu_n.png" ly_vert="280,75,90,25,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="15995" _ulen="14447" >
-'============================================================================
-' 20241216 LES START : (미국)해외주식 휴일/휴장일때는 정규장종가 보여주도록 수정
-' 20250703 YSH START : 장 운영 정보 조회 방식 변경
-'============================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 20241216 LES START : (미국)해외주식 휴일/휴장일때는 정규장종가 보여주도록 수정
+ -- 20250703 YSH START : 장 운영 정보 조회 방식 변경
+ --============================================================================
 
-Dim g_szAcnt
-Dim g_szAcntCd   
-Dim g_szAcntPwd
-Dim g_szCustID
-Dim g_szType
+local g_szAcnt
+local g_szAcntCd
+local g_szAcntPwd
+local g_szCustID
+local g_szType
 g_szType = "0"
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	imgNodata.setMaintainingRatio("1")
+	imgNodata.SetMaintainingRatio("1")
 
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 	
-	'-----------------------------------------------------------------------------
-	' 탭 생성
-	'-----------------------------------------------------------------------------
-	FormTab0.setTabHeaderImage("img_bgcircle_black.9" , "img_bgcircle_line.9" , 5) '활성화/비활성화/여백
-	FormTab0.setTabHeaderFgColor("28" , "321") '활성화/비활성화 폰트색상
+	 -------------------------------------------------------------------------------
+	 -- 탭 생성
+	 -------------------------------------------------------------------------------
+	FormTab0.SetTabHeaderImage("img_bgcircle_black.9" , "img_bgcircle_line.9" , 5)  --활성화/비활성화/여백
+	FormTab0.SetTabHeaderFgColor("28" , "321")  --활성화/비활성화 폰트색상
 	
-	FormTab0.insertPage( FormTab0.tabcount, "page1", "page1", "empty", "0", "전체")
-	FormTab0.insertPage( FormTab0.tabcount, "page2", "page2", "empty", "0", "현금")
-	FormTab0.insertPage( FormTab0.tabcount, "page3", "page3", "empty", "0", "대출")
+	FormTab0.InsertPage( FormTab0.tabcount, "page1", "page1", "empty", "0", "전체")
+	FormTab0.InsertPage( FormTab0.tabcount, "page2", "page2", "empty", "0", "현금")
+	FormTab0.InsertPage( FormTab0.tabcount, "page3", "page3", "empty", "0", "대출")
 	FormTab0.currenttab = 0
 
-	'-----------------------------------------------------------------------------
-	' 유저아이디 가져오기
-	'-----------------------------------------------------------------------------
-	g_szCustID = Form.GetSharedData("&USER_ID", false )
+	 -------------------------------------------------------------------------------
+	 -- 유저아이디 가져오기
+	 -------------------------------------------------------------------------------
+	g_szCustID = Form.GetSharedData("..USER_ID", false )
 
-	'-----------------------------------------------------------------------------
-	' 링크데이터 가져오기
-	'-----------------------------------------------------------------------------
+	 -------------------------------------------------------------------------------
+	 -- 링크데이터 가져오기
+	 -------------------------------------------------------------------------------
 	szOpen = Form.GetOpenLinkData()
 	
-	if Trim(szOpen) == "" then
-		Exit Sub
-	end if
+	if gf_Trim(szOpen) == "" then
+		return
+	end
 
-	tData = Split(szOpen, "★")
+	tData = gf_Split(szOpen, "★")
 	
-	if UBound(tData) > 0 then
+	if #tData > 0 then
 		
 		
-		g_szAcnt   	= tData(0) '종합계좌(8자리)
-		g_szAcntCd 	= tData(1) '계좌일련번호(2자리)
-		g_szAcntPwd	= tData(2) '계좌비밀번호
-		g_szType		= tData(3) '잔고구분(0:현금/1:대출)
+		g_szAcnt   	= tData[0+1]  --종합계좌(8자리)
+		g_szAcntCd 	= tData[1+1]  --계좌일련번호(2자리)
+		g_szAcntPwd	= tData[2+1]  --계좌비밀번호
+		g_szType		= tData[3+1]  --잔고구분(0:현금/1:대출)
 		
-		'-----------------------------------------------------------------------------
-		' 초기탭으로 이동
-		' 매도화면 현금(0)/대출(1) 라디오버튼 인덱스 받아와서 처리.
-		' 받아온값에 +1을 해줘야 현재 화면의 전체(0)/현금(1)/대출(2) 탭으로 이동 가능 
-		'-----------------------------------------------------------------------------
-		FormTab0.currenttab = Cint(g_szType) + 1
+		 -------------------------------------------------------------------------------
+		 -- 초기탭으로 이동
+		 -- 매도화면 현금(0)/대출(1) 라디오버튼 인덱스 받아와서 처리.
+		 -- 받아온값에 +1을 해줘야 현재 화면의 전체(0)/현금(1)/대출(2) 탭으로 이동 가능 
+		 -------------------------------------------------------------------------------
+		FormTab0.currenttab = gf_Tonumber(g_szType) + 1
 		
-		'-----------------------------------------------------------------------------
-		'초기탭 이동 후 서비스 인풋값에 올라가는 값으로 변경
-		'-----------------------------------------------------------------------------
-		if g_szType == "0" then		'현금
+		 -------------------------------------------------------------------------------
+		 --초기탭 이동 후 서비스 인풋값에 올라가는 값으로 변경
+		 -------------------------------------------------------------------------------
+		if g_szType == "0" then --현금
 			g_szType = "1"
-		elseif g_szType == "1" then 	'대출
+		elseif g_szType == "1" then --대출
 			g_szType = "2"
-		end if
+		end
 		
 		Request_Data()
 		
-	end if
+	end
 	
-	'------------------------------------------------------------
-	'정렬(소팅)헤더 설정
-	'------------------------------------------------------------
-	'grdList.setSortCellID("th_cell24","bd_cell25") '종목명
-	'grdList.setSortCellID("th_cell31","bd_cell11") '종목코드
-	'grdList.setSortCellID("th_cell1","bd_cell26")  '구분
-	'grdList.setSortCellID("th_cell2","bd_cell3")   '평가손익
-	'grdList.setSortCellID("th_cell3","bd_cell13")  '수익률
+	 --------------------------------------------------------------
+	 --정렬(소팅)헤더 설정
+	 --------------------------------------------------------------
+	 --grdList.setSortCellID("th_cell24","bd_cell25") '종목명
+	 --grdList.setSortCellID("th_cell31","bd_cell11") '종목코드
+	 --grdList.setSortCellID("th_cell1","bd_cell26")  '구분
+	 --grdList.setSortCellID("th_cell2","bd_cell3")   '평가손익
+	 --grdList.setSortCellID("th_cell3","bd_cell13")  '수익률
 	
 	
-End Sub
+end
 
-'============================================================================
-Function Request_Data()
+ --============================================================================
+function Request_Data()
 	
 	grdList.rowcount = 0
 	DATAMANAGER.RequestTranData("obtro_oder_110r")
 	
-End Function
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)	
-	If szTranID = "obtro_oder_110r" Then
+end
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	if szTranID == "obtro_oder_110r" then
 		
 		DATAMANAGER.ClearInputData(0, "obtro_oder_110r")
 		
@@ -527,55 +529,55 @@ Sub DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_110r", "InBlock1", "IQRY_CLS_CODE"		, 0, "1")
 		DATAMANAGER.SetDataValue(0, "obtro_oder_110r", "InBlock1", "PROD_PSTN_CLS_CODE"	, 0, "1")
 		DATAMANAGER.SetDataValue(0, "obtro_oder_110r", "InBlock1", "ELFN_ID"				, 0, g_szCustID)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_110r", "InBlock1", "RMND_CLCD"			, 0, g_szType) 'v001
+		DATAMANAGER.SetDataValue(0, "obtro_oder_110r", "InBlock1", "RMND_CLCD"			, 0, g_szType)  --v001
 		
-		'------------------------------------------------------------
-		'주간거래시세 적용 구분값
-		'------------------------------------------------------------
-		sDayYN = Form.GetSharedData( "&OVRS_DAYMARKET", false )
+		 --------------------------------------------------------------
+		 --주간거래시세 적용 구분값
+		 --------------------------------------------------------------
+		sDayYN = Form.GetSharedData( "..OVRS_DAYMARKET", false )
 		
-		'20250703 YSH START
-		'해외주식 장운영 정보 조회방식 변경
-		'sMarketClsCode = Form.GetSharedData("OVRS_MARKET_CLS_CODE", false )
-		sMarketClsCode = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
-		'20250703 YSH END
+		 --20250703 YSH START
+		 --해외주식 장운영 정보 조회방식 변경
+		 --sMarketClsCode = Form.GetSharedData("OVRS_MARKET_CLS_CODE", false )
+		sMarketClsCode = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
+		 --20250703 YSH END
 		
-		if sDayYN == "Y" and (sMarketClsCode <> "000" and sMarketClsCode <> "013" ) then
+		if sDayYN == "Y" and (sMarketClsCode ~= "000" and sMarketClsCode ~= "013" ) then
 			DATAMANAGER.SetDataValue(0, "obtro_oder_110r", "InBlock1", "DYTM_TR_CLPR_APLY_YN"	, 0, "Y")
 		else
 			DATAMANAGER.SetDataValue(0, "obtro_oder_110r", "InBlock1", "DYTM_TR_CLPR_APLY_YN"	, 0, "N")
-		end if
+		end
 		
-		'------------------------------------------------------------
-		' 비용포함 여부(Y/N)
-		'------------------------------------------------------------
-		Dim sApplyCost
-		nCheckCost = Cint(checkCost.checkstate)
+		 --------------------------------------------------------------
+		 -- 비용포함 여부(Y/N)
+		 --------------------------------------------------------------
+		local sApplyCost
+		nCheckCost = gf_Tonumber(checkCost.checkstate)
 		
 		if nCheckCost == 1 then
 			sApplyCost = "Y"
 		else
 			sApplyCost = "N"
-		end if
+		end
 		
 		DATAMANAGER.SetDataValue(0, "obtro_oder_110r", "InBlock1", "FEE_INCU_YN"	, 0, sApplyCost)
 		
-	End If
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	If szTranID = "obtro_oder_110r" Then
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	if szTranID == "obtro_oder_110r" then
 		
 		if DATAMANAGER.IsMoreNextData("obtro_oder_110r") == true then
 		   DATAMANAGER.RequestNextData( "obtro_oder_110r" )
 		else
 		   
-			'-------------------------------------------------------
-			' 데이터 조회건수 체크
-			'-------------------------------------------------------
-			nDataCnt = Cint(grdList.rowcount)
+			 ---------------------------------------------------------
+			 -- 데이터 조회건수 체크
+			 ---------------------------------------------------------
+			nDataCnt = gf_Tonumber(grdList.rowcount)
 			
 			if nDataCnt == 0 then
 				imgNodata.visible = true
@@ -583,44 +585,44 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			else
 				imgNodata.visible = false
 				lblNodata.visible = false
-			end if
+			end
 			
-			'-------------------------------------------------------
-			' 국가명세팅(삭제)
-			'-------------------------------------------------------
-			'SetGridData()
+			 ---------------------------------------------------------
+			 -- 국가명세팅(삭제)
+			 ---------------------------------------------------------
+			 --SetGridData()
 		
-			'-------------------------------------------------------
-			'잔고구분(현금/일반) / 구분에 따른 수량데이터 포맷 설정
-			'-------------------------------------------------------
+			 ---------------------------------------------------------
+			 --잔고구분(현금/일반) / 구분에 따른 수량데이터 포맷 설정
+			 ---------------------------------------------------------
 			SetItemGubun()
 			
-			'-------------------------------------------------------
-			'등락에따른 글자색상 설정
-			'-------------------------------------------------------
-		   	for i = 0 to grdList.rowcount -1
-				nDiff = CDbl(grdList.GetCellData("bd_cell10", i))
+			 ---------------------------------------------------------
+			 --등락에따른 글자색상 설정
+			 ---------------------------------------------------------
+		   	for i = 0, grdList.rowcount -1 do
+				nDiff = gf_Tonumber(grdList.GetCellData("bd_cell10", i))
 				swapItemColor(i, nDiff)
-			next
+			end
 		   
-		end if
+		end
 	
-	End If
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 종목선택
-'============================================================================
-Sub grdList_OnClickUp(lRow, szCellID)
+ --============================================================================
+ -- 종목선택
+ --============================================================================
+function grdList_OnClickUp(lRow, szCellID)
 	
-	Dim szCd, szQty, szLoanDate, szLoanCd, szLoanSr, szData
+	local szCd, szQty, szLoanDate, szLoanCd, szLoanSr, szData
 
 	if lRow > -1 then
 	
-		'-------------------------------------------------------------
-		' 선택종목 종목정보 획득
-		'-------------------------------------------------------------
+		 ---------------------------------------------------------------
+		 -- 선택종목 종목정보 획득
+		 ---------------------------------------------------------------
 		szCdName		= grdList.GetCellData("bd_cell25"	,    lRow)
 		szCd			= grdList.GetCellData("bd_cell11"	,    lRow)
 		szVndrCd		= grdList.GetCellData("bd_cell17"	,    lRow)
@@ -630,68 +632,68 @@ Sub grdList_OnClickUp(lRow, szCellID)
 		szLoanCd   	= grdList.GetCellData("bd_cell27", lRow)
 		szLoanSr   	= grdList.GetCellData("bd_cell28", lRow)
 		
-		'-------------------------------------------------------------
-		' 천단위 부호 삭제 처리(안드로이드 천단위 부호 중복방지)
-		' 자세한 내용은 해외주식 주문화면 내 잔고(16100_t5) 화면에 작성
-		'-------------------------------------------------------------
-		szQty = replace(szQty,",","")
+		 ---------------------------------------------------------------
+		 -- 천단위 부호 삭제 처리(안드로이드 천단위 부호 중복방지)
+		 -- 자세한 내용은 해외주식 주문화면 내 잔고(16100_t5) 화면에 작성
+		 ---------------------------------------------------------------
+		szQty = string.gsub(szQty, string.gsub(", "([%p])", "%%%1"), ","")
 		
-		'-------------------------------------------------------------
-		' 오프라인종목 예외처리
-		'-------------------------------------------------------------
+		 ---------------------------------------------------------------
+		 -- 오프라인종목 예외처리
+		 ---------------------------------------------------------------
 		szOnline 	= grdList.GetCellData("bd_cell19"	,	lRow)
 		if szOnline == "N" then
 			Form.MsgBox("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.", "OnLineCheck", 6)
-			Exit Sub
-		end if
+			return
+		end
 			
 		szFullcode = grdList.GetCellData("bd_cell20", lRow)
-		szMarketCode = right(szFullcode,2)
+		szMarketCode = string.sub(szFullcode, -2)
 		
 		if szMarketCode == "OT" then
 			Form.MsgBox("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.", "OnLineCheck", 6)
-			Exit Sub
-		end if
+			return
+		end
 		
-		'-------------------------------------------------------------
-		' 종목정보 전달
-		'-------------------------------------------------------------
-		'szData = [0]:구분명
-		'    	 [1]:종목명
-		'		 [2]:종목코드 
-		'		 [3]:시장구분코드(4자리)
-		'		 [4]:매도가능수량
-		'		 [5]:대출일자
-		'		 [6]:대출구분코드
-		'		 [7]:대출일련번호
-		'------------------------------------------------------------------------
+		 ---------------------------------------------------------------
+		 -- 종목정보 전달
+		 ---------------------------------------------------------------
+		 --szData = [0]:구분명
+		 --    	 [1]:종목명
+		 --		 [2]:종목코드 
+		 --		 [3]:시장구분코드(4자리)
+		 --		 [4]:매도가능수량
+		 --		 [5]:대출일자
+		 --		 [6]:대출구분코드
+		 --		 [7]:대출일련번호
+		 --------------------------------------------------------------------------
 		
-		szData = "잔고" & "★" & szCdName & "★" & szCd & "★" & szVndrCd & "★" & szQty & "★" & szLoanDate & "★" & szLoanCd & "★" & szLoanSr
+		szData = "잔고" .. "★" .. szCdName .. "★" .. szCd .. "★" .. szVndrCd .. "★" .. szQty .. "★" .. szLoanDate .. "★" .. szLoanCd .. "★" .. szLoanSr
 		Form.SendReturnToParent("16100_BALANCE", szData)
 		Form.CloseForm()
 	
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 닫기
-'============================================================================
-Sub imgClose_OnClick()
+ --============================================================================
+ -- 닫기
+ --============================================================================
+function imgClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-' SetGridData => 국가명 세팅
-'============================================================================
-Function SetGridData()
+ --============================================================================
+ -- SetGridData => 국가명 세팅
+ --============================================================================
+function SetGridData()
 
-	For iCnt = grdList.rowcount - 1 To 0 Step -1
+	for iCnt = grdList.rowcount - 1, 0, -1 do
 		
 		szType 	= grdList.GetCellData("bd_cell7" , iCnt)
 		szVndr 	= grdList.GetCellData("bd_cell17" , iCnt)
 		
-		' 시장구분
+		 -- 시장구분
 		if szType == "01" then
 			grdList.SetCellData("bd_cell16", iCnt, "미국")
 		elseif szType == "02" then
@@ -714,155 +716,156 @@ Function SetGridData()
 			grdList.SetCellData("bd_cell16", iCnt, "인도네시아")
 		elseif szType == "24" then
 			grdList.SetCellData("bd_cell16", iCnt, "베트남")
-		end if
+		end
 		
 		szVndrStr = Transform_Exid(szVndr)
 		grdList.SetCellData("bd_cell6", iCnt, szVndrStr)
 
-	Next
+	end
 	
 
-End Function
+end
 
-'============================================================================
-' 거래소벤더코드 => 거래소명 세팅
-'============================================================================
-Function Transform_Exid(sValue)
-	if sValue == "0104" then	' 홍콩
+ --============================================================================
+ -- 거래소벤더코드 => 거래소명 세팅
+ --============================================================================
+function Transform_Exid(sValue)
+	if sValue == "0104" then -- 홍콩
 		return "홍콩"
-	elseif sValue == "HS0529I" then ' 항셍 지수
+	elseif sValue == "HS0529I" then -- 항셍 지수
 		return "항셍"
-	elseif sValue == "0215" then ' 상해
-		'return "상해"
+	elseif sValue == "0215" then -- 상해
+		 --return "상해"
 		return "후강통"
-	elseif sValue == "0214" then ' 심천거래소 종목
-		'return "심천"
+	elseif sValue == "0214" then -- 심천거래소 종목
+		 --return "심천"
 		return "선강통"
-	elseif sValue == "0321" then ' 뉴욕
+	elseif sValue == "0321" then -- 뉴욕
 		return "뉴욕"
-	elseif sValue == "0066" then ' 아멕스
+	elseif sValue == "0066" then -- 아멕스
 		return "아멕스"
-	elseif sValue == "0537" then ' 나스닥
+	elseif sValue == "0537" then -- 나스닥
 		return "나스닥"
-	elseif sValue == "0130" then ' 미국 OTCBB
+	elseif sValue == "0130" then -- 미국 OTCBB
 		return "미국 OTCBB"
-	elseif sValue == "0625" then ' S&P 지수
-		return "S&P"
-	elseif sValue == "0310" then ' 다우존스 지수
+	elseif sValue == "0625" then -- S&P 지수
+		return "S..P"
+	elseif sValue == "0310" then -- 다우존스 지수
 		return "다우존스"
-	elseif sValue == "0106" then ' 도쿄
+	elseif sValue == "0106" then -- 도쿄
 		return "도쿄"
-	elseif sValue == "0107" then ' 오사카거래소 종목
+	elseif sValue == "0107" then -- 오사카거래소 종목
 		return "오사카"
-	elseif sValue == "0112" then ' 자스닥거래소 종목
+	elseif sValue == "0112" then -- 자스닥거래소 종목
 		return "자스닥"
-	elseif sValue == "0889" then ' 니케이 지수
+	elseif sValue == "0889" then -- 니케이 지수
 		return "니케이"
-	elseif sValue == "0538" then ' 미국 나스닥 지수
+	elseif sValue == "0538" then -- 미국 나스닥 지수
 		return "미국 나스닥"
-	elseif sValue == "0770" then ' 베트남 호치민
+	elseif sValue == "0770" then -- 베트남 호치민
 		return "호치민"
-	elseif sValue == "0771" then ' 베트남 하노이
+	elseif sValue == "0771" then -- 베트남 하노이
 		return "하노이"
-	end if
-end Function
+	end
+end
 
-'============================================================================
-' 등락 색상 설정
-'============================================================================
-Function swapItemColor(nIndex, nDiff)
+ --============================================================================
+ -- 등락 색상 설정
+ --============================================================================
+function swapItemColor(nIndex, nDiff)
 	
 	grdlist.SetCellFgColor( "bd_cell10"	, nIndex	, nDiff > 0 and "1" or ( nDiff < 0 and "2" or "3" ) ) 
 	grdlist.SetCellFgColor( "bd_cell5"	, nIndex	, nDiff > 0 and "1" or ( nDiff < 0 and "2" or "3" ) ) 
 	
 	grdlist.SetCellData( "bd_cell0", nIndex, nDiff > 0 and "2" or ( nDiff < 0 and "5" or "0" ) )
 	
-End Function
+end
 
-'============================================================================
-' 잔고구분/수량데이터 포맷 설정
-'============================================================================
-Sub SetItemGubun()
+ --============================================================================
+ -- 잔고구분/수량데이터 포맷 설정
+ --============================================================================
+function SetItemGubun()
 	
-	Dim nOwnQty, nMadoQty, szDotType, szLoanType 
+	local nOwnQty, nMadoQty, szDotType, szLoanType
 	
-	for i = 0 to grdList.rowcount -1 
+	for i = 0, grdList.rowcount -1 do
 	
-		'------------------------------------------------------------------------
-		' 종목명 세팅
-		'------------------------------------------------------------------------
+		 --------------------------------------------------------------------------
+		 -- 종목명 세팅
+		 --------------------------------------------------------------------------
 		sName = grdList.GetCellData("bd_cell25", i)
 		grdList.SetCellMaxLineCount("bd_cell25",2)
 		grdList.SetCellData("bd_cell25", i, sName)
 	
-		'------------------------------------------------------------------------
-		' 수량세팅
-		'------------------------------------------------------------------------
-		nOwnQty = CDbl(grdList.GetCellData("bd_cell31", i))  '잔고수량
-		nMadoQty = CDbl(grdList.GetCellData("bd_cell32", i)) '매도가능수량
+		 --------------------------------------------------------------------------
+		 -- 수량세팅
+		 --------------------------------------------------------------------------
+		nOwnQty = gf_Tonumber(grdList.GetCellData("bd_cell31", i))   --잔고수량
+		nMadoQty = gf_Tonumber(grdList.GetCellData("bd_cell32", i))  --매도가능수량
 		
-		nOwnQty = FormatNumber(nOwnQty, 0)
-		nMadoQty = FormatNumber(nMadoQty, 0)
+		nOwnQty = gf_CommaValue(nOwnQty, 0)
+		nMadoQty = gf_CommaValue(nMadoQty, 0)
 		
 		grdList.SetCellData("bd_cell2", i, nOwnQty)
 		grdList.SetCellData("bd_cell12", i, nMadoQty)
 		
-		'------------------------------------------------------------------------
-		' 잔고구분 세팅
-		'------------------------------------------------------------------------
+		 --------------------------------------------------------------------------
+		 -- 잔고구분 세팅
+		 --------------------------------------------------------------------------
 		szLoanType = grdList.GetCellData("bd_cell27", i)
 		szJangoType = grdList.GetCellData("bd_cell29", i)
 		
-		'------------------------------------
-		' 종목코드 + 현금/대출 구분
-		'------------------------------------
-		Dim sData 
+		 --------------------------------------
+		 -- 종목코드 + 현금/대출 구분
+		 --------------------------------------
+		local sData
 		sData = ""
 		
 		if szJangoType == "1" then
-			'grdList.SetCellData("bd_cell26", i, "현금")
+			 --grdList.SetCellData("bd_cell26", i, "현금")
 			sData = "현금"
-		elseif szJangoType == "2" then '대출
+		elseif szJangoType == "2" then --대출
 			grdList.SetCellData("bd_cell26", i, "대출")
 			sData = "대출"
-		end if
+		end
 		
-		sData = sData & " | " & grdList.GetCellData("bd_cell11", i)
+		sData = sData .. " | " .. grdList.GetCellData("bd_cell11", i)
 		
 		grdList.SetCellData("bd_cell145", i, sData)
 	
-	next
+	end
 	
 
-End sub
+end
 
-'============================================================================
-Sub FormTab0_OnTabChanged(nCurrentTab)
+ --============================================================================
+function FormTab0_OnTabChanged(nCurrentTab)
 	
-	'--------------------------------------------------------------
-	' 변경된 탭 인덱스에 따라 서비스 인풋값에 올라갈 값으로 변환
-	'--------------------------------------------------------------
+	 ----------------------------------------------------------------
+	 -- 변경된 탭 인덱스에 따라 서비스 인풋값에 올라갈 값으로 변환
+	 ----------------------------------------------------------------
 	if nCurrentTab == 0 then
 		g_szType = "0"
 	elseif nCurrentTab == 1 then
 		g_szType = "1"
 	elseif nCurrentTab == 2 then
 		g_szType = "2"
-	end if
+	end
 	
-	'--------------------------------------------------------------
-	' 서비스 호출
-	'--------------------------------------------------------------
+	 ----------------------------------------------------------------
+	 -- 서비스 호출
+	 ----------------------------------------------------------------
 	Request_Data()
 	
-End Sub
+end
 
-'============================================================================
-Sub checkCost_OnChange(sCheckState)
+ --============================================================================
+function checkCost_OnChange(sCheckState)
 	Request_Data()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_110r" trcode="obtro_oder_110r" compress="1" encryption="1" inputcheck="1" useattr="0" />

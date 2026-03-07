@@ -65,53 +65,55 @@
 		</TABLE>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="1416" _ulen="1350" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+local g_szAccNo
+local g_szAccSrNo
+local g_szCrCd
 
-Dim g_szAccNo
-Dim g_szAccSrNo
-Dim g_szCrCd
-
-'============================================================================
-Sub Form_OnFormInit()
-	Dim szOpenData
+ --============================================================================
+function Form_OnFormInit()
+	local szOpenData
 	szOpenData = Form.GetOpenLinkData()
 	
-	If szOpenData <> "" And szOpenData <> null Then
-		tData = Split(szOpenData, "★")
+	if szOpenData ~= "" and szOpenData ~= nil then
+		tData = gf_Split(szOpenData, "★")
 	
-		g_szAccNo = tData(0)
-		g_szAccSrNo = tData(1)
-		g_szCrCd = tData(2)
+		g_szAccNo = tData[0+1]
+		g_szAccSrNo = tData[1+1]
+		g_szCrCd = tData[2+1]
 		
 		DATAMANAGER.RequestTranData( "obacb_balc_138r" )
 	
 	else
-		Exit Sub
-	end if
+		return
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
-	If szTranID == "obacb_balc_138r" Then
-		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "ACNO" , 0 , g_szAccNo)		'계좌번호
-		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "ASNO" , 0 , g_szAccSrNo)		'계좌일련번호
-		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "ACNT_PWD" , 0 , "")			'계좌비밀번호
-		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "CRCD" , 0 ,  g_szCrCd )		'통화코드
-		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE" , 0 , "" )					'해외주식시장거래구분코드
-	End If
-End Sub
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	if szTranID == "obacb_balc_138r" then
+		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "ACNO" , 0 , g_szAccNo)		 --계좌번호
+		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "ASNO" , 0 , g_szAccSrNo)		 --계좌일련번호
+		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "ACNT_PWD" , 0 , "")			 --계좌비밀번호
+		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "CRCD" , 0 ,  g_szCrCd )		 --통화코드
+		DATAMANAGER.SetDataValue( 0 , szTranID, "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE" , 0 , "" )					 --해외주식시장거래구분코드
+	end
+end
 
-'============================================================================
-Sub btnOK_OnClick()
+ --============================================================================
+function btnOK_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub BtnClose_OnClick()
+ --============================================================================
+function BtnClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obacb_balc_138r" trcode="obacb_balc_138r" compress="1" encryption="1" inputcheck="1" useattr="0" />

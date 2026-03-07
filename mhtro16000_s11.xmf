@@ -41,92 +41,94 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="14280" _ulen="13758" >
-''****************************************************************************
-''               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-''****************************************************************************
-Dim g_szToolTipImg
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --'****************************************************************************
+ --'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --'****************************************************************************
+local g_szToolTipImg
 g_szToolTipImg = "icon_question"
 
-'==============================================
-' 컬러코드
-'==============================================
-' 기본 텍스트 컬러 (검정색)
-Dim g_szTxtColor_Normal 
+ --==============================================
+ -- 컬러코드
+ --==============================================
+ -- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal
 g_szTxtColor_Normal 	= "334"
 
-' 기본 텍스트 컬러 (회색)
-Dim g_szTxtColor_Grey 
+ -- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey
 g_szTxtColor_Grey 	= "333"
 
-' 기본 텍스트 컬러 (흰색)
-Dim g_szTxtColor_White 
+ -- 기본 텍스트 컬러 (흰색)
+local g_szTxtColor_White
 g_szTxtColor_White 	= "338"
 
-' 빨강
-Dim g_szTxtColor_Red 
+ -- 빨강
+local g_szTxtColor_Red
 g_szTxtColor_Red = "290"
 
-' 파랑
-Dim g_szTxtColor_Blue 
+ -- 파랑
+local g_szTxtColor_Blue
 g_szTxtColor_Blue = "291"
 
-' 기본 배경색상
-Dim g_szContBgColor
+ -- 기본 배경색상
+local g_szContBgColor
 g_szContBgColor = "320"
 
-' 기본 구분선 색상
-' 진한색
-Dim g_szLineColor
-g_szLineColor = "255255255"'"347"
-' 중간색
-Dim g_szLineColor2
+ -- 기본 구분선 색상
+ -- 진한색
+local g_szLineColor
+g_szLineColor = "255255255" --"347"
+ -- 중간색
+local g_szLineColor2
 g_szLineColor2 = "256"
-' 연한색
-Dim g_szLineColor3
+ -- 연한색
+local g_szLineColor3
 g_szLineColor3 = "320"
 
-' 빨강
-Dim g_szBadgeBgColor_Red
+ -- 빨강
+local g_szBadgeBgColor_Red
 g_szBadgeBgColor_Red = "339"
 
-' 파랑
-Dim g_szBadgeBgColor_Blue
+ -- 파랑
+local g_szBadgeBgColor_Blue
 g_szBadgeBgColor_Blue = "340"
 
-'==============================================
-' 이미지
-'==============================================
-Dim g_szBadgeBg_Red
+ --==============================================
+ -- 이미지
+ --==============================================
+local g_szBadgeBg_Red
 g_szBadgeBg_Red = "img_bgsquare_grade_364"
 
-Dim g_szBadgeBg_Grey
+local g_szBadgeBg_Grey
 g_szBadgeBg_Grey = "img_bgsquare_grade_316"
-'==============================================
-' 기타 전역변수
-'==============================================
-'----------------------------------------------
-' 종목코드 정보
-Dim g_szItemCd			'풀코드(시장구분@종목코드)
-Dim g_szOnlyCd				'종목코드
-Dim g_szExidCd				'시장구분
+ --==============================================
+ -- 기타 전역변수
+ --==============================================
+ ------------------------------------------------
+ -- 종목코드 정보
+local g_szItemCd --풀코드(시장구분@종목코드)
+local g_szOnlyCd --종목코드
+local g_szExidCd --시장구분
 
-Dim g_szData_Init_022r 
+local g_szData_Init_022r
 g_szData_Init_022r = ""
-Dim g_szData_Date_022r
+local g_szData_Date_022r
 g_szData_Date_022r = ""
-Dim g_szData_Rate_022r
+local g_szData_Rate_022r
 g_szData_Rate_022r = ""
 
-Dim g_szData_Last
+local g_szData_Last
 g_szData_Last = ""
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
-'===============================================
-' 컨트롤 초기화
-'===============================================
-Function Init_Control()
-	g_nCommFontSize = Form.getEnvData("common.textsize")
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
+ --===============================================
+ -- 컨트롤 초기화
+ --===============================================
+function Init_Control()
+	g_nCommFontSize = Form.GetEnvData("common.textsize")
 	
 	contMain.lblSubTitle0.fgcolor = g_szTxtColor_Normal
 	contMain.lblSubTitle0.paddinginfo = "0,0,0,0"
@@ -149,10 +151,10 @@ Function Init_Control()
 	
 	contMain.lblSubTitle1.caption = "기간 수익률       (전영업일 기준)"
 	
-	contMain.Button0.makeRangeSlider(false, 0, 100, 0, 50, 1.0)
-	contMain.Button0.exceptSliderHandleType("1")
+	contMain.Button0.MakeRangeSlider(false, 0, 100, 0, 50, 1.0)
+	contMain.Button0.ExceptSliderHandleType("1")
 	contMain.Button0.SetRangeSliderLineHeight(3)
-	contMain.Button0.setRangeSliderLineColor(347, 347)
+	contMain.Button0.SetRangeSliderLineColor(347, 347)
 	contMain.Button0.SetRangeSliderHandleSize(20)
 	contMain.Button0.SetRangeSliderHandleImage("triangle")
 	
@@ -162,46 +164,46 @@ Function Init_Control()
 	contMain.lblLow.imagefilepth = "roundbox_4r_stoke02.9"
 	contMain.lblHigh.imagefilepth = "roundbox_4r_stoke02.9"
 	
-	for i = 0 to 1
-		Form.SetCtlProp("contMain.lblTitle"&i, "fgcolor", g_szTxtColor_Grey)
-		Form.SetCtlProp("contMain.lblTitle"&i, "paddinginfo", "10,0,0,0")
+	for i = 0, 1 do
+		Form.SetCtlProp("contMain.lblTitle"..i, "fgcolor", g_szTxtColor_Grey)
+		Form.SetCtlProp("contMain.lblTitle"..i, "paddinginfo", "10,0,0,0")
 		
-		Form.SetCtlProp("contMain.lblData"&i, "fgcolor", g_szTxtColor_Normal)
-		Form.SetCtlProp("contMain.lblData"&i, "paddinginfo", "0,0,10,0")
-		Form.SetCtlProp("contMain.lblData"&i, "maxlinecnt", "1")
-	next
+		Form.SetCtlProp("contMain.lblData"..i, "fgcolor", g_szTxtColor_Normal)
+		Form.SetCtlProp("contMain.lblData"..i, "paddinginfo", "0,0,10,0")
+		Form.SetCtlProp("contMain.lblData"..i, "maxlinecnt", "1")
+	end
 	
 	contMain.lblRate.paddinginfo = "0,0,0,0"
 	
-	contMain.imgTooltip0.setMaintainingRatio("2")
+	contMain.imgTooltip0.SetMaintainingRatio("2")
 	contMain.imgTooltip0.imgpath = g_szToolTipImg
 	
-	nTextWidth = Form.getTextWidth("기간 수익률", 0, true, false)
+	nTextWidth = Form.GetTextWidth("기간 수익률", 0, true, false)
 	contMain.imgTooltip0.left = 20 + nTextWidth + 5
 	
-'	contMain.lblRate.maxlinecnt = "1"
-	'contMain.lblSubTitle1.setNeighborCtlPos("imgTooltip0", "right", 5, "기간 수익률")
+ --	contMain.lblRate.maxlinecnt = "1"
+	 --contMain.lblSubTitle1.setNeighborCtlPos("imgTooltip0", "right", 5, "기간 수익률")
 	
-	contMain.lblSubTitle1.changeTextAttr(0,13,334,0,true)
-	contMain.lblSubTitle1.changeTextAttr(13,9,333,-6,true)
-End Function
+	contMain.lblSubTitle1.ChangeTextAttr(0,13,334,0,true)
+	contMain.lblSubTitle1.ChangeTextAttr(13,9,333,-6,true)
+end
 
-'==============================================
-' 해외주식 현재가(프리/정규) 조회
-'==============================================
-Function Request_Tran_ohhts_6000_001r()
+ --==============================================
+ -- 해외주식 현재가(프리/정규) 조회
+ --==============================================
+function Request_Tran_ohhts_6000_001r()
 	DATAMANAGER.ClearInputData(false, "ohhts_6000_001r")
 	
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_szExidCd, false )
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분			
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	'마켓구분
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_szOnlyCd )	'종목코드
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	'실시간 여부
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		 --시장구분			
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	 --마켓구분
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_szOnlyCd )	 --종목코드
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	 --실시간 여부
 	
 	DATAMANAGER.RequestTranData("ohhts_6000_001r")
-End Function
+end
 
-Function Process_Tran_ohhts_6000_001r()
+function Process_Tran_ohhts_6000_001r()
 	
 	szHigh 	= DATAMANAGER.GetDataValue(false,"ohhts_6000_001r", "OutBlock1", "FIDX_52_WEEK_HGPR", 0) 
 	szLow	= DATAMANAGER.GetDataValue(false,"ohhts_6000_001r", "OutBlock1", "FIDX_52_WEEK_LWPR", 0) 
@@ -210,18 +212,18 @@ Function Process_Tran_ohhts_6000_001r()
 	szPrevVol = DATAMANAGER.GetDataValue(false,"ohhts_6000_001r", "OutBlock1", "FIDX_PRDY_VOL", 0) 
 	szVol = DATAMANAGER.GetDataValue(false,"ohhts_6000_001r", "OutBlock1", "FIDX_ACML_VOL", 0)
 
-	if szHigh <> "" and szLow <> "" and szHyun <> "" then
-		if cdbl(szHyun) < cdbl(szLow) then
-			szHyun =  cdbl(szLow)
-		end if
+	if szHigh ~= "" and szLow ~= "" and szHyun ~= "" then
+		if gf_Tonumber(szHyun) < gf_Tonumber(szLow) then
+			szHyun =  gf_Tonumber(szLow)
+		end
 		
-		if cdbl(szHyun) > cdbl(szHigh) then
-			szHyun = cdbl(szHigh)
-		end if
+		if gf_Tonumber(szHyun) > gf_Tonumber(szHigh) then
+			szHyun = gf_Tonumber(szHigh)
+		end
 		
 		contMain.Button0.visible = true
 		
-		if Cdbl(szLow) = 0 and Cdbl(szHigh) = 0 then
+		if gf_Tonumber(szLow) == 0 and gf_Tonumber(szHigh) == 0 then
 			contMain.lblLow.caption =  "1년 최저가"
 			contMain.lblHigh.caption =  "1년 최고가"
 			
@@ -229,49 +231,49 @@ Function Process_Tran_ohhts_6000_001r()
 			contMain.lblHigh.fgcolor = 333
 			
 			contMain.Button0.SetRangeSliderHandleImage("alpha")
-			contMain.Button0.setRangeSliderLineColor(272, 272)
+			contMain.Button0.SetRangeSliderLineColor(272, 272)
 		else
-			if g_szExidCd = "AX" or g_szExidCd = "NY" or g_szExidCd = "OQ" then
+			if g_szExidCd == "AX" or g_szExidCd == "NY" or g_szExidCd == "OQ" then
 				
 				contMain.Button0.SetRangeSlider( szLow, szHigh, szHyun, szHyun, 0.0001, 4)
 				
-				szhigh = FormatNumber(szhigh, 4)
-				szlow = FormatNumber(szlow, 4)
-			elseif g_szExidCd = "HK" or g_szExidCd = "SH" or g_szExidCd = "SZ" then
+				szhigh = gf_CommaValue(szhigh, 4)
+				szlow = gf_CommaValue(szlow, 4)
+			elseif g_szExidCd == "HK" or g_szExidCd == "SH" or g_szExidCd == "SZ" then
 	
 				contMain.Button0.SetRangeSlider( szLow, szHigh, szHyun, szHyun, 0.001,3)
 				
-				szhigh = FormatNumber(szhigh, 3)
-				szlow = FormatNumber(szlow, 3)
-			elseif g_szExidCd = "JP" then
+				szhigh = gf_CommaValue(szhigh, 3)
+				szlow = gf_CommaValue(szlow, 3)
+			elseif g_szExidCd == "JP" then
 	
 				contMain.Button0.SetRangeSlider(szLow, szHigh, szHyun, szHyun, 0.1,1)
 				
-				szhigh = FormatNumber(szhigh, 1)
-				szlow = FormatNumber(szlow, 1)
+				szhigh = gf_CommaValue(szhigh, 1)
+				szlow = gf_CommaValue(szlow, 1)
 			else
 	
 				contMain.Button0.SetRangeSlider( szLow, szHigh, szHyun, szHyun, 1.0,0)
 				
-				szhigh = FormatNumber(szhigh, 0)
-				szlow = FormatNumber(szlow, 0)
-			end if
+				szhigh = gf_CommaValue(szhigh, 0)
+				szlow = gf_CommaValue(szlow, 0)
+			end
 			
-			nLen_High = Form.getLen(szHigh)
-			nLen_Low = Form.getLen(szLow)
+			nLen_High = Form.GetLen(szHigh)
+			nLen_Low = Form.GetLen(szLow)
 		
-			contMain.lblLow.caption = szlow & "\n1년 최저가"
-			contMain.lblHigh.caption = szhigh & "\n1년 최고가"
+			contMain.lblLow.caption = szlow .. "\n1년 최저가"
+			contMain.lblHigh.caption = szhigh .. "\n1년 최고가"
 		
-			contMain.lblLow.changeTextAttr(nLen_Low+1,6,333,-3,false) 
-			contMain.lblHigh.changeTextAttr(nLen_High+1,6,333,-3,false) 
-		end if
-	end if
+			contMain.lblLow.ChangeTextAttr(nLen_Low+1,6,333,-3,false) 
+			contMain.lblHigh.ChangeTextAttr(nLen_High+1,6,333,-3,false) 
+		end
+	end
 	
 	Request_Tran_ohhts_6000_022r()
-End Function
+end
 
-Function Request_Tran_ohhts_6000_022r()
+function Request_Tran_ohhts_6000_022r()
 	DATAMANAGER.ClearInputData(0, "ohhts_6000_022r")
 	
 	g_szData_Init_022r = ""
@@ -280,220 +282,221 @@ Function Request_Tran_ohhts_6000_022r()
 	g_szData_Last = ""
 	contMain.lblRate.caption = ""
 	
-	nidx = cint(contMain.rdoPeriod.currentindex)
+	nidx = gf_Tonumber(contMain.rdoPeriod.currentindex)
 	szPeriod = "1"
 	
 	if nidx == 0 then
 		szPeriod = "1"
-	elseif  nidx == 1 then
+	elseif nidx == 1 then
 		szPeriod = "3"
 	
-	elseif  nidx == 2 then
+	elseif nidx == 2 then
 		szPeriod = "12"
 	
-	elseif  nidx == 3 then
+	elseif nidx == 3 then
 		szPeriod = "36"
 
-	end if
+	end
 
-	DATAMANAGER.SetDataValue( 0, "ohhts_6000_022r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분
-	DATAMANAGER.SetDataValue( 0, "ohhts_6000_022r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , g_szOnlyCd )	'종목코드
-	DATAMANAGER.SetDataValue( 0, "ohhts_6000_022r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	'마켓구분
+	DATAMANAGER.SetDataValue( 0, "ohhts_6000_022r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		 --시장구분
+	DATAMANAGER.SetDataValue( 0, "ohhts_6000_022r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , g_szOnlyCd )	 --종목코드
+	DATAMANAGER.SetDataValue( 0, "ohhts_6000_022r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	 --마켓구분
 	DATAMANAGER.SetDataValue( 0, "ohhts_6000_022r", "InBlock1", "FID_INPUT_SCTN_CLS_CODE"		, 0 , szPeriod )
 	
 	DATAMANAGER.RequestTranData("ohhts_6000_022r")
-End Function
+end
 
-Function Process_Tran_ohhts_6000_022r()
+function Process_Tran_ohhts_6000_022r()
 		szData_Date = ""
 		szData_Rate = ""
 		szData_Init = ""
 
 		nDataCnt = DATAMANAGER.GetDataCount(0, "ohhts_6000_022r", "OutBlock1")
 		
-		for i = 0 to nDataCnt-1
+		for i = 0, nDataCnt-1 do
 			
 			szDate = DATAMANAGER.GetDataValue(0, "ohhts_6000_022r", "OutBlock1", "FID_DATE" , i)
 			szRate = DATAMANAGER.GetDataValue(0, "ohhts_6000_022r", "OutBlock1", "FID_ERNN_RATE" , i)
 			
-			if g_szData_Last = "" then
+			if g_szData_Last == "" then
 				g_szData_Last = szRate
-			end if
+			end
 			
-			if i <> 0 then
+			if i ~= 0 then
 				
-				szData_Date = ";" & szData_Date 
-				szData_Rate = ";" & szData_Rate
-				szData_Init = ";" & szData_Init 
-			end if
+				szData_Date = ";" .. szData_Date 
+				szData_Rate = ";" .. szData_Rate
+				szData_Init = ";" .. szData_Init 
+			end
 			
-			szData_Date = szDate & szData_Date 
-			szData_Rate = szRate & szData_Rate
-			szData_Init = i & szData_Init 
+			szData_Date = szDate .. szData_Date 
+			szData_Rate = szRate .. szData_Rate
+			szData_Init = i .. szData_Init 
 			
-			'20250620 MSH START 
-			if i == 0 then 
-				szYear = left(szDate,4)
-				szMonth = mid(szDate,5,2)
-				szDay = right(szDate,2)
-				contMain.lblSubTitle1.caption = "기간 수익률       ("&szYear&"."&szMonth&"."&szDay&"기준)"
+			 --20250620 MSH START 
+			if i == 0 then
+				szYear = string.sub(szDate, 1, 4)
+				szMonth = string.sub(szDate, 5, 5 + 2 - 1)
+				szDay = string.sub(szDate, -2)
+				contMain.lblSubTitle1.caption = "기간 수익률       ("..szYear.."."..szMonth.."."..szDay.."기준)"
 
-				contMain.lblSubTitle1.changeTextAttr(0,7,334,0,true)
-				contMain.lblSubTitle1.changeTextAttr(13,14,333,-6,true)
-			end if 
-			'20250620 MSH END 
-		next
+				contMain.lblSubTitle1.ChangeTextAttr(0,7,334,0,true)
+				contMain.lblSubTitle1.ChangeTextAttr(13,14,333,-6,true)
+			end
+			 --20250620 MSH END 
+		end
 		
-		if g_szData_Init_022r <> "" then
-			g_szData_Init_022r = g_szData_Init_022r & ";" & szData_Init
-			g_szData_Date_022r = g_szData_Date_022r & ";" &szData_Date
-			g_szData_Rate_022r = g_szData_Rate_022r & ";" &szData_Rate
+		if g_szData_Init_022r ~= "" then
+			g_szData_Init_022r = g_szData_Init_022r .. ";" .. szData_Init
+			g_szData_Date_022r = g_szData_Date_022r .. ";" ..szData_Date
+			g_szData_Rate_022r = g_szData_Rate_022r .. ";" ..szData_Rate
 		else
 			g_szData_Init_022r = szData_Init
 			g_szData_Date_022r = szData_Date
 			g_szData_Rate_022r = szData_Rate
-		end if
+		end
 		
 		if DATAMANAGER.IsMoreNextData("ohhts_6000_022r") == true then
 			DATAMANAGER.RequestNextData("ohhts_6000_022r")
 		else
 			Init_ChartEx0()
-		end if
+		end
 		
 	
 		
-End Function
+end
 
 
-Function Init_ChartEx0()
+function Init_ChartEx0()
 	if g_szData_Rate_022r == "" then
-		Exit Function
-	end if
+		return
+	end
 	
-	szItemNm = Form.getItemCodeInfo(g_szItemCd, "name")
+	szItemNm = Form.GetItemCodeInfo(g_szItemCd, "name")
 	
-	'----------------------------------------
-	' 종목명1,종목명2,차트유형,스케일유형
-	'----------------------------------------
-	contMain.ChartEx0.SetAccrueName(szItemNm&",ETF_Compare_FundFlow,L")
-'	contMain.ChartEx0.SetAccrueName(szData3_Nm&","&szData4_Nm&",ETF_Compare2,L")
+	 ------------------------------------------
+	 -- 종목명1,종목명2,차트유형,스케일유형
+	 ------------------------------------------
+	contMain.ChartEx0.SetAccrueName(szItemNm..",ETF_Compare_FundFlow,L")
+ --	contMain.ChartEx0.SetAccrueName(szData3_Nm&","&szData4_Nm&",ETF_Compare2,L")
 	
-	'----------------------------------------
-	' 데이터 자리 초기화
-	'----------------------------------------
+	 ------------------------------------------
+	 -- 데이터 자리 초기화
+	 ------------------------------------------
 	contMain.ChartEx0.SetAccrueData("initdata="..g_szData_Init_022r)
 	
-	'----------------------------------------
-	' 날짜 데이터
-	'----------------------------------------
+	 ------------------------------------------
+	 -- 날짜 데이터
+	 ------------------------------------------
 	
 	contMain.ChartEx0.SetAccrueData("자료일자="..g_szData_Date_022r)
 	
-	'----------------------------------------
-	' 차트 데이터
-	'----------------------------------------
+	 ------------------------------------------
+	 -- 차트 데이터
+	 ------------------------------------------
 	contMain.ChartEx0.SetAccrueData("ETF_Titles= (%);%;% ")
 	contMain.ChartEx0.SetAccrueData("data1="..g_szData_Rate_022r.."=2")
 
-	'----------------------------------------
-	' 차트 그리기
-	'----------------------------------------
-	contMain.ChartEx0.SetLineColor(szItemNm&";117;147;226")
-'	contMain.ChartEx0.SetLineColor(szData4_Nm&";219;161;12")
+	 ------------------------------------------
+	 -- 차트 그리기
+	 ------------------------------------------
+	contMain.ChartEx0.SetLineColor(szItemNm..";117;147;226")
+ --	contMain.ChartEx0.SetLineColor(szData4_Nm&";219;161;12")
 
 	contMain.ChartEx0.SetAccrueData("repaintall")
 	
 	contMain.lblRate.caption = g_szData_Last
 	
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'===============================================
-' Form_OnFormInitBefore
-'===============================================
-Sub Form_OnFormInitBefore()
-End Sub
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --===============================================
+ -- Form_OnFormInitBefore
+ --===============================================
+function Form_OnFormInitBefore()
+end
 
-'===============================================
-' Form_OnFormInit
-'===============================================
-Sub Form_OnFormInit()
+ --===============================================
+ -- Form_OnFormInit
+ --===============================================
+function Form_OnFormInit()
 	Init_Control()
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if szTranID == "ohhts_6000_001r" then
 		Process_Tran_ohhts_6000_001r()
 		
-		Form.triggerEvent("#", "CHANGE_LAYOUT_S11", 475)
+		Form.TriggerEvent("#", "CHANGE_LAYOUT_S11", 475)
 	elseif szTranID == "ohhts_6000_022r" then
 		Process_Tran_ohhts_6000_022r()
-	end if
-End Sub
+	end
+end
 
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 
-End Sub
+end
 
 
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	if sEventName == "INIT_CODE" then
 		g_szItemCd = sParam
 		g_szExidCd = ""
-		if instr(g_szItemCd, "@") > 0 then
-			sTemp = split(g_szItemCd, "@")
-			g_szExidCd = sTemp[0] '시장구분
-			g_szOnlyCd = sTemp[1] '종목코드 
+		if string.find(g_szItemCd, "@") > 0 then
+			sTemp = gf_Split(g_szItemCd, "@")
+			g_szExidCd = sTemp[0+1]  --시장구분
+			g_szOnlyCd = sTemp[1+1]  --종목코드 
 			
 			szRtChk = Form.GetSharedData( "REALTIME_"..g_szExidCd, false )
 			
 			Request_Tran_ohhts_6000_001r()
-			'Request_Tran_ohhts_6000_022r()
-		end if
-	end if
-End Sub
+			 --Request_Tran_ohhts_6000_022r()
+		end
+	end
+end
 
-'============================================================================
+ --============================================================================
 
 
-'============================================================================
-Sub contMain_imgTooltip0_OnClick()
+ --============================================================================
+function contMain_imgTooltip0_OnClick()
 	sText = "수익률은 전일 종가 기준으로 제공돼요."
 	contMain.imgTooltip0.ToolTipBringFront(true)
 	
-	if g_nCommFontSize = "1" or g_nCommFontSize = "2" then
-		contMain.imgTooltip0.openToolTip( sText, 350, 50, 2 )
+	if g_nCommFontSize == "1" or g_nCommFontSize == "2" then
+		contMain.imgTooltip0.OpenToolTip( sText, 350, 50, 2 )
 	else
-		contMain.imgTooltip0.openToolTip( sText, 300, 50, 2 )
-	end if
+		contMain.imgTooltip0.OpenToolTip( sText, 300, 50, 2 )
+	end
 	
-End Sub
+end
 
-'============================================================================
+ --============================================================================
 
 
-'============================================================================
-Sub contMain_rdoPeriod_OnClick(nIndex)
+ --============================================================================
+function contMain_rdoPeriod_OnClick(nIndex)
 	Request_Tran_ohhts_6000_022r()
-End Sub
+end
 
-'============================================================================
-Sub contMain_lblExpand_OnClick()
-	Form.triggerEvent("#", "RETURN_LAYOUT", "호가")
-End Sub
+ --============================================================================
+function contMain_lblExpand_OnClick()
+	Form.TriggerEvent("#", "RETURN_LAYOUT", "호가")
+end
 
-'============================================================================
-Sub contMain_lblExpand0_OnClick()
-	Form.triggerEvent("#", "RETURN_LAYOUT", "체결일자별")
-End Sub
+ --============================================================================
+function contMain_lblExpand0_OnClick()
+	Form.TriggerEvent("#", "RETURN_LAYOUT", "체결일자별")
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_6000_001r" trcode="ohhts_6000_001r" compress="1" encryption="1" inputcheck="1" useattr="0" />

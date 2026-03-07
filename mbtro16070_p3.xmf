@@ -18,43 +18,44 @@
 		<LABEL name="lblInfo1" fontsize="-2" valign="0" multiline="1" ly_vert="30,528,325,60,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="2141" _ulen="1897" >
-
-'-----------------------------------------------
-' 컬러코드
-'-----------------------------------------------
-' 기본 텍스트 컬러 (검정색)
-Dim g_szTxtColor_Normal 
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ -------------------------------------------------
+ -- 컬러코드
+ -------------------------------------------------
+ -- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal
 g_szTxtColor_Normal 	= "334"
 
-' 기본 텍스트 컬러 (회색)
-Dim g_szTxtColor_Grey 
+ -- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey
 g_szTxtColor_Grey 	= "333"
 
-' 기본 텍스트 컬러 (흰색)
-Dim g_szTxtColor_White 
+ -- 기본 텍스트 컬러 (흰색)
+local g_szTxtColor_White
 g_szTxtColor_White 	= "338"
 
-' 기본 텍스트 컬러 (빨강)
-Dim g_szTxtColor_Red 
+ -- 기본 텍스트 컬러 (빨강)
+local g_szTxtColor_Red
 g_szTxtColor_Red = "326"
 
 
-'============================================================================
-Sub Form_OnFormInit()
-'	btnSwitch.setApplySwitch("OFF", "ON", 269, 261, 286, 289)
-	btnSwitch.setApplySwitch("OFF", "ON", "294", "200", "270", "289")
+ --============================================================================
+function Form_OnFormInit()
+ --	btnSwitch.setApplySwitch("OFF", "ON", 269, 261, 286, 289)
+	btnSwitch.SetApplySwitch("OFF", "ON", "294", "200", "270", "289")
 	szRealJango = Form.GetEnvData("OVRS_REAL_JANGO")
 
-	if szRealJango == "" or szRealJango == null then
+	if szRealJango == "" or szRealJango == nil then
 		Form.SetEnvData("1", "OVRS_REAL_JANGO", "1")
 		szRealJango = "1"
-	end if
+	end
 	
 	if szRealJango == "1" then
 		btnSwitch.switchindex = 1
 	else
 		btnSwitch.switchindex = 0
-	end if
+	end
 	
 	lblGuide0.paddinginfo = "0,0,0,0"
 	lblGuide0.fgcolor = g_szTxtColor_Grey
@@ -73,24 +74,25 @@ Sub Form_OnFormInit()
 	
 	lblInfo0.caption = "ON으로 설정 시, 실시간 변동 시세가 적용되어 조회돼요.\n(단, 보유종목이 100개 이하인 경우만 적용돼요.)"
 	lblInfo1.caption = "실시간 변동 시세 적용 시 '비용포함 / 매도수수료(추정) / 제세금(추정)' 항목은 제공이 불가하오니 참고해주세요."
-End Sub
+end
 
-'============================================================================
-Sub imgBg_OnClick()
+ --============================================================================
+function imgBg_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub btnOK_OnClick()
-	if CInt(btnSwitch.switchindex) == 0 then
+ --============================================================================
+function btnOK_OnClick()
+	if gf_Tonumber(btnSwitch.switchindex) == 0 then
 		Form.SetEnvData("1", "OVRS_REAL_JANGO", "0")
 	else
 		Form.SetEnvData("1", "OVRS_REAL_JANGO", "1")
-	end if
+	end
 	
 	Form.SendReturnToParent("OVRS_REAL_JANGO" , "")
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

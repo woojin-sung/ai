@@ -321,23 +321,25 @@
 		</TABLE>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="25172" _ulen="24108" >
-'===========================================================================
-' 01. 업무구분 : 해외주식_호가
-' 02. 화면 : 
-' 03. 화면설명 : 
-' 04. 작성자 : 이재원
-' 05. 작성일 : 2017.10.10
-' 06. 수정이력 : 
-' 20250729_01 YSH : 장 운영 정보에 맞는 현재가 적용 및 체결강도 추가
-'===========================================================================
-'[[ 전역변수 ]]
-Dim g_sToggle
-Dim g_sCode
-Dim g_bGtsHogaStatus, g_bGtsChartStatus
-Dim g_nSelectPrice
-Dim g_bBtnSellBuy
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --===========================================================================
+ -- 01. 업무구분 : 해외주식_호가
+ -- 02. 화면 : 
+ -- 03. 화면설명 : 
+ -- 04. 작성자 : 이재원
+ -- 05. 작성일 : 2017.10.10
+ -- 06. 수정이력 : 
+ -- 20250729_01 YSH : 장 운영 정보에 맞는 현재가 적용 및 체결강도 추가
+ --===========================================================================
+ --[[ 전역변수 ]]
+local g_sToggle
+local g_sCode
+local g_bGtsHogaStatus, g_bGtsChartStatus
+local g_nSelectPrice
+local g_bBtnSellBuy
 
-Dim g_rtChk
+local g_rtChk
 
 g_sToggle = "0"
 g_bGtsHogaStatus, g_bGtsChartStatus = 0, 0
@@ -345,23 +347,23 @@ g_nSelectPrice = 0
 
 g_bBtnSellBuy = false
 
-'20250729_01 YSH START
-Dim g_sToggle_GridChart
+ --20250729_01 YSH START
+local g_sToggle_GridChart
 g_sToggle_GridChart = "GRID"
 
-Dim g_bRequest_017r, g_bRequest_023r
+local g_bRequest_017r, g_bRequest_023r
 g_bRequest_017r = false
 g_bRequest_023r = false
-'20250729_01 YSH END
+ --20250729_01 YSH END
 
-'[[ Form Init ]]
-'============================================================================
-Sub Form_OnFormInit()
+ --[[ Form Init ]]
+ --============================================================================
+function Form_OnFormInit()
 	
-	sDeviceOS = Form.GetSharedData("&OS_TYPE", false)
-	if sDeviceOS == "2" then '아이폰
-		Container0.HogaTable0.setTextAutoSize("1")
-	end if
+	sDeviceOS = Form.GetSharedData("..OS_TYPE", false)
+	if sDeviceOS == "2" then --아이폰
+		Container0.HogaTable0.SetTextAutoSize("1")
+	end
 		
 	SetBtnVisible(g_bBtnSellBuy)
 	Container0.LblLine.visible = false
@@ -369,110 +371,110 @@ Sub Form_OnFormInit()
 	Container0.Table6.visible = false
 	Container0.Grid0.visible = true
 	
-	Set_HogaTable() '환경설정 Load
+	Set_HogaTable()  --환경설정 Load
 		
-End Sub
+end
 
-'[[ 트리거 이벤트 ]]
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --[[ 트리거 이벤트 ]]
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	if (sEventName == "RequestData") then
 		g_sCode = sParam
 		
 		Container0.Table1.visible = false
 		
-		sDeviceOS = Form.GetSharedData("&OS_TYPE", false)
-		if sDeviceOS == "2" then '아이폰
+		sDeviceOS = Form.GetSharedData("..OS_TYPE", false)
+		if sDeviceOS == "2" then --아이폰
 			Container0.scroll_pos_noAni = "210"
 		else
 			Container0.scroll_pos = "210"
-		end if
+		end
 		
-		'Container0.scroll_pos = "210"'"vcenter"
+		 --Container0.scroll_pos = "210"'"vcenter"
 		
-		'국가 구분값 가져오기(USA, HKG, JPY CHN)
-		Dim szNationGubun		
+		 --국가 구분값 가져오기(USA, HKG, JPY CHN)
+		local szNationGubun
 		szNationGubun = Form.GetItemCodeInfo(g_sCode, "ovsnation")
 			
 		g_sToggle = Form.GetSharedData("Toggle", false )
 
 		if g_sToggle == "" then
 			g_sToggle = "0"
-		end if
-		' 52주 > 거래소
+		end
+		 -- 52주 > 거래소
 		if (g_sToggle == "0") then
-			if szNationGubun == "HKG" or szNationGubun == "USA" then 	'20210818 SWJ START : 미국 상하한가 삭제
-				SetTableImgVisible("0") '상하한가 없는 테이블 visible
+			if szNationGubun == "HKG" or szNationGubun == "USA" then --20210818 SWJ START : 미국 상하한가 삭제
+				SetTableImgVisible("0")  --상하한가 없는 테이블 visible
 			elseif szNationGubun == "CHN" or szNationGubun == "JPY" or szNationGubun == "VND" then
-				SetTableImgVisible("1") '상하한가 있는 테이블 visible
-			end if
-			Container0.Table1.visible = false '20210818 SWJ START : 안보임 처리로 변경
-		' 거래소 > 52주
+				SetTableImgVisible("1")  --상하한가 있는 테이블 visible
+			end
+			Container0.Table1.visible = false  --20210818 SWJ START : 안보임 처리로 변경
+		 -- 거래소 > 52주
 		elseif (g_sToggle == "1") then
 			SetTableImgVisible("2")
 			Container0.Table1.visible = true
-		end if
+		end
 		
 		Container0.HogaTable0.SetCellClear()
 		
-		'20250729_01 YSH START
+		 --20250729_01 YSH START
 		Container0.lblPower.caption = ""
 		
-		'종목 변경 시 매수/매도 버튼 노출 숨김 처리 추가
+		 --종목 변경 시 매수/매도 버튼 노출 숨김 처리 추가
 		g_bBtnSellBuy = false
 		SetBtnVisible(g_bBtnSellBuy)
-		'20250729_01 YSH END
+		 --20250729_01 YSH END
 		
-		'20250729_01 YSH START
-		'DATAMANAGER.RequestTranData( "ohhts_6000_001r" )
-		'20250729_01 YSH END
+		 --20250729_01 YSH START
+		 --DATAMANAGER.RequestTranData( "ohhts_6000_001r" )
+		 --20250729_01 YSH END
 		DATAMANAGER.RequestTranData( "ohhts_6000_002r" )
 		DATAMANAGER.RequestTranData( "ohhts_6000_003r" )
 		DATAMANAGER.RequestTranData( "ohhts_5041_001r" )
 	
-	ElseIf sEventName == "HOGA_SETUP" Then
+	elseif sEventName == "HOGA_SETUP" then
 		Set_HogaTable()
 
-	'20250729_01 YSH START
+	 --20250729_01 YSH START
 	elseif sEventName == "CHANGE_MKTOP" then
 
-		if sParam == "001" then		'주간장 개시
+		if sParam == "001" then --주간장 개시
 			g_bRequest_017r = true
 			g_bRequest_023r = false
-		elseif sParam == "005" then		'애프터장 개시
+		elseif sParam == "005" then --애프터장 개시
 			g_bRequest_017r = false
 			g_bRequest_023r = true
 		else
 			g_bRequest_017r = false
 			g_bRequest_023r = false
-		end if
+		end
 		
 		DATAMANAGER.RequestTranData( "ohhts_6000_001r" )
-	'20250729_01 YSH END
+	 --20250729_01 YSH END
 	
-	end if
+	end
 	
-end Sub
+end
 
 
-'[[ DATAMANAGER 조회 BEFORE ]]
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
-	Dim sTemp
-	Dim sExid
-	Dim sCode
+ --[[ DATAMANAGER 조회 BEFORE ]]
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	local sTemp
+	local sExid
+	local sCode
 	
-	sTemp = split(g_sCode, "@")
-'	if #sTemp > 1 then
-'		Exit Sub
-'	end if
-	sExid = sTemp[0] '시장구분
-	sCode = sTemp[1] '종목코드 
+	sTemp = gf_Split(g_sCode, "@")
+ --	if #sTemp > 1 then
+ --		Exit Sub
+ --	end if
+	sExid = sTemp[0+1]  --시장구분
+	sCode = sTemp[1+1]  --종목코드 
 	
 	g_rtChk = Form.GetSharedData( "REALTIME_"..sExid, false )
 	
-	Dim szUserID
-	szUserID = Form.GetSharedData("&USER_ID", false )
+	local szUserID
+	szUserID = Form.GetSharedData("..USER_ID", false )
 	
 	if (szTranID == "ohhts_6000_001r") then
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )
@@ -480,7 +482,7 @@ Sub DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sExid)
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk)
 		
-	'20250729_01 YSH START
+	 --20250729_01 YSH START
 	elseif szTranID == "ohhts_6000_017r" then
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCode)
@@ -492,7 +494,7 @@ Sub DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCode)
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sExid)
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk)
-	'20250729_01 YSH END
+	 --20250729_01 YSH END
 	
 	elseif szTranID == "ohhts_6000_002r" then
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )
@@ -517,27 +519,27 @@ Sub DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_001r", "InBlock2", "FID_COND_MRKT_CLS_CODE" , 0 , sExid)
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_001r", "InBlock2", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk)
 		
-	end if
+	end
 	
 	
 	DATAMANAGER.CancelRealData("ohhts_exst_cntg")
-	DATAMANAGER.CancelRealData("ohhts_exst_cnta") '20220404 HSZ 애프터마켓 실시간체결 추가
+	DATAMANAGER.CancelRealData("ohhts_exst_cnta")  --20220404 HSZ 애프터마켓 실시간체결 추가
 	DATAMANAGER.CancelRealData("ohhts_exst_aspr")
-	DATAMANAGER.CancelRealData("ohhts_exst_cntd") '20221213_01 KBC 해외주식주간거래
+	DATAMANAGER.CancelRealData("ohhts_exst_cntd")  --20221213_01 KBC 해외주식주간거래
 	
-end Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranData(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranData(szTranID)
 	if szTranID == "ohhts_5041_001r" then
-		Dim nDecimal
-		nDecimal = CInt(DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "FIDX_DCPN_CNT" , 0))
+		local nDecimal
+		nDecimal = gf_Tonumber(DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "FIDX_DCPN_CNT" , 0))
 		Container0.ChartEx0.SetDecimal(nDecimal)
 	
-	'20250729_01 YSH START
+	 --20250729_01 YSH START
 	elseif szTranID == "ohhts_6000_017r" then
 		szVol = DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_ACML_VOL", 0)
-		if Cdbl(szVol) == 0 then
+		if gf_Tonumber(szVol) == 0 then
 			szPrpr = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRPR", 0)
 			szSign = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRDY_VRSS_SIGN" , 0)
 			szVrss = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRDY_VRSS" , 0)
@@ -561,11 +563,11 @@ Sub DATAMANAGER_OnReceiveTranData(szTranID)
 			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_VRSS" , 0 , szVrss_Attr)
 			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_CTRT", 0 , szCtrt_Attr)
 			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_UNCH_PRPR", 0 , szUnch_Attr)
-		end if
+		end
 		
-	elseif szTranID == "ohhts_6000_023r"	then
+	elseif szTranID == "ohhts_6000_023r" then
 		szPrpr = DATAMANAGER.GetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR", 0)
-		if Cdbl(szPrpr) == 0 then
+		if gf_Tonumber(szPrpr) == 0 then
 			szPrpr = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRPR", 0)
 			szSign = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRDY_VRSS_SIGN" , 0)
 			szVrss = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRDY_VRSS" , 0)
@@ -589,27 +591,27 @@ Sub DATAMANAGER_OnReceiveTranData(szTranID)
 			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_VRSS" , 0 , szVrss_Attr)
 			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_CTRT", 0 , szCtrt_Attr)
 			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_UNCH_PRPR", 0 , szUnch_Attr)
-		end if
-	'20250729_01 YSH END
+		end
+	 --20250729_01 YSH END
 	
-	end if
-End Sub
-'[[ DATAMANAGER 조회 END ]]
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+	end
+end
+ --[[ DATAMANAGER 조회 END ]]
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if (szTranID == "ohhts_6000_001r") then
-		Dim sCasf , sVcmf,sCasPr
+		local sCasf , sVcmf,sCasPr
 		sCasf = DATAMANAGER.GetDataValue(false, "ohhts_6000_001r", "OutBlock1", "FIDX_CAS_TRGT_ISSU_YN" , 0)
 		sVcmf = DATAMANAGER.GetDataValue(false, "ohhts_6000_001r", "OutBlock1", "FIDX_VCM_STAT_CLS_CODE" , 0)
 		sCasPr = DATAMANAGER.GetDataValue(false, "ohhts_6000_001r", "OutBlock1", "FIDX_CAS_SDPR" , 0)
 		
-		if (sCasf == "Y" or sCasf == Y) AND CInt(sCasPr) <> 0 then
+		if (sCasf == "Y" or sCasf == Y) and gf_Tonumber(sCasPr) ~= 0 then
 			Container0.Grid0.visible = false
 			Container0.Table5.visible = true
 			Container0.Table6.visible = false
 			Container0.imgLDown0.visible = false
 			
-		elseif sVcmf == "Y" or sVcmf == Y	then
+		elseif sVcmf == "Y" or sVcmf == Y then
 			Container0.Grid0.visible = false
 			Container0.Table5.visible = false
 			Container0.Table6.visible = true
@@ -619,135 +621,135 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			Container0.Table5.visible = false
 			Container0.Table6.visible = false
 			Container0.imgLDown0.visible = true
-		end if
+		end
 		
-		'20250729_01 YSH START
+		 --20250729_01 YSH START
 		if g_bRequest_017r == true then
 			g_bRequest_017r = false
 			DATAMANAGER.RequestTranData("ohhts_6000_017r")
 		elseif g_bRequest_023r == true then
 			g_bRequest_023r = false
 			DATAMANAGER.RequestTranData("ohhts_6000_023r")
-		end if
-		'20250729_01 YSH END
+		end
+		 --20250729_01 YSH END
 	
 	elseif szTranID == "ohhts_6000_002r" then
 	
-		Dim nTotMedo, nTotMesu, nTot
+		local nTotMedo, nTotMesu, nTot
 		nTotMedo = _tonumber(tblMaeDoSu.GetCellString(0, 0))
 		nTotMesu = _tonumber(tblMaeDoSu.GetCellString(0, 2))
 		nTot = (nTotMesu - nTotMedo)
 		
 		tblMaeDoSu.SetCellFgColor(0, 0, "2")
 		tblMaeDoSu.SetCellFgColor(0, 2, "1")
-		if nTot > 0	then
+		if nTot > 0 then
 			tblMaeDoSu.SetCellFgColor(0, 1, "1")
-		elseif nTot < 0 	then
+		elseif nTot < 0 then
 			tblMaeDoSu.SetCellFgColor(0, 1, "2")
 		else
 			tblMaeDoSu.SetCellFgColor(0, 1, "3")
-		end if
-		tblMaeDoSu.SetCellString(0, 1, Abs( nTot ))
+		end
+		tblMaeDoSu.SetCellString(0, 1, math.Abs(nTot))
 		
 	elseif szTranID == "ohhts_6000_003r" then
-		Dim nCount
+		local nCount
 		nCount = _tonumber(DATAMANAGER.GetDataCount( 0,"ohhts_6000_003r", "OutBlock1"))
 		Container0.Grid0.SetCellFgColor( "bd_cell1", 0, "3" )
-	end if
+	end
 	
-		' 실시간 연결
+		 -- 실시간 연결
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_aspr", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode)
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )
-		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode ) '20220404 HSZ 애프터마켓 실시간체결 추가
-		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode ) '20221213_01 KBC 해외주식주간거래
+		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )  --20220404 HSZ 애프터마켓 실시간체결 추가
+		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )  --20221213_01 KBC 해외주식주간거래
 		
 		DATAMANAGER.RequestRealData( "ohhts_exst_aspr" )
 		DATAMANAGER.RequestRealData( "ohhts_exst_cntg" )
-		DATAMANAGER.RequestRealData( "ohhts_exst_cnta" ) '20220404 HSZ 애프터마켓 실시간체결 추가
-		DATAMANAGER.RequestRealData( "ohhts_exst_cntd" ) '20221213_01 KBC 해외주식주간거래
+		DATAMANAGER.RequestRealData( "ohhts_exst_cnta" )  --20220404 HSZ 애프터마켓 실시간체결 추가
+		DATAMANAGER.RequestRealData( "ohhts_exst_cntd" )  --20221213_01 KBC 해외주식주간거래
 		
-end Sub
+end
 
-'[[ DATAMANAGER 실시간 (END) ]]
-Sub DATAMANAGER_OnReceiveRealComplete(szTranID)
+ --[[ DATAMANAGER 실시간 (END) ]]
+function DATAMANAGER_OnReceiveRealComplete(szTranID)
 	if (szTranID == "ohhts_exst_aspr") then
 	
-		' 실시간 총잔량 데이터 및 색상 세팅
-		Dim nTotMedo, nTotMesu, nTot
+		 -- 실시간 총잔량 데이터 및 색상 세팅
+		local nTotMedo, nTotMesu, nTot
 		nTotMedo = _tonumber(tblMaeDoSu.GetCellString(0, 0))
 		nTotMesu = _tonumber(tblMaeDoSu.GetCellString(0, 2))
 		nTot = (nTotMesu - nTotMedo)
 		
-		if nTot > 0	then
+		if nTot > 0 then
 			tblMaeDoSu.SetCellFgColor(0, 1, "1")
-		elseif nTot < 0 	then
+		elseif nTot < 0 then
 			tblMaeDoSu.SetCellFgColor(0, 1, "2")
 		else
 			tblMaeDoSu.SetCellFgColor(0, 1, "3")
-		end if
-		tblMaeDoSu.SetCellString(0, 1, Abs( nTot ))
+		end
+		tblMaeDoSu.SetCellString(0, 1, math.Abs(nTot))
 		
-	elseif szTranID == "ohhts_exst_cntg" or szTranID == "ohhts_exst_cnta" or szTranID == "ohhts_exst_cntd" then '20220404 HSZ 애프터마켓 실시간체결 추가
+	elseif szTranID == "ohhts_exst_cntg" or szTranID == "ohhts_exst_cnta" or szTranID == "ohhts_exst_cntd" then --20220404 HSZ 애프터마켓 실시간체결 추가
 		
-	end if
-end Sub
+	end
+end
 
-'============================================================================
-Function Tonum(sValue)
-	sValue = tonumber( sValue ) and tonumber( sValue ) or 0
+ --============================================================================
+function Tonum(sValue)
+	sValue = gf_Tonumber(sValue) and gf_Tonumber(sValue) or 0
 	return sValue
-end Function
-'============================================================================
-Function _tonumber(data)
-	return tonumber(data) or 0
-end Function
+end
+ --============================================================================
+function _tonumber(data)
+	return gf_Tonumber(data) or 0
+end
 
-'============================================================================
-Function SetBtnVisible( bValue )
+ --============================================================================
+function SetBtnVisible( bValue )
 	Container0.BtnSell.visible	= bValue
 	Container0.BtnBuy.visible 	= bValue
 	Container0.LblLine.visible = bValue
 	Container0.BtnAlpha.visible = bValue
-End Function
+end
 
-'============================================================================
-'[[ 토글버튼 (호가 우측상단 정보) ]]
-Sub Container0_Button0_OnClick()
+ --============================================================================
+ --[[ 토글버튼 (호가 우측상단 정보) ]]
+function Container0_Button0_OnClick()
 
-	'국가 구분값 가져오기(USA, HKG, JPY CHN)
-	Dim szNationGubun
+	 --국가 구분값 가져오기(USA, HKG, JPY CHN)
+	local szNationGubun
 	szNationGubun = Form.GetItemCodeInfo(g_sCode, "ovsnation")
 	
-	' 52주 > 거래소
+	 -- 52주 > 거래소
 	if (g_sToggle == "0") then
 		g_sToggle = "1"
-		SetTableImgVisible("2") '2개의 테이블 invisible
+		SetTableImgVisible("2")  --2개의 테이블 invisible
 		Container0.Table1.visible = true
 	
-	' 거래소 > 52주
+	 -- 거래소 > 52주
 	elseif (g_sToggle == "1") then
 		g_sToggle = "0"
-		if szNationGubun == "HKG" or szNationGubun == "USA" then		'20210818 SWJ START : 미국 상하한가 삭제
-			SetTableImgVisible("0") '상하한가 없는 테이블 visible
+		if szNationGubun == "HKG" or szNationGubun == "USA" then --20210818 SWJ START : 미국 상하한가 삭제
+			SetTableImgVisible("0")  --상하한가 없는 테이블 visible
 		elseif szNationGubun == "CHN" or szNationGubun == "JPY" or szNationGubun == "VND" then
-			SetTableImgVisible("1") '상하한가 있는 테이블 visible
-		end if
+			SetTableImgVisible("1")  --상하한가 있는 테이블 visible
+		end
 		Container0.Table1.visible = false
-	end if
+	end
 	Form.SetSharedData("Toggle" , g_sToggle)
-end Sub
+end
 
-'============================================================================
-Sub Container0_HogaTable0_OnClick(lRow, lCol)
+ --============================================================================
+function Container0_HogaTable0_OnClick(lRow, lCol)
 	if lCol == 2 or lCol == 3 then
-		Dim nCurrent
+		local nCurrent
 		nCurrent = Tonum( Container0.HogaTable0.GetCellString( lRow, 2 ) )
 		if nCurrent == 0 then
-			Exit Sub
-		end if
+			return
+		end
 		
 		g_nSelectPrice = nCurrent
-		if g_bBtnSellBuy == false	then
+		if g_bBtnSellBuy == false then
 			Container0.BtnBuy.top = lRow*42
 			Container0.BtnSell.top = lRow*42
 			Container0.LblLine.top = lRow*42
@@ -756,123 +758,123 @@ Sub Container0_HogaTable0_OnClick(lRow, lCol)
 		else
 			g_bBtnSellBuy = false
 			SetBtnVisible( g_bBtnSellBuy )
-		end if
-	end if
-end Sub
+		end
+	end
+end
 
-'============================================================================
-Function SetTableImgVisible(flag)
+ --============================================================================
+function SetTableImgVisible(flag)
 		
-		'상하한가 데이터 없음
+		 --상하한가 데이터 없음
 		if flag == "0" then
 			Container0.Table0.visible = true
 			Container0.Table4.visible = false
 			Container0.Image0.top = "220"
 			
-		'상하한가 데이터 있음
+		 --상하한가 데이터 있음
 		elseif flag == "1" then
 			Container0.Table0.visible = false
 			Container0.Table4.visible = true
 			Container0.Image0.top = "220"
 			
-		'두 개의 테이블 표시 X
+		 --두 개의 테이블 표시 X
 		elseif flag == "2" then
 			Container0.Table0.visible = false
 			Container0.Table4.visible = false
 			Container0.Image0.top = "220"
 			
-		end if
+		end
 		
-end Function
+end
 
-'============================================================================
-Sub Container0_BtnBuy_OnClick()
+ --============================================================================
+function Container0_BtnBuy_OnClick()
 	SendOrder( "0" )
-End Sub
+end
 
-'============================================================================
-Sub Container0_BtnSell_OnClick()
+ --============================================================================
+function Container0_BtnSell_OnClick()
 	SendOrder( "1" )
-End Sub
+end
 
-'============================================================================
-'매도/매수 버튼 누를시
-'============================================================================
-Function SendOrder( szTab )
-	Dim szData
+ --============================================================================
+ --매도/매수 버튼 누를시
+ --============================================================================
+function SendOrder( szTab )
+	local szData
 
-	' 전달내용/탭위치/종목코드/가격
-'	szData = "현재가" & "★" & szTab & "★" & g_sCode & "★" & g_nSelectPrice
+	 -- 전달내용/탭위치/종목코드/가격
+ --	szData = "현재가" & "★" & szTab & "★" & g_sCode & "★" & g_nSelectPrice
 	Form.SetSharedData("PRICE" , g_nSelectPrice)
 	szData = szTab
 	
-	'20200331 HWG START : 고유MTS
-	szMediaCode = Form.GetSharedData("&MEDIA_CODE", false)
+	 --20200331 HWG START : 고유MTS
+	szMediaCode = Form.GetSharedData("..MEDIA_CODE", false)
 
-	if szMediaCode = "156" or szMediaCode = "157" then
-	'20211203 HSZ START : 해외CFD 
-		g_szScreenNo 		 = Form.GetSharedData( "&SCREEN_NO" , false )			
-		If g_szScreenNo = "16100" then
+	if szMediaCode == "156" or szMediaCode == "157" then
+	 --20211203 HSZ START : 해외CFD 
+		g_szScreenNo 		 = Form.GetSharedData( "..SCREEN_NO" , false )			
+		if g_szScreenNo == "16100" then
 			Form.OpenScreen("16200" , szData)
 		else
 			Form.OpenScreen( "16060" , szData )
-		end if
-	elseif szMediaCode = "158" or szMediaCode = "159" then
+		end
+	elseif szMediaCode == "158" or szMediaCode == "159" then
 		Form.OpenScreen( "02000" , szData )
-	end if
-	'20200331 HWG END
+	end
+	 --20200331 HWG END
 	
-End Function
+end
 
-'============================================================================
-Sub Container0_BtnAlpha_OnClick()
+ --============================================================================
+function Container0_BtnAlpha_OnClick()
 	g_bBtnSellBuy = false
 	SetBtnVisible( g_bBtnSellBuy )
-End Sub
+end
 
-'============================================================================
-' 2021-02-17
-' 체결가 / 수량 클릭시 핸들러
-'============================================================================
-Sub Container0_Grid0_OnHeaderClickUp(lRow, szCellID)
-	'20250729_01 YSH START
-	'If szCellID = "th_cell0" Then 
-	'	'체결가 클릭시 
-	'	Container0.Grid0.visible = false
-	'	Container0.imgLDown0.visible = false
-	'	Container0.ChartEx0.visible = true
-	'	Container0.imgchart.visible = true
-	'ElseIf szCellID = "th_cell1" Then
-	'20250729_01 YSH END
-	If szCellID = "th_cell1" Then
+ --============================================================================
+ -- 2021-02-17
+ -- 체결가 / 수량 클릭시 핸들러
+ --============================================================================
+function Container0_Grid0_OnHeaderClickUp(lRow, szCellID)
+	 --20250729_01 YSH START
+	 --If szCellID = "th_cell0" Then 
+	 --	'체결가 클릭시 
+	 --	Container0.Grid0.visible = false
+	 --	Container0.imgLDown0.visible = false
+	 --	Container0.ChartEx0.visible = true
+	 --	Container0.imgchart.visible = true
+	 --ElseIf szCellID = "th_cell1" Then
+	 --20250729_01 YSH END
+	if szCellID == "th_cell1" then
 		Form.OpenFramePopup("mhtro16001" , g_sCode , "")
-	End If	
-End Sub
+	end
+end
 
-'============================================================================
-Sub Container0_imgchart_OnClick()
-	'20250729_01 YSH START
+ --============================================================================
+function Container0_imgchart_OnClick()
+	 --20250729_01 YSH START
 	
-	'Container0.Grid0.visible = true
-	'Container0.imgLDown0.visible = true 
-	'Container0.ChartEx0.visible = false
-	'Container0.imgchart.visible = false
+	 --Container0.Grid0.visible = true
+	 --Container0.imgLDown0.visible = true 
+	 --Container0.ChartEx0.visible = false
+	 --Container0.imgchart.visible = false
 	
 	Container0_imgToggle_OnClick()
 	
-	'20250729_01 YSH END
-End Sub
+	 --20250729_01 YSH END
+end
 
-'============================================================================
-Sub Container0_imgHeader_OnClick()
-	'20250729_01 YSH START
+ --============================================================================
+function Container0_imgHeader_OnClick()
+	 --20250729_01 YSH START
 	Container0_imgToggle_OnClick()
-	'20250729_01 YSH END
-End Sub
+	 --20250729_01 YSH END
+end
 
-'============================================================================
-Sub Container0_imgToggle_OnClick()
-	'20250729_01 YSH START
+ --============================================================================
+function Container0_imgToggle_OnClick()
+	 --20250729_01 YSH START
 	if g_sToggle_GridChart == "GRID" then
 		g_sToggle_GridChart = "CHART"
 		Container0.imgToggle.imgpath = "icon_2navi2.png"
@@ -887,30 +889,30 @@ Sub Container0_imgToggle_OnClick()
 		Container0.imgLDown0.visible = true 
 		Container0.ChartEx0.visible = false
 		Container0.imgchart.visible = false
-	end if
-	'20250729_01 YSH END
-End Sub
+	end
+	 --20250729_01 YSH END
+end
 
-'============================================================================
-Sub Form_OnFormInitBefore()
-	Container0.ChartEx0.setChartType("minibong")
+ --============================================================================
+function Form_OnFormInitBefore()
+	Container0.ChartEx0.SetChartType("minibong")
 	Container0.imgToggle.SetMaintainingRatio("1")
-End Sub
+end
 
-'============================================================================
-Function Set_HogaTable()
-	Dim szDispdiff, szJangraph, szPriceoutline, szBoldHoga, szBoldJan
-	Dim szColWidth, szHAlign
+ --============================================================================
+function Set_HogaTable()
+	local szDispdiff, szJangraph, szPriceoutline, szBoldHoga, szBoldJan
+	local szColWidth, szHAlign
 
-	szDispdiff		= Form.LoadConfigData("mhtro16000", "Dispdiff"	)	'호가등락률
-	szJangraph		= Form.LoadConfigData("mhtro16000", "Jangraph"	)	'호가잔량그래프
-	g_szDiplayrest	= Form.LoadConfigData("mhtro16000", "Diplayrest"	)	'호가직전수량표시
-	szPriceoutline	= Form.LoadConfigData("mhtro16000", "Priceoutline")	'현재가 외곽선 표시
-	szBoldHoga		= Form.LoadConfigData("mhtro16000", "BoldHoga"	)	'텍스트굵기 호가
-	szBoldJan		= Form.LoadConfigData("mhtro16000", "BoldJan"		)	'텍스트굵기 호가잔량
+	szDispdiff		= Form.LoadConfigData("mhtro16000", "Dispdiff"	)	 --호가등락률
+	szJangraph		= Form.LoadConfigData("mhtro16000", "Jangraph"	)	 --호가잔량그래프
+	g_szDiplayrest	= Form.LoadConfigData("mhtro16000", "Diplayrest"	)	 --호가직전수량표시
+	szPriceoutline	= Form.LoadConfigData("mhtro16000", "Priceoutline")	 --현재가 외곽선 표시
+	szBoldHoga		= Form.LoadConfigData("mhtro16000", "BoldHoga"	)	 --텍스트굵기 호가
+	szBoldJan		= Form.LoadConfigData("mhtro16000", "BoldJan"		)	 --텍스트굵기 호가잔량
 
-	'설정된 값이 없을 경우 초기값 Insert 함.
-	If szDispdiff = "" Then
+	 --설정된 값이 없을 경우 초기값 Insert 함.
+	if szDispdiff == "" then
 		szDispdiff 		= "1"
 		szJangraph 		= "1"
 		g_szDiplayrest 	= "0"
@@ -919,68 +921,69 @@ Function Set_HogaTable()
 		szBoldJan 		= "0"
 
 		
-		Form.SaveConfigData("mhtro16000", "Dispdiff"		, szDispdiff		)	'호가등락률
-		Form.SaveConfigData("mhtro16000", "Jangraph"		, szJangraph		)	'호가잔량그래프
-		Form.SaveConfigData("mhtro16000", "Diplayrest"	, g_szDiplayrest	)	'호가직전수량표시
-		Form.SaveConfigData("mhtro16000", "Priceoutline"	, szPriceoutline	)	'현재가 외곽선 표시
-		Form.SaveConfigData("mhtro16000", "BoldHoga"		, szBoldHoga		)	'텍스트굵기 호가
-		Form.SaveConfigData("mhtro16000", "BoldJan"		, szBoldJan		)	'텍스트굵기 호가잔량
-	End If
+		Form.SaveConfigData("mhtro16000", "Dispdiff"		, szDispdiff		)	 --호가등락률
+		Form.SaveConfigData("mhtro16000", "Jangraph"		, szJangraph		)	 --호가잔량그래프
+		Form.SaveConfigData("mhtro16000", "Diplayrest"	, g_szDiplayrest	)	 --호가직전수량표시
+		Form.SaveConfigData("mhtro16000", "Priceoutline"	, szPriceoutline	)	 --현재가 외곽선 표시
+		Form.SaveConfigData("mhtro16000", "BoldHoga"		, szBoldHoga		)	 --텍스트굵기 호가
+		Form.SaveConfigData("mhtro16000", "BoldJan"		, szBoldJan		)	 --텍스트굵기 호가잔량
+	end
 	
 
-	If szDispdiff = "1" Then
-		'호가직전수량표시
-		If g_szDiplayrest = "1" Then
+	if szDispdiff == "1" then
+		 --호가직전수량표시
+		if g_szDiplayrest == "1" then
 			szColWidth = "45,74,98,40,73,45"
-		Else
+		else
 			szColWidth = "0,119,98,40,118,0"
-		End If
+		end
 		szHAlign = "2"
-	ElseIf szDispdiff = "0" Then
-		If g_szDiplayrest = "1" Then
+	elseif szDispdiff == "0" then
+		if g_szDiplayrest == "1" then
 			szColWidth = "45,74,138,0,73,45"
-		Else
+		else
 			szColWidth = "0,119,138,0,118,0"
-		End If		
+		end
 		szHAlign = "1"
-	End If	
+	end
 	
-'	Form.ShowAlert(g_szDiplayrest, szColWidth)	
+ --	Form.ShowAlert(g_szDiplayrest, szColWidth)	
 	
-	'호가등락률
+	 --호가등락률
 	
 	Container0.HogaTable0.SetColumnWidth( szColWidth )
 	
-	'호가잔량그래프
+	 --호가잔량그래프
 	Container0.HogaTable0.hojangraph = szJangraph
 	
-	'현재가 외곽선 표시
+	 --현재가 외곽선 표시
 	Container0.HogaTable0.priceoutline = szPriceoutline
 	
-	For i = 0 To 19
-		'호가
-		If szBoldHoga = "1" Then
-			Container0.HogaTable0.setPropTable("fontstyle" , i , 2 , "01")
-		Else 
-			Container0.HogaTable0.setPropTable("fontstyle" , i , 2 , "00")
-		End If
+	for i = 0, 19 do
+		 --호가
+		if szBoldHoga == "1" then
+			Container0.HogaTable0.SetPropTable("fontstyle" , i , 2 , "01")
+		else
+			Container0.HogaTable0.SetPropTable("fontstyle" , i , 2 , "00")
+		end
 		
-		'호가잔량
-		If szBoldJan = "1" Then
-			Container0.HogaTable0.setPropTable("fontstyle" , i , 0 , "01")
-			Container0.HogaTable0.setPropTable("fontstyle" , i , 4 , "01")
-		Else 
-			Container0.HogaTable0.setPropTable("fontstyle" , i , 0 , "00")
-			Container0.HogaTable0.setPropTable("fontstyle" , i , 4 , "00")
-		End If
+		 --호가잔량
+		if szBoldJan == "1" then
+			Container0.HogaTable0.SetPropTable("fontstyle" , i , 0 , "01")
+			Container0.HogaTable0.SetPropTable("fontstyle" , i , 4 , "01")
+		else
+			Container0.HogaTable0.SetPropTable("fontstyle" , i , 0 , "00")
+			Container0.HogaTable0.SetPropTable("fontstyle" , i , 4 , "00")
+		end
 		
-		'호가 가로 정렬
+		 --호가 가로 정렬
 		Container0.HogaTable0.SetCellHAlign(i, 2, szHAlign)
-	Next
+	end
 
-End Function
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />

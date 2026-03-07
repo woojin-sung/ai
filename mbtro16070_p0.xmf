@@ -22,175 +22,175 @@
 		</PANNEL>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="17727" _ulen="15943" >
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-'-----------------------------------------------
-' 이미지
-'-----------------------------------------------
-Dim g_szCloseImg  
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+ -------------------------------------------------
+ -- 이미지
+ -------------------------------------------------
+local g_szCloseImg
 g_szCloseImg = "icon_close"
 
-'-----------------------------------------------
-' 컬러코드
-'-----------------------------------------------
-' 기본 텍스트 컬러 (검정색)
-Dim g_szTxtColor_Normal 
+ -------------------------------------------------
+ -- 컬러코드
+ -------------------------------------------------
+ -- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal
 g_szTxtColor_Normal 	= "334"
 
-' 기본 텍스트 컬러 (회색)
-Dim g_szTxtColor_Grey 
+ -- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey
 g_szTxtColor_Grey 	= "333"
 
-' 기본 텍스트 컬러 (흰색)
-Dim g_szTxtColor_White 
+ -- 기본 텍스트 컬러 (흰색)
+local g_szTxtColor_White
 g_szTxtColor_White 	= "338"
 
-' 기본 텍스트 컬러 (흰색)
-Dim g_szLineColor_Grey 
+ -- 기본 텍스트 컬러 (흰색)
+local g_szLineColor_Grey
 g_szLineColor_Grey 	= "320"
 
-' 기본 텍스트 컬러 (빨강)
-Dim g_szTxtColor_Red 
+ -- 기본 텍스트 컬러 (빨강)
+local g_szTxtColor_Red
 g_szTxtColor_Red = "326"
 
-'-----------------------------------------------
-' 기타 전역변수
-'-----------------------------------------------
-Dim g_szTitle
+ -------------------------------------------------
+ -- 기타 전역변수
+ -------------------------------------------------
+local g_szTitle
 g_szTitle = "해외주식 잔고 유의사항"
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
-Function DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
+function DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
 	
-	' 글머리 기호
-	Pannel0.setPropCardCell("paddinginfo" 	,"lblGuide", nIdx, "0,1,0,0")
-	Pannel0.setPropCardCell("fgcolor" 		,"lblGuide", nIdx, szFgColor)
+	 -- 글머리 기호
+	Pannel0.SetPropCardCell("paddinginfo" 	,"lblGuide", nIdx, "0,1,0,0")
+	Pannel0.SetPropCardCell("fgcolor" 		,"lblGuide", nIdx, szFgColor)
 
-	' 본문
-	Pannel0.setPropCardCell("paddinginfo" ,"lblInfo",nIdx,"0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor" ,"lblInfo",nIdx,szFgColor)
+	 -- 본문
+	Pannel0.SetPropCardCell("paddinginfo" ,"lblInfo",nIdx,"0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor" ,"lblInfo",nIdx,szFgColor)
 	
-	' 이미지
-	Pannel0.setPropCardCell("maintainratio" ,"imgGuide0",nIdx, "1")
+	 -- 이미지
+	Pannel0.SetPropCardCell("maintainratio" ,"imgGuide0",nIdx, "1")
 	
-	' 구분라인
-	Pannel0.setPropCardCell("bgcolor" ,"lblDiv",nIdx,g_szLineColor_Grey)
+	 -- 구분라인
+	Pannel0.SetPropCardCell("bgcolor" ,"lblDiv",nIdx,g_szLineColor_Grey)
 	
 	
-	'---------------------------------------------------------------
-	'들여쓰기 단계
-	'---------------------------------------------------------------
-	'0단계(기본) : 글머리 20 / 본문 35 (310)
+	 -----------------------------------------------------------------
+	 --들여쓰기 단계
+	 -----------------------------------------------------------------
+	 --0단계(기본) : 글머리 20 / 본문 35 (310)
 	if nDepth == 0 then
-		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "20")
-		Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
-		Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+		Pannel0.SetPropCardCell("left",  "lblGuide", nIdx, "20")
+		Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "35")
+		Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "310")
 		
-	'1단계 : 글머리 35 / 본문 50 (295) 
+	 --1단계 : 글머리 35 / 본문 50 (295) 
 	elseif nDepth == 1 then
-		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "35")
+		Pannel0.SetPropCardCell("left",  "lblGuide", nIdx, "35")
 		
-		'글머리 유무 체크
+		 --글머리 유무 체크
 		if szHead == "" then
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "35")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "310")
 		else
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "50")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "295")
-		end if
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "50")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "295")
+		end
 		
-	'2단계 : 글며리 50 / 본문 75 (280)
+	 --2단계 : 글며리 50 / 본문 75 (280)
 	elseif nDepth == 2 then
-		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "50")
+		Pannel0.SetPropCardCell("left",  "lblGuide", nIdx, "50")
 		
-		'글머리 유무 체크
+		 --글머리 유무 체크
 		if szHead == "" then
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "50")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "295")
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "50")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "295")
 		else
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "75")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "280")
-		end if
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "75")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "280")
+		end
 	else
-		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "20")
-		Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
-		Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
-	end if
-	'---------------------------------------------------------------
+		Pannel0.SetPropCardCell("left",  "lblGuide", nIdx, "20")
+		Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "35")
+		Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "310")
+	end
+	 -----------------------------------------------------------------
 	
-	'---------------------------------------------------------------
-	'폰트스타일 (사이즈 / 볼드 / 글자색)
-	'---------------------------------------------------------------
-	Pannel0.setPropCardCell("fontsize" ,"lblGuide",nIdx, szSize)
-	Pannel0.setPropCardCell("fontsize" ,"lblInfo",nIdx, szSize)
+	 -----------------------------------------------------------------
+	 --폰트스타일 (사이즈 / 볼드 / 글자색)
+	 -----------------------------------------------------------------
+	Pannel0.SetPropCardCell("fontsize" ,"lblGuide",nIdx, szSize)
+	Pannel0.SetPropCardCell("fontsize" ,"lblInfo",nIdx, szSize)
 
-	Pannel0.setPropCardCell("fontbold" ,"lblGuide",nIdx, szBold)
-	Pannel0.setPropCardCell("fontbold" ,"lblInfo",nIdx, szBold)
+	Pannel0.SetPropCardCell("fontbold" ,"lblGuide",nIdx, szBold)
+	Pannel0.SetPropCardCell("fontbold" ,"lblInfo",nIdx, szBold)
 	
-	Pannel0.setPropCardCell("fgcolor" ,"lblGuide",nIdx, szFgColor)
-	Pannel0.setPropCardCell("fgcolor" ,"lblInfo",nIdx, szFgColor)
-	'---------------------------------------------------------------
+	Pannel0.SetPropCardCell("fgcolor" ,"lblGuide",nIdx, szFgColor)
+	Pannel0.SetPropCardCell("fgcolor" ,"lblInfo",nIdx, szFgColor)
+	 -----------------------------------------------------------------
 	
-	'---------------------------------------------------------------
-	'데이터 세팅
-	'---------------------------------------------------------------
-	'텍스트
+	 -----------------------------------------------------------------
+	 --데이터 세팅
+	 -----------------------------------------------------------------
+	 --텍스트
 	if szType == "0" then
-		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, szHead)
-		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, szText)
+		Pannel0.SetPropCardCell("caption" ,"lblGuide",nIdx, szHead)
+		Pannel0.SetPropCardCell("caption" ,"lblInfo",nIdx, szText)
 		
-		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
-		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+		Pannel0.SetPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.SetPropCardCell("left" ,"lblDiv",nIdx, "500")
 		
-	'이미지
+	 --이미지
 	elseif szType == "1" then
-		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
-		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblInfo",nIdx, "")
 		
-		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
-		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+		Pannel0.SetPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.SetPropCardCell("left" ,"lblDiv",nIdx, "500")
 		
-	'구분선(Divide)
+	 --구분선(Divide)
 	elseif szType == "2" then
-		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
-		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblInfo",nIdx, "")
 		
-		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
-		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "0")
+		Pannel0.SetPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.SetPropCardCell("left" ,"lblDiv",nIdx, "0")
 
-	'초기화	
+	 --초기화	
 	else
-		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
-		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblInfo",nIdx, "")
 		
-		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
-		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
-	end if
-	'---------------------------------------------------------------
-End Function
-'===============================================
-' 컨트롤 초기설정
-'===============================================
-Function Init_Control()
-	'-----------------------------------------------
-	' 뒤로가기 버튼 초기화
-	'-----------------------------------------------
+		Pannel0.SetPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.SetPropCardCell("left" ,"lblDiv",nIdx, "500")
+	end
+	 -----------------------------------------------------------------
+end
+ --===============================================
+ -- 컨트롤 초기설정
+ --===============================================
+function Init_Control()
+	 -------------------------------------------------
+	 -- 뒤로가기 버튼 초기화
+	 -------------------------------------------------
 	lblTitle.paddinginfo = "0,0,0,0"
 	lblTitle.caption = g_szTitle
 	
-	'-----------------------------------------------
-	' 유의사항 버튼 초기화
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- 유의사항 버튼 초기화
+	 -------------------------------------------------
 	imgClose.SetMaintainingRatio("3")
 	imgClose.imgpath = g_szCloseImg
 	
-	'-----------------------------------------------
-	' 유의사항 본문내용 초기화
-	'-----------------------------------------------
-	szTextSize = Form.getEnvData("common.textsize")
+	 -------------------------------------------------
+	 -- 유의사항 본문내용 초기화
+	 -------------------------------------------------
+	szTextSize = Form.GetEnvData("common.textsize")
 	
 	szInfo0 = "해외주식 잔고 조회 시, 매입금액의 소수점 자리수 표기에 따라 단가가 변경 될 수 있습니다."
 	
@@ -198,9 +198,9 @@ Function Init_Control()
 	szInfo1_1 = "오프라인 매매국가 종목은 전일종가로 평가되어 조회됩니다."
 	
 	szInfo2 = "미국주식 시세는 주간/Pre/정규장/After 각 해당 시장의 시세로 자동 반영되어 조회됩니다."
-'	szInfo2_1 = "After Market 시장은 정규장 종가 기준으로 잔고가 조회 됩니다."
+ --	szInfo2_1 = "After Market 시장은 정규장 종가 기준으로 잔고가 조회 됩니다."
 	
-	'20251010 YSH START
+	 --20251010 YSH START
 	szInfo11 = "원화환산금액의 적용환율은 조회일자의 기준환율입니다."
 	szInfo11_1 = "9시 이전 : 전일 기준환율"
 	szInfo11_2 = "9시 이후 : 당일 기준환율"
@@ -216,7 +216,7 @@ Function Init_Control()
 	szInfo15 = "환차손익 제공 도입 이전의 거래내역은 환율 기준이 상이하여 환차손익이 정확하지 않을 수 있습니다."
 	
 	szInfo14 = "원화환산 매입금액은 매입환율을 기준으로 제공합니다."
-	'20251010 YSH END
+	 --20251010 YSH END
 	
 	szInfo3 = "정규종가 선택 옵션 기능은 주간 거래 시장에만 선택하여 조회 할 수 있습니다."
 	
@@ -224,12 +224,12 @@ Function Init_Control()
 	szInfo10_1 = "단, 1개 국가 선택 시에는 외화로 조회 가능합니다."
 	szInfo10_2 = "(대출금액만 원화로 표기되며, 총외화자산은 외화로 환산하여 표기됩니다.)"
 	
-	szInfo4 = "계좌에 보유종목이 100개 이하 & 실시간 시세 설정이 ON으로 되어있는 경우에만 '실시간 변동 시세'가 반영되어 조회됩니다."
-	szInfo4 = szInfo4 & "\n단, 실시간 가격 변동에 따라 평가금액에 미세한 차이가 발생할 수 있습니다."
+	szInfo4 = "계좌에 보유종목이 100개 이하 .. 실시간 시세 설정이 ON으로 되어있는 경우에만 '실시간 변동 시세'가 반영되어 조회됩니다."
+	szInfo4 = szInfo4 .. "\n단, 실시간 가격 변동에 따라 평가금액에 미세한 차이가 발생할 수 있습니다."
 	
-	'20251010 YSH START
-'	szInfo5 = "원화환산금액 적용환율은 기준환율 입니다.\n(9시 이전 : 전일 기준환율 / 9시 이후 : 당일 기준환율)"
-	'20251010 YSH END
+	 --20251010 YSH START
+ --	szInfo5 = "원화환산금액 적용환율은 기준환율 입니다.\n(9시 이전 : 전일 기준환율 / 9시 이후 : 당일 기준환율)"
+	 --20251010 YSH END
 	
 	szInfo6 = "매수수수료는 매수시점에 실제 납부된 매수수수료 입니다."
 	
@@ -239,331 +239,332 @@ Function Init_Control()
 	
 	szInfo9 = "이자(추정)는 매도시 발생될 추정 대출이자비용 입니다."
 	
-	'==================================================================================================================================================
+	 --==================================================================================================================================================
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo0, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx, 55)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx, 30)
 	else
 		Pannel0.SetCardWHAt(nIdx, 40)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo1, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,40)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,25)
 	else
 		Pannel0.SetCardWHAt(nIdx,30)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo1_1, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx, 55)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx, 30)
 	else
 		Pannel0.SetCardWHAt(nIdx, 40)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo2, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,55)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,30)
 	else
 		Pannel0.SetCardWHAt(nIdx,40)
-	end if
+	end
 	
-'	nIdx = Pannel0.AddRow()
-'	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo2_1, "-2", "0", g_szTxtColor_Grey)
-'	
-'	if szTextSize = "2" then
-'		Pannel0.SetCardWHAt(nIdx,50)
-'	elseif szTextSize = "-2" then
-'		Pannel0.SetCardWHAt(nIdx,30)
-'	else
-'		Pannel0.SetCardWHAt(nIdx,40)
-'	end if
+ --	nIdx = Pannel0.AddRow()
+ --	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo2_1, "-2", "0", g_szTxtColor_Grey)
+ --	
+ --	if szTextSize = "2" then
+ --		Pannel0.SetCardWHAt(nIdx,50)
+ --	elseif szTextSize = "-2" then
+ --		Pannel0.SetCardWHAt(nIdx,30)
+ --	else
+ --		Pannel0.SetCardWHAt(nIdx,40)
+ --	end if
 
-	'20251010 YSH START
+	 --20251010 YSH START
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo11, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,40)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,15)
 	else
 		Pannel0.SetCardWHAt(nIdx,30)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo11_1, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx, 20)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx, 15)
 	else
 		Pannel0.SetCardWHAt(nIdx, 15)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo11_2, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx, 20)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx, 15)
 	else
 		Pannel0.SetCardWHAt(nIdx, 15)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo11_3, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx, 40)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx, 20)
 	else
 		Pannel0.SetCardWHAt(nIdx, 25)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo12, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,20)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,15)
 	else
 		Pannel0.SetCardWHAt(nIdx,15)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo12_1, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx, 20)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx, 15)
 	else
 		Pannel0.SetCardWHAt(nIdx, 15)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo12_2, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx, 20)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx, 15)
 	else
 		Pannel0.SetCardWHAt(nIdx, 15)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo12_3, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx, 55)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx, 20)
 	else
 		Pannel0.SetCardWHAt(nIdx, 40)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo13, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,75)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,30)
 	else
 		Pannel0.SetCardWHAt(nIdx,55)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo15, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,75)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,30)
 	else
 		Pannel0.SetCardWHAt(nIdx,35)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo14, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,50)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,20)
 	else
 		Pannel0.SetCardWHAt(nIdx, 35)
-	end if
+	end
 	
-	'20251010 YSH END
+	 --20251010 YSH END
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo3, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,45)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,25)
 	else
 		Pannel0.SetCardWHAt(nIdx,30)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "1", 0, "ㆍ", "", "-2", "0", g_szTxtColor_Grey)
-	Pannel0.setPropCardCell("height","imgGuide0",nIdx,"150")
-	Pannel0.setPropCardCell("imgpath","imgGuide0",nIdx,"bp_img_balance")
+	Pannel0.SetPropCardCell("height","imgGuide0",nIdx,"150")
+	Pannel0.SetPropCardCell("imgpath","imgGuide0",nIdx,"bp_img_balance")
 	Pannel0.SetCardWHAt(nIdx,150)
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo10, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,30)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,15)
 	else
 		Pannel0.SetCardWHAt(nIdx,15)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo10_1, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,40)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,15)
 	else
 		Pannel0.SetCardWHAt(nIdx,15)
-	end if
+	end
 	
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 1, "", szInfo10_2, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,40)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,25)
 	else
 		Pannel0.SetCardWHAt(nIdx,30)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "1", 0, "ㆍ", "", "-2", "0", g_szTxtColor_Grey)
-	Pannel0.setPropCardCell("height","imgGuide0",nIdx,"200")
-	Pannel0.setPropCardCell("imgpath","imgGuide0",nIdx,"bp_img_fca")
+	Pannel0.SetPropCardCell("height","imgGuide0",nIdx,"200")
+	Pannel0.SetPropCardCell("imgpath","imgGuide0",nIdx,"bp_img_fca")
 	Pannel0.SetCardWHAt(nIdx,200)
 	
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo4, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,120)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,55)
 	else
 		Pannel0.SetCardWHAt(nIdx,90)
-	end if
+	end
 	
-	'20251010 YSH START
-'	nIdx = Pannel0.AddRow()
-'	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo5, "-2", "0", g_szTxtColor_Grey)
-'	
-'	if szTextSize = "2" then
-'		Pannel0.SetCardWHAt(nIdx,80)
-'	elseif szTextSize = "-2" then
-'		Pannel0.SetCardWHAt(nIdx,30)
-'	else
-'		Pannel0.SetCardWHAt(nIdx,50)
-'	end if
-	'20251010 YSH END
+	 --20251010 YSH START
+ --	nIdx = Pannel0.AddRow()
+ --	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo5, "-2", "0", g_szTxtColor_Grey)
+ --	
+ --	if szTextSize = "2" then
+ --		Pannel0.SetCardWHAt(nIdx,80)
+ --	elseif szTextSize = "-2" then
+ --		Pannel0.SetCardWHAt(nIdx,30)
+ --	else
+ --		Pannel0.SetCardWHAt(nIdx,50)
+ --	end if
+	 --20251010 YSH END
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo6, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,50)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,25)
 	else
 		Pannel0.SetCardWHAt(nIdx,40)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo7, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,50)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,30)
 	else
 		Pannel0.SetCardWHAt(nIdx,40)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo8, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,50)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,30)
 	else
 		Pannel0.SetCardWHAt(nIdx,40)
-	end if
+	end
 	
 	nIdx = Pannel0.AddRow()
 	DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo9, "-2", "0", g_szTxtColor_Grey)
 	
-	if szTextSize = "2" then
+	if szTextSize == "2" then
 		Pannel0.SetCardWHAt(nIdx,50)
-	elseif szTextSize = "-2" then
+	elseif szTextSize == "-2" then
 		Pannel0.SetCardWHAt(nIdx,25)
 	else
 		Pannel0.SetCardWHAt(nIdx,40)
-	end if
+	end
 
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'===============================================
-' Form_OnFormInit
-'===============================================
-Sub Form_OnFormInit()
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --===============================================
+ -- Form_OnFormInit
+ --===============================================
+function Form_OnFormInit()
    Init_Control()
-End Sub
+end
 
-'===============================================
-' imgInfo_OnClick
-'===============================================
-Sub imgClose_OnClick()
+ --===============================================
+ -- imgInfo_OnClick
+ --===============================================
+function imgClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

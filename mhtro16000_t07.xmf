@@ -16,53 +16,54 @@
 		</RADIOGROUP>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="1822" _ulen="1724" >
- '===========================================================================
-' 01. 업무구분 : 해외주식현재가_체결추이
-' 02. 화면 : 
-' 03. 화면설명 : 
-' 04. 작성자 : 이명구
-' 05. 작성일 : 2021.02.15
-' 06. 수정이력 :
-'===========================================================================
-'[[ 전역변수 ]]
-Dim g_sItemCode
-Dim g_szMktOp
+  --===========================================================================
+ -- 01. 업무구분 : 해외주식현재가_체결추이
+ -- 02. 화면 : 
+ -- 03. 화면설명 : 
+ -- 04. 작성자 : 이명구
+ -- 05. 작성일 : 2021.02.15
+ -- 06. 수정이력 :
+ --===========================================================================
+ --[[ 전역변수 ]]
+local g_sItemCode
+local g_szMktOp
 g_szMktOp = ""
-'============================================================================
-'[[ 트리거 이벤트 ]]
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --============================================================================
+ --[[ 트리거 이벤트 ]]
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	if sEventName == "RequestData" then
 		g_sItemCode = sParam
 
-		FormTab1.currenttabpageid = "page"&rdo0.currentindex
+		FormTab1.currenttabpageid = "page"..rdo0.currentindex
 		Form.TriggerEvent( "FormTab1." .. FormTab1.currenttabpageid, "RequestData", sParam)
 		
 	elseif sEventName == "CHANGE_MKTOP" then
 		g_szMktOp = sParam
-		FormTab1.currenttabpageid = "page"&rdo0.currentindex
+		FormTab1.currenttabpageid = "page"..rdo0.currentindex
 		Form.TriggerEvent( "FormTab1." .. FormTab1.currenttabpageid, "CHANGE_MKTOP", sParam)
 		
 	elseif sEventName == "CHANGE_RDO" then
 		rdo0.currentindex = sParam
 		rdo0_OnClick(sParam)
-	end if
-End Sub
+	end
+end
 
-'[[ 폼탭 변경시 ]]
-'============================================================================
-Sub FormTab1_OnTabChanged(nCurrentTab)
+ --[[ 폼탭 변경시 ]]
+ --============================================================================
+function FormTab1_OnTabChanged(nCurrentTab)
 	Form.TriggerEvent( "FormTab1." .. FormTab1.currenttabpageid, "RequestData", g_sItemCode)
 	Form.TriggerEvent( "FormTab1." .. FormTab1.currenttabpageid, "CHANGE_MKTOP", g_szMktOp)
-End Sub
+end
 
-'============================================================================
-Sub rdo0_OnClick(nIndex)
+ --============================================================================
+function rdo0_OnClick(nIndex)
 	
-	FormTab1.currenttabpageid = "page"&nIndex
+	FormTab1.currenttabpageid = "page"..nIndex
 	Form.TriggerEvent( "FormTab1." .. FormTab1.currenttabpageid, "RequestData", g_sItemCode)
 	Form.TriggerEvent( "FormTab1." .. FormTab1.currenttabpageid, "CHANGE_MKTOP", g_szMktOp)
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

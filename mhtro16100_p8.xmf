@@ -87,142 +87,144 @@
 		<IMAGE name="imgInfo" autosize="1" imgpath="icon_noti" margin="0,1,0,2" ly_vert="100,544,18,18,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="18580" _ulen="16672" >
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-' 20241128 LES START : 해외주식 매수 시장가 주문유형 추가
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+ -- 20241128 LES START : 해외주식 매수 시장가 주문유형 추가
 
 
-Dim g_nCount
+local g_nCount
 g_nCount = 0
 
-Dim g_nIndex				' 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
-Dim 	g_szOrder_Acc			' 계좌번호
-Dim 	g_szOrder_AccName		' 고객명
-Dim 	g_szOrd_ItmCode		' 종목코드
-Dim 	g_szOrd_ItmName		' 종목명
-Dim 	g_szOrd_OrdType		' 주문구분
-Dim 	g_szOrd_Security		' 현금/신용
-Dim 	g_nOrd_Qty			' 주문수량
-Dim 	g_nOrd_Price			' 주문가격
-Dim 	g_nOrd_OrdNo			' 원주문번호
-Dim 	g_nOrd_ChkAll			' 잔량전부	
-Dim	g_nOrd_Decimal		' 가격자릿수
-Dim	g_szPrcType			' 시장가or지정가
-Dim	g_nOrd_Currency		' 통화기호
+local g_nIndex -- 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
+local g_szOrder_Acc -- 계좌번호
+local g_szOrder_AccName -- 고객명
+local g_szOrd_ItmCode -- 종목코드
+local g_szOrd_ItmName -- 종목명
+local g_szOrd_OrdType -- 주문구분
+local g_szOrd_Security -- 현금/신용
+local g_nOrd_Qty -- 주문수량
+local g_nOrd_Price -- 주문가격
+local g_nOrd_OrdNo -- 원주문번호
+local g_nOrd_ChkAll -- 잔량전부	
+local g_nOrd_Decimal -- 가격자릿수
+local g_szPrcType -- 시장가or지정가
+local g_nOrd_Currency -- 통화기호
 
-'20241128 LES START
-Dim g_szOrd_PrcName		' 시장가or지정가
+ --20241128 LES START
+local g_szOrd_PrcName -- 시장가or지정가
 
-Dim g_szWarnMsg			' 경고메시지
+local g_szWarnMsg -- 경고메시지
 
-Dim g_szLoanType			' 대출상세유형코드
-Dim g_szLoanDate			' 대출일자
-Dim g_szLoanSrno			' 대출일련번호
+local g_szLoanType -- 대출상세유형코드
+local g_szLoanDate -- 대출일자
+local g_szLoanSrno -- 대출일련번호
 
-Dim g_nOrd_res_Type 		' 예약주문유형
-Dim g_nOrd_res_Period		' 예약주문기간
-Dim g_nOrd_res_Time		' 예약주문시간
+local g_nOrd_res_Type -- 예약주문유형
+local g_nOrd_res_Period -- 예약주문기간
+local g_nOrd_res_Time -- 예약주문시간
 
-Dim g_OsType
-Dim g_nTextSize
+local g_OsType
+local g_nTextSize
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	g_OsType = Form.GetSharedData("&OS_TYPE", false)
+	g_OsType = Form.GetSharedData("..OS_TYPE", false)
 	g_nTextSize = Form.GetEnvData("common.textsize")
 
-	'-----------------------------------------------------------
-	' 컨트롤 설정
-	'-----------------------------------------------------------
+	 -------------------------------------------------------------
+	 -- 컨트롤 설정
+	 -------------------------------------------------------------
 	Label3.paddinginfo = "0,0,0,0"
 	Label0.paddinginfo = "0,0,0,0"
 	lblMaesu1Title.paddinginfo = "0,0,0,0"
 	lblMaesu1Title0.paddinginfo = "0,0,0,0"
 	
-	Dim szData, arrData, szItemName
+	local szData, arrData, szItemName
 
 	szData = Form.GetOpenLinkData()
-	arrData = Split(szData,"|")
+	arrData = gf_Split(szData,"|")
 	
-	if UBOUND(arrData) < 1 then
-	    Exit sub
-	End if	
+	if #arrData < 1 then
+	    return
+	end
 	
-	imgInfo.setMaintainingRatio("1")
+	imgInfo.SetMaintainingRatio("1")
 	
-	'-----------------------------------------------------------
-	' 공통(일반/예약주문)
-	'-----------------------------------------------------------
-	g_nIndex				= arrData( 0) ' 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소, 10:예약매수, 11:예약매도, 12:예약취소)
-	g_szOrder_Acc			= arrData( 1)	' 계좌번호
-	g_szOrder_AccName		= arrData( 2)	' 고객명
-	g_szOrd_ItmCode 		= arrData( 3)	' 종목코드
-	g_szOrd_ItmName 		= arrData( 4)	' 종목명
-	g_szOrd_OrdType  		= arrData( 5)	' 주문구분
-	g_szOrd_Security 		= arrData( 6)	' 현금
-	g_nOrd_Qty   			= arrData( 7)	' 주문수량
-	g_nOrd_Price 			= arrData( 8)	' 주문가격
-	g_nOrd_OrdNo 			= arrData( 9)	' 원주문번호
-	g_nOrd_ChkAll 		= arrData(10)	' 잔량전부
-	g_nOrd_Decimal		= arrData(11)	' 가격자릿수
-	g_nOrd_Currency		= arrData(12)	' 통화
+	 -------------------------------------------------------------
+	 -- 공통(일반/예약주문)
+	 -------------------------------------------------------------
+	g_nIndex				= arrData[0+1]  -- 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소, 10:예약매수, 11:예약매도, 12:예약취소)
+	g_szOrder_Acc			= arrData[1+1]	 -- 계좌번호
+	g_szOrder_AccName		= arrData[2+1]	 -- 고객명
+	g_szOrd_ItmCode 		= arrData[3+1]	 -- 종목코드
+	g_szOrd_ItmName 		= arrData[4+1]	 -- 종목명
+	g_szOrd_OrdType  		= arrData[5+1]	 -- 주문구분
+	g_szOrd_Security 		= arrData[6+1]	 -- 현금
+	g_nOrd_Qty   			= arrData[7+1]	 -- 주문수량
+	g_nOrd_Price 			= arrData[8+1]	 -- 주문가격
+	g_nOrd_OrdNo 			= arrData[9+1]	 -- 원주문번호
+	g_nOrd_ChkAll 		= arrData[10+1]	 -- 잔량전부
+	g_nOrd_Decimal		= arrData[11+1]	 -- 가격자릿수
+	g_nOrd_Currency		= arrData[12+1]	 -- 통화
 	
-	'매도(1)/정정(2)/
+	 --매도(1)/정정(2)/
 	if g_nIndex == "1" or g_nIndex == "2" then
 		
-		g_szPrcType	= arrData(13)			' 시장가or지정가
-		g_szLoanType 	= arrData(14)			' 대출상세유형코드
-		g_szLoanDate 	= arrData(15)			' 대출일자
-		g_szLoanSrno 	= arrData(16)			' 대출일련번호
-		g_szWarnMsg  	= arrData(17)			' 경고메시지
+		g_szPrcType	= arrData[13+1]			 -- 시장가or지정가
+		g_szLoanType 	= arrData[14+1]			 -- 대출상세유형코드
+		g_szLoanDate 	= arrData[15+1]			 -- 대출일자
+		g_szLoanSrno 	= arrData[16+1]			 -- 대출일련번호
+		g_szWarnMsg  	= arrData[17+1]			 -- 경고메시지
 		
 	else
 		
-		'20241128 LES START - 매수시장가는 주문착오방지(경고주문)체크 대상
-		'g_szWarnMsg	= arrData(13)			'경고메시지
-		g_szOrd_PrcName 	= arrData(13)		'시장가or지정가
-		g_szWarnMsg		= arrData(14)		'경고메시지
+		 --20241128 LES START - 매수시장가는 주문착오방지(경고주문)체크 대상
+		 --g_szWarnMsg	= arrData(13)			'경고메시지
+		g_szOrd_PrcName 	= arrData[13+1]		 --시장가or지정가
+		g_szWarnMsg		= arrData[14+1]		 --경고메시지
 		
 		
-	end if
+	end
 	
-	'-----------------------------------------------------------
-	' 예약주문(주문유형,주문시간 문구추가)
-	'-----------------------------------------------------------
-	if g_nIndex == "10" then		'예약매수
+	 -------------------------------------------------------------
+	 -- 예약주문(주문유형,주문시간 문구추가)
+	 -------------------------------------------------------------
+	if g_nIndex == "10" then --예약매수
 		
-		g_nOrd_res_Type 	= arrData(13) 	'예약주문유형
-		g_nOrd_res_Period	= arrData(14) 	'예약주문기간
-		g_nOrd_res_Time 	= arrData(15) 	'예약주문시간
+		g_nOrd_res_Type 	= arrData[13+1] 	 --예약주문유형
+		g_nOrd_res_Period	= arrData[14+1] 	 --예약주문기간
+		g_nOrd_res_Time 	= arrData[15+1] 	 --예약주문시간
 		
-		'20241128 LES START - 매수시장가는 주문착오방지(경고주문)체크 대상
-		'g_szWarnMsg		= arrData(16)		'경고메시지
-		g_szOrd_PrcName 	= arrData(16)		'시장가or지정가
-		g_szWarnMsg		= arrData(17)		'경고메시지
+		 --20241128 LES START - 매수시장가는 주문착오방지(경고주문)체크 대상
+		 --g_szWarnMsg		= arrData(16)		'경고메시지
+		g_szOrd_PrcName 	= arrData[16+1]		 --시장가or지정가
+		g_szWarnMsg		= arrData[17+1]		 --경고메시지
 		
-	elseif g_nIndex == "11" then	'예약매도
+	elseif g_nIndex == "11" then --예약매도
 	
-		g_szPrcType	= arrData(13)			' 시장가or지정가
-		g_szLoanType 	= arrData(14)			' 대출상세유형코드
-		g_szLoanDate 	= arrData(15)			' 대출일자
-		g_szLoanSrno 	= arrData(16)			' 대출일련번호
+		g_szPrcType	= arrData[13+1]			 -- 시장가or지정가
+		g_szLoanType 	= arrData[14+1]			 -- 대출상세유형코드
+		g_szLoanDate 	= arrData[15+1]			 -- 대출일자
+		g_szLoanSrno 	= arrData[16+1]			 -- 대출일련번호
 		
-		g_nOrd_res_Type 	= arrData(17) 	'예약주문유형
-		g_nOrd_res_Period	= arrData(18) 	'예약주문기간
-		g_nOrd_res_Time 	= arrData(19) 	'예약주문시간
+		g_nOrd_res_Type 	= arrData[17+1] 	 --예약주문유형
+		g_nOrd_res_Period	= arrData[18+1] 	 --예약주문기간
+		g_nOrd_res_Time 	= arrData[19+1] 	 --예약주문시간
 		
-		g_szWarnMsg  	= arrData(20)			' 경고메시지
+		g_szWarnMsg  	= arrData[20+1]			 -- 경고메시지
 		
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 	
-	If g_nIndex = "0" Then
+	if g_nIndex == "0" then
 		
 		Label0.caption = "매수 주문"
 		Label0.bgcolor = "92"
@@ -231,7 +233,7 @@ Sub Form_OnFormInit()
 		tblMaesu1.SetCellFgColor(5, 1, 290)
 		tblMaesu2.SetCellFgColor(6, 1, 290)
 		
-	ElseIf g_nIndex = "1" Then
+	elseif g_nIndex == "1" then
 		
 		Label0.caption = "매도 주문"
 		Label0.bgcolor = "91"
@@ -243,23 +245,23 @@ Sub Form_OnFormInit()
 		if g_szOrd_Security == "1" then
 			Label0.caption = "대출 매도 주문"
 			btnMaesu1.caption="대출 매도하기"
-		end if
+		end
 	
-	ElseIf g_nIndex = "2" Then
+	elseif g_nIndex == "2" then
 		
 		Label0.caption = "정정 주문"
 		Label0.bgcolor = "93"
 		btnMaesu1.btnimage = "btn_etc17.9"
 		btnMaesu1.caption="정정하기"
 	
-	ElseIf g_nIndex = "10" Then
+	elseif g_nIndex == "10" then
 		
 		Label0.caption = "(예약)매수 주문"
 		Label0.bgcolor = "92"
 		btnMaesu1.btnimage = "btn_etc10.9"
 		btnMaesu1.caption="예약 매수하기"
 		
-	ElseIf g_nIndex = "11" Then
+	elseif g_nIndex == "11" then
 		
 		Label0.caption = "(예약)매도 주문"
 		Label0.bgcolor = "91"
@@ -271,9 +273,9 @@ Sub Form_OnFormInit()
 		if g_szOrd_Security == "1" then
 			Label0.caption = "(예약)대출 매도 주문"
 			btnMaesu1.caption="(예약)대출 매도하기"
-		end if
+		end
 		
-	ElseIf g_nIndex = "13" Then
+	elseif g_nIndex == "13" then
 		
 		Label0.caption = "(예약)취소 주문"
 		Label0.bgcolor = "93"
@@ -281,67 +283,67 @@ Sub Form_OnFormInit()
 		btnMaesu1.caption="취소"
 		
 		
-	End If	
+	end
 
     Set_Data(g_nIndex)
     
-End Sub
+end
 
-'============================================================================
-'주문화면 데이터
-'============================================================================
-Function Set_Data(nIndex)
+ --============================================================================
+ --주문화면 데이터
+ --============================================================================
+function Set_Data(nIndex)
 
-    If g_nOrd_ChkAll = "1" Then
+    if g_nOrd_ChkAll == "1" then
 		g_nOrd_Price = "잔량"
-    End If
+    end
     
-    '===========================================================
-    ' (공통) 경고메시지 설정
-    '===========================================================
+     --===========================================================
+     -- (공통) 경고메시지 설정
+     --===========================================================
     lblMaesu1Title.caption = g_szWarnMsg
 			
-	'-----------------------------------------------------------
-	' 큰글씨 모드에 따른 컨트롤 위치이동
-	'-----------------------------------------------------------
-    if CInt(g_nTextSize) > 0 then		'큰글씨
+	 -------------------------------------------------------------
+	 -- 큰글씨 모드에 따른 컨트롤 위치이동
+	 -------------------------------------------------------------
+    if gf_Tonumber(g_nTextSize) > 0 then --큰글씨
 	    imgInfo.left = 105
-		if nIndex == "10" then			'예약매수
+		if nIndex == "10" then --예약매수
 			if g_OsType == "1" then
 				imgInfo.top = 542
 			else
 				imgInfo.top = 537
-			end if
-		else							'이외
+			end
+		else --이외
 			if g_OsType == "1" then
 				imgInfo.top = 546
-			end if
-		end if
+			end
+		end
 		    
-	else								'큰글씨 아님
-		if nIndex == "10" then			'예약매수
+	else --큰글씨 아님
+		if nIndex == "10" then --예약매수
 			if g_OsType == "1" then
 				imgInfo.top = 543
 			else
 				imgInfo.top = 538
-			end if
-		else							'이외
+			end
+		else --이외
 			if g_OsType == "1" then
 				imgInfo.top = 547
-			end if
-		end if
+			end
+		end
 				
 			
-	end if
+	end
    
-    '===========================================================
-    ' 예약주문(주문유형,주문시간 문구추가)
-    '===========================================================
+     --===========================================================
+     -- 예약주문(주문유형,주문시간 문구추가)
+     --===========================================================
     if nIndex == "10" then
 		
-		'-----------------------------------------------------------
-		' 예약주문 테이블 보임처리/일반주문 테이블 숨김처리
-		'-----------------------------------------------------------
+		 -------------------------------------------------------------
+		 -- 예약주문 테이블 보임처리/일반주문 테이블 숨김처리
+		 -------------------------------------------------------------
 		imgMain.top = 106
 		imgMain.height = 631
 		
@@ -359,93 +361,93 @@ Function Set_Data(nIndex)
 		tblMaesu0.visible = true
 		tblMaesu1.visible = false
 		
-		'-----------------------------------------------------------
-		' 타이틀변경
-		'-----------------------------------------------------------
+		 -------------------------------------------------------------
+		 -- 타이틀변경
+		 -------------------------------------------------------------
 		Label0.caption = "예약 매수 주문"
 		
-		'-----------------------------------------------------------
-		' 계좌번호/고객명
-		'-----------------------------------------------------------
-		szStr1 = left(g_szOrder_Acc,4)
-		szStr2 = mid(g_szOrder_Acc,5,4)
-		szStr3 = right(g_szOrder_Acc,2)
+		 -------------------------------------------------------------
+		 -- 계좌번호/고객명
+		 -------------------------------------------------------------
+		szStr1 = string.sub(g_szOrder_Acc, 1, 4)
+		szStr2 = string.sub(g_szOrder_Acc, 5, 5 + 4 - 1)
+		szStr3 = string.sub(g_szOrder_Acc, -2)
 		tblMaesu0.SetCellString( 0, 1, szStr1.."-".. szStr2 .."-".. szStr3.." "..g_szOrder_AccName)
 		
-		'-----------------------------------------------------------
-		' 종목코드/종목명
-		'-----------------------------------------------------------
+		 -------------------------------------------------------------
+		 -- 종목코드/종목명
+		 -------------------------------------------------------------
 		tblMaesu0.SetCellString( 1, 1, g_szOrd_ItmCode	)
 		tblMaesu0.SetCellString( 2, 1, g_szOrd_ItmName 	)
 		
-		'-----------------------------------------------------------
-		' 주문구분
-		'-----------------------------------------------------------
+		 -------------------------------------------------------------
+		 -- 주문구분
+		 -------------------------------------------------------------
 		tblMaesu0.SetCellString( 3, 1, g_szOrd_OrdType 	)
 		
-		'-----------------------------------------------------------
-		' 예약유형
-		'-----------------------------------------------------------
+		 -------------------------------------------------------------
+		 -- 예약유형
+		 -------------------------------------------------------------
 		tblMaesu0.SetCellString( 4, 1, g_nOrd_res_Type 	)
 		
-		'-----------------------------------------------------------
-		' 예약기간
-		'-----------------------------------------------------------
+		 -------------------------------------------------------------
+		 -- 예약기간
+		 -------------------------------------------------------------
 		tblMaesu0.SetCellString( 5, 1, g_nOrd_res_Period	)
 		
-		'-----------------------------------------------------------
-		' 예약시간
-		'-----------------------------------------------------------
+		 -------------------------------------------------------------
+		 -- 예약시간
+		 -------------------------------------------------------------
 		tblMaesu0.SetCellString( 6, 1, g_nOrd_res_Time	)
 				
-		'-----------------------------------------------------------
-		' 수량
-		'-----------------------------------------------------------
+		 -------------------------------------------------------------
+		 -- 수량
+		 -------------------------------------------------------------
 		tblMaesu0.SetCellString( 7, 1, g_nOrd_Qty		)
 		
 		
-		'-----------------------------------------------------------
-		' 20241128 LES START : 시장가/지정가 여부에따라 가격 세팅
-		'-----------------------------------------------------------
+		 -------------------------------------------------------------
+		 -- 20241128 LES START : 시장가/지정가 여부에따라 가격 세팅
+		 -------------------------------------------------------------
 		if g_szOrd_PrcName == "시장가" then
 		
 			tblMaesu0.SetCellString( 8, 1, "-" )	
 			tblMaesu0.SetCellString( 9, 1, "-" )
 		
 		else
-			'-----------------------------------------------------------
-			' 단가(시장별 소수점처리 및 통화처리)
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 단가(시장별 소수점처리 및 통화처리)
+			 -------------------------------------------------------------
 			sMask = "0,0,,".. " "..g_nOrd_Currency ..",0,,"..g_nOrd_Decimal..",1,1,2,0"
 			tblMaesu0.SetCellMaskInfo( 8, 1, sMask )
 			tblMaesu0.SetCellString( 8, 1, g_nOrd_Price )	
 			
-			'-----------------------------------------------------------
-			' 주문금액(시장별 소수점처리 및 통화처리)
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 주문금액(시장별 소수점처리 및 통화처리)
+			 -------------------------------------------------------------
 			sTotalPrice = g_nOrd_Price * g_nOrd_Qty
 			tblMaesu0.SetCellMaskInfo( 9, 1, sMask )
 			tblMaesu0.SetCellString( 9, 1, sTotalPrice )
 			
-		end if
-		'-----------------------------------------------------------
-		' 20241128 LES END
-		'-----------------------------------------------------------
+		end
+		 -------------------------------------------------------------
+		 -- 20241128 LES END
+		 -------------------------------------------------------------
     
     
-    '===========================================================
-    ' 일반주문
-    '===========================================================
+     --===========================================================
+     -- 일반주문
+     --===========================================================
     else
      
 	     if g_szOrd_Security == "1" then
 		     
-		     '-----------------------------------------------------------
-			' 일반대출주문 테이블 보임처리/예약주문 테이블 숨김처리
-			'-----------------------------------------------------------
-		     tblMaesu0.visible = false 	'예약현금
-			tblMaesu1.visible = false 	'일반현금
-			tblMaesu2.visible = true	'일반대출
+		      -------------------------------------------------------------
+			 -- 일반대출주문 테이블 보임처리/예약주문 테이블 숨김처리
+			 -------------------------------------------------------------
+		     tblMaesu0.visible = false 	 --예약현금
+			tblMaesu1.visible = false 	 --일반현금
+			tblMaesu2.visible = true	 --일반대출
 			
 			Image0.top = 341
 			Image0.height = 235
@@ -459,34 +461,34 @@ Function Set_Data(nIndex)
 			imgMain.top = 157
 			imgMain.height = 580
 			
-			'-----------------------------------------------------------
-			' 일반대출 테이블 위치이동
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 일반대출 테이블 위치이동
+			 -------------------------------------------------------------
 			tblMaesu2.left = 30
 			
-			'-----------------------------------------------------------
-			' 계좌번호/고객명
-			'-----------------------------------------------------------
-			szStr1 = left(g_szOrder_Acc,4)
-			szStr2 = mid(g_szOrder_Acc,5,4)
-			szStr3 = right(g_szOrder_Acc,2)
+			 -------------------------------------------------------------
+			 -- 계좌번호/고객명
+			 -------------------------------------------------------------
+			szStr1 = string.sub(g_szOrder_Acc, 1, 4)
+			szStr2 = string.sub(g_szOrder_Acc, 5, 5 + 4 - 1)
+			szStr3 = string.sub(g_szOrder_Acc, -2)
 			tblMaesu2.SetCellString( 0, 1, szStr1.."-".. szStr2 .."-".. szStr3.." "..g_szOrder_AccName)
 			
-			'-----------------------------------------------------------
-			' 대출구분/대출일자
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 대출구분/대출일자
+			 -------------------------------------------------------------
 			sLoanName = ""
-			if g_szLoanType = "0251" then
+			if g_szLoanType == "0251" then
 				sLoanName = "예탁주식"
-			end if
+			end
 			
-			sLoanDate = Left(g_szLoanDate,4) .. "." .. Mid(g_szLoanDate,5,2) .. "." .. Right(g_szLoanDate,2)
+			sLoanDate = string.sub(g_szLoanDate, 1, 4) .. "." .. string.sub(g_szLoanDate, 5, 5 + 2 - 1) .. "." .. string.sub(g_szLoanDate, -2)
 			
 			tblMaesu2.SetCellString( 1, 1, sLoanName .. " | " .. sLoanDate)
 			
-			'-----------------------------------------------------------
-			' 종목코드/종목명
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 종목코드/종목명
+			 -------------------------------------------------------------
 			tblMaesu2.SetCellString( 2, 1, g_szOrd_ItmCode)
 			LabelItemName.top = 419
 			
@@ -494,93 +496,93 @@ Function Set_Data(nIndex)
 				LabelItemName.paddinginfo = "0,2,10,0"
 			else
 				LabelItemName.paddinginfo = "0,0,8,0"
-			end if
+			end
 			
 			LabelItemName.maxlinecnt = "2^-8"
 			LabelItemName.caption = g_szOrd_ItmName
 			
-			'-----------------------------------------------------------
-			' 주문구분
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 주문구분
+			 -------------------------------------------------------------
 			tblMaesu2.SetCellString( 4, 1, g_szOrd_OrdType)
 			
-			'-----------------------------------------------------------
-			' 수량
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 수량
+			 -------------------------------------------------------------
 			tblMaesu2.SetCellString( 5, 1, g_nOrd_Qty)
 			
-			'-----------------------------------------------------------
-			' 시장가/지정가 여부에따라 가격 세팅
-			'-----------------------------------------------------------
-			'if g_szOrd_PrcName == "시장가" then
-			'
-			'	tblMaesu2.SetCellString( 6, 1, "-" )	
-			'	tblMaesu2.SetCellString( 7, 1, "-" )
-			'	
-			'else
+			 -------------------------------------------------------------
+			 -- 시장가/지정가 여부에따라 가격 세팅
+			 -------------------------------------------------------------
+			 --if g_szOrd_PrcName == "시장가" then
+			 --
+			 --	tblMaesu2.SetCellString( 6, 1, "-" )	
+			 --	tblMaesu2.SetCellString( 7, 1, "-" )
+			 --	
+			 --else
 			
-				'-----------------------------------------------------------
-				' 단가(시장별 소수점처리 및 통화처리)
-				'-----------------------------------------------------------
+				 -------------------------------------------------------------
+				 -- 단가(시장별 소수점처리 및 통화처리)
+				 -------------------------------------------------------------
 				sMask = "0,0,,".. " "..g_nOrd_Currency ..",0,,"..g_nOrd_Decimal..",1,1,2,0"
 				tblMaesu2.SetCellMaskInfo( 6, 1, sMask )
 				tblMaesu2.SetCellString( 6, 1, g_nOrd_Price )	
 				
-				'-----------------------------------------------------------
-				' 주문금액(시장별 소수점처리 및 통화처리)
-				'-----------------------------------------------------------
+				 -------------------------------------------------------------
+				 -- 주문금액(시장별 소수점처리 및 통화처리)
+				 -------------------------------------------------------------
 				sTotalPrice = g_nOrd_Price * g_nOrd_Qty
 				tblMaesu2.SetCellMaskInfo( 7, 1, sMask )
 				tblMaesu2.SetCellString( 7, 1, sTotalPrice )	
 			
-			'end if
+			 --end if
 			
      
 	     else
 			
-			'-----------------------------------------------------------
-			' 일반주문 테이블 보임처리/예약주문 테이블 숨김처리
-			'-----------------------------------------------------------
-			tblMaesu0.visible = false 	'예약현금
-			tblMaesu1.visible = true 	'일반현금
-			tblMaesu2.visible = false	'일반대출
+			 -------------------------------------------------------------
+			 -- 일반주문 테이블 보임처리/예약주문 테이블 숨김처리
+			 -------------------------------------------------------------
+			tblMaesu0.visible = false 	 --예약현금
+			tblMaesu1.visible = true 	 --일반현금
+			tblMaesu2.visible = false	 --일반대출
 						
-			'-----------------------------------------------------------
-			' 계좌번호/고객명
-			'-----------------------------------------------------------
-			szStr1 = left(g_szOrder_Acc,4)
-			szStr2 = mid(g_szOrder_Acc,5,4)
-			szStr3 = right(g_szOrder_Acc,2)
+			 -------------------------------------------------------------
+			 -- 계좌번호/고객명
+			 -------------------------------------------------------------
+			szStr1 = string.sub(g_szOrder_Acc, 1, 4)
+			szStr2 = string.sub(g_szOrder_Acc, 5, 5 + 4 - 1)
+			szStr3 = string.sub(g_szOrder_Acc, -2)
 			tblMaesu1.SetCellString( 0, 1, szStr1.."-".. szStr2 .."-".. szStr3.." "..g_szOrder_AccName)
 			
-			'-----------------------------------------------------------
-			' 종목코드/종목명
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 종목코드/종목명
+			 -------------------------------------------------------------
 			tblMaesu1.SetCellString( 1, 1, g_szOrd_ItmCode)
 			
 			if g_OsType == "1" then
 				LabelItemName.paddinginfo = "0,2,10,0"
 			else
 				LabelItemName.paddinginfo = "0,0,8,0"
-			end if
+			end
 			
 			LabelItemName.maxlinecnt = "2^-8"
 			LabelItemName.caption = g_szOrd_ItmName
 			
-			'-----------------------------------------------------------
-			' 주문구분
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 주문구분
+			 -------------------------------------------------------------
 			tblMaesu1.SetCellString( 3, 1, g_szOrd_OrdType)
 			
-			'-----------------------------------------------------------
-			' 수량
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 수량
+			 -------------------------------------------------------------
 			tblMaesu1.SetCellString( 4, 1, g_nOrd_Qty)
 			
 			
-			'-----------------------------------------------------------
-			' 20241128 LES START : 시장가/지정가 여부에따라 가격 세팅
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 20241128 LES START : 시장가/지정가 여부에따라 가격 세팅
+			 -------------------------------------------------------------
 			if g_szOrd_PrcName == "시장가" then
 			
 				tblMaesu1.SetCellString( 5, 1, "-" )	
@@ -588,61 +590,62 @@ Function Set_Data(nIndex)
 			
 			else
 			
-				'-----------------------------------------------------------
-				' 단가(시장별 소수점처리 및 통화처리)
-				'-----------------------------------------------------------
+				 -------------------------------------------------------------
+				 -- 단가(시장별 소수점처리 및 통화처리)
+				 -------------------------------------------------------------
 				sMask = "0,0,,".. " "..g_nOrd_Currency ..",0,,"..g_nOrd_Decimal..",1,1,2,0"
 				tblMaesu1.SetCellMaskInfo( 5, 1, sMask )
 				tblMaesu1.SetCellString( 5, 1, g_nOrd_Price )	
 				
-				'-----------------------------------------------------------
-				' 주문금액(시장별 소수점처리 및 통화처리)
-				'-----------------------------------------------------------
+				 -------------------------------------------------------------
+				 -- 주문금액(시장별 소수점처리 및 통화처리)
+				 -------------------------------------------------------------
 				sTotalPrice = g_nOrd_Price * g_nOrd_Qty
 				tblMaesu1.SetCellMaskInfo( 6, 1, sMask )
 				tblMaesu1.SetCellString( 6, 1, sTotalPrice )	
 			
-		    end if
-		    '-----------------------------------------------------------
-			' 20241128 LES END
-			'-----------------------------------------------------------
+		    end
+		     -------------------------------------------------------------
+			 -- 20241128 LES END
+			 -------------------------------------------------------------
 	    
-	    end if
+	    end
 	    
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-Function SendOrder()
+ --============================================================================
+function SendOrder()
     
-    If g_nCount = 0 Then
+    if g_nCount == 0 then
 	    Form.SendReturnToParent( "주문경고" , "1")
 	    
 	    g_nCount = 1
 	    Form.CloseForm( )
 	    
-    End If
+    end
     
-End Function
-'============================================================================
-Sub btnMaesu1Close_OnClick()
+end
+ --============================================================================
+function btnMaesu1Close_OnClick()
 	Form.CloseForm()	
-End Sub
-'============================================================================
-Sub btnMaesu1_OnClick()
+end
+ --============================================================================
+function btnMaesu1_OnClick()
 	SendOrder()
-End Sub
-'============================================================================
-Sub imgBg_OnClick()
+end
+ --============================================================================
+function imgBg_OnClick()
 	Form.CloseForm()	
-End Sub
+end
 
-'============================================================================
-Sub imgInfo_OnClick()
+ --============================================================================
+function imgInfo_OnClick()
 	sText = "수수료 및 세금이 제외된 금액입니다.\n체결 후 매매일지 화면에서 수수료 및 세금을 확인 할 수 있어요."
-	imgInfo.openToolTip(sText, 300, 80, 0)
-End Sub
+	imgInfo.OpenToolTip(sText, 300, 80, 0)
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

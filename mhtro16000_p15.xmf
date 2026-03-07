@@ -59,114 +59,116 @@ JP`일본]]>" imagefilepth="combo_04.9" ly_vert="20,52,110,35,1" />
 		<IMAGE name="Image1" autosize="1" ly_vert="335,108,15,12,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="18067" _ulen="17663" >
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim g_szBtnImg_Normal
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+local g_szBtnImg_Normal
 g_szBtnImg_Normal = "btn_41_n.9"
 
-Dim g_szBtnImg_Select
+local g_szBtnImg_Select
 g_szBtnImg_Select = "btn_42_n.9"
 
-Dim g_szBtnImg_Close
+local g_szBtnImg_Close
 g_szBtnImg_Close = "icon_close"
 
-Dim g_szBackImg  
+local g_szBackImg
 g_szBackImg = "icon_main_01"
 
-Dim g_ImgArrow_Down
+local g_ImgArrow_Down
 g_ImgArrow_Down = "icon_filter"
 
-Dim g_szBadgeBg_Line2
+local g_szBadgeBg_Line2
 g_szBadgeBg_Line2 = "roundbox_4r_gray.9"
 
-' 기본 텍스트 컬러 (검정색)
-Dim g_szTxtColor_Normal 
+ -- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal
 g_szTxtColor_Normal 	= "334"
 
-' 기본 텍스트 컬러 (회색)
-Dim g_szTxtColor_Grey 
+ -- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey
 g_szTxtColor_Grey 	= "333"
 
-' 기본 텍스트 컬러 (흰색)
-Dim g_szTxtColor_White 
+ -- 기본 텍스트 컬러 (흰색)
+local g_szTxtColor_White
 g_szTxtColor_White 	= "338"
 
-' 빨강
-Dim g_szTxtColor_Red 
+ -- 빨강
+local g_szTxtColor_Red
 g_szTxtColor_Red = "290"
 
-' 파랑
-Dim g_szTxtColor_Blue 
+ -- 파랑
+local g_szTxtColor_Blue
 g_szTxtColor_Blue = "291"
 
-' 기본 배경색상
-Dim g_szContBgColor
+ -- 기본 배경색상
+local g_szContBgColor
 g_szContBgColor = "320"
 
-' 기본 구분선 색상
-' 진한색
-Dim g_szLineColor
+ -- 기본 구분선 색상
+ -- 진한색
+local g_szLineColor
 g_szLineColor = "347"
-' 중간색
-Dim g_szLineColor2
+ -- 중간색
+local g_szLineColor2
 g_szLineColor2 = "256"
-' 연한색
-Dim g_szLineColor3
+ -- 연한색
+local g_szLineColor3
 g_szLineColor3 = "320"
 
-' 빨강
-Dim g_szBadgeBgColor_Red
+ -- 빨강
+local g_szBadgeBgColor_Red
 g_szBadgeBgColor_Red = "339"
 
-' 파랑
-Dim g_szBadgeBgColor_Blue
+ -- 파랑
+local g_szBadgeBgColor_Blue
 g_szBadgeBgColor_Blue = "340"
 
-Dim g_szItemCd 
-Dim g_szExidCd
-Dim g_szOnlyCd
-Dim g_rtChk
+local g_szItemCd
+local g_szExidCd
+local g_szOnlyCd
+local g_rtChk
 
-Dim g_szType
+local g_szType
 g_szType = "하드웨어 및 장비"
 
-Dim g_szTypeCd
+local g_szTypeCd
 g_szTypeCd = ""
 
-Dim g_szCmbData
+local g_szCmbData
 g_szCmbData = ""
 
-Dim g_nExpandHeight 
+local g_nExpandHeight
 g_nExpandHeight = 120	
 
-Dim g_nFoldHeight
+local g_nFoldHeight
 g_nFoldHeight = 60
 
-Dim g_nPrev_Expand_Idx
+local g_nPrev_Expand_Idx
 g_nPrev_Expand_Idx = -1
 
-Dim g_szSaveFilterData1
+local g_szSaveFilterData1
 g_szSaveFilterData1 ="당일"
 
-Dim g_szSaveFilterData2
+local g_szSaveFilterData2
 g_szSaveFilterData2 = "거래량 많은순"
 
-Dim g_szTerm
+local g_szTerm
 g_szTerm = "1"
 
-Dim g_szSort1
+local g_szSort1
 g_szSort1 = "2"
 
-Dim g_szSort2
+local g_szSort2
 g_szSort2 = "0"
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
-'===============================================
-' 컨트롤 초기화
-'===============================================
-Function Init_Control()
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
+ --===============================================
+ -- 컨트롤 초기화
+ --===============================================
+function Init_Control()
 	lblTitle.fgcolor = g_szTxtColor_Normal
 	lblTitle.paddinginfo = "0,0,0,0"
 
@@ -181,62 +183,62 @@ Function Init_Control()
 	Label0.imagefilepth = g_szBadgeBg_Line2
 	
 	lblSortInfo.fgcolor = g_szTxtColor_Grey
-End Function
+end
 
-Function Request_Tran_ohhts_6230_001r()
+function Request_Tran_ohhts_6230_001r()
 	g_szCmbData = ""
 	DATAMANAGER.ClearInputData(false, "ohhts_6230_001r")
 	DATAMANAGER.SetDataValue(false,"ohhts_6230_001r", "InBlock1", "FID_CLCD"	, 0 , "1")
 	DATAMANAGER.RequestTranData("ohhts_6230_001r")
-End Function
+end
 
-Function Process_Tran_ohhts_6230_001r()
+function Process_Tran_ohhts_6230_001r()
 	nDataCnt = DATAMANAGER.GetDataCount(false, "ohhts_6230_001r", "OutBlock1")
 	
-	if nDataCnt == "" or Cint(nDataCnt) == 0 then
-		Exit Function
-	end if
+	if nDataCnt == "" or gf_Tonumber(nDataCnt) == 0 then
+		return
+	end
 	
-	for i = 0 to nDataCnt-1
+	for i = 0, nDataCnt-1 do
 		szTypeCd = DATAMANAGER.GetDataValue(false,"ohhts_6230_001r", "OutBlock1", "FIDX_BSTP_CLS_CODE"  , i)
 		szTypeNm = DATAMANAGER.GetDataValue(false,"ohhts_6230_001r", "OutBlock1", "FIDX_BSTP_DIV_NAME"  , i)
 		
-		cmb1.cbadddatatext = szTypeCd&"`"&szTypeNm
-	next
+		cmb1.cbadddatatext = szTypeCd.."`"..szTypeNm
+	end
 	
 	if DATAMANAGER.IsMoreNextData("ohhts_6230_001r") == true then
 		DATAMANAGER.RequestNextData("ohhts_6230_001r")
 	else
-		if g_szExidCd <> "" then
+		if g_szExidCd ~= "" then
 			cmb0.cbkeydata = g_szExidCd
-		end if
-		if g_szTypeCd <> "" then
+		end
+		if g_szTypeCd ~= "" then
 			cmb1.cbkeydata = g_szTypeCd
-		end if
+		end
 		
 		Request_Tran_ohhts_6230_002r()
-	end if
-End Function
+	end
+end
 
-Function Request_Tran_ohhts_6230_002r()
+function Request_Tran_ohhts_6230_002r()
 	Pannel0.rowcount = 0
 	
 	DATAMANAGER.ClearInputData(false, "ohhts_6230_002r")
 
-	 '시장 구분
-    Dim sCmb_Makt	
+	  --시장 구분
+    local sCmb_Makt
     sCmb_Makt  = cmb0.cbkeydata
-    '국가 구분
-    If sCmb_Makt = "US" Then 
+     --국가 구분
+    if sCmb_Makt == "US" then
 	    sNtns = sCmb_Makt 
-	    sCmb_Makt = ""											'미국전체
-    ElseIf sCmb_Makt = "NY" Or sCmb_Makt = "AX" Or sCmb_Makt = "OQ" Then 			'미국 각 시장
+	    sCmb_Makt = ""											 --미국전체
+    elseif sCmb_Makt == "NY" or sCmb_Makt == "AX" or sCmb_Makt == "OQ" then --미국 각 시장
 	    sNtns = "US"
-    ElseIf sCmb_Makt = "SH" Or sCmb_Makt = "SZ" Then 								'상해, 심천
+    elseif sCmb_Makt == "SH" or sCmb_Makt == "SZ" then --상해, 심천
 	    sNtns = "CN"
-    Else																			'일본, 홍콩 
+    else --일본, 홍콩 
 	    sNtns = sCmb_Makt
-    End If
+    end
 
 	DATAMANAGER.SetDataValue(false,"ohhts_6230_002r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE"	, 0 , "OV")
 	DATAMANAGER.SetDataValue(false,"ohhts_6230_002r", "InBlock1", "FID_INPUT_COND_SCR_DIV_CODE"		, 0 , "62300")
@@ -252,16 +254,16 @@ Function Request_Tran_ohhts_6230_002r()
 	DATAMANAGER.SetDataValue(false,"ohhts_6230_002r", "InBlock1", "FID_INPUT_PRC1"				, 0 , "0")
 	
 	DATAMANAGER.RequestTranData("ohhts_6230_002r")
-End Function
+end
 
-Function Process_Tran_ohhts_6230_002r()
+function Process_Tran_ohhts_6230_002r()
 	nDataCnt = DATAMANAGER.GetDataCount(false, "ohhts_6230_002r", "OutBlock1")
 	
-	if nDataCnt == "" or Cint(nDataCnt) == 0 then
-		Exit Function
-	end if
+	if nDataCnt == "" or gf_Tonumber(nDataCnt) == 0 then
+		return
+	end
 	
-	for i = 0 to nDataCnt-1
+	for i = 0, nDataCnt-1 do
 		szData0 = DATAMANAGER.GetDataValue(false, "ohhts_6230_002r", "OutBlock1", "FID_COND_MRKT_CLS_CODE"  , i)
 		szData1 = DATAMANAGER.GetDataValue(false, "ohhts_6230_002r", "OutBlock1", "FIDX_ISCD" , i)
 		szData2 = DATAMANAGER.GetDataValue(false, "ohhts_6230_002r", "OutBlock1", "FIDX_KOR_ISNM" , i)
@@ -269,346 +271,346 @@ Function Process_Tran_ohhts_6230_002r()
 		szData4 = DATAMANAGER.GetDataValue(false, "ohhts_6230_002r", "OutBlock1", "FIDX_PRDY_CTRT", i)
 		szData5 = DATAMANAGER.GetDataValue(false, "ohhts_6230_002r", "OutBlock1", "FIDX_SDPR_VRSS_PRPR_RATE", i)
 		
-		'msgbox szData0 .. "|" ..szData1 .. "|" ..szData2 .. "|" ..szData3 .. "|" ..szData4
+		 --msgbox szData0 .. "|" ..szData1 .. "|" ..szData2 .. "|" ..szData3 .. "|" ..szData4
 		
-		nIdx = Pannel0.addRow()
+		nIdx = Pannel0.AddRow()
 		
 		szPrc = ""
-		if szData3 <> "" then
-			if szData0 = "AX" or szData0 = "NY" or szData0 = "OQ" then
-				szPrc = FormatNumber(szData3, 4)
-			elseif szData0 = "JP" then
-				szPrc = FormatNumber(szData3, 1)
-			elseif szData0 = "SH" or szData0 = "SZ" then
-				szPrc = FormatNumber(szData3, 3)
-			elseif szData0 = "HK" then
-				szPrc = FormatNumber(szData3, 3)
-			end if
-		end if
+		if szData3 ~= "" then
+			if szData0 == "AX" or szData0 == "NY" or szData0 == "OQ" then
+				szPrc = gf_CommaValue(szData3, 4)
+			elseif szData0 == "JP" then
+				szPrc = gf_CommaValue(szData3, 1)
+			elseif szData0 == "SH" or szData0 == "SZ" then
+				szPrc = gf_CommaValue(szData3, 3)
+			elseif szData0 == "HK" then
+				szPrc = gf_CommaValue(szData3, 3)
+			end
+		end
 		
-		'현재가 & 수익률
+		 --현재가 & 수익률
 		
 		
 		szPrcRateAttr2 = ""
 		szPrcRate2 = ""
 		
 		if g_szTerm == "1" then
-			szPrcRate = szPrc & " | " & FormatNumber(szData4, 2) & "%"
+			szPrcRate = szPrc .. " | " .. gf_CommaValue(szData4, 2) .. "%"
 		else
-			szPrcRate = szPrc & " | " 
-			szPrcRate2 = FormatNumber(szData5, 2) & "%"
+			szPrcRate = szPrc .. " | " 
+			szPrcRate2 = gf_CommaValue(szData5, 2) .. "%"
 			
 			
 		
 			szPrcRateAttr2 = "0"
 	
-			if Cdbl(szData5) > 0 then
+			if gf_Tonumber(szData5) > 0 then
 				szPrcRateAttr2 = "43"
-			elseif Cdbl(szData5) < 0 then
+			elseif gf_Tonumber(szData5) < 0 then
 				szPrcRateAttr2 = "45"
-			end if
-		end if
+			end
+		end
 		
 		szPrcRateAttr = "0"
 	
-		if Cdbl(szData4) > 0 then
+		if gf_Tonumber(szData4) > 0 then
 			szPrcRateAttr = "43"
-		elseif Cdbl(szData4) < 0 then
+		elseif gf_Tonumber(szData4) < 0 then
 			szPrcRateAttr = "45"
-		end if
+		end
 		
 		sGroupID = ""
 		sFlagID = ""
-		if szData0 = "AX" or szData0 = "NY" or szData0 = "OQ" then
+		if szData0 == "AX" or szData0 == "NY" or szData0 == "OQ" then
 			sGroupID = "CI_USD"
 			sFlagID = "USA"
-		elseif szData0 = "JP" then
+		elseif szData0 == "JP" then
 			sGroupID = "CI_JPN"
 			sFlagID = "JPN"
-		elseif szData0 = "SH" or szData0 = "SZ" then
+		elseif szData0 == "SH" or szData0 == "SZ" then
 			sGroupID = "CI_CHN"
 			sFlagID = "CHN"
-		elseif szData0 = "HK" then
+		elseif szData0 == "HK" then
 			sGroupID = "CI_HKG"
 			sFlagID = "HKG"
 		else
 			sGroupID = "CI_KOR"
 			sFlagID = "KOR"
-		end if
+		end
 		
-		szImgNm = Form.getIconImg(sGroupID, szData1)
+		szImgNm = Form.GetIconImg(sGroupID, szData1)
 		
-		if szImgNm = "" then
-			szImgNm = Form.getIconImg("FLAG", sFlagID)
+		if szImgNm == "" then
+			szImgNm = Form.GetIconImg("FLAG", sFlagID)
 			
-			if szImgNm = "" then
+			if szImgNm == "" then
 				szImgNm = "flag_general"
-			end if
-		end if
+			end
+		end
 
 		DisplaySetting_Pannel(nIdx, szData1, szData0, szData2, szPrcRate,szPrcRate2, szPrcRateAttr,szPrcRateAttr2, szImgNm) 
-	next
+	end
 	
 	
-End Function
+end
 
-Function DisplaySetting_Pannel(nIdx, szItemCd, szMktCd, szItemNm, szPrcRate,szPrcRate2, szPrcRateAttr,szPrcRateAttr2, szImgNm) 
-	'상단 라인표시
-'	if nIdx = 0 then
-'		Pannel0.setPropCardCell("bgcolor","lblLine2", nIdx , g_szTxtColor_White)
-'	else
-'		Pannel0.setPropCardCell("bgcolor","lblLine2", nIdx , g_szLineColor)
-'	end if
+function DisplaySetting_Pannel(nIdx, szItemCd, szMktCd, szItemNm, szPrcRate,szPrcRate2, szPrcRateAttr,szPrcRateAttr2, szImgNm)
+	 --상단 라인표시
+ --	if nIdx = 0 then
+ --		Pannel0.setPropCardCell("bgcolor","lblLine2", nIdx , g_szTxtColor_White)
+ --	else
+ --		Pannel0.setPropCardCell("bgcolor","lblLine2", nIdx , g_szLineColor)
+ --	end if
 	
-	Pannel0.setPropCardCell("bgcolor","lblLine2", nIdx , g_szLineColor2)
-	'종목 국가 국기이미지 
-	Pannel0.setPropCardCell("maintainratio", "imgFlag", nIdx, "2")
-	Pannel0.setPropCardCell("imgpath","imgFlag", nIdx, szImgNm)
+	Pannel0.SetPropCardCell("bgcolor","lblLine2", nIdx , g_szLineColor2)
+	 --종목 국가 국기이미지 
+	Pannel0.SetPropCardCell("maintainratio", "imgFlag", nIdx, "2")
+	Pannel0.SetPropCardCell("imgpath","imgFlag", nIdx, szImgNm)
 	
-	Pannel0.setPropCardCell("paddinginfo","lblNum",nIdx, "0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor","lblNum",nIdx, g_szTxtColor_Normal)
-	Pannel0.setPropCardCell("maxlinecnt","lblNum",nIdx, "1^-2")
-	Pannel0.setPropCardCell("caption","lblNum",nIdx, nIdx+1&".")
+	Pannel0.SetPropCardCell("paddinginfo","lblNum",nIdx, "0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor","lblNum",nIdx, g_szTxtColor_Normal)
+	Pannel0.SetPropCardCell("maxlinecnt","lblNum",nIdx, "1^-2")
+	Pannel0.SetPropCardCell("caption","lblNum",nIdx, nIdx+1..".")
 	
-	'종목명
-	Pannel0.setPropCardCell("paddinginfo","lblItemName",nIdx, "0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor","lblItemName",nIdx, g_szTxtColor_Normal)
-	Pannel0.setPropCardCell("maxlinecnt","lblItemName",nIdx, "1^-4")
-	Pannel0.setPropCardCell("caption","lblItemName",nIdx, szItemNm)
+	 --종목명
+	Pannel0.SetPropCardCell("paddinginfo","lblItemName",nIdx, "0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor","lblItemName",nIdx, g_szTxtColor_Normal)
+	Pannel0.SetPropCardCell("maxlinecnt","lblItemName",nIdx, "1^-4")
+	Pannel0.SetPropCardCell("caption","lblItemName",nIdx, szItemNm)
 	
-	'종목코드(시장조치)
-	Pannel0.setPropCardCell("paddinginfo","lblItemCode",nIdx, "0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor","lblItemCode",nIdx, g_szTxtColor_Grey)
-	Pannel0.setPropCardCell("caption","lblItemCode",nIdx, szItemCd)
+	 --종목코드(시장조치)
+	Pannel0.SetPropCardCell("paddinginfo","lblItemCode",nIdx, "0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor","lblItemCode",nIdx, g_szTxtColor_Grey)
+	Pannel0.SetPropCardCell("caption","lblItemCode",nIdx, szItemCd)
 	
-	'현재가(전일대비)
-	Pannel0.setPropCardCell("paddinginfo","lblItemPrc",nIdx, "0,0,0,0")
-	Pannel0.setPropCardCell("maxlinecnt","lblItemPrc",nIdx, "1")
+	 --현재가(전일대비)
+	Pannel0.SetPropCardCell("paddinginfo","lblItemPrc",nIdx, "0,0,0,0")
+	Pannel0.SetPropCardCell("maxlinecnt","lblItemPrc",nIdx, "1")
 	Pannel0.SetPropCardCell("fontbold", "lblItemPrc", nIdx, "1")
-	Pannel0.setPropCardCell("fgcolor","lblItemPrc",nIdx, g_szTxtColor_Grey)
-	Pannel0.setPropCardCell("caption","lblItemPrc",nIdx, szPrcRate)
+	Pannel0.SetPropCardCell("fgcolor","lblItemPrc",nIdx, g_szTxtColor_Grey)
+	Pannel0.SetPropCardCell("caption","lblItemPrc",nIdx, szPrcRate)
 	
-	if szPrcRateAttr = "43" then
-		Pannel0.setPropCardCell("fgcolor","lblItemPrc",nIdx, g_szTxtColor_Red)
-	elseif szPrcRateAttr = "45" then
-		Pannel0.setPropCardCell("fgcolor","lblItemPrc",nIdx, g_szTxtColor_Blue)
+	if szPrcRateAttr == "43" then
+		Pannel0.SetPropCardCell("fgcolor","lblItemPrc",nIdx, g_szTxtColor_Red)
+	elseif szPrcRateAttr == "45" then
+		Pannel0.SetPropCardCell("fgcolor","lblItemPrc",nIdx, g_szTxtColor_Blue)
 	else
-		Pannel0.setPropCardCell("fgcolor","lblItemPrc",nIdx, g_szTxtColor_Grey)
-	end if
+		Pannel0.SetPropCardCell("fgcolor","lblItemPrc",nIdx, g_szTxtColor_Grey)
+	end
 	
-	if szPrcRate2 <> "" then
-		Pannel0.setPropCardCell("left","lblItemPrc0",nIdx, "190")
+	if szPrcRate2 ~= "" then
+		Pannel0.SetPropCardCell("left","lblItemPrc0",nIdx, "190")
 		
-		Pannel0.setPropCardCell("paddinginfo","lblItemPrc0",nIdx, "0,0,0,0")
-		Pannel0.setPropCardCell("maxlinecnt","lblItemPrc0",nIdx, "1")
+		Pannel0.SetPropCardCell("paddinginfo","lblItemPrc0",nIdx, "0,0,0,0")
+		Pannel0.SetPropCardCell("maxlinecnt","lblItemPrc0",nIdx, "1")
 		Pannel0.SetPropCardCell("fontbold", "lblItemPrc0", nIdx, "1")
-		Pannel0.setPropCardCell("fgcolor","lblItemPrc0",nIdx, g_szTxtColor_Grey)
+		Pannel0.SetPropCardCell("fgcolor","lblItemPrc0",nIdx, g_szTxtColor_Grey)
 		
 		
-		Pannel0.setPropCardCell("caption","lblItemPrc0",nIdx, szPrcRate2)
+		Pannel0.SetPropCardCell("caption","lblItemPrc0",nIdx, szPrcRate2)
 		
-		nWidth = Form.getTextWidth(szPrcRate2, -2, false, false)
+		nWidth = Form.GetTextWidth(szPrcRate2, -2, false, false)
 		nLeft = 190 - nWidth - 5
-		Pannel0.setPropCardCell("left","lblItemPrc",nIdx, nLeft)
+		Pannel0.SetPropCardCell("left","lblItemPrc",nIdx, nLeft)
 		
-		if szPrcRateAttr2 = "43" then
-			Pannel0.setPropCardCell("fgcolor","lblItemPrc0",nIdx, g_szTxtColor_Red)
-		elseif szPrcRateAttr2 = "45" then
-			Pannel0.setPropCardCell("fgcolor","lblItemPrc0",nIdx, g_szTxtColor_Blue)
+		if szPrcRateAttr2 == "43" then
+			Pannel0.SetPropCardCell("fgcolor","lblItemPrc0",nIdx, g_szTxtColor_Red)
+		elseif szPrcRateAttr2 == "45" then
+			Pannel0.SetPropCardCell("fgcolor","lblItemPrc0",nIdx, g_szTxtColor_Blue)
 		else
-			Pannel0.setPropCardCell("fgcolor","lblItemPrc0",nIdx, g_szTxtColor_Grey)
-		end if
+			Pannel0.SetPropCardCell("fgcolor","lblItemPrc0",nIdx, g_szTxtColor_Grey)
+		end
 	else
-		Pannel0.setPropCardCell("left","lblItemPrc",nIdx, "190")
-		Pannel0.setPropCardCell("left","lblItemPrc0",nIdx, "400")
-	end if
+		Pannel0.SetPropCardCell("left","lblItemPrc",nIdx, "190")
+		Pannel0.SetPropCardCell("left","lblItemPrc0",nIdx, "400")
+	end
 
-'	'(숨김)종목코드
-	Pannel0.setPropCardCell("caption","lblHideData0",nIdx, szMktCd)
-	Pannel0.setPropCardCell("caption","lblHideData1",nIdx, szItemCd)
-	Pannel0.setPropCardCell("caption","lblHideData2",nIdx, szItemNm)
+ --	'(숨김)종목코드
+	Pannel0.SetPropCardCell("caption","lblHideData0",nIdx, szMktCd)
+	Pannel0.SetPropCardCell("caption","lblHideData1",nIdx, szItemCd)
+	Pannel0.SetPropCardCell("caption","lblHideData2",nIdx, szItemNm)
 
-	Pannel0.setPropCardCell("paddinginfo","btnHyun",nIdx, "0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor","btnHyun",nIdx, g_szTxtColor_Grey)
+	Pannel0.SetPropCardCell("paddinginfo","btnHyun",nIdx, "0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor","btnHyun",nIdx, g_szTxtColor_Grey)
 	
-	Pannel0.setPropCardCell("paddinginfo","btnChart",nIdx, "0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor","btnChart",nIdx, g_szTxtColor_Grey)
+	Pannel0.SetPropCardCell("paddinginfo","btnChart",nIdx, "0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor","btnChart",nIdx, g_szTxtColor_Grey)
 	
-	Pannel0.setPropCardCell("paddinginfo","btnInfo",nIdx, "0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor","btnInfo",nIdx, g_szTxtColor_Grey)
+	Pannel0.SetPropCardCell("paddinginfo","btnInfo",nIdx, "0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor","btnInfo",nIdx, g_szTxtColor_Grey)
 	
-	Pannel0.setPropCardCell("paddinginfo","btnOrder0",nIdx, "0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor","btnOrder0",nIdx, g_szTxtColor_White)
+	Pannel0.SetPropCardCell("paddinginfo","btnOrder0",nIdx, "0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor","btnOrder0",nIdx, g_szTxtColor_White)
 	
-	Pannel0.setPropCardCell("paddinginfo","btnOrder1",nIdx, "0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor","btnOrder1",nIdx, g_szTxtColor_White)
+	Pannel0.SetPropCardCell("paddinginfo","btnOrder1",nIdx, "0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor","btnOrder1",nIdx, g_szTxtColor_White)
 
 	
-End Function
+end
 
-Function Convert_Filter1(szData)
-	Select Case szData
-		Case "당일" 
+function Convert_Filter1(szData)
+	-- SELECT CASE 변환 (수동 보정 필요)
+		if szData == "당일" then
 			g_szTerm = "1"
-		Case Else
-			g_szTerm = trim(replace(szData, "일", ""))
-	End Select
-End Function
+		else
+			g_szTerm = gf_Trim(string.gsub(szData, string.gsub("일", "([%p])", "%%%1"), ""))
+	end
+end
 
-Function Convert_Filter2(szData)
-	Select Case szData
-		Case "상승률 높은순" 
+function Convert_Filter2(szData)
+	-- SELECT CASE 변환 (수동 보정 필요)
+		if szData == "상승률 높은순" then
 			g_szSort1 = "0"
 			g_szSort2 = "0"
-		Case "하락률 높은순" 
+		elseif szData == "하락률 높은순" then
 			g_szSort1 = "0"
 			g_szSort2 = "1"
-		Case "거래량 많은순" 
+		elseif szData == "거래량 많은순" then
 			g_szSort1 = "2"
 			g_szSort2 = "0"
-		Case "거래량 낮은순" 
+		elseif szData == "거래량 낮은순" then
 			g_szSort1 = "2"
 			g_szSort2 = "1"
-		Case Else
+		else
 			g_szSort1 = "0"
 			g_szSort2 = "0"
-	End Select
-End Function
+	end
+end
 
-Function MovePopup(nidx, nGbn)
+function MovePopup(nidx, nGbn)
 	
-	szMktCd = Pannel0.getPropCardCell("caption","lblHideData0",nidx)
-	szItemCd = Pannel0.getPropCardCell("caption","lblHideData1",nidx)
-	szItemNm = Pannel0.getPropCardCell("caption","lblHideData2",nidx)
-	szItemCd = szMktCd & "@" & szItemCd
+	szMktCd = Pannel0.GetPropCardCell("caption","lblHideData0",nidx)
+	szItemCd = Pannel0.GetPropCardCell("caption","lblHideData1",nidx)
+	szItemNm = Pannel0.GetPropCardCell("caption","lblHideData2",nidx)
+	szItemCd = szMktCd .. "@" .. szItemCd
 	
-	Select Case szMktCd
-		Case "OQ", "AX", "NY", "SH", "SZ", "HK", "JP"
-			Form.SetSharedData( "&ITEM_CODE" , szItemCd )
-			Form.SetSharedData( "&ITEM_KORNAME" , szItemNm )
-			Form.SetSharedData( "&ITEM_OVERSTOCK", szItemCd.."★"..szItemNm.."★".."", "" )					
+	-- SELECT CASE 변환 (수동 보정 필요)
+		if szMktCd == "OQ" or szMktCd == "AX" or szMktCd == "NY" or szMktCd == "SH" or szMktCd == "SZ" or szMktCd == "HK" or szMktCd == "JP" then
+			Form.SetSharedData( "..ITEM_CODE" , szItemCd )
+			Form.SetSharedData( "..ITEM_KORNAME" , szItemNm )
+			Form.SetSharedData( "..ITEM_OVERSTOCK", szItemCd.."★"..szItemNm.."★".."", "" )					
 			Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", szItemCd.."★"..szItemNm.."★".."", "" )
 			
-			if nGbn == 0 then						' 현재가
+			if nGbn == 0 then -- 현재가
 				Form.SendReturnToParent( "RETURN_LAYOUT" , "호가")			
-			elseif nGbn == 1 then					' 차트
+			elseif nGbn == 1 then -- 차트
 				Form.OpenScreen("16020", "")
-			elseif nGbn == 2 then				
-				'Form.triggerEvent("#", "RETURN_LAYOUT", "종목정보")
-			elseif nGbn == 3 then					' 매수
+			elseif nGbn == 2 then
+				 --Form.triggerEvent("#", "RETURN_LAYOUT", "종목정보")
+			elseif nGbn == 3 then -- 매수
 				Form.OpenScreen("16060", "0")
-			elseif nGbn == 4 then					' 매도
+			elseif nGbn == 4 then -- 매도
 				Form.OpenScreen("16060", "1")
-			end if
-	End Select
+			end
+	end
 	Form.CloseForm()
-End Function
+end
 
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'===============================================
-' Form_OnFormInitBefore
-'===============================================
-Sub Form_OnFormInitBefore()
-	'contMain.contCont.lblContent.sizeAutoFit()
-End Sub
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --===============================================
+ -- Form_OnFormInitBefore
+ --===============================================
+function Form_OnFormInitBefore()
+	 --contMain.contCont.lblContent.sizeAutoFit()
+end
 
-'===============================================
-' Form_OnFormInit
-'===============================================
-Sub Form_OnFormInit()
+ --===============================================
+ -- Form_OnFormInit
+ --===============================================
+function Form_OnFormInit()
 	Init_Control()
 	
-	Dim szLinkData
+	local szLinkData
 	szLinkData = Form.GetOpenLinkData()
 	
-	arrLinkData = split(szLinkData, "`")
+	arrLinkData = gf_Split(szLinkData, "`")
 	
 	if #arrLinkData > 1 then
-		g_szExidCd = arrLinkData(0)
+		g_szExidCd = arrLinkData[0+1]
 		
 		g_rtChk = Form.GetSharedData( "REALTIME_"..g_szExidCd, false )
 		
 		if g_szExidCd == "AX" or g_szExidCd == "OQ" or g_szExidCd == "NY" then
 			g_szExidCd = "US"
-		end if
+		end
 		
-		g_szTypeCd = arrLinkData(1)
-	end if
+		g_szTypeCd = arrLinkData[1+1]
+	end
 
 	Request_Tran_ohhts_6230_001r()
 
-End Sub
+end
 
-'===============================================
-' imgBg_OnClick
-'===============================================
-Sub imgBack_OnClick()
+ --===============================================
+ -- imgBg_OnClick
+ --===============================================
+function imgBack_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if szTranID == "ohhts_6230_001r" then
 		Process_Tran_ohhts_6230_001r()
 	elseif szTranID == "ohhts_6230_002r" then
 		Process_Tran_ohhts_6230_002r()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub Pannel0_OnScrollEnd()
+ --============================================================================
+function Pannel0_OnScrollEnd()
 	if DATAMANAGER.IsMoreNextData("ohhts_6230_002r") == true then
 		DATAMANAGER.RequestNextData("ohhts_6230_002r")
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub cmb0_OnEditComplete(iIndex)
+ --============================================================================
+function cmb0_OnEditComplete(iIndex)
 	Request_Tran_ohhts_6230_002r()
-End Sub
+end
 
-'============================================================================
-Sub cmb1_OnEditComplete(iIndex)
+ --============================================================================
+function cmb1_OnEditComplete(iIndex)
 	Request_Tran_ohhts_6230_002r()
-End Sub
+end
 
-'============================================================================
-Sub lblSortInfo_OnClick()
-	Form.OpenPopup("mhtro16000_p16", "TYPE"&"★0★"&""&"★"&""&"★"&g_szSaveFilterData1&"★"&g_szSaveFilterData2 , "")
-End Sub
+ --============================================================================
+function lblSortInfo_OnClick()
+	Form.OpenPopup("mhtro16000_p16", "TYPE".."★0★".."".."★".."".."★"..g_szSaveFilterData1.."★"..g_szSaveFilterData2 , "")
+end
 
-'============================================================================
-Sub Pannel0_OnClick(nIndex, sCellID)
+ --============================================================================
+function Pannel0_OnClick(nIndex, sCellID)
 		
-	if sCellID = "btnHyun" then
+	if sCellID == "btnHyun" then
 		MovePopup(nIndex, 0)
-	elseif sCellID = "btnChart" then
+	elseif sCellID == "btnChart" then
 		MovePopup(nIndex, 1)
-	elseif sCellID = "btnInfo" then
+	elseif sCellID == "btnInfo" then
 		MovePopup(nIndex, 2)
-	elseif sCellID = "btnOrder0" then
+	elseif sCellID == "btnOrder0" then
 		MovePopup(nIndex, 3)
-	elseif sCellID = "btnOrder1" then
+	elseif sCellID == "btnOrder1" then
 		MovePopup(nIndex, 4)	
 	else
-		nTopRow = Cint(Pannel0.toprow)
-		nGap = Cint(nIndex) - nTopRow
+		nTopRow = gf_Tonumber(Pannel0.toprow)
+		nGap = gf_Tonumber(nIndex) - nTopRow
 		
 		nCurHeight = Pannel0.GetCardWHAt(nIndex)
 
-		if g_nFoldHeight = nCurHeight then
-			Pannel0.setPropCardCell("top","lblLine2", nIndex , g_nExpandHeight-1)
+		if g_nFoldHeight == nCurHeight then
+			Pannel0.SetPropCardCell("top","lblLine2", nIndex , g_nExpandHeight-1)
 			Pannel0.SetCardWHAt(nIndex, g_nExpandHeight)
 			
 			if g_nPrev_Expand_Idx > -1 then
-				if g_nPrev_Expand_Idx <> nIndex then
-					Pannel0.setPropCardCell("top","lblLine2", g_nPrev_Expand_Idx , g_nFoldHeight-1)
+				if g_nPrev_Expand_Idx ~= nIndex then
+					Pannel0.SetPropCardCell("top","lblLine2", g_nPrev_Expand_Idx , g_nFoldHeight-1)
 					Pannel0.SetCardWHAt(g_nPrev_Expand_Idx, g_nFoldHeight)
-				end if
-			end if
+				end
+			end
 			
 			g_nPrev_Expand_Idx = nIndex
 			
@@ -617,46 +619,47 @@ Sub Pannel0_OnClick(nIndex, sCellID)
 				Pannel0.toprow = nTopRow + 2
 			elseif nGap > 6 then
 				Pannel0.toprow = nTopRow + 1
-			end if
+			end
 			
 		else
-			Pannel0.setPropCardCell("top","lblLine2", nIndex , g_nFoldHeight-1)
+			Pannel0.SetPropCardCell("top","lblLine2", nIndex , g_nFoldHeight-1)
 			Pannel0.SetCardWHAt(nIndex, g_nFoldHeight)
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-'============================================================================
-Sub Form_OnPopupReturn(sKeyName, sRet)
-	if sKeyName = "RETURN_DATA_TYPE" then
-		arrOptionData = split(sRet, "★")
+ --============================================================================
+function Form_OnPopupReturn(sKeyName, sRet)
+	if sKeyName == "RETURN_DATA_TYPE" then
+		arrOptionData = gf_Split(sRet, "★")
 	
 		if #arrOptionData > 0 then
-			g_szSaveFilterData1 = arrOptionData(0)
+			g_szSaveFilterData1 = arrOptionData[0+1]
 			Convert_Filter1(g_szSaveFilterData1)
-		end if
+		end
 		
 		if #arrOptionData > 1 then
-			g_szSaveFilterData2 = arrOptionData(1)
+			g_szSaveFilterData2 = arrOptionData[1+1]
 			
 			Convert_Filter2(g_szSaveFilterData2)
-		end if
+		end
 		
-		lblSortInfo.caption = arrOptionData(1) & "ㆍ" & arrOptionData(0)
+		lblSortInfo.caption = arrOptionData[1+1] .. "ㆍ" .. arrOptionData[0+1]
 		Pannel0.rowcount = 0
 		
 		Request_Tran_ohhts_6230_002r()
-	end if
+	end
 	
-End Sub
+end
 
 
-'============================================================================
-Sub Image1_OnClick()
+ --============================================================================
+function Image1_OnClick()
 	lblSortInfo_OnClick()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_6230_001r" trcode="ohhts_6230_001r" compress="1" encryption="1" inputcheck="1" useattr="0" />

@@ -290,25 +290,27 @@
 		</GRID>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="1999" _ulen="1977" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
 --===========================================================================
-' 2023.01.10 : 이학록 : v001. 주건거래시세 추가
+ -- 2023.01.10 : 이학록 : v001. 주건거래시세 추가
 --===========================================================================
-'============================================================================
-Dim g_szAcno
-Dim g_szAsno
-Dim g_NextCnt
-Dim g_szDytmYN
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
-	if sEventName = "TRANCALL" then
+ --============================================================================
+local g_szAcno
+local g_szAsno
+local g_NextCnt
+local g_szDytmYN
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
+	if sEventName == "TRANCALL" then
 		
-		tmp = Split(sParam,"||")
+		tmp = gf_Split(sParam,"||")
 		
 		g_NextCnt = 0
 		
-		g_szAcno = tmp(0)
-		g_szAsno = tmp(1)
-		g_szDytmYN = tmp(2)
+		g_szAcno = tmp[0+1]
+		g_szAsno = tmp[1+1]
+		g_szDytmYN = tmp[2+1]
 		
 		
 		DATAMANAGER.SetDataValue(0, "obtro_oder_208r", "InBlock1", "ACNO" 		  , 0 , g_szAcno)
@@ -318,41 +320,42 @@ Sub Form_OnTriggerEvent(sEventName, sParam)
 		DATAMANAGER.RequestTranData("obtro_oder_208r")
 		
 		
-	end if
-End Sub
+	end
+end
 
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	if szTranID = "obtro_oder_208r" then
-		for i = g_NextCnt to grd0.rowcount - 1
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	if szTranID == "obtro_oder_208r" then
+		for i = g_NextCnt, grd0.rowcount - 1 do
 			crcd = grd0.GetCellData("bd_cell0", i)
 			frcr_amt = grd0.GetCellData("bd_cell2", i)
 			vltn_amt	= grd0.GetCellData("bd_cell3", i)
 
-			'grd0.SetCellData("bd_cell2", i, FormatNumber(frcr_amt,2))
-			'grd0.SetCellData("bd_cell3", i, FormatNumber(vltn_amt,2))
+			 --grd0.SetCellData("bd_cell2", i, FormatNumber(frcr_amt,2))
+			 --grd0.SetCellData("bd_cell3", i, FormatNumber(vltn_amt,2))
 			
 			
-'			if crcd = "USD" then
-'				grd0.SetCellData("bd_cell2", i, FormatNumber(frcr_amt,4))
-'				grd0.SetCellData("bd_cell3", i, FormatNumber(vltn_amt,4))
-'			else
-'				grd0.SetCellData("bd_cell2", i, FormatNumber(frcr_amt,3))
-'				grd0.SetCellData("bd_cell3", i, FormatNumber(vltn_amt,3))
-'			end if
-		next
+ --			if crcd = "USD" then
+ --				grd0.SetCellData("bd_cell2", i, FormatNumber(frcr_amt,4))
+ --				grd0.SetCellData("bd_cell3", i, FormatNumber(vltn_amt,4))
+ --			else
+ --				grd0.SetCellData("bd_cell2", i, FormatNumber(frcr_amt,3))
+ --				grd0.SetCellData("bd_cell3", i, FormatNumber(vltn_amt,3))
+ --			end if
+		end
 		g_NextCnt = g_NextCnt + DATAMANAGER.GetDataCount(0, "obtro_oder_208r", "OutBlock1")
-	end if
-End Sub
+	end
+end
 
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 	g_NextCnt = 0
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_208r" trcode="obtro_oder_208r" compress="1" encryption="1" inputcheck="1" useattr="0" />

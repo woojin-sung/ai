@@ -25,157 +25,159 @@
 		<LABEL name="Label4" fontsize="-2" halign="2" ly_vert="20,560,335,32,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="23808" _ulen="22350" >
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim g_szBtnImg_Normal
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+local g_szBtnImg_Normal
 g_szBtnImg_Normal = "btn_41_n.9"
 
-Dim g_szBtnImg_Select
+local g_szBtnImg_Select
 g_szBtnImg_Select = "btn_42_n.9"
 
-Dim g_szBtnImg_Close
+local g_szBtnImg_Close
 g_szBtnImg_Close = "icon_close"
 
-Dim g_szBackImg  
+local g_szBackImg
 g_szBackImg = "icon_main_01"
 
-Dim g_ImgArrow_Down
+local g_ImgArrow_Down
 g_ImgArrow_Down = "icon_arrow_d"
 
-' 기본 텍스트 컬러 (검정색)
-Dim g_szTxtColor_Normal 
+ -- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal
 g_szTxtColor_Normal 	= "334"
 
-' 기본 텍스트 컬러 (회색)
-Dim g_szTxtColor_Grey 
+ -- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey
 g_szTxtColor_Grey 	= "333"
 
-' 기본 텍스트 컬러 (흰색)
-Dim g_szTxtColor_White 
+ -- 기본 텍스트 컬러 (흰색)
+local g_szTxtColor_White
 g_szTxtColor_White 	= "338"
 
-' 빨강
-Dim g_szTxtColor_Red 
+ -- 빨강
+local g_szTxtColor_Red
 g_szTxtColor_Red = "290"
 
-' 파랑
-Dim g_szTxtColor_Blue 
+ -- 파랑
+local g_szTxtColor_Blue
 g_szTxtColor_Blue = "291"
 
-' 기본 배경색상
-Dim g_szContBgColor
+ -- 기본 배경색상
+local g_szContBgColor
 g_szContBgColor = "320"
 
-' 기본 구분선 색상
-Dim g_szLineColor
+ -- 기본 구분선 색상
+local g_szLineColor
 g_szLineColor = "347"
 
-' 빨강
-Dim g_szBadgeBgColor_Red
+ -- 빨강
+local g_szBadgeBgColor_Red
 g_szBadgeBgColor_Red = "339"
 
-' 파랑
-Dim g_szBadgeBgColor_Blue
+ -- 파랑
+local g_szBadgeBgColor_Blue
 g_szBadgeBgColor_Blue = "340"
 
-Dim g_szExidCd
-Dim g_szOnlyCd
-Dim g_rtChk
-Dim g_szMkOpClsCd
+local g_szExidCd
+local g_szOnlyCd
+local g_rtChk
+local g_szMkOpClsCd
 
-Dim g_szType
+local g_szType
 g_szType = "하드웨어 및 장비"
 
-Dim g_szTypeCd
+local g_szTypeCd
 g_szTypeCd = ""
 
-Dim g_szCmbData
+local g_szCmbData
 g_szCmbData = ""
 
-Dim g_nExpandHeight 
+local g_nExpandHeight
 g_nExpandHeight = 120	
 
-Dim g_nFoldHeight
+local g_nFoldHeight
 g_nFoldHeight = 60
 
-Dim g_nPrev_Expand_Idx
+local g_nPrev_Expand_Idx
 g_nPrev_Expand_Idx = -1
 
-Dim g_szSaveFilterData1
+local g_szSaveFilterData1
 g_szSaveFilterData1 ="당일"
 
-Dim g_szSaveFilterData2
+local g_szSaveFilterData2
 g_szSaveFilterData2 = "상승률 높은순"
 
-Dim g_szTerm
+local g_szTerm
 g_szTerm = "1"
 
-Dim g_szSort1
+local g_szSort1
 g_szSort1 = "0"
 
-Dim g_szSort2
+local g_szSort2
 g_szSort2 = "0"
 
-Dim g_saveFg
+local g_saveFg
 g_saveFg = false
 
-Dim g_isClickButton2
+local g_isClickButton2
 g_isClickButton2 = false
 
-Dim g_szOsType
+local g_szOsType
 
-Dim g_szPrevText
+local g_szPrevText
 g_szPrevText = ""
 
-'20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가 
-Dim g_szOsType
-g_szOsType = Form.GetSharedData("&OS_TYPE", false)
+ --20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가 
+local g_szOsType
+g_szOsType = Form.GetSharedData("..OS_TYPE", false)
 
-Dim g_nAppVer
+local g_nAppVer
 g_nAppVer = 0
 
-Dim g_isExpand
+local g_isExpand
 g_isExpand = false
-'20240904_01 HWG END
+ --20240904_01 HWG END
 
-'20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
-Dim g_szOvrsYn	
-Dim g_szItemCd 
-Dim g_szItemMarket
-'20240828_01 KBC END
+ --20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
+local g_szOvrsYn
+local g_szItemCd
+local g_szItemMarket
+ --20240828_01 KBC END
 
-'************************************ SOR_START
-' 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
-Dim g_szAtsSelectCd		' 거래소구분코드(SOR, KRX, NXT)
-g_szAtsSelectCd = "SOR"	' 디폴트 SOR
-'************************************ SOR_END
+ --************************************ SOR_START
+ -- 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
+local g_szAtsSelectCd -- 거래소구분코드(SOR, KRX, NXT)
+g_szAtsSelectCd = "SOR"	 -- 디폴트 SOR
+ --************************************ SOR_END
 	
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
 
-'20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가 
-'===============================================
-' 앱 버전코드 숫자로 변경
-'===============================================
-Function Convert_AppVer() 
+ --20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가 
+ --===============================================
+ -- 앱 버전코드 숫자로 변경
+ --===============================================
+function Convert_AppVer()
 	g_nAppVer = 0
 	
-	Dim szAppVer
-	szAppVer = Form.GetSharedData("&APP_VERSION", false)
+	local szAppVer
+	szAppVer = Form.GetSharedData("..APP_VERSION", false)
 	
-	arrAppVer = split(szAppVer, ".")
+	arrAppVer = gf_Split(szAppVer, ".")
 	
 	if #arrAppVer > 2 then
-		g_nAppVer = (Cint(arrAppVer(0)) * 1000) + (Cint(arrAppVer(1)) * 100) + (Cint(arrAppVer(2)))
-	end if
-End Function
+		g_nAppVer = (gf_Tonumber(arrAppVer[0+1]) * 1000) + (gf_Tonumber(arrAppVer[1+1]) * 100) + (gf_Tonumber(arrAppVer[2+1]))
+	end
+end
 
-'===============================================
-' 컨트롤 초기화
-'===============================================
-Function Init_Control()
+ --===============================================
+ -- 컨트롤 초기화
+ --===============================================
+function Init_Control()
 	Convert_AppVer()
 	
 	if (g_szOsType == "1" and g_nAppVer > 2501) or (g_szOsType == "2" and g_nAppVer > 2550) then
@@ -203,7 +205,7 @@ Function Init_Control()
 		Button2.top = 596 - nReduce
 		Button0.top = 596 - nReduce
 	
-	end if
+	end
 
 	lblTitle.fgcolor = g_szTxtColor_Normal
 	lblTitle.paddinginfo = "0,0,0,0"
@@ -228,192 +230,192 @@ Function Init_Control()
 	
 	imgClose.SetMaintainingRatio("3")
 	imgClose.imgpath = "icon_close"
-End Function
-'20240904_01 HWG END
+end
+ --20240904_01 HWG END
 
-Function Request_Tran_ohhts_6000_001r()
+function Request_Tran_ohhts_6000_001r()
 	DATAMANAGER.ClearInputData(false, "ohhts_6000_001r")
 	
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_szExidCd, false )
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분			
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	'마켓구분
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_szOnlyCd )	'종목코드
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	'실시간 여부
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		 --시장구분			
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	 --마켓구분
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_szOnlyCd )	 --종목코드
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	 --실시간 여부
 	
 	DATAMANAGER.RequestTranData("ohhts_6000_001r")
 	
 	Request_Real_ohhts_exst_cntg()
-End Function
+end
 
 
-Function Request_Tran_ohhts_6000_017r()
+function Request_Tran_ohhts_6000_017r()
 	DATAMANAGER.ClearInputData(false, "ohhts_6000_017r")
 	
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_szExidCd, false )
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분			
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	'마켓구분
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_szOnlyCd )	'종목코드
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	'실시간 여부
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		 --시장구분			
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	 --마켓구분
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_szOnlyCd )	 --종목코드
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	 --실시간 여부
 	
 	DATAMANAGER.RequestTranData("ohhts_6000_017r")
 	
 	Request_Real_ohhts_exst_cntd()
-End Function
+end
 
-Function Request_Tran_ohhts_6000_023r()
+function Request_Tran_ohhts_6000_023r()
 	DATAMANAGER.ClearInputData(false, "ohhts_6000_023r")
 	
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_szExidCd, false )
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분			
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	'마켓구분
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_szOnlyCd )	'종목코드
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	'실시간 여부
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		 --시장구분			
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_szExidCd )	 --마켓구분
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_szOnlyCd )	 --종목코드
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	 --실시간 여부
 	
 	DATAMANAGER.RequestTranData("ohhts_6000_023r")
 	
 	Request_Real_ohhts_exst_cnta()
-End Function
+end
 
-Function Request_Real_ohhts_exst_cntg()
-'	DATAMANAGER.ClearInputData( true, "ohhts_exst_cntg")
+function Request_Real_ohhts_exst_cntg()
+ --	DATAMANAGER.ClearInputData( true, "ohhts_exst_cntg")
 	
-	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , g_szExidCd & "@" & g_szOnlyCd )
+	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , g_szExidCd .. "@" .. g_szOnlyCd )
 	
 	DATAMANAGER.RequestRealData( "ohhts_exst_cntg" )
-End Function
+end
 
-Function Request_Real_ohhts_exst_cntd()
-'	DATAMANAGER.ClearInputData( true, "ohhts_exst_cntd")
+function Request_Real_ohhts_exst_cntd()
+ --	DATAMANAGER.ClearInputData( true, "ohhts_exst_cntd")
 	
-	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , g_szExidCd&"@"&g_szOnlyCd )
+	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , g_szExidCd.."@"..g_szOnlyCd )
 	
 	DATAMANAGER.RequestRealData( "ohhts_exst_cntd" )
-End Function
+end
 
-Function Request_Real_ohhts_exst_cnta()
-'	DATAMANAGER.ClearInputData( true, "ohhts_exst_cnta")
+function Request_Real_ohhts_exst_cnta()
+ --	DATAMANAGER.ClearInputData( true, "ohhts_exst_cnta")
 	
-	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , g_szExidCd&"@"&g_szOnlyCd )
+	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , g_szExidCd.."@"..g_szOnlyCd )
 	
 	DATAMANAGER.RequestRealData( "ohhts_exst_cnta" )
-End Function
+end
 
 
-Function Request_Tran_ohhts_memo_013r()
+function Request_Tran_ohhts_memo_013r()
 	DATAMANAGER.ClearInputData(false, "ohhts_memo_013r")
-	szUserID = Form.GetSharedData("&USER_ID", false )
-	g_szToday = Form.GetSharedData("&HOST_DATE", 0 )
-	szName = Form.GetItemCodeInfo(g_szExidCd&"@"&g_szOnlyCd, "name")
-	If g_saveFg = false Then		
+	szUserID = Form.GetSharedData("..USER_ID", false )
+	g_szToday = Form.GetSharedData("..HOST_DATE", 0 )
+	szName = Form.GetItemCodeInfo(g_szExidCd.."@"..g_szOnlyCd, "name")
+	if g_saveFg == false then
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_USER_ID" 			, 0 ,  szUserID)
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_MEMO_MANG_CLS_CODE" 	, 0 , "2" )
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_INPUT_SLCT_YN" 		, 0 , "1" )
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_INPUT_CLS_CODE" 		, 0 , "1" )
-		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_NEW_ISSU_CODE" 		, 0 , g_szExidCd&"@"&g_szOnlyCd )
+		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_NEW_ISSU_CODE" 		, 0 , g_szExidCd.."@"..g_szOnlyCd )
 		
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_INPUT_MRKT_CLS_CODE" 	, 0 , "OV" )
-	Else
+	else
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_USER_ID" 			, 0 ,  szUserID)
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_MEMO_MANG_CLS_CODE" 	, 0 , "2" )
-		If Trim(Edit0.caption) = "" Then
+		if gf_Trim(Edit0.caption) == "" then
 			DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_INPUT_SLCT_YN" 	, 0 , "5" )
-		Else
+		else
 			DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_INPUT_SLCT_YN" 	, 0 , "4" )
-		End If
+		end
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_INPUT_CLS_CODE" 		, 0 , "1" )
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_MOD_YMDH"			, 0 , g_szToday )
-		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_NEW_ISSU_CODE"		, 0 , g_szExidCd&"@"&g_szOnlyCd )
+		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_NEW_ISSU_CODE"		, 0 , g_szExidCd.."@"..g_szOnlyCd )
 		
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_KOR_ISNM" 			, 0 , szName )
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_ISSU_MEMO_CNTT"		, 0 , Edit0.caption )
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r", "InBlock1", "FID_INPUT_MRKT_CLS_CODE" 	, 0 ,  "OV" )
 	
-	End If
+	end
 	DATAMANAGER.RequestTranData("ohhts_memo_013r")
-End Function
+end
 
-'==============================================
-' 장운영 정보 기반 시세서비스 호출
-'==============================================
-Function Request_MktOp(szMkOpClsCd)
+ --==============================================
+ -- 장운영 정보 기반 시세서비스 호출
+ --==============================================
+function Request_MktOp(szMkOpClsCd)
 	
-	'해외주식 체결(프리/정규) 실시간 해제
+	 --해외주식 체결(프리/정규) 실시간 해제
 	DATAMANAGER.CancelRealData("ohhts_exst_cntg")
 	
-	'해외주식 체결(주간) 실시간 해제
+	 --해외주식 체결(주간) 실시간 해제
 	DATAMANAGER.CancelRealData("ohhts_exst_cntd")
 	
-	'해외주식 체결(애프터) 실시간 해제
+	 --해외주식 체결(애프터) 실시간 해제
 	DATAMANAGER.CancelRealData("ohhts_exst_cnta")
 	
-	Select Case szMkOpClsCd
+	-- SELECT CASE 변환 (수동 보정 필요)
 			
-		Case "001"	'주간장 개시
+		if szMkOpClsCd == "001" then --주간장 개시
 			Request_Tran_ohhts_6000_017r()
 	
-		Case "002"	'주간장 종료
+		elseif szMkOpClsCd == "002" then --주간장 종료
 			Request_Tran_ohhts_6000_001r()
 
-		Case "003"	'프리장 개시
+		elseif szMkOpClsCd == "003" then --프리장 개시
 			Request_Tran_ohhts_6000_001r()
 
-		Case "004"	'정규장 개시
+		elseif szMkOpClsCd == "004" then --정규장 개시
 			Request_Tran_ohhts_6000_001r()
 
-		Case "005"	'애프터장 개시
+		elseif szMkOpClsCd == "005" then --애프터장 개시
 			Request_Tran_ohhts_6000_023r()
 
-		Case "006"	'애프터장 종료
+		elseif szMkOpClsCd == "006" then --애프터장 종료
 			Request_Tran_ohhts_6000_001r()
 			
-		Case "011", "012" '미국 외 장개시/종료
+		elseif szMkOpClsCd == "011" or szMkOpClsCd == "012" then --미국 외 장개시/종료
 			Request_Tran_ohhts_6000_001r()
 			
-		Case "013" 
+		elseif szMkOpClsCd == "013" then
 			Request_Tran_ohhts_6000_001r()
 			
-		Case Else
+		else
 			Request_Tran_ohhts_6000_001r()
 
-	End Select
+	end
 
-End Function
+end
 
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'===============================================
-' Form_OnFormInitBefore
-'===============================================
-Sub Form_OnFormInitBefore()
-End Sub
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --===============================================
+ -- Form_OnFormInitBefore
+ --===============================================
+function Form_OnFormInitBefore()
+end
 
-'===============================================
-' Form_OnFormInit
-'===============================================
-Sub Form_OnFormInit()
-	g_szOsType = Form.GetSharedData("&OS_TYPE", false)
+ --===============================================
+ -- Form_OnFormInit
+ --===============================================
+function Form_OnFormInit()
+	g_szOsType = Form.GetSharedData("..OS_TYPE", false)
 	Init_Control()
 	
-	Dim szLinkData
+	local szLinkData
 	szLinkData = Form.GetOpenLinkData()
 	
-	sTemp = split(szLinkData, "@")
+	sTemp = gf_Split(szLinkData, "@")
 	
 	
-	'************************************ SOR_START
-	' 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
-	g_szAtsSelectCd = Form.GetEnvData("MARKET_TOGGLE")	' 거래소구분코드(SOR, KRX, NXT)	
-	'************************************ SOR_END
+	 --************************************ SOR_START
+	 -- 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
+	g_szAtsSelectCd = Form.GetEnvData("MARKET_TOGGLE")	 -- 거래소구분코드(SOR, KRX, NXT)	
+	 --************************************ SOR_END
 	
 		
 	if #sTemp > 2 then
-		g_szOvrsYn = "Y" '20240828_01 KBC : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
+		g_szOvrsYn = "Y"  --20240828_01 KBC : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
 	
-		g_szExidCd = sTemp[0] '시장구분
-		g_szOnlyCd = sTemp[1] '종목코드 
-		g_szMkOpClsCd = sTemp[2]
+		g_szExidCd = sTemp[0+1]  --시장구분
+		g_szOnlyCd = sTemp[1+1]  --종목코드 
+		g_szMkOpClsCd = sTemp[2+1]
 		
 		szCrcd = ""
 		if g_szExidCd =="AX" or g_szExidCd =="NY" or g_szExidCd =="OQ" then
@@ -422,34 +424,34 @@ Sub Form_OnFormInit()
 				szCrcd = "HKD"
 		elseif g_szExidCd =="SH" or g_szExidCd =="SZ" then
 				szCrcd = "CNY"
-		elseif g_szExidCd =="JP"  then
+		elseif g_szExidCd =="JP" then
 				szCrcd = "JPY"
-		end if
+		end
 		
 		Label2.caption = szCrcd
 		
-		szName = Form.GetItemCodeInfo(g_szExidCd&"@"&g_szOnlyCd, "name")
+		szName = Form.GetItemCodeInfo(g_szExidCd.."@"..g_szOnlyCd, "name")
 		Label1.caption = szName
 		Request_MktOp(g_szMkOpClsCd)
 		
 		Request_Tran_ohhts_memo_013r()
 		
-	'20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
-	elseif #sTemp > 1 then 	
+	 --20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
+	elseif #sTemp > 1 then
 		if szLinkData == "" then
-			exit sub
-		end if
+			return
+		end
 
 		g_szOvrsYn = "N"
-		g_szItemCd = sTemp[0]
-		g_szItemMarket = sTemp[1]
+		g_szItemCd = sTemp[0+1]
+		g_szItemMarket = sTemp[1+1]
 		
-		'************************************ SOR_START
-		' 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
-		if Trim(g_szAtsSelectCd) == "SOR" then
+		 --************************************ SOR_START
+		 -- 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
+		if gf_Trim(g_szAtsSelectCd) == "SOR" then
 			g_szItemMarket = "TJ"
-		end if 
-		'************************************ SOR_END
+		end
+		 --************************************ SOR_END
 		
 		Label2.caption = ""
 		szName = Form.GetItemCodeInfo(g_szItemCd, "name")
@@ -458,20 +460,20 @@ Sub Form_OnFormInit()
 		Request_Tran_ohhts_1001_001r()
 		Request_Tran_ohhts_memo_013r_1() 
 		
-	'20240828_01 KBC END		
-	end if
+	 --20240828_01 KBC END		
+	end
 
-End Sub
+end
 
-'===============================================
-' imgBg_OnClick
-'===============================================
-Sub imgClose_OnClick()
+ --===============================================
+ -- imgBg_OnClick
+ --===============================================
+function imgClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if szTranID == "ohhts_6230_001r" then
 		Process_Tran_ohhts_6230_001r()
 		
@@ -481,119 +483,119 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 	elseif szTranID == "ohhts_6000_017r" then
 		szPrpr = DATAMANAGER.GetDataValue(0,  "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR", 0)
 		
-		if Cdbl(szPrpr) == 0 then
+		if gf_Tonumber(szPrpr) == 0 then
 			Request_Tran_ohhts_6000_001r()
-		end if
+		end
 		
 	elseif szTranID == "ohhts_memo_013r" then
 		if g_saveFg == true then
 			g_szPrevText = ""
 			
-			if trim(Edit0.caption) == "" then
+			if gf_Trim(Edit0.caption) == "" then
 				if g_isClickButton2 == true then
 					Form.ShowAlert("알림", "종목 메모가 초기화 되었습니다.")
 					Form.SendReturnToParent("REG_MEMO" , "DEL")
 				else
 					Form.MsgBox("알림", "종목 메모가 삭제되었습니다.", "MEMO_DEL", 6)
-				end if
+				end
 				
 				g_isClickButton2 = false
 			else
 				Form.MsgBox("알림", "종목 메모가 등록되었습니다.", "MEMO_ADD", 6)
-			end if
-			'Form.closeForm()
+			end
+			 --Form.closeForm()
 		else
 			szMemo = DATAMANAGER.GetDataValue(0, "ohhts_memo_013r", "OutBlock1", "FID_ISSU_MEMO_CNTT" , 0)
 			Edit0.caption = szMemo
 			g_szPrevText = szMemo
 			
-			if trim(Edit0.caption) == "" then
+			if gf_Trim(Edit0.caption) == "" then
 				Form.SendReturnToParent("REG_MEMO" , "DEL")
-			end if
+			end
 			
-			szByte = Form.getLenByte(Edit0.caption)
+			szByte = Form.GetLenByte(Edit0.caption)
 			
-			Label4.caption = szByte & " / 4000 Byte"
+			Label4.caption = szByte .. " / 4000 Byte"
 			
 			if szMemo == "" then
 				Label5.visible = true
 			else
 				Label5.visible = false
-			end if
-		end if
+			end
+		end
 		
-	'20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
+	 --20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
 	elseif szTranID == "ohhts_memo_013r_1" then
 		if g_saveFg == true then
-			if trim(Edit0.caption) == "" then
+			if gf_Trim(Edit0.caption) == "" then
 				if g_isClickButton2 == true then
 					Form.ShowAlert("알림", "종목 메모가 초기화 되었습니다.")
 					Form.SendReturnToParent("REG_MEMO" , "DEL")
 				else
 					Form.MsgBox("알림", "종목 메모가 삭제되었습니다.", "MEMO_DEL", 6)
-				end if
+				end
 			
 				g_isClickButton2 = false
 			else
 				Form.MsgBox("알림", "종목 메모가 등록되었습니다.", "MEMO_ADD", 6)
-			end if
-			'Form.closeForm()
+			end
+			 --Form.closeForm()
 		else
 			szMemo = DATAMANAGER.GetDataValue(0, "ohhts_memo_013r_1", "OutBlock1", "FID_ISSU_MEMO_CNTT" , 0)
 			Edit0.caption = szMemo
 			
-			if trim(Edit0.caption) == "" then
+			if gf_Trim(Edit0.caption) == "" then
 				Form.SendReturnToParent("REG_MEMO" , "DEL")
-			end if
+			end
 			
-			szByte = Form.getLenByte(Edit0.caption)
+			szByte = Form.GetLenByte(Edit0.caption)
 			
-			Label4.caption = szByte & " / 4000 Byte"
+			Label4.caption = szByte .. " / 4000 Byte"
 			
 			if szMemo == "" then
 				Label5.visible = true
 			else
 				Label5.visible = false
-			end if
-		end if
+			end
+		end
 		
-	elseif szTranID == "ohhts_1001_001r" then		
+	elseif szTranID == "ohhts_1001_001r" then
 		
-		'************************************ SOR_START
-		' 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
+		 --************************************ SOR_START
+		 -- 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
 		if g_szItemMarket == "J" then
 			DATAMANAGER.SetDataValue( 1, "ohhts_stck_incg", "InBlock1", "RLTM_SHRN_ISCD" , 0 , g_szItemCd)
 			DATAMANAGER.RequestRealData("ohhts_stck_incg")
 		elseif g_szItemMarket == "NJ" then
 			DATAMANAGER.SetDataValue( 1, "ohhts_nxt_incg", "InBlock1", "RLTM_SHRN_ISCD" , 0 , g_szItemCd)
 			DATAMANAGER.RequestRealData("ohhts_nxt_incg")
-		else 
+		else
 			DATAMANAGER.SetDataValue( 1, "ohhts_unt_incg", "InBlock1", "RLTM_SHRN_ISCD" , 0 , g_szItemCd)
 			DATAMANAGER.RequestRealData("ohhts_unt_incg")
-		end if 
-		'************************************ SOR_END	
+		end
+		 --************************************ SOR_END	
 		
 		
-	'20240828_01 KBC END
+	 --20240828_01 KBC END
 	
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub Button0_OnClick()
+ --============================================================================
+function Button0_OnClick()
 	g_saveFg = true
 	
-	'20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
+	 --20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
 	if g_szOvrsYn == "Y" then
 		Request_Tran_ohhts_memo_013r()
 	else
 		Request_Tran_ohhts_memo_013r_1()
-	end if
-	'20240828_01 KBC END	
-End Sub
+	end
+	 --20240828_01 KBC END	
+end
 
-'============================================================================
-Sub Button2_OnClick()
+ --============================================================================
+function Button2_OnClick()
 	Edit0.caption = ""
 	Label4.caption = "0 / 4000 Byte"
 	g_szPrevText = ""
@@ -602,31 +604,31 @@ Sub Button2_OnClick()
 	g_saveFg = true
 	g_isClickButton2 = true
 	
-	'20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
+	 --20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
 	if g_szOvrsYn == "Y" then
 		Request_Tran_ohhts_memo_013r()
 	else
 		Request_Tran_ohhts_memo_013r_1()
-	end if
-	'20240828_01 KBC END	
-End Sub
+	end
+	 --20240828_01 KBC END	
+end
 
-'============================================================================
-Sub Form_OnMsgBoxClose(sKeyName, sRet)
+ --============================================================================
+function Form_OnMsgBoxClose(sKeyName, sRet)
 	if sKeyName == "MEMO_ADD" then
 		Form.SendReturnToParent("REG_MEMO" , "ADD")
 	elseif sKeyName == "MEMO_DEL" then
 		Form.SendReturnToParent("REG_MEMO" , "DEL")
-	end if
+	end
 	
-	Form.closeForm()
-End Sub
+	Form.CloseForm()
+end
 
-'============================================================================
-Sub Edit0_OnClick()
+ --============================================================================
+function Edit0_OnClick()
 	Label5.visible = false
 	
-	'20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가
+	 --20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가
 	if g_isExpand == true then
 		nReduce = 260
 		
@@ -638,65 +640,65 @@ Sub Edit0_OnClick()
 		
 		Button2.top = 596 - nReduce
 		Button0.top = 596 - nReduce
-	end if
-	'20240904_01 HWG END
-End Sub
+	end
+	 --20240904_01 HWG END
+end
 
-'============================================================================
-Sub Edit0_OnEditComplete()
+ --============================================================================
+function Edit0_OnEditComplete()
 	
-	if trim(Edit0.caption) == "" then
+	if gf_Trim(Edit0.caption) == "" then
 		Label4.caption = "0 / 4000 Byte"
 		Label5.visible = true
 	else
-		szByte = Form.getLenByte(Edit0.caption)
-		Label4.caption = szByte & " / 4000 Byte"
+		szByte = Form.GetLenByte(Edit0.caption)
+		Label4.caption = szByte .. " / 4000 Byte"
 		Label5.visible = false
-	end if
+	end
 	
 	g_szPrevText = ""
-End Sub
+end
 
-'============================================================================
-Sub Edit0_OnEditChar(CharCode)
+ --============================================================================
+function Edit0_OnEditChar(CharCode)
 	if CharCode == "" then
 		Label4.caption = "0 / 4000 Byte"
 	else
-		szByte = Form.getLenByte(CharCode)
+		szByte = Form.GetLenByte(CharCode)
 
-		if szByte <> "" then
-			if Cint(szByte) > 4000 then
-				'Edit0.caption = g_szPrevText
-				'szByte = Form.getLenByte(g_szPrevText)
+		if szByte ~= "" then
+			if gf_Tonumber(szByte) > 4000 then
+				 --Edit0.caption = g_szPrevText
+				 --szByte = Form.getLenByte(g_szPrevText)
 				
-				nTotalLen = Form.getLen(CharCode)
+				nTotalLen = Form.GetLen(CharCode)
 				nCnt = nTotalLen
-				for i = 0 to nCnt-1 
+				for i = 0, nCnt-1 do
 					nTotalLen = nTotalLen - 1
-					szSub = Form.getSubString(CharCode, 0, nTotalLen)
-					szByte = Form.getLenByte(szSub)
+					szSub = Form.GetSubString(CharCode, 0, nTotalLen)
+					szByte = Form.GetLenByte(szSub)
 
-					if Cint(szByte) <= 4000 then
+					if gf_Tonumber(szByte) <= 4000 then
 						
 						Edit0.caption = szSub	
-						Exit For
-					end if
-				next 
+						break
+					end
+				end
 			else
 				g_szPrevText = CharCode
-			end if
+			end
 	
-			Label4.caption = szByte & " / 4000 Byte"
-		end if
-	end if
+			Label4.caption = szByte .. " / 4000 Byte"
+		end
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub Edit0_OnKeypadStatus(sStatus, nHeight)
-	'20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가
+ --============================================================================
+function Edit0_OnKeypadStatus(sStatus, nHeight)
+	 --20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가
 	if g_isExpand == true then
-		if sStatus == "hide" and Cint(nHeight) == 0 then
+		if sStatus == "hide" and gf_Tonumber(nHeight) == 0 then
 			Image0.height = 414
 			Edit0.height = 394
 			
@@ -706,17 +708,17 @@ Sub Edit0_OnKeypadStatus(sStatus, nHeight)
 			Button2.top = 596
 			Button0.top = 596
 			
-			if trim(Edit0.caption) == "" then
+			if gf_Trim(Edit0.caption) == "" then
 				Label4.caption = "0 / 4000 Byte"
 				Label5.visible = true
 			else
-				szByte = Form.getLenByte(Edit0.caption)
-				Label4.caption = szByte & " / 4000 Byte"
+				szByte = Form.GetLenByte(Edit0.caption)
+				Label4.caption = szByte .. " / 4000 Byte"
 				Label5.visible = false
-			end if
+			end
 		elseif sStatus == "show" then
 			Label5.visible = false
-			'20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가
+			 --20240904_01 HWG START : 종목메모 컨트롤위치 동적변경 기능 추가
 			if g_isExpand == true then
 				nReduce = 260
 				
@@ -728,41 +730,41 @@ Sub Edit0_OnKeypadStatus(sStatus, nHeight)
 				
 				Button2.top = 596 - nReduce
 				Button0.top = 596 - nReduce
-			end if
-			'20240904_01 HWG END
-		end if
+			end
+			 --20240904_01 HWG END
+		end
 		
 		
-	end if
-	'20240904_01 HWG END
-End Sub
+	end
+	 --20240904_01 HWG END
+end
 
-'20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
-Function Request_Tran_ohhts_memo_013r_1()
+ --20240828_01 KBC START : 관심종목 종목메모 연계 (국내+해외 종목메모 통합)
+function Request_Tran_ohhts_memo_013r_1()
 	DATAMANAGER.ClearInputData(false, "ohhts_memo_013r_1")
 	
-	szUserID		= Form.GetSharedData("&USER_ID", false )
-	szToday		= Form.GetSharedData("&HOST_DATE", 0 )
+	szUserID		= Form.GetSharedData("..USER_ID", false )
+	szToday		= Form.GetSharedData("..HOST_DATE", 0 )
 	szName		= Form.GetItemCodeInfo(g_szItemCd, "name")
 	
-	'MsgBox g_szItemCd & ".." & g_szItemMarket & ".." & szName
+	 --MsgBox g_szItemCd & ".." & g_szItemMarket & ".." & szName
 	
-	If g_saveFg = false Then		
+	if g_saveFg == false then
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_USER_ID" 				, 0 ,  szUserID)
-		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_MEMO_MANG_CLS_CODE" 	, 0 , "2" )		'1일반메모,2종목메모
-		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_SLCT_YN" 		, 0 , "1" )		'1검색,2전체검색,3추가,4수정,5삭제,9전체삭제
-		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_CLS_CODE" 		, 0 , "1" )		'1제목,2내용,3제목+내용, 1종목,2내용
+		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_MEMO_MANG_CLS_CODE" 	, 0 , "2" )		 --1일반메모,2종목메모
+		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_SLCT_YN" 		, 0 , "1" )		 --1검색,2전체검색,3추가,4수정,5삭제,9전체삭제
+		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_CLS_CODE" 		, 0 , "1" )		 --1제목,2내용,3제목+내용, 1종목,2내용
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_NEW_ISSU_CODE" 		, 0 , g_szItemCd )
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_MRKT_CLS_CODE" 	, 0 , g_szItemMarket )
-	Else
+	else
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_USER_ID" 				, 0 ,  szUserID)
-		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_MEMO_MANG_CLS_CODE" 	, 0 , "2" )		'1일반메모,2종목메모
+		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_MEMO_MANG_CLS_CODE" 	, 0 , "2" )		 --1일반메모,2종목메모
 		
-		If Trim(Edit0.caption) = "" Then
-			DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_SLCT_YN" 	, 0 , "5" ) 		'1검색,2전체검색,3추가,4수정,5삭제,9전체삭제
-		Else
-			DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_SLCT_YN" 	, 0 , "4" )		'1검색,2전체검색,3추가,4수정,5삭제,9전체삭제
-		End If
+		if gf_Trim(Edit0.caption) == "" then
+			DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_SLCT_YN" 	, 0 , "5" ) 		 --1검색,2전체검색,3추가,4수정,5삭제,9전체삭제
+		else
+			DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_SLCT_YN" 	, 0 , "4" )		 --1검색,2전체검색,3추가,4수정,5삭제,9전체삭제
+		end
 		
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_CLS_CODE" 		, 0 , "" )
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_MOD_YMDH"				, 0 , szToday )
@@ -772,28 +774,29 @@ Function Request_Tran_ohhts_memo_013r_1()
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_ISSU_MEMO_CNTT"		, 0 , Edit0.caption )
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_INPUT_MRKT_CLS_CODE" 	, 0 , g_szItemMarket)
 	
-	End If
+	end
 	DATAMANAGER.RequestTranData("ohhts_memo_013r_1")
-End Function
+end
 
-Sub Request_Tran_ohhts_1001_001r()
+function Request_Tran_ohhts_1001_001r()
 	
 	DATAMANAGER.CancelRealData("ohhts_stck_incg")
 	
-	'************************************ SOR_START
-	' 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
+	 --************************************ SOR_START
+	 -- 20250507 이윤성 2차 대체거래소 거래소구분 추가작업
 	DATAMANAGER.CancelRealData("ohhts_unt_incg")
-	'************************************ SOR_END		
+	 --************************************ SOR_END		
 	
 	DATAMANAGER.ClearInputData(false, "ohhts_1001_001r")
 	DATAMANAGER.SetDataValue( 0, "ohhts_1001_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE"	, 0 , g_szItemMarket )
 	DATAMANAGER.SetDataValue( 0, "ohhts_1001_001r", "InBlock1", "FID_INPUT_ISCD" 				, 0 , g_szItemCd )
 	DATAMANAGER.RequestTranData("ohhts_1001_001r")
-End Sub
-'20240828_01 KBC END
+end
+ --20240828_01 KBC END
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cnta" trcode="ohhts_exst_cnta" />

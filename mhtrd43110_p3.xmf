@@ -62,200 +62,203 @@
 		<EDIT name="edtBlank" fonttype="3" imetype="0" ly_vert="25,80,259,39,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="6731" _ulen="6005" >
-'============================================================================
-' 화 면 명 : 관심종목_관심종목편집_빈칸삽입
-' 화면설명 : 관심종목편집창에서 종목리스트에 빈칸 삽입하는 팝업
-' 작    성 : 2015.12.16 ~ 2015.12.17 ssang
-'============================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 화 면 명 : 관심종목_관심종목편집_빈칸삽입
+ -- 화면설명 : 관심종목편집창에서 종목리스트에 빈칸 삽입하는 팝업
+ -- 작    성 : 2015.12.16 ~ 2015.12.17 ssang
+ --============================================================================
 
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
-Dim g_szCloud		' 관심동기화(0:미사용(로컬), 1:사용(서버))
-Dim g_szChk
-Dim g_szGCode
+local g_szCloud -- 관심동기화(0:미사용(로컬), 1:사용(서버))
+local g_szChk
+local g_szGCode
 g_szGCode = ""
 
-Dim g_szTitle
+local g_szTitle
 g_szTitle = "알림"
 
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
+ --****************************************************************************
 
-'============================================================================
-' Load_GWGroup :  로컬에 저장된 관심그룹 가져오기
-'============================================================================
-Function Load_GWGroup( )
-	Dim tGroup, tList
+ --============================================================================
+ -- Load_GWGroup :  로컬에 저장된 관심그룹 가져오기
+ --============================================================================
+function Load_GWGroup( )
+	local tGroup, tList
 	
 	grdGroup.rowcount = 0	
 	szGroup = Form.LoadConfigData("GLOBAL_INTR", "GROUP")
 	
-	if Trim(szGroup ) <> "" then
-		tGroup = Split(szGroup, "♣")
+	if gf_Trim(szGroup) ~= "" then
+		tGroup = gf_Split(szGroup, "♣")
 		
-		For i = 0 to #tGroup-1
-			tList = Split(tGroup(i), "★")
+		for i = 0, #tGroup-1 do
+			tList = gf_Split(tGroup[i+1], "★")
 			
 			grdGroup.insertrow = i
 	
-			grdGroup.SetCellData("bd_code",  i, tList[0])
-			grdGroup.SetCellData("bd_name",  i, tList[1])
-			grdGroup.SetCellData("bd_count", i, tList[2])
-		Next
-	end if
-End Function	
+			grdGroup.SetCellData("bd_code",  i, tList[0+1])
+			grdGroup.SetCellData("bd_name",  i, tList[1+1])
+			grdGroup.SetCellData("bd_count", i, tList[2+1])
+		end
+	end
+end
 
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'============================================================================
-' Form_OnFormInit
-'============================================================================
-Sub Form_OnFormInit( )
-	' 관심 동기화 //////////////////////////////////////////////////////////
+ --============================================================================
+ -- Form_OnFormInit
+ --============================================================================
+function Form_OnFormInit( )
+	 -- 관심 동기화 //////////////////////////////////////////////////////////
 	g_szCloud = Form.GetEnvData("common.interest_cloud")
 	
-	if Trim(g_szCloud) == "" then	' 초기값 : 1(동기화 사용)
+	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용)
 		g_szCloud = "1"
-	end if
-	' //////////////////////////////////////////////////////////////////////
+	end
+	 -- //////////////////////////////////////////////////////////////////////
 	
 	szData = Form.GetOpenLinkData( )
 	
-	if szData <> "" then
-		tData = Split(szData, "★")
-		g_szChk = tData[0]
+	if szData ~= "" then
+		tData = gf_Split(szData, "★")
+		g_szChk = tData[0+1]
 		
-		if tData[0] == "BLANK_ADD" then
+		if tData[0+1] == "BLANK_ADD" then
 			btnAdd.caption = "추가"
 			lblTitle.caption = "빈칸메모 입력"
 			edtBlank.hintcaption = "빈칸메모를 입력하세요"
-		elseif tData[0] == "BLANK_MOD" then
+		elseif tData[0+1] == "BLANK_MOD" then
 			btnAdd.caption = "수정"
 			lblTitle.caption = "빈칸메모 수정"
 			edtBlank.hintcaption = "빈칸메모를 입력하세요"			
 			
-			edtBlank.caption = tData[1]
+			edtBlank.caption = tData[1+1]
 			
-		elseif tData[0] == "GLOBAL_INTR_GROUP_ADD" then
+		elseif tData[0+1] == "GLOBAL_INTR_GROUP_ADD" then
 			btnAdd.caption = "등록"
 			lblTitle.caption = "관심그룹 추가"
 			
-			g_szGCode = tData[1]
+			g_szGCode = tData[1+1]
 			edtBlank.hintcaption = "관심그룹명을 입력하세요"
 			
-			if g_szCloud == "1" then		' Server 저장시
-				' 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
+			if g_szCloud == "1" then -- Server 저장시
+				 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 				DATAMANAGER.RequestTranData("ohhts_intr_026r")
-			else							' Local 저장시
-				' 로컬 저장된 관심그룹 가져오기	
+			else -- Local 저장시
+				 -- 로컬 저장된 관심그룹 가져오기	
 				Load_GWGroup( )
-			end if
+			end
 			
-			edtBlank.caption = "관심그룹" & g_szGCode
+			edtBlank.caption = "관심그룹" .. g_szGCode
 			
-		elseif tData[0] == "GROUP_MOD" then
+		elseif tData[0+1] == "GROUP_MOD" then
 			btnAdd.caption = "수정"
 			lblTitle.caption = "관심그룹 명칭 수정"
 			edtBlank.hintcaption = "관심그룹명을 입력하세요"
 			
-			g_szGCode = tData[1]
-			edtBlank.caption = tData[2]
+			g_szGCode = tData[1+1]
+			edtBlank.caption = tData[2+1]
 			
-			if g_szCloud == "1" then		' Server 저장시
-				' 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
+			if g_szCloud == "1" then -- Server 저장시
+				 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 				DATAMANAGER.RequestTranData("ohhts_intr_026r")
-			else							' Local 저장시
-				' 로컬 저장된 관심그룹 가져오기	
+			else -- Local 저장시
+				 -- 로컬 저장된 관심그룹 가져오기	
 				Load_GWGroup( )
-			end if
-		end if
-	end if
-End Sub
+			end
+		end
+	end
+end
 
-'============================================================================
-' btnAdd_OnClick : Add버튼 클릭
-'============================================================================
-Sub btnAdd_OnClick( )
-	Dim nGCode
+ --============================================================================
+ -- btnAdd_OnClick : Add버튼 클릭
+ --============================================================================
+function btnAdd_OnClick( )
+	local nGCode
 	
 	if g_szChk == "GLOBAL_INTR_GROUP_ADD" or g_szChk == "GROUP_MOD" then
 		if g_szChk == "GLOBAL_INTR_GROUP_ADD" then
-			For i = 0 to grdGroup.rowcount - 1 
-				if Trim(edtBlank.caption) == grdGroup.GetCellData("bd_name", i) then
+			for i = 0, grdGroup.rowcount - 1 do
+				if gf_Trim(edtBlank.caption) == grdGroup.GetCellData("bd_name", i) then
 					Form.ShowAlert(g_szTitle, "동일한 관심그룹 이름으로는 등록하실 수 없습니다.")
-					Exit Sub					
-				end if
-			Next
+					return					
+				end
+			end
 
-			if Trim(edtBlank.caption) == "" or edtBlank.caption = null then
+			if gf_Trim(edtBlank.caption) == "" or edtBlank.caption == nil then
 				Form.ShowAlert(g_szTitle, "관심그룹 이름이 없습니다. 관심그룹 이름을 지정해 주세요.")
-				Exit Sub
-			end if
+				return
+			end
 			
 		elseif g_szChk == "GROUP_MOD" then
-			if Trim(edtBlank.caption) == "" or edtBlank.caption = null then
+			if gf_Trim(edtBlank.caption) == "" or edtBlank.caption == nil then
 				Form.ShowAlert(g_szTitle, "관심그룹 이름이 없습니다. 관심그룹 이름을 지정해 주세요.")
-				Exit Sub
-			end if
+				return
+			end
 
-			For i = 0 to grdGroup.rowcount - 1 
-				if Trim(edtBlank.caption) == grdGroup.GetCellData("bd_name", i) then
+			for i = 0, grdGroup.rowcount - 1 do
+				if gf_Trim(edtBlank.caption) == grdGroup.GetCellData("bd_name", i) then
 					Form.ShowAlert(g_szTitle, "동일한 관심그룹 이름으로는 수정하실 수 없습니다.")
-					Exit Sub
+					return
 					
-				end if
-			Next
-		end if
+				end
+			end
+		end
 		
-		szData = g_szGCode & "★" & edtBlank.caption
+		szData = g_szGCode .. "★" .. edtBlank.caption
 		Form.SendReturnToParent(g_szChk , szData)
 	else
 		Form.SendReturnToParent(g_szChk , edtBlank.caption)
-	end if
+	end
 	
 	Form.CloseForm( )
-End Sub
+end
 
-'============================================================================
-' btnCancel_OnClick : 취소버튼 클릭
-'============================================================================
-Sub btnCancel_OnClick( )
+ --============================================================================
+ -- btnCancel_OnClick : 취소버튼 클릭
+ --============================================================================
+function btnCancel_OnClick( )
 	Form.CloseForm( )
-End Sub
+end
 
-'============================================================================
-' imgClose_OnClick : 닫기
-'============================================================================
-Sub imgClose_OnClick( )
+ --============================================================================
+ -- imgClose_OnClick : 닫기
+ --============================================================================
+function imgClose_OnClick( )
 	Form.CloseForm( )
-End Sub
+end
 
-'============================================================================
-' btnClose_OnClick : 닫기
-'============================================================================
-Sub btnClose_OnClick( )
+ --============================================================================
+ -- btnClose_OnClick : 닫기
+ --============================================================================
+function btnClose_OnClick( )
 	Form.CloseForm( )	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
-	' ----------------------------------------------------------------------
-	' 관심그룹 조회
-	' ----------------------------------------------------------------------
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	 -- ----------------------------------------------------------------------
+	 -- 관심그룹 조회
+	 -- ----------------------------------------------------------------------
 	if szTranID == "ohhts_intr_026r" then
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_026r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("&USER_ID", false))	' USER ID
-	end if
-End Sub
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_026r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("..USER_ID", false))	 -- USER ID
+	end
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_intr_026r" trcode="ohhts_intr_026r" compress="1" encryption="1" inputcheck="1" useattr="0" />

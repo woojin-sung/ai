@@ -161,61 +161,63 @@
 		</CHARTEX>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="9551" _ulen="9065" >
- '===========================================================================
-' 01. 업무구분 : 해외주식현재가_체결
-' 02. 화면 : 300
-' 03. 화면설명 : 
-' 04. 작성자 : 
-' 05. 작성일 : 
-' 06. 수정이력 :
-' 20250806_01 YSH : 해외주식 체결강도 필드 추가
-'===========================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+  --===========================================================================
+ -- 01. 업무구분 : 해외주식현재가_체결
+ -- 02. 화면 : 300
+ -- 03. 화면설명 : 
+ -- 04. 작성자 : 
+ -- 05. 작성일 : 
+ -- 06. 수정이력 :
+ -- 20250806_01 YSH : 해외주식 체결강도 필드 추가
+ --===========================================================================
 
-'[[ 전역변수 ]]
-'===========================================================================
-Dim g_sCode
-Dim g_sExid
-Dim g_sIsCd
-Dim g_rtChk
-Dim g_nMaxCount
+ --[[ 전역변수 ]]
+ --===========================================================================
+local g_sCode
+local g_sExid
+local g_sIsCd
+local g_rtChk
+local g_nMaxCount
 
-Dim g_szMktOp
+local g_szMktOp
 g_szMktOp = ""
-'[[ Form INIT]]
-'============================================================================
-Sub Form_OnFormInit()
+ --[[ Form INIT]]
+ --============================================================================
+function Form_OnFormInit()
 	
-	ChartEx0.SetPeriodType(1)			'0:틱, 1:분, 2:일자
+	ChartEx0.SetPeriodType(1)			 --0:틱, 1:분, 2:일자
 	Grid0.SetVisibleCol( 4, false )
 	Grid0.SetVisibleCol( 1, false)
-End Sub
+end
 
-'[[ 트리거 이벤트 발생 시]]
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --[[ 트리거 이벤트 발생 시]]
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 
 	if sEventName == "RequestData" then
 		f_FormStart(sParam)
 	elseif sEventName == "CHANGE_MKTOP" then
 		
-		if sParam <> "" and sParam <> null then
+		if sParam ~= "" and sParam ~= nil then
 			g_szMktOp = sParam
 			DATAMANAGER.RequestTranData("ohhts_5041_007r")
-		end if
-	end if
-end Sub
+		end
+	end
+end
 
-'============================================================================
-Sub Form_OnLinkData(sKey, sValue)
-	if sKey = "ITEMCODE" then
+ --============================================================================
+function Form_OnLinkData(sKey, sValue)
+	if sKey == "ITEMCODE" then
 		f_FormStart(sValue)
-	end if
-End Sub
+	end
+end
 
 
-'화면 클리어
-'============================================================================
-Function f_FormClear()
+ --화면 클리어
+ --============================================================================
+function f_FormClear()
 	g_nMaxCount = 300
 	DATAMANAGER.ClearInputData( false, "ohhts_6000_003r" )
 	DATAMANAGER.ClearOutputData( false, "ohhts_6000_003r" )
@@ -224,74 +226,74 @@ Function f_FormClear()
 	DATAMANAGER.ClearOutputData( false, "ohhts_5041_007r" )
 	
 	DATAMANAGER.CancelRealData( "ohhts_exst_cntg" )
-	'20250806_01 YSH START : 해외주식 체결강도 필드 추가
-	'DATAMANAGER.ClearInputData( 1, "ohhts_exst_cntg" )
-	'DATAMANAGER.ClearOutputData( 1, "ohhts_exst_cntg" )
-	'20250806_01 YSH END
+	 --20250806_01 YSH START : 해외주식 체결강도 필드 추가
+	 --DATAMANAGER.ClearInputData( 1, "ohhts_exst_cntg" )
+	 --DATAMANAGER.ClearOutputData( 1, "ohhts_exst_cntg" )
+	 --20250806_01 YSH END
 	
-	'20220404 HSZ START : 애프터마켓 실시간체결 추가
+	 --20220404 HSZ START : 애프터마켓 실시간체결 추가
 	DATAMANAGER.CancelRealData( "ohhts_exst_cnta" )
-	'20250806_01 YSH START : 해외주식 체결강도 필드 추가
-	'DATAMANAGER.ClearInputData( 1, "ohhts_exst_cnta" )
-	'DATAMANAGER.ClearOutputData( 1, "ohhts_exst_cnta" )
-	'20250806_01 YSH END
+	 --20250806_01 YSH START : 해외주식 체결강도 필드 추가
+	 --DATAMANAGER.ClearInputData( 1, "ohhts_exst_cnta" )
+	 --DATAMANAGER.ClearOutputData( 1, "ohhts_exst_cnta" )
+	 --20250806_01 YSH END
 	
-	'20220404 HSZ END
+	 --20220404 HSZ END
 	
-	'20221213_01 KBC 해외주식주간거래
+	 --20221213_01 KBC 해외주식주간거래
 	DATAMANAGER.CancelRealData( "ohhts_exst_cntd" )
-	'20250806_01 YSH START : 해외주식 체결강도 필드 추가
-	'DATAMANAGER.ClearInputData( 1, "ohhts_exst_cntd" )
-	'DATAMANAGER.ClearOutputData( 1, "ohhts_exst_cntd" )
-	'20250806_01 YSH END
+	 --20250806_01 YSH START : 해외주식 체결강도 필드 추가
+	 --DATAMANAGER.ClearInputData( 1, "ohhts_exst_cntd" )
+	 --DATAMANAGER.ClearOutputData( 1, "ohhts_exst_cntd" )
+	 --20250806_01 YSH END
 	
 	Grid0.SetClear()
-end Function
+end
 
-'============================================================================
-'화면 시작
-'============================================================================
-Function f_FormStart(szItemCode)
-	if szItemCode == "null" or  szItemCode == ""  or  szItemCode == null then
-		Exit Function
-	end if
+ --============================================================================
+ --화면 시작
+ --============================================================================
+function f_FormStart(szItemCode)
+	if szItemCode == "nil" or  szItemCode == ""  or  szItemCode == nil then
+		return
+	end
 	
 	
-	f_FormClear() '화면 클리어
+	f_FormClear()  --화면 클리어
 	
 	g_sCode = szItemCode
-	sTemp = split(g_sCode, "@")
-	g_sExid = sTemp[0] '시장구분
-	g_sIsCd = sTemp[1] '종목코드 
+	sTemp = gf_Split(g_sCode, "@")
+	g_sExid = sTemp[0+1]  --시장구분
+	g_sIsCd = sTemp[1+1]  --종목코드 
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_sExid, false )
 	DATAMANAGER.RequestTranData("ohhts_6000_003r")
 	
 	ChartEx0.SetJisuCode(g_sIsCd)
 	if g_sExid == "OQ" or g_sExid == "NY" or g_sExid == "AX" then
-		ChartEx0.setDecimal("4") '차트 스케일 세팅
+		ChartEx0.SetDecimal("4")  --차트 스케일 세팅
 	elseif g_sExid == "SZ" or g_sExid == "SH" or g_sExid == "HK" then
-		ChartEx0.setDecimal("3") '차트 스케일 세팅
+		ChartEx0.SetDecimal("3")  --차트 스케일 세팅
 	elseif g_sExid == "JP" then
-		ChartEx0.setDecimal("1") '차트 스케일 세팅
-	end if
+		ChartEx0.SetDecimal("1")  --차트 스케일 세팅
+	end
 
-end Function
+end
 
-'[[ DATAMANAGER 조회 BEFORE ]]
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
-	if szTranID == "ohhts_6000_003r" then		
-		DATAMANAGER.SetDataValue( false, "ohhts_6000_003r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" ) '시장분류 
-		DATAMANAGER.SetDataValue( false, "ohhts_6000_003r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , g_sExid) '시장구분
-		DATAMANAGER.SetDataValue( false, "ohhts_6000_003r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , g_sIsCd ) '종목코드
-		DATAMANAGER.SetDataValue( false, "ohhts_6000_003r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk) '실시간구분코드
+ --[[ DATAMANAGER 조회 BEFORE ]]
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	if szTranID == "ohhts_6000_003r" then
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_003r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )  --시장분류 
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_003r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , g_sExid)  --시장구분
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_003r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , g_sIsCd )  --종목코드
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_003r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk)  --실시간구분코드
 	elseif szTranID == "ohhts_5041_007r" then
-		g_szToday = Form.GetSharedData( "&HOST_DATE", 0 )
+		g_szToday = Form.GetSharedData( "..HOST_DATE", 0 )
 		
-		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" ) '시장분류 
-		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , g_sExid) '시장구분
-		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , g_sIsCd ) '종목코드
-		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk) '실시간구분코드
+		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )  --시장분류 
+		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , g_sExid)  --시장구분
+		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , g_sIsCd )  --종목코드
+		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk)  --실시간구분코드
 		
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock2", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock2", "FID_INPUT_OVRS_ISCD" , 0 , g_sIsCd )
@@ -305,50 +307,50 @@ Sub DATAMANAGER_OnSendTranBefore(szTranID)
 		szMktOp = ""
 		if g_szMktOp == "001" or g_szMktOp == "002" then
 			szMktOp = "6"
-		else 	
+		else
 			szMktOp = "7"
-		end if
+		end
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_007r", "InBlock2", "FID_INPUT_MKOP_CLS_CODE" , 0, szMktOp)
-	end if
-end Sub
+	end
+end
 
 
-'[[ DATAMANAGER 조회 Complete ]]
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	if szTranID == "ohhts_6000_003r" then		
-		'20250806_01 YSH START : 해외주식 체결강도 필드 추가
+ --[[ DATAMANAGER 조회 Complete ]]
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	if szTranID == "ohhts_6000_003r" then
+		 --20250806_01 YSH START : 해외주식 체결강도 필드 추가
 		DATAMANAGER.ClearInputData( 1, "ohhts_exst_cntg" )
 		DATAMANAGER.ClearInputData( 1, "ohhts_exst_cnta" )
 		DATAMANAGER.ClearInputData( 1, "ohhts_exst_cntd" )
-		'20250806_01 YSH END
+		 --20250806_01 YSH END
 		
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )
 		DATAMANAGER.RequestRealData( "ohhts_exst_cntg" )
 		
-		'20220404 HSZ START : 애프터마켓 실시간체결 추가
+		 --20220404 HSZ START : 애프터마켓 실시간체결 추가
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )
 		DATAMANAGER.RequestRealData( "ohhts_exst_cnta" )
-		'20220404 HSZ END
+		 --20220404 HSZ END
 		
-		'20221213_01 KBC 해외주식주간거래
+		 --20221213_01 KBC 해외주식주간거래
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )
 		DATAMANAGER.RequestRealData( "ohhts_exst_cntd" )
 		
-		if tonumber(Grid0.rowcount) > g_nMaxCount then
+		if gf_Tonumber(Grid0.rowcount) > g_nMaxCount then
 			Grid0.rowcount = g_nMaxCount
-		end if
-	elseif szTranID == "ohhts_5041_007r" then	
+		end
+	elseif szTranID == "ohhts_5041_007r" then
 		szData0 = DATAMANAGER.GetDataValue(1, "ohhts_5041_007r", "OutBlock1", "FIDX_HPRC" , 0)
 		szData1 = DATAMANAGER.GetDataValue(1, "ohhts_5041_007r", "OutBlock1", "FIDX_LPRC" , 0)
-	end if
-end Sub
+	end
+end
 
-Sub DATAMANAGER_OnReceiveTranData(szTranID)
-	'주간장 
-	if  szTranID = "ohhts_5041_007r" then	
-'		nCnt = DATAMANAGER.GetDataCount(false, szTranID , "OutBlock2" )
-'		msgbox nCnt
+function DATAMANAGER_OnReceiveTranData(szTranID)
+	 --주간장 
+	if szTranID == "ohhts_5041_007r" then
+ --		nCnt = DATAMANAGER.GetDataCount(false, szTranID , "OutBlock2" )
+ --		msgbox nCnt
 		if g_szMktOp == "001" or g_szMktOp == "002" then
 			sPRPR 			= DATAMANAGER.GetDataValue(false, szTranID , "OutBlock2" , "FIDX_PRPR" , 0)
 			sPRDY_VRSS_SIGN 	= DATAMANAGER.GetDataValue(false, szTranID , "OutBlock2" , "FIDX_PRDY_VRSS_SIGN" , 0)
@@ -359,53 +361,54 @@ Sub DATAMANAGER_OnReceiveTranData(szTranID)
 			DATAMANAGER.SetDataValue(false, szTranID , "OutBlock1" , "FIDX_PRDY_VRSS_SIGN"	, 0 , sPRDY_VRSS_SIGN)
 			DATAMANAGER.SetDataValue(false, szTranID , "OutBlock1" , "FIDX_PRDY_CTRT"		, 0 , sPRDY_CTRT)
 			DATAMANAGER.SetDataValue(false, szTranID , "OutBlock1" , "FIDX_ACML_VOL"			, 0 , sACML_VOL)
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-'[[ 그리드 일중 헤더 클릭 ]]
-'============================================================================
-Sub Grid0_OnHeaderClickUp(lRow, szCellID)
+ --[[ 그리드 일중 헤더 클릭 ]]
+ --============================================================================
+function Grid0_OnHeaderClickUp(lRow, szCellID)
 	if (szCellID == "th_cell5") then
 		Grid0.SetVisibleCol( 3, false )
 		Grid0.SetVisibleCol( 4, true )
 	elseif (szCellID == "th_cell7") then
 		Grid0.SetVisibleCol( 3, true )
 		Grid0.SetVisibleCol( 4, false )
-	elseif (szCellID == "th_cell2")	then
+	elseif (szCellID == "th_cell2") then
 		Grid0.SetVisibleCol( 1, true )
 		Grid0.SetVisibleCol( 0, false )
-	elseif (szCellID == "th_cell0")	then
+	elseif (szCellID == "th_cell0") then
 		Grid0.SetVisibleCol( 0, true )
 		Grid0.SetVisibleCol( 1, false )
-	end if
-end Sub
+	end
+end
 
-'============================================================================
-Sub Grid0_OnScrollEnd()
-	if tonumber(Grid0.rowcount) < g_nMaxCount then
+ --============================================================================
+function Grid0_OnScrollEnd()
+	if gf_Tonumber(Grid0.rowcount) < g_nMaxCount then
 		if DATAMANAGER.IsMoreNextData( "ohhts_6000_003r" ) then
 			DATAMANAGER.RequestNextData( "ohhts_6000_003r" )
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
 
-'============================================================================
-Sub Form_OnFormInitBefore()
-'	ChartEx0.SetMarketCategory("7")
+ --============================================================================
+function Form_OnFormInitBefore()
+ --	ChartEx0.SetMarketCategory("7")
 	
 	ChartEx0.SetChartType("simpleline")
-	ChartEx0.setDecimal("4")
-'	ChartEx0.SetPeriodTime("001")
-End Sub
+	ChartEx0.SetDecimal("4")
+ --	ChartEx0.SetPeriodTime("001")
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveRealComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveRealComplete(szTranID)
 
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />

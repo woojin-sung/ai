@@ -45,81 +45,82 @@
 		<LABEL name="lblStyle" fgcolor="010:213049051" halign="2" ly_vert="226,159,125,43,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="8889" _ulen="8217" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 화 면 명 : 관심종목_환경설정
+ -- 화면설명 : 관심종목의 설정팝업
+ -- 작    성 : 2016.01.15     ssang
+ --============================================================================
 
-'============================================================================
-' 화 면 명 : 관심종목_환경설정
-' 화면설명 : 관심종목의 설정팝업
-' 작    성 : 2016.01.15     ssang
-'============================================================================
+ -- -- 관심그룹 추가 표시 -- 
+ -- 최근 조회 종목			: GLOBAL_INTR_RECENT  
+ -- 보유 종목				: GLOBAL_INTR_HOLDING
 
-' -- 관심그룹 추가 표시 -- 
-' 최근 조회 종목			: GLOBAL_INTR_RECENT  
-' 보유 종목				: GLOBAL_INTR_HOLDING
+ -- -- 종목 사용시 연결 화면	: GLOBAL_INTR_SCREEN_MOVE --
+ -- 연결버튼 표시			: 0
+ -- 현재가 화면으로 이동		: 1
+ -- 주문 화면으로 이동		: 2
+ -- 차트 화면으로 이동		: 3
 
-' -- 종목 사용시 연결 화면	: GLOBAL_INTR_SCREEN_MOVE --
-' 연결버튼 표시			: 0
-' 현재가 화면으로 이동		: 1
-' 주문 화면으로 이동		: 2
-' 차트 화면으로 이동		: 3
-
-' -- 기타 --
-' 좌.우 스크롤시 관심그룹 변경	: GLOBAL_INTR_SWIPE
-' 시세 변동 표시				: GLOBAL_INTR_RORDER
+ -- -- 기타 --
+ -- 좌.우 스크롤시 관심그룹 변경	: GLOBAL_INTR_SWIPE
+ -- 시세 변동 표시				: GLOBAL_INTR_RORDER
 
 
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-' 설정테이블
-Dim g_tSetTable()
-'g_tSetTable = {}
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+ -- 설정테이블
+local g_tSetTable()
+ --g_tSetTable = {}
 
-' 항목 사용여부
-Dim g_szClick
+ -- 항목 사용여부
+local g_szClick
 g_szClick = ""
 
-Dim g_bFrist
+local g_bFrist
 g_bFirst = false
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
-'****************************************************************************
-'============================================================================
-' Init_SetTable : 설정테이블 초기화
-'============================================================================
-Function Init_SetTable()
-	g_tSetTable.Recent   = 1
-	g_tSetTable.Holding  = 1
-	g_tSetTable.Swipe    = 1
-	g_tSetTable.Border   = 1
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
+ --****************************************************************************
+ --============================================================================
+ -- Init_SetTable : 설정테이블 초기화
+ --============================================================================
+function Init_SetTable()
+	g_tSetTable.recent= 1
+	g_tSetTable.holding= 1
+	g_tSetTable.swipe= 1
+	g_tSetTable.border= 1
 	
-	Form.SetEnvData("1", "GLOBAL_INTR_RECENT"  , g_tSetTable.Recent)		' 최근 조회 종목
-	Form.SetEnvData("1", "GLOBAL_INTR_HOLDING" , g_tSetTable.Holding)		' 보유종목
-	Form.SetEnvData("1", "GLOBAL_INTR_SWIPE"   , g_tSetTable.Swipe)			' 좌.우 스크롤시 관심그룹 변경
-	Form.SetEnvData("1", "GLOBAL_INTR_RORDER"  , g_tSetTable.Border)		' 시세 변동 표시
+	Form.SetEnvData("1", "GLOBAL_INTR_RECENT"  , g_tSetTable.Recent)		 -- 최근 조회 종목
+	Form.SetEnvData("1", "GLOBAL_INTR_HOLDING" , g_tSetTable.Holding)		 -- 보유종목
+	Form.SetEnvData("1", "GLOBAL_INTR_SWIPE"   , g_tSetTable.Swipe)			 -- 좌.우 스크롤시 관심그룹 변경
+	Form.SetEnvData("1", "GLOBAL_INTR_RORDER"  , g_tSetTable.Border)		 -- 시세 변동 표시
 	
 	Form.SetEnvData("1", "GLOBAL_INTR_SCREEN_MOVE", 0)
-End Function
+end
 
-'============================================================================
-' Set_TableData : 사용영역 네이밍 및 폰트 색상 적용
-'============================================================================
-Function Set_TableData(nRow, szName)
+ --============================================================================
+ -- Set_TableData : 사용영역 네이밍 및 폰트 색상 적용
+ --============================================================================
+function Set_TableData(nRow, szName)
 	tblSet.SetCellString(nRow, 1, szName)
 	
-	if Trim(szName) == "사용" then
+	if gf_Trim(szName) == "사용" then
 		tblSet.SetCellFgColor(nRow, 1, "10")	
 	else
 		tblSet.SetCellFgColor(nRow, 1, "12")	
-	end if
-End Function
+	end
+end
 
-'============================================================================
-' Init_Control : 설정 초기화(0: 화면오픈, 1:초기화버튽클릭)
-'============================================================================
-Function Init_Control(nIdx)
-	if nIdx == 1 then							' 초기화 버튼 클릭시
+ --============================================================================
+ -- Init_Control : 설정 초기화(0: 화면오픈, 1:초기화버튽클릭)
+ --============================================================================
+function Init_Control(nIdx)
+	if nIdx == 1 then -- 초기화 버튼 클릭시
 		Set_TableData(1, "사용")
 		Set_TableData(2, "사용")
 		Set_TableData(6, "사용")
@@ -128,34 +129,34 @@ Function Init_Control(nIdx)
 		cmbStyle.currentindex = 0
 		
 		Init_SetTable()
-	else										' Form_init
+	else -- Form_init
 		if Form.GetEnvData("GLOBAL_INTR_RECENT") == "" then
-			g_tSetTable.Recent = 1
+			g_tSetTable.recent= 1
 			Set_TableData(1, "사용")
 			Form.SetEnvData("1", "GLOBAL_INTR_RECENT", g_tSetTable.Recent)
 		else
 			if Form.GetEnvData("GLOBAL_INTR_RECENT") == "1" then
-				g_tSetTable.Recent = 1
+				g_tSetTable.recent= 1
 				Set_TableData(1, "사용")
 			else
-				g_tSetTable.Recent = 0
+				g_tSetTable.recent= 0
 				Set_TableData(1, "미사용")
-			end if
-		end if
+			end
+		end
 		
 		if Form.GetEnvData("GLOBAL_INTR_HOLDING") == "" then
-			g_tSetTable.Holding = 1
+			g_tSetTable.holding= 1
 			Set_TableData(2, "사용")
 			Form.SetEnvData("1", "GLOBAL_INTR_HOLDING", g_tSetTable.Holding)
 		else
 			if Form.GetEnvData("GLOBAL_INTR_HOLDING") == "1" then
-				g_tSetTable.Holding = 1
+				g_tSetTable.holding= 1
 				Set_TableData(2, "사용")
 			else
-				g_tSetTable.Holding = 0
+				g_tSetTable.holding= 0
 				Set_TableData(2, "미사용")
-			end if
-		end if
+			end
+		end
 		
 		if Form.GetEnvData("GLOBAL_INTR_SCREEN_MOVE") == "1" then
 			cmbStyle.currentindex = 1
@@ -165,160 +166,161 @@ Function Init_Control(nIdx)
 			cmbStyle.currentindex = 3
 		else
 			cmbStyle.currentindex = 0			
-		end if
+		end
 		
-		if Form.GetEnvData("GLOBAL_INTR_SWIPE") == "" then	' 20160325 초기화 사용으로 변경
-			g_tSetTable.Swipe = 1
+		if Form.GetEnvData("GLOBAL_INTR_SWIPE") == "" then -- 20160325 초기화 사용으로 변경
+			g_tSetTable.swipe= 1
 			Set_TableData(6, "사용")
 		else
 			if Form.GetEnvData("GLOBAL_INTR_SWIPE") == "1" then
-				g_tSetTable.Swipe = 1
+				g_tSetTable.swipe= 1
 				Set_TableData(6, "사용")
 			else
-				g_tSetTable.Swipe = 0
+				g_tSetTable.swipe= 0
 				Set_TableData(6, "미사용")
-			end if
-		end if
+			end
+		end
 		
 		if Form.GetEnvData("GLOBAL_INTR_RORDER")	== "" then
-			g_tSetTable.Border = 1
+			g_tSetTable.border= 1
 			Set_TableData(7, "사용")
 		else
 			if Form.GetEnvData("GLOBAL_INTR_RORDER")	== "1" then
-				g_tSetTable.Border = 1
+				g_tSetTable.border= 1
 				Set_TableData(7, "사용")
 			else
-				g_tSetTable.Border = 0
+				g_tSetTable.border= 0
 				Set_TableData(7, "미사용")
-			end if
-		end if
-	end if
-End Function
+			end
+		end
+	end
+end
 
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'============================================================================
-' Form_OnFormInit
-'============================================================================
-Sub Form_OnFormInit()
-	Dim szDefault
+ --============================================================================
+ -- Form_OnFormInit
+ --============================================================================
+function Form_OnFormInit()
+	local szDefault
 
 	Form.SetScreenName("환경설정")
 	Init_Control(0)
-End Sub
+end
 
-'============================================================================
-' Form_OnFormClose 
-'============================================================================
-Sub Form_OnFormClose()
-	' 관심종목화면에 셋팅 적용 알림
+ --============================================================================
+ -- Form_OnFormClose 
+ --============================================================================
+function Form_OnFormClose()
+	 -- 관심종목화면에 셋팅 적용 알림
 	Form.SendReturnToParent("GLOBAL_INTR_SET", g_szClick)
-End Sub
+end
 
-'============================================================================
-' btnInit_OnClick : 초기화버튼 클릭
-'============================================================================
-Sub btnInit_OnClick()
+ --============================================================================
+ -- btnInit_OnClick : 초기화버튼 클릭
+ --============================================================================
+function btnInit_OnClick()
 	Init_Control(1)
-End Sub
+end
 
-'============================================================================
-' cmbStyle_OnEditComplete
-'============================================================================
-Sub cmbStyle_OnEditComplete(iIndex)
+ --============================================================================
+ -- cmbStyle_OnEditComplete
+ --============================================================================
+function cmbStyle_OnEditComplete(iIndex)
 	if g_bFirst == false then
 		g_bFirst = true
 	else
 		g_szClick = "CLICK"
 		Form.SetEnvData("1", "GLOBAL_INTR_SCREEN_MOVE", iIndex)
-	end if
+	end
 	
 	lblStyle.caption = cmbStyle.caption
-End Sub
+end
 
-'============================================================================
-' imgRecent_OnClick
-'============================================================================
-Sub imgRecent_OnClick()
-	if g_tSetTable.Recent == 1 then
-		g_tSetTable.Recent = 0
+ --============================================================================
+ -- imgRecent_OnClick
+ --============================================================================
+function imgRecent_OnClick()
+	if g_tSetTable.recent== 1 then
+		g_tSetTable.recent= 0
 		Set_TableData(1, "미사용")		
 	else
-		g_tSetTable.Recent = 1
+		g_tSetTable.recent= 1
 		Set_TableData(1, "사용")			
-	end if
+	end
 	
 	g_szClick = "CLICK"
-	Form.SetEnvData("1", "GLOBAL_INTR_RECENT", g_tSetTable.Recent)			' 최근 조회 종목
-End Sub
+	Form.SetEnvData("1", "GLOBAL_INTR_RECENT", g_tSetTable.Recent)			 -- 최근 조회 종목
+end
 
-'============================================================================
-' imgHolding_OnClick
-'============================================================================
-Sub imgHolding_OnClick()
-	if g_tSetTable.Holding == 1 then
-		g_tSetTable.Holding = 0
+ --============================================================================
+ -- imgHolding_OnClick
+ --============================================================================
+function imgHolding_OnClick()
+	if g_tSetTable.holding== 1 then
+		g_tSetTable.holding= 0
 		Set_TableData(2, "미사용")			
 	else
-		g_tSetTable.Holding = 1
+		g_tSetTable.holding= 1
 		Set_TableData(2, "사용")			
-	end if
+	end
 	
 	g_szClick = "CLICK"
-	Form.SetEnvData("1", "GLOBAL_INTR_HOLDING", g_tSetTable.Holding)		' 보유종목
-End Sub
+	Form.SetEnvData("1", "GLOBAL_INTR_HOLDING", g_tSetTable.Holding)		 -- 보유종목
+end
 
-'============================================================================
-' imgSwipe_OnClick
-'============================================================================
-Sub imgSwipe_OnClick()
-	if g_tSetTable.Swipe == 1 then	
-		g_tSetTable.Swipe = 0
+ --============================================================================
+ -- imgSwipe_OnClick
+ --============================================================================
+function imgSwipe_OnClick()
+	if g_tSetTable.swipe== 1 then
+		g_tSetTable.swipe= 0
 		Set_TableData(6, "미사용")		
 	else
-		g_tSetTable.Swipe = 1
+		g_tSetTable.swipe= 1
 		Set_TableData(6, "사용")		
-	end if	
+	end
 	
 	g_szClick = "CLICK"
-	Form.SetEnvData("1", "GLOBAL_INTR_SWIPE", g_tSetTable.Swipe)		' 좌.우 스크롤시 관심그룹 변경
-End Sub
+	Form.SetEnvData("1", "GLOBAL_INTR_SWIPE", g_tSetTable.Swipe)		 -- 좌.우 스크롤시 관심그룹 변경
+end
 
-'============================================================================
-' imgBorder_OnClick
-'============================================================================
-Sub imgBorder_OnClick()
-	if g_tSetTable.Border == 1 then
-		g_tSetTable.Border = 0
+ --============================================================================
+ -- imgBorder_OnClick
+ --============================================================================
+function imgBorder_OnClick()
+	if g_tSetTable.border== 1 then
+		g_tSetTable.border= 0
 		Set_TableData(7, "미사용")		
 	else
-		g_tSetTable.Border = 1
+		g_tSetTable.border= 1
 		Set_TableData(7, "사용")			
-	end if	
+	end
 	
 	g_szClick = "CLICK"
-	Form.SetEnvData("1", "GLOBAL_INTR_RORDER", g_tSetTable.Border)		' 시세 변동 표시
-End Sub
+	Form.SetEnvData("1", "GLOBAL_INTR_RORDER", g_tSetTable.Border)		 -- 시세 변동 표시
+end
 
-'============================================================================
-' tblSet_OnClick
-'============================================================================
-Sub tblSet_OnClick(lRow , lColumn)
+ --============================================================================
+ -- tblSet_OnClick
+ --============================================================================
+function tblSet_OnClick(lRow , lColumn)
 	if lColumn == 1 or lColumn == 2 then
-		if lRow == 1 then			' 최근조회 종목
+		if lRow == 1 then -- 최근조회 종목
 			imgRecent_OnClick()
-		elseif lRow == 2 then			' 보유종목
+		elseif lRow == 2 then -- 보유종목
 			imgHolding_OnClick()
-		elseif lRow == 6 then			' 좌우스크롤시 관심그룹 변경
+		elseif lRow == 6 then -- 좌우스크롤시 관심그룹 변경
 			imgSwipe_OnClick()
-		elseif lRow == 7 then			' 시세 변동 표시
+		elseif lRow == 7 then -- 시세 변동 표시
 			imgBorder_OnClick()
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

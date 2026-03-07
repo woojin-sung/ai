@@ -49,16 +49,18 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="23613" _ulen="22283" >
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim g_sOrdGbn	'매도/매수 구분 (매도:0, 매수:1)
-Dim g_sProcGbn	'가격/수량 구분 (가격:0, 수량:1)
-Dim g_sInputData'가격/수량 값   
-Dim g_sInteger	'정수부 자릿수
-Dim g_sDecimal	'소수부 자릿수
-Dim g_sPostFix	'뒷첨자
-Dim g_sRetKey	'리턴받을 키값
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+local g_sOrdGbn --매도/매수 구분 (매도:0, 매수:1)
+local g_sProcGbn --가격/수량 구분 (가격:0, 수량:1)
+local g_sInputData --가격/수량 값   
+local g_sInteger --정수부 자릿수
+local g_sDecimal --소수부 자릿수
+local g_sPostFix --뒷첨자
+local g_sRetKey --리턴받을 키값
 
 g_sOrdGbn = "0"
 g_sProcGbn = "0"
@@ -67,77 +69,77 @@ g_sDecimal = "4"
 g_sPostFix = "USD"
 g_sRetKey = ""
 
-Dim g_sFocusEditClear		'초기 데이터 클리어 여부
+local g_sFocusEditClear --초기 데이터 클리어 여부
 g_sFocusEditClear = false
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
-'===============================================
-' NULL 체크 
-'===============================================
-Function isEmpty(sData)
-	if trim(sData) == "" or sData == null or trim(sData) == "null" then
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
+ --===============================================
+ -- NULL 체크 
+ --===============================================
+function isEmpty(sData)
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
 		return true
 	else
 		return false
-	end if
-End Function
+	end
+end
 
-'===============================================
-' 숫자 소수점 절사 함수
-'===============================================
-Function truncateToDecimalPlaces(nVal, nDeimalPlaces)
-	nVal = Cdbl(nVal)
+ --===============================================
+ -- 숫자 소수점 절사 함수
+ --===============================================
+function truncateToDecimalPlaces(nVal, nDeimalPlaces)
+	nVal = gf_Tonumber(nVal)
 	nFactor = 10 ^ nDeimalPlaces
-	szNumStr = FormatNumber(nVal*nFactor,12,0,0,0,1)
-	nDecimalIdx = instr(szNumStr, ".")
+	szNumStr = gf_CommaValue(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = string.find(szNumStr, ".")
 	
 	nTotalData = 0
-	if Cint(nDecimalIdx) > 0 then
-		nTotalData = Cdbl(left(szNumStr, Cint(nDecimalIdx)-1))
+	if gf_Tonumber(nDecimalIdx) > 0 then
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, Cint(nDecimalIdx)-1))
 	else
-		nTotalData = Cdbl(szNumStr)
-	end if
+		nTotalData = gf_Tonumber(szNumStr)
+	end
 
 	return nTotalData / nFactor
-End Function
+end
 
-'===============================================
-' (NonNull) 문자열 -> 배열 변환함수
-'===============================================
-Function Convert_StrToArr(szData, szSeperator)
+ --===============================================
+ -- (NonNull) 문자열 -> 배열 변환함수
+ --===============================================
+function Convert_StrToArr(szData, szSeperator)
 
-	Dim arrData
+	local arrData
 	
-	'--------------------------------------------
-	' 링크데이터 값 체크
-	'--------------------------------------------
+	 ----------------------------------------------
+	 -- 링크데이터 값 체크
+	 ----------------------------------------------
 	if isEmpty(szData) then
 		arrData = {}
 		return arrData
-	end if
+	end
 	
-	'--------------------------------------------
-	' 구분자 값 체크
-	'--------------------------------------------
+	 ----------------------------------------------
+	 -- 구분자 값 체크
+	 ----------------------------------------------
 	if isEmpty(szSeperator) then
-		' 단일변수
+		 -- 단일변수
 		arrData = {}
-		Table.insert(arrData, szData)
+		Table.Insert(arrData, szData)
 	else
-		' 다중변수
-		arrData = split(szData, szSeperator)
-	end if
+		 -- 다중변수
+		arrData = gf_Split(szData, szSeperator)
+	end
 	
 	return arrData
 	
-End Function
+end
 
-'===============================================
-' 키패드 컨트롤 초기화
-'===============================================
-Function Init_Control() 
+ --===============================================
+ -- 키패드 컨트롤 초기화
+ --===============================================
+function Init_Control()
 	sTitle = "입력"
 	
 	if g_sOrdGbn == "0" then
@@ -148,11 +150,11 @@ Function Init_Control()
 			
 			sTitle = "단가 입력"
 			
-			if Cint(g_sDecimal) > 0 then
+			if gf_Tonumber(g_sDecimal) > 0 then
 				cont0.btnPlus00.caption = "."
 			else
 				cont0.btnPlus00.caption = "00"
-			end if
+			end
 			
 		elseif g_sProcGbn == "1" then
 			sTitle = "수량 입력"
@@ -169,7 +171,7 @@ Function Init_Control()
 		elseif g_sProcGbn == "4" then
 			sTitle = "비율 입력"
 			cont0.btnPlus00.caption = "00"
-		end if
+		end
 		
 	elseif g_sOrdGbn == "1" then
 		
@@ -199,193 +201,193 @@ Function Init_Control()
 			cont0.btnPlus00.caption = "00"
 			
 		
-		end if
+		end
 		 
 	
-	end if
+	end
 	
 	Label2.caption = sTitle
 	if isEmpty(g_sInputData) == false then
 		Image0.visible = true
 		SetPrice("AUTO", g_sInputData, g_sDecimal, g_sPostFix)
-	end if
-End Function
+	end
+end
 
-'===============================================
-' 데이터 정수부/소수부 자릿수 확인 함수
-'===============================================
-Function Check_NumDigits(sType, sValue)
+ --===============================================
+ -- 데이터 정수부/소수부 자릿수 확인 함수
+ --===============================================
+function Check_NumDigits(sType, sValue)
 	
 	if isEmpty(sValue) == true then
 		return true
-	end if
+	end
 	
-	sValue = trim(replace(sValue, "+", ""))
-	sValue = trim(replace(sValue, "-", ""))
+	sValue = gf_Trim(string.gsub(sValue, string.gsub("+", "([%p])", "%%%1"), ""))
+	sValue = gf_Trim(string.gsub(sValue, string.gsub("-", "([%p])", "%%%1"), ""))
 	
 	if isEmpty(sValue) == true then
 		return true
-	end if
+	end
 	
-	arrValue = split(sValue, ".")
+	arrValue = gf_Split(sValue, ".")
 	nArrCnt = #arrValue
 	
-	sInteger = arrValue(0)	'정수부
+	sInteger = arrValue[0+1]	 --정수부
 	sDecimal = ""			
 	
 	if nArrCnt >= 2 then
-		sDecimal = arrValue(1)	'소수부
-	end if
+		sDecimal = arrValue[1+1]	 --소수부
+	end
 	
-	'정수부 자리수 확인
+	 --정수부 자리수 확인
 	if sType == "I" then
 		if isEmpty(sInteger) == true then
 			return true
-		end if
+		end
 		
-		nTextLen = Form.getLen(sInteger)
+		nTextLen = Form.GetLen(sInteger)
 		
-		if Cdbl(nTextLen) <= Cdbl(g_sInteger) then
+		if gf_Tonumber(nTextLen) <= gf_Tonumber(g_sInteger) then
 			return true
 		else
 			return false
-		end if
+		end
 		
-	'소수부 자리수 확인
+	 --소수부 자리수 확인
 	elseif sType == "D" then
 		if isEmpty(sDecimal) == true then
 			return true
-		end if
+		end
 		
-		nTextLen = Form.getLen(sDecimal)
+		nTextLen = Form.GetLen(sDecimal)
 		
-		if Cdbl(nTextLen) <= Cdbl(g_sDecimal) then
+		if gf_Tonumber(nTextLen) <= gf_Tonumber(g_sDecimal) then
 			return true
 		else
 			return false
-		end if
-	end if
-End Function 
+		end
+	end
+end
 
 
 
-'============================================================================
-' (공통) 가격입력창 가격SET
-'============================================================================
-Function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
+ --============================================================================
+ -- (공통) 가격입력창 가격SET
+ --============================================================================
+function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
 
 	if isEmpty(nPrc) == false then
 		Label1.fgcolor = "4"
 	else
 		Label1.fgcolor = "333"
-	end if
+	end
 	
-	sChk = Instr(Cstr(nPrc), ".")
+	sChk = string.find(gf_Tostring(nPrc), ".")
 	
-	'================================================================
-	'소수점(dot)이 있는 경우
-	'================================================================
+	 --================================================================
+	 --소수점(dot)이 있는 경우
+	 --================================================================
 	if sChk > 0 then
 		
-		'------------------------------
-		'소수점영역 길이
-		'------------------------------
-		sCha = CInt(Len(nPrc) - sChk)
+		 --------------------------------
+		 --소수점영역 길이
+		 --------------------------------
+		sCha = gf_Tonumber(string.len(nPrc) - sChk)
 		
-		'-------------------------------------------------------
-		'소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
-		'-------------------------------------------------------
-		if sCha >= Cint(nDecimalLen) then
+		 ---------------------------------------------------------
+		 --소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
+		 ---------------------------------------------------------
+		if sCha >= gf_Tonumber(nDecimalLen) then
 			 
-			 if sCha >= Cint(nDecimalLen) then
-				sResult = FormatNumber(nPrc, nDecimalLen).." " .. sPostFix
+			 if sCha >= gf_Tonumber(nDecimalLen) then
+				sResult = gf_CommaValue(nPrc, nDecimalLen).." " .. sPostFix
 				Label1.caption = sResult
 			 else
-				 exit Function
-			 end if
+				 return
+			 end
 		
-		'-------------------------------------------------------	 
-		' 소수점영역의 길이를 아직 다 안채운 경우
-		'-------------------------------------------------------
+		 ---------------------------------------------------------	 
+		 -- 소수점영역의 길이를 아직 다 안채운 경우
+		 ---------------------------------------------------------
 		else
 			
-			'-------------------------------------------------------------------
-			'자동으로 호가가격이 입력되는 경우(초기값 세팅/ 호가 +,- 버튼 클릭)
-			'국가별 소수점 자리수로 가격을 다시 맞춰준다.
-			'-------------------------------------------------------------------
+			 ---------------------------------------------------------------------
+			 --자동으로 호가가격이 입력되는 경우(초기값 세팅/ 호가 +,- 버튼 클릭)
+			 --국가별 소수점 자리수로 가격을 다시 맞춰준다.
+			 ---------------------------------------------------------------------
 			if sType == "AUTO" then
 				
-				sResult = FormatNumber(nPrc,nDecimalLen).." " .. sPostFix
+				sResult = gf_CommaValue(nPrc,nDecimalLen).." " .. sPostFix
 				Label1.caption = sResult
 				
-			'-------------------------------------------------------------------
-			'가격이 수동으로 입력되는 경우(키패드 입력)에는 입력받은대로 표시
-			'-------------------------------------------------------------------
+			 ---------------------------------------------------------------------
+			 --가격이 수동으로 입력되는 경우(키패드 입력)에는 입력받은대로 표시
+			 ---------------------------------------------------------------------
 			else
 				sResult = nPrc.." " .. sPostFix
 				Label1.caption = sResult
-			end if
+			end
 			
-		end if
+		end
 	
-	'================================================================
-	' 소수점(dot)이 없는 경우
-	'================================================================
+	 --================================================================
+	 -- 소수점(dot)이 없는 경우
+	 --================================================================
 	else
 		if sType == "AUTO" then
-			sResult = FormatNumber(nPrc,nDecimalLen) .." " .. sPostFix
+			sResult = gf_CommaValue(nPrc,nDecimalLen) .." " .. sPostFix
 			Label1.caption = sResult
 		else
-			sResult = FormatNumber(nPrc,0) .." " .. sPostFix
+			sResult = gf_CommaValue(nPrc,0) .." " .. sPostFix
 			Label1.caption = sResult
-		end if
+		end
 		
-	end if
+	end
 	
-End Function
-'============================================================================
-' 키패드 버튼 입력 시 처리
-'============================================================================
-Function InputKeypad(sType, sKeypad)
+end
+ --============================================================================
+ -- 키패드 버튼 입력 시 처리
+ --============================================================================
+function InputKeypad(sType, sKeypad)
 
-	'----------------------------------------------------------------------
-	'sType = "NUM" : 숫자(1~9) 버튼
-	'----------------------------------------------------------------------
-	'sType = "ZERO" : 숫자(0) 버튼
-	'----------------------------------------------------------------------
-	'sType = "DOT" : 소수점(.) 버튼
-	'----------------------------------------------------------------------
-	'sType = "QUICK" : 퀵버튼
-	'
-	'- 단가 : 매도1호가/현재가/매수1호가
-	'- 수량 : +10 / +100 / +1000 or +매매단위*1 / +매매단위*2 / +매매단위*3
-	'- 금액 : +10만 / +100만 / +500만
-	'
-	'----------------------------------------------------------------------
-	'sType = "ABLE" : 가능수량 버튼
-	'----------------------------------------------------------------------
-	'sType = "CLEAR" : 클리어 버튼
-	'----------------------------------------------------------------------
-	'sType = "DELETE" : 삭제버튼
-	'----------------------------------------------------------------------
+	 ------------------------------------------------------------------------
+	 --sType = "NUM" : 숫자(1~9) 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "ZERO" : 숫자(0) 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "DOT" : 소수점(.) 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "QUICK" : 퀵버튼
+	 --
+	 --- 단가 : 매도1호가/현재가/매수1호가
+	 --- 수량 : +10 / +100 / +1000 or +매매단위*1 / +매매단위*2 / +매매단위*3
+	 --- 금액 : +10만 / +100만 / +500만
+	 --
+	 ------------------------------------------------------------------------
+	 --sType = "ABLE" : 가능수량 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "CLEAR" : 클리어 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "DELETE" : 삭제버튼
+	 ------------------------------------------------------------------------
 	
-	'======================================================================
-	' 숫자(1~9) 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 숫자(1~9) 키패드 입력
+	 --======================================================================
 	if sType == "NUM" then
 		
-		'---------------------------------------------------
-		'[단가 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
-'		if g_sProcGbn == "0" or g_sProcGbn == "2" or g_sProcGbn == "3" then
+		 -----------------------------------------------------
+		 --[단가 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
+ --		if g_sProcGbn == "0" or g_sProcGbn == "2" or g_sProcGbn == "3" then
 		
 			sData = g_sInputData
 			
-			'---------------------------------------------------
-			'[키패드로 최초 입력 시]
-			'키패드 최초 입력 시에는 입력되어있는 값 클리어
-			'---------------------------------------------------
-			if g_sFocusEditClear <> true then
+			 -----------------------------------------------------
+			 --[키패드로 최초 입력 시]
+			 --키패드 최초 입력 시에는 입력되어있는 값 클리어
+			 -----------------------------------------------------
+			if g_sFocusEditClear ~= true then
 				
 				g_sFocusEditClear = true
 				
@@ -393,80 +395,80 @@ Function InputKeypad(sType, sKeypad)
 				g_sInputData = sData
 				SetPrice("MANAUAL",sData,g_sDecimal,g_sPostFix)
 			
-			'---------------------------------------------------
-			'[키패드로 최초 입력이 아닐시]
-			''최초 클리어 이후에는 입력값 이어붙임
-			'---------------------------------------------------
+			 -----------------------------------------------------
+			 --[키패드로 최초 입력이 아닐시]
+			 --'최초 클리어 이후에는 입력값 이어붙임
+			 -----------------------------------------------------
 			else
-				if Instr(Cstr(sData),".") == 0 and Cdbl(sData) == 0 then
+				if string.find(gf_Tostring(sData), ".") == 0 and gf_Tonumber(sData) == 0 then
 					sData =  sKeypad
 				else
-					sData = sData & sKeypad
-				end if
+					sData = sData .. sKeypad
+				end
 				
 				if Check_NumDigits("I", sData) == false then
-					Exit Function
-				end if
+					return
+				end
 				
 				if Check_NumDigits("D", sData) == false then
-					Exit Function
-				end if
+					return
+				end
 				
 				g_sInputData = sData
 				SetPrice("MANAUAL",sData,g_sDecimal,g_sPostFix)
 				
-			end if
+			end
 			
-'		'---------------------------------------------------
-'		'[수량 입력창] 에 포커스가 되어있는 경우
-'		'---------------------------------------------------
-'		elseif g_sProcGbn == "1" then
-'		
-'			sData = g_sInputData
-'			
-'			if g_sFocusEditClear <> true then
-'				
-'				g_sFocusEditClear = true
-'				sData = sKeypad
-'				g_sInputData = sData
-'				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
-'				
-'			else
-'				if Cdbl(sData) == 0 then
-'					sData = sKeypad
-'				else
-'					sData = sData & sKeypad
-'				end if
-'				
-'				if Check_NumDigits("I", sData) == false then
-'					Exit Function
-'				end if
-'				
-'				if Check_NumDigits("D", sData) == false then
-'					Exit Function
-'				end if
-'				
-'				g_sInputData = sData
-'				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
-'			
-'			end if
-'		
-'		end if
+ --		'---------------------------------------------------
+ --		'[수량 입력창] 에 포커스가 되어있는 경우
+ --		'---------------------------------------------------
+ --		elseif g_sProcGbn == "1" then
+ --		
+ --			sData = g_sInputData
+ --			
+ --			if g_sFocusEditClear <> true then
+ --				
+ --				g_sFocusEditClear = true
+ --				sData = sKeypad
+ --				g_sInputData = sData
+ --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --				
+ --			else
+ --				if Cdbl(sData) == 0 then
+ --					sData = sKeypad
+ --				else
+ --					sData = sData & sKeypad
+ --				end if
+ --				
+ --				if Check_NumDigits("I", sData) == false then
+ --					Exit Function
+ --				end if
+ --				
+ --				if Check_NumDigits("D", sData) == false then
+ --					Exit Function
+ --				end if
+ --				
+ --				g_sInputData = sData
+ --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --			
+ --			end if
+ --		
+ --		end if
 		
 	
-	'======================================================================
-	' 숫자(0) 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 숫자(0) 키패드 입력
+	 --======================================================================
 	elseif sType == "ZERO" then
 	
-		'---------------------------------------------------
-		'[단가 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
-'		if g_sProcGbn == "0" or g_sProcGbn == "2" or g_sProcGbn == "3" then
+		 -----------------------------------------------------
+		 --[단가 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
+ --		if g_sProcGbn == "0" or g_sProcGbn == "2" or g_sProcGbn == "3" then
 			
 			sData = g_sInputData
 			
-			if g_sFocusEditClear <> true then
+			if g_sFocusEditClear ~= true then
 			
 				g_sFocusEditClear = true
 				sData = sKeypad
@@ -474,196 +476,196 @@ Function InputKeypad(sType, sKeypad)
 				SetPrice("MANAUAL",sData,g_sDecimal,g_sPostFix)
 			
 			else
-				if Instr(Cstr(sData),".") > 0 then
-					sData = sData & sKeypad
+				if string.find(gf_Tostring(sData), ".") > 0 then
+					sData = sData .. sKeypad
 				else
-					if Cdbl(sData) == 0 then
+					if gf_Tonumber(sData) == 0 then
 						sData = "0"
 					else
-						sData = CDbl(sData & sKeypad)
-					end if
-				end if
+						sData = gf_Tonumber(sData .. sKeypad)
+					end
+				end
 			
 				if Check_NumDigits("I", sData) == false then
-					Exit Function
-				end if
+					return
+				end
 				
 				if Check_NumDigits("D", sData) == false then
-					Exit Function
-				end if
+					return
+				end
 				
 				g_sInputData = sData
 				SetPrice("MANAUAL",sData,g_sDecimal,g_sPostFix)
 			
-			end if
+			end
 		
-'		'---------------------------------------------------
-'		'[수량 입력창] 에 포커스가 되어있는 경우
-'		'---------------------------------------------------
-'		elseif g_sProcGbn == "1" then
-'		
-'			sData = g_sInputData
-'		
-'			if g_sFocusEditClear <> true then
-'				
-'				g_sFocusEditClear = true
-'				sData = sKeypad
-'				g_sInputData = sData
-'				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
-'				
-'			else
-'				if Check_NumDigits("I", sData & sKeypad) == false then
-'					Exit Function
-'				end if
-'				
-'				if Check_NumDigits("D", sData & sKeypad) == false then
-'					Exit Function
-'				end if
-'			
-'				'0이 입력되있는 경우에는 무시
-'				if sData <> "0" then
-'					sData = sData & sKeypad
-'					g_sInputData = sData
-'					Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
-'				end if
-'			
-'			end if
-'		
-'		end if
+ --		'---------------------------------------------------
+ --		'[수량 입력창] 에 포커스가 되어있는 경우
+ --		'---------------------------------------------------
+ --		elseif g_sProcGbn == "1" then
+ --		
+ --			sData = g_sInputData
+ --		
+ --			if g_sFocusEditClear <> true then
+ --				
+ --				g_sFocusEditClear = true
+ --				sData = sKeypad
+ --				g_sInputData = sData
+ --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --				
+ --			else
+ --				if Check_NumDigits("I", sData & sKeypad) == false then
+ --					Exit Function
+ --				end if
+ --				
+ --				if Check_NumDigits("D", sData & sKeypad) == false then
+ --					Exit Function
+ --				end if
+ --			
+ --				'0이 입력되있는 경우에는 무시
+ --				if sData <> "0" then
+ --					sData = sData & sKeypad
+ --					g_sInputData = sData
+ --					Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --				end if
+ --			
+ --			end if
+ --		
+ --		end if
 	
-	'======================================================================
-	' 소수점(.) 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 소수점(.) 키패드 입력
+	 --======================================================================
 	elseif sType == "DOT" then
 	
-		'---------------------------------------------------
-		'[단가 입력창] 에 포커스가 되어있는 경우에만 동작
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 --[단가 입력창] 에 포커스가 되어있는 경우에만 동작
+		 -----------------------------------------------------
 		if g_sProcGbn == "0" or g_sProcGbn == "2" then
 		
 			sData = g_sInputData
 			
-			'이미 소수점이 입력되어 있는 경우에는 입력 무시
-			if Instr(Cstr(sData),".") > 0 then
+			 --이미 소수점이 입력되어 있는 경우에는 입력 무시
+			if string.find(gf_Tostring(sData), ".") > 0 then
 				return
 			else
 				
-				if sData <> "" then
+				if sData ~= "" then
 					
-					sData = sData & sKeypad
+					sData = sData .. sKeypad
 					g_sInputData = sData
 					SetPrice("MANAUAL",sData,g_sDecimal,g_sPostFix)
 				
-				end if
+				end
 				
 			
-			end if
+			end
 		
-		end if
+		end
 		
 	
-'	'======================================================================
-'	' 퀵입력 버튼 
-'	'======================================================================
-'	elseif sType == "QUICK" then
-'	
-'		if sKeypad == "QTY1" or sKeyPad == "QTY2" or sKeyPad == "QTY3" then
-'			
-'			if g_sFocusEditClear <> true then
-'				g_sFocusEditClear = true
-'			end if
-'			
-'			sData = edtQty.caption
-'			
-'			if sData == "" then
-'				sData = "0"
-'			end if
-'			
-'			if sKeypad == "QTY1" then
-'				nAdd = g_nQty1_Size
-'			elseif sKeypad == "QTY2" then
-'				nAdd = g_nQty2_Size
-'			elseif sKeypad == "QTY3" then
-'				nAdd = g_nQty3_Size
-'			end if
-'			
-'			nTotQty = Cdbl(sData) + nAdd
-'			
-'			if nTotQty < 1000 then
-'				nTotQty = 1000
-'			end if
-'			
-'			edtQty.caption = nTotQty
-'			
-'		elseif sKeypad == "PRC_MAEDO1" or sKeypad == "PRC_MAESU1" or sKeypad == "PRC_CUR" then
-'		
-'			if g_sFocusEditClear <> true then
-'				g_sFocusEditClear = true
-'			end if
-'			
-'			if sKeypad == "PRC_MAEDO1" then
-'				sData = tblData1.GetCellString(1, 0)
-'			elseif sKeypad == "PRC_CUR" then
-'				sData = tblData0.GetCellString(1, 1)
-'			else
-'				sData = tblData1.GetCellString(1, 2)
-'			end if
-'			
-'			SetPrice("AUTO", round(Cdbl(sData),2),g_sDecimal,g_sPostFix)
-'				
-'		end if
+ --	'======================================================================
+ --	' 퀵입력 버튼 
+ --	'======================================================================
+ --	elseif sType == "QUICK" then
+ --	
+ --		if sKeypad == "QTY1" or sKeyPad == "QTY2" or sKeyPad == "QTY3" then
+ --			
+ --			if g_sFocusEditClear <> true then
+ --				g_sFocusEditClear = true
+ --			end if
+ --			
+ --			sData = edtQty.caption
+ --			
+ --			if sData == "" then
+ --				sData = "0"
+ --			end if
+ --			
+ --			if sKeypad == "QTY1" then
+ --				nAdd = g_nQty1_Size
+ --			elseif sKeypad == "QTY2" then
+ --				nAdd = g_nQty2_Size
+ --			elseif sKeypad == "QTY3" then
+ --				nAdd = g_nQty3_Size
+ --			end if
+ --			
+ --			nTotQty = Cdbl(sData) + nAdd
+ --			
+ --			if nTotQty < 1000 then
+ --				nTotQty = 1000
+ --			end if
+ --			
+ --			edtQty.caption = nTotQty
+ --			
+ --		elseif sKeypad == "PRC_MAEDO1" or sKeypad == "PRC_MAESU1" or sKeypad == "PRC_CUR" then
+ --		
+ --			if g_sFocusEditClear <> true then
+ --				g_sFocusEditClear = true
+ --			end if
+ --			
+ --			if sKeypad == "PRC_MAEDO1" then
+ --				sData = tblData1.GetCellString(1, 0)
+ --			elseif sKeypad == "PRC_CUR" then
+ --				sData = tblData0.GetCellString(1, 1)
+ --			else
+ --				sData = tblData1.GetCellString(1, 2)
+ --			end if
+ --			
+ --			SetPrice("AUTO", round(Cdbl(sData),2),g_sDecimal,g_sPostFix)
+ --				
+ --		end if
 	
 	
-	'======================================================================
-	' 가능수량 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 가능수량 키패드 입력
+	 --======================================================================
 	elseif sType == "ABLE" then
 	
-	'======================================================================
-	' 가능수량 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 가능수량 키패드 입력
+	 --======================================================================
 	elseif sType == "CLEAR" then
 	
-		'---------------------------------------------------
-		'[단가 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
-'		if g_sProcGbn == "0" or g_sProcGbn == "2" or g_sProcGbn == "3" then
+		 -----------------------------------------------------
+		 --[단가 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
+ --		if g_sProcGbn == "0" or g_sProcGbn == "2" or g_sProcGbn == "3" then
 			
 			sData = g_sInputData
 			
-			if g_sFocusEditClear <> true then
+			if g_sFocusEditClear ~= true then
 				g_sFocusEditClear = true
-			end if
+			end
 			
 			sData = ""
 			g_sInputData = ""
 			SetPrice("NONE", sData, g_sDecimal,g_sPostFix)
 		
-		'---------------------------------------------------
-		'[수량 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
-'		elseif g_sProcGbn == "1" then
-'		
-'			sData = g_sInputData
-'		
-'			if g_sFocusEditClear <> true then
-'				g_sFocusEditClear = true
-'			end if
-'			
-'			sData = ""
-'			g_sInputData = ""
-'			Label1.caption = ""
-'			
-'		end if
+		 -----------------------------------------------------
+		 --[수량 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
+ --		elseif g_sProcGbn == "1" then
+ --		
+ --			sData = g_sInputData
+ --		
+ --			if g_sFocusEditClear <> true then
+ --				g_sFocusEditClear = true
+ --			end if
+ --			
+ --			sData = ""
+ --			g_sInputData = ""
+ --			Label1.caption = ""
+ --			
+ --		end if
 		
 		
-	'======================================================================
-	' 삭제(<-) 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 삭제(<-) 키패드 입력
+	 --======================================================================
 	elseif sType == "DELETE" then
-'		if g_sProcGbn == "0" or g_sProcGbn == "2" or g_sProcGbn == "3" then
+ --		if g_sProcGbn == "0" or g_sProcGbn == "2" or g_sProcGbn == "3" then
 		
-			if g_sFocusEditClear <> true then
+			if g_sFocusEditClear ~= true then
 				
 				g_sFocusEditClear = true
 				sData = ""
@@ -673,33 +675,33 @@ Function InputKeypad(sType, sKeypad)
 			else
 				
 				sData = g_sInputData
-				nLen = Len(sData)
-				sData = left(sData ,nLen - 1)
+				nLen = string.len(sData)
+				sData = string.sub(sData, 1, nLen - 1)
 				g_sInputData = sData
 				
 
 				SetPrice("MANAUAL",sData,g_sDecimal,g_sPostFix)
 			
-			end if
+			end
 		
-'		elseif g_sProcGbn == "1" then
-'		
-'			if g_sFocusEditClear <> true then
-'			
-'				g_sFocusEditClear = true
-'				g_sInputData = ""
-'				Label1.caption  = ""
-'				
-'			else
-'				sData = g_sInputData
-'				nLen = Len(sData)
-'				sData = left(sData ,nLen - 1)
-'				g_sInputData = sData
-'				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
-'				
-'			end if
-'		end if
-	end if
+ --		elseif g_sProcGbn == "1" then
+ --		
+ --			if g_sFocusEditClear <> true then
+ --			
+ --				g_sFocusEditClear = true
+ --				g_sInputData = ""
+ --				Label1.caption  = ""
+ --				
+ --			else
+ --				sData = g_sInputData
+ --				nLen = Len(sData)
+ --				sData = left(sData ,nLen - 1)
+ --				g_sInputData = sData
+ --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --				
+ --			end if
+ --		end if
+	end
 	
 	
 	if g_sInputData == "" then
@@ -707,212 +709,213 @@ Function InputKeypad(sType, sKeypad)
 		Image0.visible = false
 	else
 		Image0.visible = true
-	end if
+	end
 	
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'============================================================================
-Sub Form_OnFormInit()
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --============================================================================
+function Form_OnFormInit()
 	sLinkData = Form.GetOpenLinkData()
 	
 	arrLinkData = Convert_StrToArr(sLinkData, "`")
 	nArrCnt = #arrLinkData
 	
 	if nArrCnt > 5 then
-		g_sOrdGbn		= arrLinkData(0)
-		g_sProcGbn		= arrLinkData(1)
-		g_sInputData	= arrLinkData(2)
-		g_sInteger		= arrLinkData(3)
-		g_sDecimal		= arrLinkData(4)
-		g_sPostFix		= arrLinkData(5)
-		g_sRetKey		= arrLinkData(6)
+		g_sOrdGbn		= arrLinkData[0+1]
+		g_sProcGbn		= arrLinkData[1+1]
+		g_sInputData	= arrLinkData[2+1]
+		g_sInteger		= arrLinkData[3+1]
+		g_sDecimal		= arrLinkData[4+1]
+		g_sPostFix		= arrLinkData[5+1]
+		g_sRetKey		= arrLinkData[6+1]
 		
 		Init_Control()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub cont0_btnPlus1_OnClick()
+ --============================================================================
+function cont0_btnPlus1_OnClick()
 	InputKeypad("NUM", "1")
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus2_OnClick()
+ --============================================================================
+function cont0_btnPlus2_OnClick()
 	InputKeypad("NUM", "2")
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus3_OnClick()
+ --============================================================================
+function cont0_btnPlus3_OnClick()
 	InputKeypad("NUM", "3")
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus4_OnClick()
+ --============================================================================
+function cont0_btnPlus4_OnClick()
 	InputKeypad("NUM", "4")
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus5_OnClick()
+ --============================================================================
+function cont0_btnPlus5_OnClick()
 	InputKeypad("NUM", "5")	
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus6_OnClick()
+ --============================================================================
+function cont0_btnPlus6_OnClick()
 	InputKeypad("NUM", "6")	
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus7_OnClick()
+ --============================================================================
+function cont0_btnPlus7_OnClick()
 	InputKeypad("NUM", "7")
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus8_OnClick()
+ --============================================================================
+function cont0_btnPlus8_OnClick()
 	InputKeypad("NUM", "8")
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus9_OnClick()
+ --============================================================================
+function cont0_btnPlus9_OnClick()
 	InputKeypad("NUM", "9")
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus00_OnClick()
+ --============================================================================
+function cont0_btnPlus00_OnClick()
 	
-	if g_sProcGbn == "0" or g_sProcGbn == "2"  then
+	if g_sProcGbn == "0" or g_sProcGbn == "2" then
 		
-		if  g_sProcGbn == "0" and Cint(g_sDecimal) == 0 then
+		if g_sProcGbn == "0" and gf_Tonumber(g_sDecimal) == 0 then
 			InputKeypad("ZERO", "00")
 		else
 			InputKeypad("DOT", ".")
-		end if
+		end
 	else
 		InputKeypad("ZERO", "00")
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnPlus0_OnClick()
+ --============================================================================
+function cont0_btnPlus0_OnClick()
 	InputKeypad("ZERO", "0")
-End Sub
+end
 
-'============================================================================
-Sub cont0_btnBack_OnClick()
+ --============================================================================
+function cont0_btnBack_OnClick()
 	InputKeypad("DELETE", "")
-End Sub
+end
 
-'============================================================================
-Sub Image0_OnClick()
+ --============================================================================
+function Image0_OnClick()
 	InputKeypad("CLEAR", "")
-End Sub 
+end
 
-'============================================================================
-Sub cont1_btnPlus1_OnClick()
+ --============================================================================
+function cont1_btnPlus1_OnClick()
 	InputKeypad("NUM", "1")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus2_OnClick()
+ --============================================================================
+function cont1_btnPlus2_OnClick()
 	InputKeypad("NUM", "2")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus3_OnClick()
+ --============================================================================
+function cont1_btnPlus3_OnClick()
 	InputKeypad("NUM", "3")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus4_OnClick()
+ --============================================================================
+function cont1_btnPlus4_OnClick()
 	InputKeypad("NUM", "4")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus5_OnClick()
+ --============================================================================
+function cont1_btnPlus5_OnClick()
 	InputKeypad("NUM", "5")	
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus6_OnClick()
+ --============================================================================
+function cont1_btnPlus6_OnClick()
 	InputKeypad("NUM", "6")	
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus7_OnClick()
+ --============================================================================
+function cont1_btnPlus7_OnClick()
 	InputKeypad("NUM", "7")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus8_OnClick()
+ --============================================================================
+function cont1_btnPlus8_OnClick()
 	InputKeypad("NUM", "8")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus9_OnClick()
+ --============================================================================
+function cont1_btnPlus9_OnClick()
 	InputKeypad("NUM", "9")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus00_OnClick()
+ --============================================================================
+function cont1_btnPlus00_OnClick()
 	InputKeypad("ZERO", "00")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus0_OnClick()
+ --============================================================================
+function cont1_btnPlus0_OnClick()
 	InputKeypad("ZERO", "0")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnBack_OnClick()
+ --============================================================================
+function cont1_btnBack_OnClick()
 	InputKeypad("DELETE", "")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnDot_OnClick()
+ --============================================================================
+function cont1_btnDot_OnClick()
 	InputKeypad("DOT", ".")
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnPlus_OnClick()
-	if instr(g_sInputData, "-") > 0 then
-		g_sInputData = replace(g_sInputData, "-", "") 
-	end if
+ --============================================================================
+function cont1_btnPlus_OnClick()
+	if string.find(g_sInputData, "-") > 0 then
+		g_sInputData = string.gsub(g_sInputData, string.gsub("-", "([%p])", "%%%1"), "") 
+	end
 		
 	SetPrice("MANUAL", g_sInputData, g_sDecimal, g_sPostFix)
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnMinus_OnClick()
-	if instr(g_sInputData, "-") == 0 and Cdbl(g_sInputData) > 0 then
-		g_sInputData = "-" & g_sInputData
-	end if
+ --============================================================================
+function cont1_btnMinus_OnClick()
+	if string.find(g_sInputData, "-") == 0 and gf_Tonumber(g_sInputData) > 0 then
+		g_sInputData = "-" .. g_sInputData
+	end
 
 	SetPrice("MANUAL", g_sInputData, g_sDecimal, g_sPostFix)
-End Sub
+end
 
-'============================================================================
-Sub cont1_btnClear_OnClick()
+ --============================================================================
+function cont1_btnClear_OnClick()
 	InputKeypad("CLEAR", "")
-End Sub
+end
 
-'============================================================================
-Sub btnOk_OnClick()
-	Form.SendReturnToParent("AUTO_RULE_KEYPAD_END" , g_sRetKey & "`" & g_sInputData)
+ --============================================================================
+function btnOk_OnClick()
+	Form.SendReturnToParent("AUTO_RULE_KEYPAD_END" , g_sRetKey .. "`" .. g_sInputData)
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub imgBg_OnClick()
+ --============================================================================
+function imgBg_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 	Image0.maintainratio = "1"
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

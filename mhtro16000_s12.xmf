@@ -47,91 +47,93 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="13628" _ulen="12980" >
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-'==============================================
-' 이미지
-'==============================================
-Dim g_ImgArrow_Down
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+ --==============================================
+ -- 이미지
+ --==============================================
+local g_ImgArrow_Down
 g_ImgArrow_Down = "icon_arrow_d"
 
-Dim g_ImgArrow_Up
+local g_ImgArrow_Up
 g_ImgArrow_Up = "icon_arrow_u"
 
-'==============================================
-' 컬러코드
-'==============================================
-' 기본 텍스트 컬러 (검정색)
-Dim g_szTxtColor_Normal 
+ --==============================================
+ -- 컬러코드
+ --==============================================
+ -- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal
 g_szTxtColor_Normal 	= "334"
 
-' 기본 텍스트 컬러 (회색)
-Dim g_szTxtColor_Grey 
+ -- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey
 g_szTxtColor_Grey 	= "333"
 
-' 기본 텍스트 컬러 (흰색)
-Dim g_szTxtColor_White 
+ -- 기본 텍스트 컬러 (흰색)
+local g_szTxtColor_White
 g_szTxtColor_White 	= "338"
 
-' 빨강
-Dim g_szTxtColor_Red 
+ -- 빨강
+local g_szTxtColor_Red
 g_szTxtColor_Red = "290"
 
-' 파랑
-Dim g_szTxtColor_Blue 
+ -- 파랑
+local g_szTxtColor_Blue
 g_szTxtColor_Blue = "291"
 
-' 기본 배경색상
-Dim g_szContBgColor
+ -- 기본 배경색상
+local g_szContBgColor
 g_szContBgColor = "320"
 
-' 기본 구분선 색상
-' 진한색
-Dim g_szLineColor
-g_szLineColor = "255255255"'"347"
-' 중간색
-Dim g_szLineColor2
+ -- 기본 구분선 색상
+ -- 진한색
+local g_szLineColor
+g_szLineColor = "255255255" --"347"
+ -- 중간색
+local g_szLineColor2
 g_szLineColor2 = "256"
-' 연한색
-Dim g_szLineColor3
+ -- 연한색
+local g_szLineColor3
 g_szLineColor3 = "320"
 
-' 빨강
-Dim g_szBadgeBgColor_Red
+ -- 빨강
+local g_szBadgeBgColor_Red
 g_szBadgeBgColor_Red = "339"
 
-' 파랑
-Dim g_szBadgeBgColor_Blue
+ -- 파랑
+local g_szBadgeBgColor_Blue
 g_szBadgeBgColor_Blue = "340"
 
-'==============================================
-' 기타 전역변수
-'==============================================
-Dim g_szItemCd 
-Dim g_szExidCd
-Dim g_szOnlyCd
-Dim g_sExid3 
-Dim g_rtChk
+ --==============================================
+ -- 기타 전역변수
+ --==============================================
+local g_szItemCd
+local g_szExidCd
+local g_szOnlyCd
+local g_sExid3
+local g_rtChk
 
-Dim g_szType
+local g_szType
 g_szType = "하드웨어 및 장비"
 
-Dim g_szTypeCd
+local g_szTypeCd
 g_szTypeCd = ""
 
-Dim g_isExpand
+local g_isExpand
 g_isExpand = ""
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
 
-'===============================================
-' 컨트롤 초기설정
-'===============================================
-Function Init_Control()
-	contMain.setEnableScroll(false)
-	contExpand.setEnableScroll(false)
+ --===============================================
+ -- 컨트롤 초기설정
+ --===============================================
+function Init_Control()
+	contMain.SetEnableScroll(false)
+	contExpand.SetEnableScroll(false)
 	
 	contMain.lblMainTitle0.paddinginfo = "0,0,0,0"
 	contMain.lblMainTitle0.fgcolor = g_szTxtColor_Normal
@@ -143,15 +145,15 @@ Function Init_Control()
 	
 	contMain.lblLine1.bgcolor = g_szLineColor2
 
-	for i = 0 to 12
-		Form.SetCtlProp("contMain.lblTitle" & i, "paddinginfo", "0,0,0,0")
-		Form.SetCtlProp("contMain.lblTitle" & i, "fgcolor", g_szTxtColor_Grey)
-		Form.SetCtlProp("contMain.lblTitle" & i, "maxlinecnt", "1")
+	for i = 0, 12 do
+		Form.SetCtlProp("contMain.lblTitle" .. i, "paddinginfo", "0,0,0,0")
+		Form.SetCtlProp("contMain.lblTitle" .. i, "fgcolor", g_szTxtColor_Grey)
+		Form.SetCtlProp("contMain.lblTitle" .. i, "maxlinecnt", "1")
 		
-		Form.SetCtlProp("contMain.lblData" & i, "paddinginfo", "0,0,0,0")
-		Form.SetCtlProp("contMain.lblData" & i, "fgcolor", g_szTxtColor_Normal)
-		Form.SetCtlProp("contMain.lblData" & i, "maxlinecnt", "1")
-	next
+		Form.SetCtlProp("contMain.lblData" .. i, "paddinginfo", "0,0,0,0")
+		Form.SetCtlProp("contMain.lblData" .. i, "fgcolor", g_szTxtColor_Normal)
+		Form.SetCtlProp("contMain.lblData" .. i, "maxlinecnt", "1")
+	end
 	
 	contExpand.lblExpand.paddinginfo = "0,0,0,0"
 	contExpand.lblExpand.fgcolor = g_szTxtColor_Grey
@@ -162,10 +164,10 @@ Function Init_Control()
 	contExpand.imgArrow.imgpath = g_ImgArrow_Down
 	
 	Expand_Cont()
-End Function
+end
 
-Function Expand_Cont()
-	'첫실행
+function Expand_Cont()
+	 --첫실행
 	if g_isExpand == "" then
 		g_isExpand = false
 		
@@ -175,7 +177,7 @@ Function Expand_Cont()
 		
 		contExpand.lblExpand.caption = "펼치기"
 		
-		nWidth = Form.getTextWidth("펼치기", -4, false, false)
+		nWidth = Form.GetTextWidth("펼치기", -4, false, false)
 		contExpand.imgArrow.left = 188 + (nWidth/2) + 5
 	
 		contExpand.imgArrow.imgpath = g_ImgArrow_Down
@@ -185,7 +187,7 @@ Function Expand_Cont()
 		contMain.lblTitle9.visible = false
 		contMain.lblData9.visible = false
 		
-	'펼치기 -> 접기 
+	 --펼치기 -> 접기 
 	elseif g_isExpand == true then
 		g_isExpand = false
 		
@@ -195,7 +197,7 @@ Function Expand_Cont()
 		
 		contExpand.lblExpand.caption = "펼치기"
 		
-		nWidth = Form.getTextWidth("펼치기", -4, false, false)
+		nWidth = Form.GetTextWidth("펼치기", -4, false, false)
 		contExpand.imgArrow.left = 188 + (nWidth/2) + 5
 	
 		contExpand.imgArrow.imgpath = g_ImgArrow_Down
@@ -205,9 +207,9 @@ Function Expand_Cont()
 		contMain.lblTitle9.visible = false
 		contMain.lblData9.visible = false
 		
-		Form.triggerEvent("#", "CHANGE_LAYOUT_S12", 236)
+		Form.TriggerEvent("#", "CHANGE_LAYOUT_S12", 236)
 		
-	'접기 -> 펼치기
+	 --접기 -> 펼치기
 	else
 		g_isExpand = true
 		
@@ -217,7 +219,7 @@ Function Expand_Cont()
 		
 		contExpand.lblExpand.caption = "접기"
 		
-		nWidth = Form.getTextWidth("접기", -4, false, false)
+		nWidth = Form.GetTextWidth("접기", -4, false, false)
 		contExpand.imgArrow.left = 188 + (nWidth/2) + 5
 		
 		contExpand.imgArrow.imgpath = g_ImgArrow_Up
@@ -227,11 +229,11 @@ Function Expand_Cont()
 		contMain.lblTitle9.visible = true
 		contMain.lblData9.visible = true
 		
-		Form.triggerEvent("#", "CHANGE_LAYOUT_S12", 320)
-	end if
-End Function
+		Form.TriggerEvent("#", "CHANGE_LAYOUT_S12", 320)
+	end
+end
 
-Function Request_Tran_ohhts_6000_001r()
+function Request_Tran_ohhts_6000_001r()
 	DATAMANAGER.ClearInputData(false, "ohhts_6000_001r")
 	
 	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE"  , 0 , "OV" )
@@ -240,122 +242,122 @@ Function Request_Tran_ohhts_6000_001r()
 	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk)
 
 	DATAMANAGER.RequestTranData("ohhts_6000_001r")
-End Function
+end
 
-Function Process_Tran_ohhts_6000_001r()
-	szData0 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_AVLS", 0)				'시가총액
-	szData1 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_LSTN_STCN", 0)			'상장주수
-	szData2 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_PER", 0)				'PER
-	szData3 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_EPS", 0)				'EPS
-	szData4 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_CRNC_CODE", 0)			'매매통화
-	szData5 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_SHNU_ODER_QTY_UNIT", 0)	'매매단위
-	szData9 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_SDPR", 0)			'기준가
-	szData12 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_BSTP_MDDV_NAME", 0)	'업종명
+function Process_Tran_ohhts_6000_001r()
+	szData0 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_AVLS", 0)				 --시가총액
+	szData1 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_LSTN_STCN", 0)			 --상장주수
+	szData2 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_PER", 0)				 --PER
+	szData3 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_EPS", 0)				 --EPS
+	szData4 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_CRNC_CODE", 0)			 --매매통화
+	szData5 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_SHNU_ODER_QTY_UNIT", 0)	 --매매단위
+	szData9 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_SDPR", 0)			 --기준가
+	szData12 = DATAMANAGER.GetDataValue( false, "ohhts_6000_001r", "OutBlock1", "FIDX_BSTP_MDDV_NAME", 0)	 --업종명
 	
-	'20240926_01 HWG START : 저사양 단말 데이터(자릿수) 표시 오류 수정
-	'시가총액(천)
-	if szData0 <> "" then
-		nResult = Cdbl(szData0)
+	 --20240926_01 HWG START : 저사양 단말 데이터(자릿수) 표시 오류 수정
+	 --시가총액(천)
+	if szData0 ~= "" then
+		nResult = gf_Tonumber(szData0)
 		szResult = ""
 		
 		if nResult > 99999999 then
-			szResult = FormatNumber(Round(Cdbl(nResult / 100000),0), 0)
+			szResult = gf_CommaValue(gf_Round(gf_Tonumber(nResult / 100000),0), 0)
 			contMain.lblTitle0.caption = "시가총액(억)"
 		else
-			szResult = FormatNumber(nResult, 0)
+			szResult = gf_CommaValue(nResult, 0)
 			contMain.lblTitle0.caption = "시가총액(천)"
-		end if
+		end
 		
 		contMain.lblData0.caption = szResult
 	else
 		contMain.lblData0.caption = "-"
-	end if
+	end
 	
-	'상장주수(천)
-	if szData1 <> "" then
-		szResult = FormatNumber(Round(Cdbl(Cdbl(szData1) / 1000),0), 0)
+	 --상장주수(천)
+	if szData1 ~= "" then
+		szResult = gf_CommaValue(gf_Round(gf_Tonumber(Cdbl(szData1) / 1000),0), 0)
 		contMain.lblData1.caption = szResult
 	else
 		contMain.lblData1.caption = "-"
-	end if
-	'20240926_01 HWG END
+	end
+	 --20240926_01 HWG END
 	
-	'PER
-	if szData2 <> "" then
-		contMain.lblData2.caption = FormatNumber(szData2, 3)
+	 --PER
+	if szData2 ~= "" then
+		contMain.lblData2.caption = gf_CommaValue(szData2, 3)
 	else
 		contMain.lblData2.caption = "-"
-	end if
+	end
 	
-	'EPS
-	if szData3 <> "" then
-		contMain.lblData3.caption = FormatNumber(szData3, 3)
+	 --EPS
+	if szData3 ~= "" then
+		contMain.lblData3.caption = gf_CommaValue(szData3, 3)
 	else
 		contMain.lblData3.caption = "-"
-	end if
+	end
 	
-	'매매통화
-	if szData4 <> "" then
+	 --매매통화
+	if szData4 ~= "" then
 		contMain.lblData4.caption = szData4
 		
-'		contMain.lblMainTitle0.caption = "기본정보 (단위 : "&trim(szData4)&")"
-'		
-'		contMain.lblMainTitle0.changeTextAttr(0,5,334,0,true)
-'		contMain.lblMainTitle0.changeTextAttr(5,10,333,-6,true)
+ --		contMain.lblMainTitle0.caption = "기본정보 (단위 : "&trim(szData4)&")"
+ --		
+ --		contMain.lblMainTitle0.changeTextAttr(0,5,334,0,true)
+ --		contMain.lblMainTitle0.changeTextAttr(5,10,333,-6,true)
 	else
 		contMain.lblData4.caption = "-"
-	end if
+	end
 	
-	'매매단위
-	if szData5 <> "" then
-		contMain.lblData5.caption = Cdbl(szData5)
+	 --매매단위
+	if szData5 ~= "" then
+		contMain.lblData5.caption = gf_Tonumber(szData5)
 	else
 		contMain.lblData5.caption = "-"
-	end if
+	end
 	
-	'기준가
-	if szData9<> "" then
+	 --기준가
+	if szData9~= "" then
 		szResult = ""
 		if g_szExidCd == "AX" or g_szExidCd == "NY" or g_szExidCd == "OQ" then
-			 szResult = FormatNumber(szData9, 4)
+			 szResult = gf_CommaValue(szData9, 4)
 		elseif g_szExidCd == "SH" or g_szExidCd == "SZ" or g_szExidCd == "HK" then
-			 szResult = FormatNumber(szData9, 3)
+			 szResult = gf_CommaValue(szData9, 3)
 		elseif g_szExidCd == "JP" then
-			 szResult = FormatNumber(szData9, 1)
-		end if
+			 szResult = gf_CommaValue(szData9, 1)
+		end
 		
 		contMain.lblData9.caption = szResult
 	else
 		contMain.lblData9.caption = "-"
-	end if
+	end
 	
-	'업종명
-	if szData12 <> "" then
+	 --업종명
+	if szData12 ~= "" then
 		contMain.lblData12.caption = szData12
 	else
 		contMain.lblData12.caption = "-"
-	end if
+	end
 	
-End Function
+end
 
-Function Request_Tran_obsim_oscm_331r()
+function Request_Tran_obsim_oscm_331r()
 	DATAMANAGER.ClearInputData(false, "obsim_oscm_331r")
 	
 	DATAMANAGER.SetDataValue( false, "obsim_oscm_331r", "InBlock1", "ISCD" , 0 , g_szOnlyCd.."."..g_szExidCd )
 	
 	DATAMANAGER.RequestTranData("obsim_oscm_331r")
-End Function
+end
 
-Function Process_Tran_obsim_oscm_331r()
-	sSellOnly   = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock1", "BYOV_PRHB_YN", 0) ' 매수불가여부
-	sStatus     = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock1", "TRHT_YN", 0) 		' 거래정지여부
-	sWeekDate   = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock2", "STND_DATE", 0) 	' 기준일
-	sMrktCls    = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock2", "HLDY_YN", 0) 		' 휴일여부
+function Process_Tran_obsim_oscm_331r()
+	sSellOnly   = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock1", "BYOV_PRHB_YN", 0)  -- 매수불가여부
+	sStatus     = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock1", "TRHT_YN", 0) 		 -- 거래정지여부
+	sWeekDate   = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock2", "STND_DATE", 0) 	 -- 기준일
+	sMrktCls    = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock2", "HLDY_YN", 0) 		 -- 휴일여부
 	
-	sWeekDate = WeekDay( CDate( Left( sWeekDate, 4 ) & "-" & Mid( sWeekDate, 5, 2 ) & "-" & Right( sWeekDate, 2 ) ) )
-	If Trim( sMrktCls ) = "Y" And sWeekDate <> "1" And sWeekDate <> "7" Then		'일요일, 토요일 제외
+	sWeekDate = WeekDay( CDate( string.sub(sWeekDate, 1, 4) .. "-" .. string.sub(sWeekDate, 5, 5 + 2 - 1) .. "-" .. string.sub(sWeekDate, -2) ) )
+	if gf_Trim(sMrktCls) == "Y" and sWeekDate ~= "1" and sWeekDate ~= "7" then --일요일, 토요일 제외
 		contMain.lblData8.caption = "휴장"
-	Else
+	else
 		if g_sClsCd == "Y" then
 			contMain.lblData8.caption = "거래정지"
 		else
@@ -363,44 +365,44 @@ Function Process_Tran_obsim_oscm_331r()
 				contMain.lblData8.caption = "매도만 가능"
 			else
 				contMain.lblData8.caption = "정상"
-			end if
-		end if
-	End If	
-End Function
+			end
+		end
+	end
+end
 
-Function Request_Tran_obsim_oscm_350r()
+function Request_Tran_obsim_oscm_350r()
 	DATAMANAGER.ClearInputData(false, "obsim_oscm_350r")
 	
 	DATAMANAGER.SetDataValue( false, "obsim_oscm_350r", "InBlock1", "ISCD" , 0 , g_szOnlyCd.."."..g_szExidCd )
 	
 	DATAMANAGER.RequestTranData("obsim_oscm_350r")
-End Function
+end
 
-Function Process_Tran_obsim_oscm_350r()
-	szData6 = DATAMANAGER.GetDataValue( false, "obsim_oscm_350r", "OutBlock1", "MGRT_VAL" , 0)				'증거금율
-	szData7 = DATAMANAGER.GetDataValue( false, "obsim_oscm_350r", "OutBlock1", "LOAN_ABLE_YN" , 0)			'대출가능여부
+function Process_Tran_obsim_oscm_350r()
+	szData6 = DATAMANAGER.GetDataValue( false, "obsim_oscm_350r", "OutBlock1", "MGRT_VAL" , 0)				 --증거금율
+	szData7 = DATAMANAGER.GetDataValue( false, "obsim_oscm_350r", "OutBlock1", "LOAN_ABLE_YN" , 0)			 --대출가능여부
 	
-	'증거금울
-	if szData6 <> "" then
-		contMain.lblData6.caption = FormatNumber(szData6, 0) & "%"
+	 --증거금울
+	if szData6 ~= "" then
+		contMain.lblData6.caption = gf_CommaValue(szData6, 0) .. "%"
 	else
 		contMain.lblData6.caption = "-"
-	end if
+	end
 	
-	'대출가능여부
+	 --대출가능여부
 	if szData7 == "Y" then
 		contMain.lblData7.caption = "가능"
 	elseif szData7 == "N" then
 		contMain.lblData7.caption = "불가능"
 	else
 		contMain.lblData7.caption = "-"
-	end if
-End Function
+	end
+end
 
-'==============================================
-' 거래소코드 -> 거래소명 변환 
-'==============================================
-Function Transform_Exid(sValue)
+ --==============================================
+ -- 거래소코드 -> 거래소명 변환 
+ --==============================================
+function Transform_Exid(sValue)
 	if sValue == "NY" then
 		contMain.lblData10.caption = "미국"
 		contMain.lblData11.caption = "뉴욕"
@@ -425,26 +427,26 @@ Function Transform_Exid(sValue)
 	else
 		contMain.lblData10.caption = "-"
 		contMain.lblData11.caption = "-"
-	end if
+	end
 	
-end Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'===============================================
-' Form_OnTriggerEvent(종목코드 연동)
-'===============================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --===============================================
+ -- Form_OnTriggerEvent(종목코드 연동)
+ --===============================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	if sEventName == "INIT_CODE" then
-		if instr(sParam, "@") > 0 then
+		if string.find(sParam, "@") > 0 then
 			g_szItemCd = sParam
 			g_szExidCd = ""
-			sTemp = split(g_szItemCd, "@")
-			g_szExidCd = sTemp[0] '시장구분
-			g_szOnlyCd = sTemp[1] '종목코드 
-			g_sExid3 = Form.GetItemCodeInfo(g_szItemCode, "exchcode3") '거래소 구분코드
+			sTemp = gf_Split(g_szItemCd, "@")
+			g_szExidCd = sTemp[0+1]  --시장구분
+			g_szOnlyCd = sTemp[1+1]  --종목코드 
+			g_sExid3 = Form.GetItemCodeInfo(g_szItemCode, "exchcode3")  --거래소 구분코드
 			
 			g_rtChk = Form.GetSharedData( "REALTIME_"..g_szExidCd, false )
 			
@@ -452,27 +454,27 @@ Sub Form_OnTriggerEvent(sEventName, sParam)
 			Request_Tran_ohhts_6000_001r()
 			Request_Tran_obsim_oscm_331r()
 			Request_Tran_obsim_oscm_350r()
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-'===============================================
-' Form_OnFormInitBefore
-'===============================================
-Sub Form_OnFormInitBefore()
-End Sub
+ --===============================================
+ -- Form_OnFormInitBefore
+ --===============================================
+function Form_OnFormInitBefore()
+end
 
-'===============================================
-' Form_OnFormInit
-'===============================================
-Sub Form_OnFormInit()
+ --===============================================
+ -- Form_OnFormInit
+ --===============================================
+function Form_OnFormInit()
 	Init_Control()
-End Sub
+end
 
-'===============================================
-' DATAMANAGER_OnReceiveTranComplete
-'===============================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --===============================================
+ -- DATAMANAGER_OnReceiveTranComplete
+ --===============================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 
 	if szTranID == "ohhts_6000_001r" then
 		Process_Tran_ohhts_6000_001r()
@@ -483,23 +485,24 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 	elseif szTranID == "obsim_oscm_350r" then
 		Process_Tran_obsim_oscm_350r()
 		
-		Form.triggerEvent("#", "CHANGE_LAYOUT_S12", 236)
-	end if
+		Form.TriggerEvent("#", "CHANGE_LAYOUT_S12", 236)
+	end
 	
-End Sub
+end
 
 
-'============================================================================
-Sub contMain_lblMore0_OnClick()
-	Form.triggerEvent("#", "RETURN_LAYOUT", "기업개요")
-End Sub
+ --============================================================================
+function contMain_lblMore0_OnClick()
+	Form.TriggerEvent("#", "RETURN_LAYOUT", "기업개요")
+end
 
-'============================================================================
-Sub contExpand_lblExpand_OnClick()
+ --============================================================================
+function contExpand_lblExpand_OnClick()
 	Expand_Cont()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_6000_001r" trcode="ohhts_6000_001r" compress="1" encryption="1" inputcheck="1" useattr="0" />

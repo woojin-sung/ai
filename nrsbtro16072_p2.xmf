@@ -17,125 +17,126 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="4437" _ulen="4289" >
-'-------------------------------------------------------------------------------------------
-' 01. 화 면 명 : 해외주식 상단 메뉴 선택
-' 02. 화면설명 : 해외주식 상단 메뉴 선택 팝업
-' 03. 이    력 : 
-' - 2025.09.16 YSH v0001 : 신규개발
-'-------------------------------------------------------------------------------------------
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
+ ---------------------------------------------------------------------------------------------
+ -- 01. 화 면 명 : 해외주식 상단 메뉴 선택
+ -- 02. 화면설명 : 해외주식 상단 메뉴 선택 팝업
+ -- 03. 이    력 : 
+ -- - 2025.09.16 YSH v0001 : 신규개발
+ ---------------------------------------------------------------------------------------------
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
-'****************************************************************************
-Function UpdateTitle(sScreenNo)
-	Dim sTitle
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
+ --****************************************************************************
+function UpdateTitle(sScreenNo)
+	local sTitle
 	
-	if sScreenNo == "16070" then		'잔고
+	if sScreenNo == "16070" then --잔고
 		sTitle = cont0.lblMenu0.caption
-	elseif sScreenNo == "16072" then	'손익
+	elseif sScreenNo == "16072" then --손익
 		sTitle = cont0.lblMenu1.caption
-	elseif sScreenNo == "16071" then	'예수금
+	elseif sScreenNo == "16071" then --예수금
 		sTitle = cont0.lblMenu2.caption
-	elseif sScreenNo == "16079" then	'평균단가 변경
+	elseif sScreenNo == "16079" then --평균단가 변경
 		sTitle = cont0.lblMenu3.caption
-	end if
+	end
 	
 	cont0.lblTitle.caption = sTitle
-End Function
+end
 
-Function HighlightMenu(sScreenNo)
-	if sScreenNo == "16070" then		'잔고
+function HighlightMenu(sScreenNo)
+	if sScreenNo == "16070" then --잔고
 		cont0.lblMenu0.fgColor = "144"
 		cont0.lblMenu0.bgColor = "66"
 		cont0.lblMenu0.transmode = "0"
-	elseif sScreenNo == "16072" then	'손익
+	elseif sScreenNo == "16072" then --손익
 		cont0.lblMenu1.fgColor = "144"
 		cont0.lblMenu1.bgColor = "66"
 		cont0.lblMenu1.transmode = "0"
-	elseif sScreenNo == "16071" then	'예수금
+	elseif sScreenNo == "16071" then --예수금
 		cont0.lblMenu2.fgColor = "144"
 		cont0.lblMenu2.bgColor = "66"
 		cont0.lblMenu2.transmode = "0"
-	elseif sScreenNo == "16079" then	'평균단가 변경
+	elseif sScreenNo == "16079" then --평균단가 변경
 		cont0.lblMenu3.fgColor = "144"
 		cont0.lblMenu3.bgColor = "66"
 		cont0.lblMenu3.transmode = "0"
-	end if
-End Function
+	end
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'============================================================================
-' Form_OnFormInitBefore
-'============================================================================
-Sub Form_OnFormInitBefore()
-	cont0.imgTitleArrow.setmaintainingratio("2")
-End Sub
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --============================================================================
+ -- Form_OnFormInitBefore
+ --============================================================================
+function Form_OnFormInitBefore()
+	cont0.imgTitleArrow.Setmaintainingratio("2")
+end
 
-'============================================================================
-' Form_OnFormInit
-'============================================================================
-Sub Form_OnFormInit()
-	Dim sOpenData
+ --============================================================================
+ -- Form_OnFormInit
+ --============================================================================
+function Form_OnFormInit()
+	local sOpenData
 	sOpenData = Form.GetOpenLinkData()
-	if sOpenData <> "" then
+	if sOpenData ~= "" then
 		UpdateTitle(sOpenData)
 		HighlightMenu(sOpenData)
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' cont0_LabelTop_OnClick()
-'============================================================================
-Sub cont0_LabelTop_OnClick()
+ --============================================================================
+ -- cont0_LabelTop_OnClick()
+ --============================================================================
+function cont0_LabelTop_OnClick()
 	Form.SendReturnToParent("nrsbonl16072_p2", "cancel")
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-' imgDim_OnClick
-'============================================================================
-Sub imgDim_OnClick()
+ --============================================================================
+ -- imgDim_OnClick
+ --============================================================================
+function imgDim_OnClick()
 	Form.SendReturnToParent("nrsbonl16072_p2", "cancel")
 	Form.CloseForm()
-End Sub
+end
 
 
-'============================================================================
-' cont0_lblMenu0_OnClick
-'============================================================================
-Sub cont0_lblMenu0_OnClick()
-	Form.OpenScreen("16070", "")	'잔고
+ --============================================================================
+ -- cont0_lblMenu0_OnClick
+ --============================================================================
+function cont0_lblMenu0_OnClick()
+	Form.OpenScreen("16070", "")	 --잔고
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-' cont0_lblMenu1_OnClick
-'============================================================================
-Sub cont0_lblMenu1_OnClick()
-	Form.OpenScreen("16072", "")	'손익
+ --============================================================================
+ -- cont0_lblMenu1_OnClick
+ --============================================================================
+function cont0_lblMenu1_OnClick()
+	Form.OpenScreen("16072", "")	 --손익
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-' cont0_lblMenu2_OnClick
-'============================================================================
-Sub cont0_lblMenu2_OnClick()
-	Form.OpenScreen("16071", "")	'예수금
+ --============================================================================
+ -- cont0_lblMenu2_OnClick
+ --============================================================================
+function cont0_lblMenu2_OnClick()
+	Form.OpenScreen("16071", "")	 --예수금
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-' cont0_lblMenu3_OnClick
-'============================================================================
-Sub cont0_lblMenu3_OnClick()
-	Form.OpenScreen("16079", "")	'평균단가 변경
+ --============================================================================
+ -- cont0_lblMenu3_OnClick
+ --============================================================================
+function cont0_lblMenu3_OnClick()
+	Form.OpenScreen("16079", "")	 --평균단가 변경
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

@@ -49,285 +49,287 @@
 		<BUTTON name="btnOk" caption="적용" fontsize="-2" btnimage="btn_20.9" ly_vert="0,590,375,60,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="8265" _ulen="7783" >
-
-Dim g_szCode		'거래국가코드
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+local g_szCode --거래국가코드
 g_szCode = ""
-Dim g_szCodeName	'거래국가코드한글명
+local g_szCodeName --거래국가코드한글명
 g_szCodeName = ""
 
-'Dim g_tCrCd	'거래국가코드 인덱스
-'g_tCrCd = Array("000", "840", "156", "344", "392", "704", "124", "702", "036", "276", "246", "250", "056", "528", "620", "300", "372", "380", "724", "040", "756")
-'
-'Dim g_tCrCdNm	'거래국가코드명 인덱스
-'g_tCrCdNm = Array("전체", "미국", "중국", "홍콩", "일본", "베트남", "캐나다", "싱가포르", "호주", "독일", "핀란드", "프랑스", "벨기에", "네덜란드", "포르투갈", "그리스", "아일랜드", "이탈리아", "스페인", "오스트리아", "스위스")
-'
-'Dim g_tCheck
-'g_tCheck = Array("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ,"0", "0", "0", "0")
+ --Dim g_tCrCd	'거래국가코드 인덱스
+ --g_tCrCd = Array("000", "840", "156", "344", "392", "704", "124", "702", "036", "276", "246", "250", "056", "528", "620", "300", "372", "380", "724", "040", "756")
+ --
+ --Dim g_tCrCdNm	'거래국가코드명 인덱스
+ --g_tCrCdNm = Array("전체", "미국", "중국", "홍콩", "일본", "베트남", "캐나다", "싱가포르", "호주", "독일", "핀란드", "프랑스", "벨기에", "네덜란드", "포르투갈", "그리스", "아일랜드", "이탈리아", "스페인", "오스트리아", "스위스")
+ --
+ --Dim g_tCheck
+ --g_tCheck = Array("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ,"0", "0", "0", "0")
 
-Dim g_tCrCd	'거래국가코드 인덱스
+local g_tCrCd --거래국가코드 인덱스
 g_tCrCd = Array("000", "840", "156", "344", "392", "999", "704", "124", "702", "036", "756")
 
-Dim g_tCrCdNm	'거래국가코드명 인덱스
+local g_tCrCdNm --거래국가코드명 인덱스
 g_tCrCdNm = Array("전체", "미국", "중국", "홍콩", "일본", "유럽", "베트남", "캐나다", "싱가포르", "호주", "스위스")
 
-Dim g_tCheck
+local g_tCheck
 g_tCheck = Array("0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0")
 
-'20250916 YSH START
-Dim g_bUseMultiSelect
+ --20250916 YSH START
+local g_bUseMultiSelect
 g_bUseMultiSelect = true
-'20250916 YSH END
-'============================================================================
-Sub Form_OnFormInitBefore()
-	contMain.icon1.setMaintainingRatio("1")
-	contMain.icon2.setMaintainingRatio("1")
-	contMain.icon3.setMaintainingRatio("1")
-	contMain.icon4.setMaintainingRatio("1")
-	contMain.icon5.setMaintainingRatio("1")
-	contMain.icon6.setMaintainingRatio("1")
-	contMain.icon7.setMaintainingRatio("1")
-	contMain.icon8.setMaintainingRatio("1")
-	contMain.icon9.setMaintainingRatio("1")
-	contMain.icon10.setMaintainingRatio("1")
+ --20250916 YSH END
+ --============================================================================
+function Form_OnFormInitBefore()
+	contMain.icon1.SetMaintainingRatio("1")
+	contMain.icon2.SetMaintainingRatio("1")
+	contMain.icon3.SetMaintainingRatio("1")
+	contMain.icon4.SetMaintainingRatio("1")
+	contMain.icon5.SetMaintainingRatio("1")
+	contMain.icon6.SetMaintainingRatio("1")
+	contMain.icon7.SetMaintainingRatio("1")
+	contMain.icon8.SetMaintainingRatio("1")
+	contMain.icon9.SetMaintainingRatio("1")
+	contMain.icon10.SetMaintainingRatio("1")
 	
-	contMain.icon11.setMaintainingRatio("1")
-	contMain.icon12.setMaintainingRatio("1")
-	contMain.icon13.setMaintainingRatio("1")
-	contMain.icon14.setMaintainingRatio("1")
-	contMain.icon15.setMaintainingRatio("1")
-	contMain.icon16.setMaintainingRatio("1")
-	contMain.icon17.setMaintainingRatio("1")
-	contMain.icon18.setMaintainingRatio("1")
-	contMain.icon19.setMaintainingRatio("1")
-	contMain.icon20.setMaintainingRatio("1")
-End Sub
+	contMain.icon11.SetMaintainingRatio("1")
+	contMain.icon12.SetMaintainingRatio("1")
+	contMain.icon13.SetMaintainingRatio("1")
+	contMain.icon14.SetMaintainingRatio("1")
+	contMain.icon15.SetMaintainingRatio("1")
+	contMain.icon16.SetMaintainingRatio("1")
+	contMain.icon17.SetMaintainingRatio("1")
+	contMain.icon18.SetMaintainingRatio("1")
+	contMain.icon19.SetMaintainingRatio("1")
+	contMain.icon20.SetMaintainingRatio("1")
+end
 
-'============================================================================
-Sub Form_OnFormInit()
-	Dim szOpenData
+ --============================================================================
+function Form_OnFormInit()
+	local szOpenData
 	szOpenData = Form.GetOpenLinkData()
-	If szOpenData <> "" And szOpenData <> null Then
-		tData = Split(szOpenData, "★")	
+	if szOpenData ~= "" and szOpenData ~= nil then
+		tData = gf_Split(szOpenData, "★")	
 		
-		szCode = tData(0)
-		arrCdoe = split(szCode, "@") 
+		szCode = tData[0+1]
+		arrCdoe = gf_Split(szCode, "@") 
 		
-		for i = 0 to #g_tCheck-1
-			if instr(szCode, g_tCrCd(i)) > 0 then
+		for i = 0, #g_tCheck-1 do
+			if string.find(szCode, g_tCrCd(i)) > 0 then
 				g_tCheck(i) = "1"
-			end if
-		next
+			end
+		end
 		
-		'20250916 YSH START
+		 --20250916 YSH START
 		if #tData > 2 then
-			if tData(2) == "UseSingleSelect" then
+			if tData[2+1] == "UseSingleSelect" then
 				g_bUseMultiSelect = false
-			end if
-		end if
-		'20250916 YSH END
+			end
+		end
+		 --20250916 YSH END
 	else
 		g_tCheck(0) = "1"
-	end if
+	end
 
-	'기선택된 코드 표시
-	for i = 0 to #g_tCheck - 1
-		if g_tCheck(i) = "1" then
-			Form.SetCtlProp("contMain.img" & i, "imgpath", "btn_line2_o.9.png")
+	 --기선택된 코드 표시
+	for i = 0, #g_tCheck - 1 do
+		if g_tCheck(i) == "1" then
+			Form.SetCtlProp("contMain.img" .. i, "imgpath", "btn_line2_o.9.png")
 		else
-			Form.SetCtlProp("contMain.img" & i, "imgpath", "btn_line2_n.9.png")
-		end if
-	next
-End Sub
+			Form.SetCtlProp("contMain.img" .. i, "imgpath", "btn_line2_n.9.png")
+		end
+	end
+end
 
-'============================================================================
-Sub BtnClose_OnClick()
+ --============================================================================
+function BtnClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormClose()
+ --============================================================================
+function Form_OnFormClose()
 	Form.SendReturnToParent("mbtro16070_p4", g_szCode .. "★" .. g_szCodeName)
-End Sub
+end
 
-'============================================================================
-Function SetCheckFilter(iPos)
-'	'체크된 버튼 라인 색 변경하고
-'	for i = 0 to 20
-'		'비활성화
-'		Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_n.9.png")
-''		Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "146")
-''		Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "00")
-'	
-'		if i = iPos then
-'			'활성화
-'			Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_o.9.png")
-''			Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "334")
-''			Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "01")			
-'		end if
-'	next	
+ --============================================================================
+function SetCheckFilter(iPos)
+ --	'체크된 버튼 라인 색 변경하고
+ --	for i = 0 to 20
+ --		'비활성화
+ --		Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_n.9.png")
+ --'		Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "146")
+ --'		Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "00")
+ --	
+ --		if i = iPos then
+ --			'활성화
+ --			Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_o.9.png")
+ --'			Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "334")
+ --'			Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "01")			
+ --		end if
+ --	next	
 
-	if g_tCheck(iPos) = "1" then		
-		'20250916 YSH START
-		'이미 선택한 나라 재선택 시 재선택으로 간주하고 종료
+	if g_tCheck(iPos) == "1" then
+		 --20250916 YSH START
+		 --이미 선택한 나라 재선택 시 재선택으로 간주하고 종료
 		if g_bUseMultiSelect == false then
 			btnOk_OnClick()
-			Exit Function
-		end if
-		'20250916 YSH END
+			return
+		end
+		 --20250916 YSH END
 		
 		g_tCheck(iPos) = "0" 
-		Form.SetCtlProp("contMain.img" & CStr(iPos), "imgpath", "btn_line2_n.9.png")
+		Form.SetCtlProp("contMain.img" .. gf_Tostring(iPos), "imgpath", "btn_line2_n.9.png")
 		
 		isCheck = false
 				
-		for i = 1 to #g_tCheck-1
-			if g_tCheck(i) == "1" then 
+		for i = 1, #g_tCheck-1 do
+			if g_tCheck(i) == "1" then
 				isCheck = true
-			end if
-		next
+			end
+		end
 		
 		if isCheck == false then
 			g_tCheck(0) = "1" 
 			Form.SetCtlProp("contMain.img0", "imgpath", "btn_line2_o.9.png")
-			Exit Function
-		end if
+			return
+		end
 			
 		
-	elseif g_tCheck(iPos) = "0" then
-		bInitChecked = false	'20250916 YSH
+	elseif g_tCheck(iPos) == "0" then
+		bInitChecked = false	 --20250916 YSH
 		
 		if iPos == 0 then
-			for i = 0 to #g_tCheck-1
+			for i = 0, #g_tCheck-1 do
 				g_tCheck(i) = "0" 
 				
-				Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_n.9.png")
-			next
+				Form.SetCtlProp("contMain.img" .. gf_Tostring(i), "imgpath", "btn_line2_n.9.png")
+			end
 			
 			g_tCheck(iPos) = "1" 
-			Form.SetCtlProp("contMain.img" & CStr(iPos), "imgpath", "btn_line2_o.9.png")
+			Form.SetCtlProp("contMain.img" .. gf_Tostring(iPos), "imgpath", "btn_line2_o.9.png")
 			
-			bInitChecked = true	'20250916 YSH
+			bInitChecked = true	 --20250916 YSH
 		else
 			g_tCheck(0) = "0" 
 			Form.SetCtlProp("contMain.img0", "imgpath", "btn_line2_n.9.png")
 			
 			g_tCheck(iPos) = "1" 
-			Form.SetCtlProp("contMain.img" & CStr(iPos), "imgpath", "btn_line2_o.9.png")
+			Form.SetCtlProp("contMain.img" .. gf_Tostring(iPos), "imgpath", "btn_line2_o.9.png")
 			
 			isUnCheck = false
 			
-			for i = 1 to #g_tCheck-1
-				if g_tCheck(i) == "0" then 
+			for i = 1, #g_tCheck-1 do
+				if g_tCheck(i) == "0" then
 					isUnCheck = true
-				end if
-			next
+				end
+			end
 			
 			if isUnCheck == false then
-				for i = 0 to #g_tCheck-1
+				for i = 0, #g_tCheck-1 do
 					g_tCheck(i) = "0" 
-					Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_n.9.png")
-				next
+					Form.SetCtlProp("contMain.img" .. gf_Tostring(i), "imgpath", "btn_line2_n.9.png")
+				end
 				
 				g_tCheck(0) = "1" 
 				Form.SetCtlProp("contMain.img0", "imgpath", "btn_line2_o.9.png")
-				bInitChecked = true	'20250916 YSH
-			end if
+				bInitChecked = true	 --20250916 YSH
+			end
 			
-			'20250916 YSH START
+			 --20250916 YSH START
 			if g_bUseMultiSelect == false then
 				if bInitChecked == false then
-					'선택한 값 제외 모두 선택 해제 처리
-					for i = 0 to #g_tCheck-1
-						if i <> iPos then
+					 --선택한 값 제외 모두 선택 해제 처리
+					for i = 0, #g_tCheck-1 do
+						if i ~= iPos then
 							g_tCheck(i) = "0" 
-						end if
-					next
-				end if
+						end
+					end
+				end
 				btnOk_OnClick()
-			end if
-			'20250916 YSH END
-		end if
-	end if
+			end
+			 --20250916 YSH END
+		end
+	end
 	
 	
-'	g_szCode = g_tCrCd[iPos]		'거래국가코드
-'	g_szCodeName = g_tCrCdNm[iPos]	'거래국가명
-'	Form.CloseForm()
-End Function
+ --	g_szCode = g_tCrCd[iPos]		'거래국가코드
+ --	g_szCodeName = g_tCrCdNm[iPos]	'거래국가명
+ --	Form.CloseForm()
+end
 
-'============================================================================
-Sub contMain_lbl0_OnClick()
+ --============================================================================
+function contMain_lbl0_OnClick()
 	SetCheckFilter(0)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl1_OnClick()
+ --============================================================================
+function contMain_lbl1_OnClick()
 	SetCheckFilter(1)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl2_OnClick()
+ --============================================================================
+function contMain_lbl2_OnClick()
 	SetCheckFilter(2)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl3_OnClick()
+ --============================================================================
+function contMain_lbl3_OnClick()
 	SetCheckFilter(3)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl4_OnClick()
+ --============================================================================
+function contMain_lbl4_OnClick()
 	SetCheckFilter(4)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl5_OnClick()
+ --============================================================================
+function contMain_lbl5_OnClick()
 	SetCheckFilter(5)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl6_OnClick()
+ --============================================================================
+function contMain_lbl6_OnClick()
 	SetCheckFilter(6)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl7_OnClick()
+ --============================================================================
+function contMain_lbl7_OnClick()
 	SetCheckFilter(7)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl8_OnClick()
+ --============================================================================
+function contMain_lbl8_OnClick()
 	SetCheckFilter(8)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl9_OnClick()
+ --============================================================================
+function contMain_lbl9_OnClick()
 	SetCheckFilter(9)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl10_OnClick()
+ --============================================================================
+function contMain_lbl10_OnClick()
 	SetCheckFilter(10)
-End Sub
+end
 
-'============================================================================
-Sub btnOk_OnClick()
+ --============================================================================
+function btnOk_OnClick()
 	g_szCode = ""
 	g_szCodeName = ""
-	for i = 0 to #g_tCheck-1 
+	for i = 0, #g_tCheck-1 do
 		if g_tCheck(i) == "1" then
 			if g_szCode == "" then
-				g_szCode = g_tCrCd[i]		'거래국가코드
-				g_szCodeName = g_tCrCdNm[i]	'거래국가명
+				g_szCode = g_tCrCd[i]		 --거래국가코드
+				g_szCodeName = g_tCrCdNm[i]	 --거래국가명
 			else
-				g_szCode = g_szCode & "@" & g_tCrCd[i]		'거래국가코드
-				g_szCodeName = g_szCodeName & "@" & g_tCrCdNm[i]	'거래국가명
-			end if
-		end if
-	next
+				g_szCode = g_szCode .. "@" .. g_tCrCd[i]		 --거래국가코드
+				g_szCodeName = g_szCodeName .. "@" .. g_tCrCdNm[i]	 --거래국가명
+			end
+		end
+	end
 	
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

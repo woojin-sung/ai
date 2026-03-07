@@ -49,25 +49,27 @@
 		<IMAGE name="imgClose" imgpath="ic_pop_close.png" ly_vert="275,15,24,24,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="9734" _ulen="9224" >
-'============================================================================
-' 해외선물옵션 관심종목 종목추가 화면
-'============================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 해외선물옵션 관심종목 종목추가 화면
+ --============================================================================
 
-'****************************************************************************
-'  V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim m_szData
-Dim m_szUserID
-Dim g_tblDefine
+ --****************************************************************************
+ --  V  A  R  I  A  B  L  E
+ --****************************************************************************
+local m_szData
+local m_szUserID
+local g_tblDefine
 
 
 
-'****************************************************************************
-'  F  O  R  M
-'****************************************************************************
-'============================================================================
-Sub Form_OnFormInit( )
-	m_szUserID = Form.GetSharedData("&USER_ID", false)
+ --****************************************************************************
+ --  F  O  R  M
+ --****************************************************************************
+ --============================================================================
+function Form_OnFormInit( )
+	m_szUserID = Form.GetSharedData("..USER_ID", false)
 	
 	g_tblDefine = { }
 	g_tblDefine.nItemCount = 0
@@ -77,55 +79,55 @@ Sub Form_OnFormInit( )
 	g_tblDefine.tItemList = { }
 	
 	initDefault( )
-End Sub
+end
 
-'============================================================================
-Sub Form_OnMsgBoxClose(sKeyName, sRet)
-	'종목 중복 결과
-	If sKeyName == "DUPLICATE_ITEMS" And sRet == "ok" Then
-		table.insert( g_tblDefine.tItemList, 1, g_tblDefine.tLinkData )
+ --============================================================================
+function Form_OnMsgBoxClose(sKeyName, sRet)
+	 --종목 중복 결과
+	if sKeyName == "DUPLICATE_ITEMS" and sRet == "ok" then
+		table.Insert( g_tblDefine.tItemList, 1, g_tblDefine.tLinkData )
 		
 		reqIntrGroupUpdate( )
-	End If
-End Sub
+	end
+end
 
 
 
-'****************************************************************************
-'  T  R  A  N     D  A  T  A  M  A  N  A  G  E  R
-'****************************************************************************
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	Dim tValue, nCount
+ --****************************************************************************
+ --  T  R  A  N     D  A  T  A  M  A  N  A  G  E  R
+ --****************************************************************************
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	local tValue, nCount
 	
-	' 관심그룹 리스트 수신
-	If szTranID = "ohhts_intr_026r" Then
+	 -- 관심그룹 리스트 수신
+	if szTranID == "ohhts_intr_026r" then
 		g_tblDefine.tGrpList = { }
 		
 		g_tblDefine.szVrsnID = DATAMANAGER.GetDataValue( 0 , szTranID , "OutBlock2" , "FID_VRSN_ID" , 0 )
-		nCount = CInt( DATAMANAGER.GetDataCount( 0 , szTranID , "OutBlock1" ) )
+		nCount = gf_Tonumber(DATAMANAGER.GetDataCount( 0 , szTranID , "OutBlock1") )
 		
-		For i = 0 To nCount-1
+		for i = 0, nCount-1 do
 			tValue = { }
 			tValue.szGrpKey  = DATAMANAGER.GetDataValue( 0 , szTranID , "OutBlock1" , "FID_CNCN_ISSU_GRP_ID" , i )
 			tValue.szGrpName = DATAMANAGER.GetDataValue( 0 , szTranID , "OutBlock1" , "FID_CNCN_GRP_NAME"    , i )
 			
-			If Not isNull( tValue.szGrpKey ) Then
-				table.insert( g_tblDefine.tGrpList, tValue )
-			End If
-		Next
+			if not isNull( tValue.szGrpKey ) then
+				table.Insert( g_tblDefine.tGrpList, tValue )
+			end
+		end
 		
 		grdList.selectrow = 0
 		grdList_OnClickUp( 0 , "gnam" )
 					
-	' 관심종목 리스트 수신
-	ElseIf szTranID == "ohhts_intr_027r" Then
+	 -- 관심종목 리스트 수신
+	elseif szTranID == "ohhts_intr_027r" then
 		g_tblDefine.tItemList = { }
 		
-		nCount = CInt( DATAMANAGER.GetDataCount( 0 , szTranID , "OutBlock1" ) )
+		nCount = gf_Tonumber(DATAMANAGER.GetDataCount( 0 , szTranID , "OutBlock1") )
 		g_tblDefine.nItemCount = nCount
 		
-		For i = 0 To nCount
+		for i = 0, nCount do
 			tValue = { }
 			tValue.clscode = DATAMANAGER.GetDataValue( 0 , szTranID , "OutBlock1" , "FID_CODE_CLS_CODE" , i )
 			tValue.symbol  = DATAMANAGER.GetDataValue( 0 , szTranID , "OutBlock1" , "FID_OVDV_ISCD" , i )
@@ -133,172 +135,173 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			tValue.exch    = Form.GetItemCodeInfo( tValue.symbol , "exchname" )
 			tValue.korName = Form.GetItemCodeInfo( tValue.symbol , "name" )
 			
-			If Not isNull( tValue.symbol ) Then
-				table.insert( g_tblDefine.tItemList, tValue )
-			End If
-		Next
+			if not isNull( tValue.symbol ) then
+				table.Insert( g_tblDefine.tItemList, tValue )
+			end
+		end
 			
-	' 관심그룹 업데이트
+	 -- 관심그룹 업데이트
 	elseif szTranID == "ohhts_intr_029r" then
 		if not isNull( g_tblDefine.tLinkData.symbol ) then
-			Form.Toast( 0, "[" & g_tblDefine.tLinkData.symbol & "] 종목이 [" & grdList.GetCellData( "gnam", grdList.selectrow ) & "]에 등록되었습니다." , 0 )
-		end if
+			Form.Toast( 0, "[" .. g_tblDefine.tLinkData.symbol .. "] 종목이 [" .. grdList.GetCellData( "gnam", grdList.selectrow ) .. "]에 등록되었습니다." , 0 )
+		end
 		
 		Form.CloseForm( )
 			
-	end if
-End Sub
+	end
+end
 
 
 
-'****************************************************************************
-'  C  O  N  T  R  O  L  L
-'****************************************************************************
-'============================================================================
-Sub imgClose_OnClick( )
+ --****************************************************************************
+ --  C  O  N  T  R  O  L  L
+ --****************************************************************************
+ --============================================================================
+function imgClose_OnClick( )
 	Form.CloseForm( )
-End Sub
+end
 
-'============================================================================
-Sub btnCancel_OnClick( )
+ --============================================================================
+function btnCancel_OnClick( )
 	imgClose_OnClick( )
-End Sub
+end
 
-'============================================================================
-Sub btnSave_OnClick( )
-	If Not isDuplicate( ) Then
+ --============================================================================
+function btnSave_OnClick( )
+	if not isDuplicate( ) then
 		reqIntrGroupUpdate( )
-	End If
-End Sub
+	end
+end
 
-'============================================================================
-Sub grdList_OnClickUp(lRow, szCellID)
-	Dim szGrpKey
+ --============================================================================
+function grdList_OnClickUp(lRow, szCellID)
+	local szGrpKey
 	szGrpKey = grdList.GetCellData( "grop", lRow )
 	
 	DATAMANAGER.SetDataValue( 0 , "ohhts_intr_027r" , "InBlock1" , "FID_USER_ID"          , 0 , m_szUserID )
 	DATAMANAGER.SetDataValue( 0 , "ohhts_intr_027r" , "InBlock1" , "FID_CNCN_ISSU_GRP_ID" , 0 , szGrpKey )
 	DATAMANAGER.RequestTranData( "ohhts_intr_027r" )
-End Sub
+end
 
 
 
-'****************************************************************************
-'  P  E  R  S  O  N  A  L
-'****************************************************************************
-'============================================================================
-' 기본 정보 및 컨트롤 설정
-'============================================================================
-Sub initDefault( )
+ --****************************************************************************
+ --  P  E  R  S  O  N  A  L
+ --****************************************************************************
+ --============================================================================
+ -- 기본 정보 및 컨트롤 설정
+ --============================================================================
+function initDefault( )
 	m_szData = Form.GetOpenLinkData( )
 	
-	If not isNull( m_szData ) Then
+	if not isNull( m_szData ) then
 		g_tblDefine.tLinkData.clscode = "1"
 		g_tblDefine.tLinkData.symbol  = m_szData
 		g_tblDefine.tLinkData.memo    = ""
 		g_tblDefine.tLinkData.exch    = Form.GetItemCodeInfo( m_szData , "exchname" )
 		g_tblDefine.tLinkData.korName = Form.GetItemCodeInfo( m_szData , "name" )
-	End If
+	end
 	
-	' 관심그룹 리스트 조회
+	 -- 관심그룹 리스트 조회
 	DATAMANAGER.SetDataValue( 0 , "ohhts_intr_026r" , "InBlock1" , "FID_USER_ID" , 0 , m_szUserID )
 	DATAMANAGER.RequestTranData( "ohhts_intr_026r" )
-End Sub
+end
 
-'============================================================================
-' 중복종목 체크
-'============================================================================
-Function isDuplicate( )
-	If #g_tblDefine.tItemList > 0 Then
+ --============================================================================
+ -- 중복종목 체크
+ --============================================================================
+function isDuplicate( )
+	if #g_tblDefine.tItemList > 0 then
 		For _, val in pairs( g_tblDefine.tItemList )
-			If "table" == type(val) Then
-				If ( val.symbol == g_tblDefine.tLinkData.symbol ) Then
-					Form.MsgBox( "알림", "[" & g_tblDefine.tLinkData.symbol & "] 은(는) 이미 등록되어 있습니다.\r\n\n중복해서 등록하시겠습니까?", "DUPLICATE_ITEMS", 1)
+			if "table" == type(val) then
+				if ( val.symbol == g_tblDefine.tLinkData.symbol ) then
+					Form.MsgBox( "알림", "[" .. g_tblDefine.tLinkData.symbol .. "] 은(는) 이미 등록되어 있습니다.\r\n\n중복해서 등록하시겠습니까?", "DUPLICATE_ITEMS", 1)
 					return true
-				End If
-			End If
-		Next
-	End If
+				end
+			end
+		end
+	end
 	
-	table.insert( g_tblDefine.tItemList, 1, g_tblDefine.tLinkData )
+	table.Insert( g_tblDefine.tItemList, 1, g_tblDefine.tLinkData )
 	return false
-End Function
+end
 
-'============================================================================
-' 관심그룹 추가 : ohhts_intr_029r
-'============================================================================
-Sub reqIntrGroupUpdate( )
-	Dim szTranID
+ --============================================================================
+ -- 관심그룹 추가 : ohhts_intr_029r
+ --============================================================================
+function reqIntrGroupUpdate( )
+	local szTranID
 	szTranID = "ohhts_intr_029r"
 	
-	If g_tblDefine.nItemCount < 100	Then
-		Dim szGrpKey, szGrpName, nSelIndex
+	if g_tblDefine.nItemCount < 100 then
+		local szGrpKey, szGrpName, nSelIndex
 		nSelIndex = grdList.selectrow
 		
 		szGrpKey = grdList.GetCellData( "grop", nSelIndex )
 		szGrpName = grdList.GetCellData( "gnam", nSelIndex )
 		
-		If isNull( szGrpKey ) Then
+		if isNull( szGrpKey ) then
 			Form.ShowAlert( "알림", "관심그룹을 선택하세요." )
-			Exit Sub
-		End If
+			return
+		end
 		
 		DATAMANAGER.ClearInputData( 0 , szTranID )
 		
-		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock1" , "FID_USER_ID"     , 0 , m_szUserID )	' FID사용자ID
-		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock1" , "FID_VRSN_ID"     , 0 , g_tblDefine.szVrsnID ) ' FID버전ID	
-		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock1" , "FID_MOD_YN"      , 0 , "0" ) ' FID수정여부				
-		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock1" , "FID_ISSU_MOD_YN" , 0 , "0" ) ' FID종목수정여부
+		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock1" , "FID_USER_ID"     , 0 , m_szUserID )	 -- FID사용자ID
+		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock1" , "FID_VRSN_ID"     , 0 , g_tblDefine.szVrsnID )  -- FID버전ID	
+		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock1" , "FID_MOD_YN"      , 0 , "0" )  -- FID수정여부				
+		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock1" , "FID_ISSU_MOD_YN" , 0 , "0" )  -- FID종목수정여부
 		
-		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock2" , "FID_CNCN_ISSU_GRP_ID" , 0 , szGrpKey ) ' FID관심종목그룹ID
-		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock2" , "FID_CNCN_GRP_NAME"    , 0 , szGrpName ) ' FID관심그룹명	
-		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock2" , "FID_ISSU_MOD_YN"      , 0 , "1" ) ' FID종목수정여부
+		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock2" , "FID_CNCN_ISSU_GRP_ID" , 0 , szGrpKey )  -- FID관심종목그룹ID
+		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock2" , "FID_CNCN_GRP_NAME"    , 0 , szGrpName )  -- FID관심그룹명	
+		DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock2" , "FID_ISSU_MOD_YN"      , 0 , "1" )  -- FID종목수정여부
 		
-		If Null <> g_tblDefine.tItemList And table.getn( g_tblDefine.tItemList ) > 0 Then
-			For i = 0 To table.getn( g_tblDefine.tItemList ) - 1
-				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_CNCN_ISSU_GRP_ID"    , i , szGrpKey ) ' FID관심종목그룹
-				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_CNCN_ISSU_ID2"       , i , Change_Len(i) ) ' FID관심종목
-				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_CODE_CLS_CODE"       , i , g_tblDefine.tItemList[i].clscode ) ' 종목 / FID코드구분코드
-				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_OVDV_ISCD"           , i , g_tblDefine.tItemList[i].symbol ) ' FID관심종목코드
-				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_MEMO_CNTT"           , i , g_tblDefine.tItemList[i].memo ) ' FID메모내용
-				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_INPUT_MRKT_CLS_CODE" , i , g_tblDefine.tItemList[i].exch ) ' FID입력시장구분코드
-			Next
-		End If
+		if nil ~= g_tblDefine.tItemList and table.Getn( g_tblDefine.tItemList ) > 0 then
+			for i = 0, table.Getn( g_tblDefine.tItemList ) - 1 do
+				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_CNCN_ISSU_GRP_ID"    , i , szGrpKey )  -- FID관심종목그룹
+				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_CNCN_ISSU_ID2"       , i , Change_Len(i) )  -- FID관심종목
+				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_CODE_CLS_CODE"       , i , g_tblDefine.tItemList[i].clscode )  -- 종목 / FID코드구분코드
+				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_OVDV_ISCD"           , i , g_tblDefine.tItemList[i].symbol )  -- FID관심종목코드
+				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_MEMO_CNTT"           , i , g_tblDefine.tItemList[i].memo )  -- FID메모내용
+				DATAMANAGER.SetDataValue( 0 , szTranID , "InBlock3" , "FID_INPUT_MRKT_CLS_CODE" , i , g_tblDefine.tItemList[i].exch )  -- FID입력시장구분코드
+			end
+		end
 		
 		DATAMANAGER.RequestTranData( szTranID )
-	Else
+	else
 		Form.ShowAlert( "알림", "1개의 관심그룹에는 최대 100개의 종목만 등록하실 수 있습니다. 추가하시려면 이전 종목을 삭제하거나 또는 새 그룹으로 등록하여 주십시오.")
-	End If
-End Sub
+	end
+end
 
-'============================================================================
-' null 체크
-'============================================================================
-Function isNull(str)
-	if null == str or "" == str or Len(Trim(str)) <= 0 then
+ --============================================================================
+ -- null 체크
+ --============================================================================
+function isNull(str)
+	if nil == str or "" == str or string.len(gf_Trim(str)) <= 0 then
 		return true
-	end if
+	end
 	
 	return false
-End Function
+end
 
-'============================================================================
-Function _tonumber(str)
-	return tonumber(str) or 0
-End Function
+ --============================================================================
+function _tonumber(str)
+	return gf_Tonumber(str) or 0
+end
 
-'============================================================================
-' Change_Len
-'============================================================================
-Function Change_Len(szData)
-	if Len(szData) == 1 then
-		Change_Len = "0" & CStr(szData)
+ --============================================================================
+ -- Change_Len
+ --============================================================================
+function Change_Len(szData)
+	if string.len(szData) == 1 then
+		return "0" .. gf_Tostring(szData)
 	else
-		Change_Len = CStr(szData)
-	end if 
-End Function
+		return gf_Tostring(szData)
+	end
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_intr_026r" trcode="ohhts_intr_026r" compress="1" encryption="1" inputcheck="1" useattr="0" />

@@ -8,148 +8,138 @@
 		<WEBVIEW name="webNews" urlpath="about:blank" ly_vert="0,0,375,423,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="4356" _ulen="4026" >
-'----------------------------------------------------------------------------
-' 01. 화 면 명 : 해외주식현재가
-' 02. 화면설명 : 해외주식현재가의 종목정보 탭
-' 03. 작    성 : 2024.05.13 HWG
-'----------------------------------------------------------------------------
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ ------------------------------------------------------------------------------
+ -- 01. 화 면 명 : 해외주식현재가
+ -- 02. 화면설명 : 해외주식현재가의 종목정보 탭
+ -- 03. 작    성 : 2024.05.13 HWG
+ ------------------------------------------------------------------------------
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim g_szItemCode, g_szExidCd, g_szOnlyCd
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+local g_szItemCode, g_szExidCd, g_szOnlyCd
 
-Dim g_szOsType
+local g_szOsType
 g_szOsType = ""
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
-'****************************************************************************
-Function Transform_Exid(szExid)
-	'20241128_02 KBC START : 해외주식 네이버 토론방 연계 수정
-	if szExid = "HK" then
-		if left(g_szOnlyCd, 1) = "0" then
-			g_szOnlyCd = right(g_szOnlyCd, 4)
-		end if
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
+ --****************************************************************************
+function Transform_Exid(szExid)
+	 --20241128_02 KBC START : 해외주식 네이버 토론방 연계 수정
+	if szExid == "HK" then
+		if string.sub(g_szOnlyCd, 1, 1) == "0" then
+			g_szOnlyCd = string.sub(g_szOnlyCd, -4)
+		end
 		
-		Transform_Exid = "HK"
-		exit function
-		
-	elseif szExid = "SH" then 
-		Transform_Exid = "SS"	'선강퉁
-		exit function
-
-	elseif szExid = "SZ" then
-		Transform_Exid = "SZ"	'후강퉁
-		exit function
-		
-	elseif szExid = "OQ" then
-		Transform_Exid = "O"	'나스닥		
-		exit function
-		
-	elseif szExid = "AX" or szExid = "NY" then
-		if Len(g_szOnlyCd) >= 4 then
-			Transform_Exid = "K"
-			exit function
+		return "HK"
+	elseif szExid == "SH" then
+		return "SS" --선강퉁
+	elseif szExid == "SZ" then
+		return "SZ" --후강퉁
+	elseif szExid == "OQ" then
+		return "O" --나스닥		
+	elseif szExid == "AX" or szExid == "NY" then
+		if string.len(g_szOnlyCd) >= 4 then
+			return "K"
 		else
-			Transform_Exid = ""
-			exit function
-		end if
+			return ""
+		end
 	
-	elseif szExid = "JP" then
-		Transform_Exid = "T"	'일본
-		exit function
+	elseif szExid == "JP" then
+		return "T" --일본
 	else
-		Transform_Exid = ""
-		exit function
-	end if
-	'20241128_02 KBC END
+		return ""
+	end
+	 --20241128_02 KBC END
 
-	'MsgBox Transform_Exid
+	 --MsgBox Transform_Exid
 	
 
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'============================================================================
-Sub Form_OnFormInit()
-	g_szOsType = Form.GetSharedData("&OS_TYPE", false )
-End Sub
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --============================================================================
+function Form_OnFormInit()
+	g_szOsType = Form.GetSharedData("..OS_TYPE", false )
+end
 
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	if (sEventName == "RequestData") then
 		g_szItemCode = sParam
-		If sParam = "" Then
-			Exit Sub
-		End If
+		if sParam == "" then
+			return
+		end
 		
 		if g_szOsType == "1" then
 			webNews.height = 423
 		else
 			webNews.height = 523
-		end if
+		end
 		
-		sTemp = split(g_szItemCode, "@")
-		g_szExidCd = sTemp[0] '시장구분
-		g_szOnlyCd = sTemp[1] '종목코드 
+		sTemp = gf_Split(g_szItemCode, "@")
+		g_szExidCd = sTemp[0+1]  --시장구분
+		g_szOnlyCd = sTemp[1+1]  --종목코드 
 		
-		Dim szExidCd_Naver
+		local szExidCd_Naver
 		szExidCd_Naver = Transform_Exid(g_szExidCd)
 		
-		Dim szData
+		local szData
 		szData = ""
 		
 		if szExidCd_Naver == "" then
 			szData = g_szOnlyCd
 		else
-			szData = g_szOnlyCd & "." & szExidCd_Naver 
-		end if
+			szData = g_szOnlyCd .. "." .. szExidCd_Naver 
+		end
 		
 		webNews.urlpath = "https://m.stock.naver.com/"
 		
-		szUrl = "https://m.stock.naver.com/worldstock/stock/" & szData & "/discuss"
+		szUrl = "https://m.stock.naver.com/worldstock/stock/" .. szData .. "/discuss"
 		
-		'20241128_02 KBC START : 해외주식 네이버 토론방 연계 수정
-		' (방법1)
-		' ETF 종목의 경우 URL이 다르다. 규칙 찾는중 (네이버에서 답변이 없음)
-		' 	예) 뉴욕거래소 (같은 ETF인데도 주소가 다르다)
-		'		GYLD : /etf
-		'		ASGI : /stock
-		'
-		' (방법2)
-		' 추정 
-		' 	-> 미국이고 종목명 끝이 " ETF" 인 경우 or 중간에 " ETF "가 포함된 경우 => /etf/ 경로 사용
-		'
-		' 위 방법도 맞지않음....방법1로 적용
+		 --20241128_02 KBC START : 해외주식 네이버 토론방 연계 수정
+		 -- (방법1)
+		 -- ETF 종목의 경우 URL이 다르다. 규칙 찾는중 (네이버에서 답변이 없음)
+		 -- 	예) 뉴욕거래소 (같은 ETF인데도 주소가 다르다)
+		 --		GYLD : /etf
+		 --		ASGI : /stock
+		 --
+		 -- (방법2)
+		 -- 추정 
+		 -- 	-> 미국이고 종목명 끝이 " ETF" 인 경우 or 중간에 " ETF "가 포함된 경우 => /etf/ 경로 사용
+		 --
+		 -- 위 방법도 맞지않음....방법1로 적용
 
-		szETF = Form.getItemCodeInfo(g_szItemCode, "etfyn")
+		szETF = Form.GetItemCodeInfo(g_szItemCode, "etfyn")
 		
-		szName = Form.getItemCodeInfo(g_szItemCode, "name")
+		szName = Form.GetItemCodeInfo(g_szItemCode, "name")
 		
 		if g_szExidCd == "OQ" or g_szExidCd == "AX" or g_szExidCd == "NY" then
-			'방법1
+			 --방법1
 			if szETF == "Y" then
-				szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
-			end if
+				szUrl = "https://m.stock.naver.com/worldstock/etf/" .. szData .. "/discuss"
+			end
 		
-			'방법2
-'			if LEN(szName) >= 4 then
-'				if RIGHT(szName, 4) == " ETF" then
-'					szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
-'				end if
-'
-'				if LEN(szName) >= 5 then
-'					if InStr( szName, " ETF " ) > 0 then 
-'						szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
-'					end if
-'				end if
-'			end if
-		end if
-		'MsgBox szUrl
-		'20241128_02 KBC END
+			 --방법2
+ --			if LEN(szName) >= 4 then
+ --				if RIGHT(szName, 4) == " ETF" then
+ --					szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
+ --				end if
+ --
+ --				if LEN(szName) >= 5 then
+ --					if InStr( szName, " ETF " ) > 0 then 
+ --						szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
+ --					end if
+ --				end if
+ --			end if
+		end
+		 --MsgBox szUrl
+		 --20241128_02 KBC END
 		
 		webNews.urlpath = szUrl
 	elseif sEventName == "CONTMAIN_SCROLLING" then
@@ -157,10 +147,11 @@ Sub Form_OnTriggerEvent(sEventName, sParam)
 		
 	elseif sEventName == "CONTMAIN_SCROLL_POS" then
 		if g_szOsType == "1" then
-			webNews.height = 423 + Cint(sParam)
-		end if
-	end if	
-End Sub
+			webNews.height = 423 + gf_Tonumber(sParam)
+		end
+	end
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

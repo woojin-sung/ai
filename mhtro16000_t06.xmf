@@ -143,49 +143,51 @@
 		</CHARTEX>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="7459" _ulen="7145" >
- '===========================================================================
-' 01. 업무구분 : 해외주식현재가_체결
-' 02. 화면 : 
-' 03. 화면설명 : 
-' 04. 작성자 : 
-' 05. 작성일 : 
-' 06. 수정이력 :
-'===========================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+  --===========================================================================
+ -- 01. 업무구분 : 해외주식현재가_체결
+ -- 02. 화면 : 
+ -- 03. 화면설명 : 
+ -- 04. 작성자 : 
+ -- 05. 작성일 : 
+ -- 06. 수정이력 :
+ --===========================================================================
 
-'[[ 전역변수 ]]
-'===========================================================================
-Dim g_sCode
-Dim g_sExid
-Dim g_sIsCd
-Dim g_rtChk
-Dim g_nMaxCount
+ --[[ 전역변수 ]]
+ --===========================================================================
+local g_sCode
+local g_sExid
+local g_sIsCd
+local g_rtChk
+local g_nMaxCount
 
-'[[ Form INIT]]
-'============================================================================
-Sub Form_OnFormInit()
+ --[[ Form INIT]]
+ --============================================================================
+function Form_OnFormInit()
 	ChartEx0.SetPeriodType(3)	
 	Grid1.SetVisibleCol( 3, false )
-end Sub
+end
 
-'[[ 트리거 이벤트 발생 시]]
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --[[ 트리거 이벤트 발생 시]]
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	if sEventName == "RequestData" then
 		f_FormStart(sParam)
-	end if
-end Sub
+	end
+end
 
-''============================================================================
-'Sub Form_OnLinkData(sKey, sValue)
-'	if sKey = "ITEMCODE" then
-'		f_FormStart(sValue)
-'	end if
-'End Sub
+ --'============================================================================
+ --Sub Form_OnLinkData(sKey, sValue)
+ --	if sKey = "ITEMCODE" then
+ --		f_FormStart(sValue)
+ --	end if
+ --End Sub
 
 
-'화면 클리어
-'============================================================================
-Function f_FormClear()
+ --화면 클리어
+ --============================================================================
+function f_FormClear()
 	g_nMaxCount = 300
 	DATAMANAGER.ClearInputData( false, "ohhts_6000_005r" )
 	DATAMANAGER.ClearOutputData( false, "ohhts_6000_005r" )
@@ -197,23 +199,23 @@ Function f_FormClear()
 	DATAMANAGER.ClearInputData( 1, "ohhts_exst_cntg" )
 	DATAMANAGER.ClearOutputData( 1, "ohhts_exst_cntg" )
 	Grid1.SetClear()
-end Function
+end
 
-'화면 시작
-'============================================================================
-Function f_FormStart(szItemCode)
-	if szItemCode == "null" or  szItemCode == ""  or  szItemCode == null then
-		Exit Function
-	end if
+ --화면 시작
+ --============================================================================
+function f_FormStart(szItemCode)
+	if szItemCode == "nil" or  szItemCode == ""  or  szItemCode == nil then
+		return
+	end
 	
 	
 
-	f_FormClear() '화면 클리어
+	f_FormClear()  --화면 클리어
 	
 	g_sCode = szItemCode
-	sTemp = split(g_sCode, "@")
-	g_sExid = sTemp[0] '시장구분
-	g_sIsCd = sTemp[1] '종목코드 
+	sTemp = gf_Split(g_sCode, "@")
+	g_sExid = sTemp[0+1]  --시장구분
+	g_sIsCd = sTemp[1+1]  --종목코드 
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_sExid, false )
 	DATAMANAGER.RequestTranData("ohhts_6000_005r")
 	DATAMANAGER.RequestTranData("ohhts_5041_001r")
@@ -221,126 +223,127 @@ Function f_FormStart(szItemCode)
 	
 	ChartEx0.SetJisuCode(g_sIsCd)
 	if g_sExid == "OQ" or g_sExid == "NY" or g_sExid == "AX" then
-		ChartEx0.setDecimal("4") '차트 스케일 세팅
+		ChartEx0.SetDecimal("4")  --차트 스케일 세팅
 	elseif g_sExid == "SZ" or g_sExid == "SH" or g_sExid == "HK" then
-		ChartEx0.setDecimal("3") '차트 스케일 세팅
+		ChartEx0.SetDecimal("3")  --차트 스케일 세팅
 	elseif g_sExid == "JP" then
-		ChartEx0.setDecimal("1") '차트 스케일 세팅
-	end if
+		ChartEx0.SetDecimal("1")  --차트 스케일 세팅
+	end
 		
 
-end Function
+end
 
-'[[ DATAMANAGER 조회 BEFORE ]]
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
+ --[[ DATAMANAGER 조회 BEFORE ]]
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
 	if szTranID == "ohhts_6000_005r" then
 		DATAMANAGER.SetDataValue( false, "ohhts_6000_005r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )
 		DATAMANAGER.SetDataValue( false, "ohhts_6000_005r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , g_sIsCd )
 		DATAMANAGER.SetDataValue( false, "ohhts_6000_005r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , g_sExid)
-		DATAMANAGER.SetDataValue( false, "ohhts_6000_005r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk) '실시간구분코드
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_005r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk)  --실시간구분코드
 	elseif szTranID == "ohhts_5041_001r" then
-		g_szToday = Form.GetSharedData( "&HOST_DATE", 0 )
+		g_szToday = Form.GetSharedData( "..HOST_DATE", 0 )
 		
-		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" ) '시장분류 
-		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , g_sExid) '시장구분
-		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , g_sIsCd ) '종목코드
-		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk) '실시간구분코드
+		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )  --시장분류 
+		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , g_sExid)  --시장구분
+		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , g_sIsCd )  --종목코드
+		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk)  --실시간구분코드
 		
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock2", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock2", "FID_INPUT_OVRS_ISCD" , 0 , g_sIsCd )
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock2", "FID_COND_MRKT_CLS_CODE" , 0 , g_sExid)
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock2", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )
 		
-		'DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock2", "FID_INPUT_HOUR_CLS_CODE", 0, "300" )
+		 --DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock2", "FID_INPUT_HOUR_CLS_CODE", 0, "300" )
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock2", "FID_INPUT_DATE1" ,0,g_szToday)	
-		'DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock2", "FID_INPUT_PAST_DATA_INCU_YN" , 0,"Y")
+		 --DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock2", "FID_INPUT_PAST_DATA_INCU_YN" , 0,"Y")
 
-	end if
-end Sub
+	end
+end
 
-'[[ DATAMANAGER 조회 Complete ]]
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	Dim nRowCnt
-	Dim i
-	Dim szDate
+ --[[ DATAMANAGER 조회 Complete ]]
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	local nRowCnt
+	local i
+	local szDate
 	
 	nRowCnt = 0
 	szDate =  ""
 	
 	if szTranID == "ohhts_6000_005r" then
 		
-		Dim nCount
+		local nCount
 		nCount = DATAMANAGER.GetDataCount(false, "ohhts_6000_005r", "OutBlock1")
 		g_sDecimal = DATAMANAGER.GetDataValue( 0, "ohhts_6000_005r", "OutBlock1", "FIDX_DCPN_CNT" , 0 )
 		nRowCnt = Grid1.rowcount
 		
-		if g_sKeyFlag == true then 
-			for i = nRowCnt - nCount to nRowCnt - 1
-				'날짜 형식 변환 - 20150101 => 15/01/01
+		if g_sKeyFlag == true then
+			for i = nRowCnt - nCount, nRowCnt - 1 do
+				 --날짜 형식 변환 - 20150101 => 15/01/01
 				szDate = Grid1.GetCellData( "bd_cell0", i ) 
-				szDate = Right(szDate, 6)
-				Grid1.SetCellData( "bd_cell0", i, Left(szDate, 2) .."/".. Mid(szDate,3, 2) .."/".. Right(szDate, 2) )
-			next
-		else 'NextKey가 False 일 경우
-			for i = 0 to nCount - 1
-				'날짜 형식 변환 - 20150101 => 15/01/01
+				szDate = string.sub(szDate, -6)
+				Grid1.SetCellData( "bd_cell0", i, string.sub(szDate, 1, 2) .."/".. string.sub(szDate, 3, 3 + 2 - 1) .."/".. string.sub(szDate, -2) )
+			end
+		else --NextKey가 False 일 경우
+			for i = 0, nCount - 1 do
+				 --날짜 형식 변환 - 20150101 => 15/01/01
 				szDate = Grid1.GetCellData( "bd_cell0", i ) 
-				szDate = Right(szDate, 6)
-				Grid1.SetCellData( "bd_cell0", i, Left(szDate, 2) .."/".. Mid(szDate,3, 2) .."/".. Right(szDate, 2) )
-			next
-		end if
+				szDate = string.sub(szDate, -6)
+				Grid1.SetCellData( "bd_cell0", i, string.sub(szDate, 1, 2) .."/".. string.sub(szDate, 3, 3 + 2 - 1) .."/".. string.sub(szDate, -2) )
+			end
+		end
 		
 		
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )
 		DATAMANAGER.RequestRealData( "ohhts_exst_cntg" )
 		
-		if tonumber(Grid1.rowcount) > g_nMaxCount then
+		if gf_Tonumber(Grid1.rowcount) > g_nMaxCount then
 			Grid1.rowcount = g_nMaxCount
-		end if
-	end if
-end Sub
+		end
+	end
+end
 
-'[[ 그리드 일별 헤더 클릭 ]]
-'============================================================================
-Sub Grid1_OnHeaderClickUp(lRow, szCellID)
+ --[[ 그리드 일별 헤더 클릭 ]]
+ --============================================================================
+function Grid1_OnHeaderClickUp(lRow, szCellID)
 	if (szCellID == "th_cell5") then
 		Grid1.SetVisibleCol( 2, false )
 		Grid1.SetVisibleCol( 3, true )
 	elseif (szCellID == "th_cell6") then
 		Grid1.SetVisibleCol( 2, true )
 		Grid1.SetVisibleCol( 3, false )
-	end if
-end Sub
+	end
+end
 
-'============================================================================
-Sub Grid1_OnScrollEnd( )
-	if tonumber(Grid1.rowcount) < g_nMaxCount then
+ --============================================================================
+function Grid1_OnScrollEnd( )
+	if gf_Tonumber(Grid1.rowcount) < g_nMaxCount then
 		g_sKeyFlag = DATAMANAGER.IsMoreNextData( "ohhts_6000_005r" )
-		if g_sKeyFlag == "1" or g_sKeyFlag == true	then
+		if g_sKeyFlag == "1" or g_sKeyFlag == true then
 			DATAMANAGER.RequestNextData( "ohhts_6000_005r" )
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveRealData(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveRealData(szTranID)
 	if szTranID == "ohhts_exst_cntg" then
-		szDate = DATAMANAGER.GetDataValue( 1, "ohhts_exst_cntg", "OutBlock1", "FIDXR_ACPL_BSOP_DATE" , 0 ) '20250305 MSH 일자별 날짜 변경 FIDXR_KOREA_DATE(한국일자) -> FIDXR_ACPL_BSOP_DATE(현지영업일자)
-		szDate = Right(szDate, 6)
-		Grid1.SetCellData( "bd_cell0", i, Left(szDate, 2) .."/".. Mid(szDate,3, 2) .."/".. Right(szDate, 2) )
-	end if
-End Sub
+		szDate = DATAMANAGER.GetDataValue( 1, "ohhts_exst_cntg", "OutBlock1", "FIDXR_ACPL_BSOP_DATE" , 0 )  --20250305 MSH 일자별 날짜 변경 FIDXR_KOREA_DATE(한국일자) -> FIDXR_ACPL_BSOP_DATE(현지영업일자)
+		szDate = string.sub(szDate, -6)
+		Grid1.SetCellData( "bd_cell0", i, string.sub(szDate, 1, 2) .."/".. string.sub(szDate, 3, 3 + 2 - 1) .."/".. string.sub(szDate, -2) )
+	end
+end
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 	ChartEx0.SetMarketCategory("7")
 	ChartEx0.SetChartType("simpleline")
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />

@@ -165,238 +165,239 @@
 		<BUTTON name="btnPrev" btnimage="btn_etc3.9.png" ly_vert="6,0,32,39,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="25221" _ulen="22567" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 화 면 명 : 관심종목_종목편집
+ -- 화면설명 : 관심종목_관심그룹에 해당되는 종목을 편집하는 Sub화면
+ -- 작    성 : 2015.12.04 ~ ssang
+ --============================================================================
 
-'============================================================================
-' 화 면 명 : 관심종목_종목편집
-' 화면설명 : 관심종목_관심그룹에 해당되는 종목을 편집하는 Sub화면
-' 작    성 : 2015.12.04 ~ ssang
-'============================================================================
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-
-Dim g_szCloud		' 관심동기화(0:미사용(로컬), 1:사용(서버))
-Dim g_szRow
-Dim g_szCd		' 종목 등록때 필요
+local g_szCloud -- 관심동기화(0:미사용(로컬), 1:사용(서버))
+local g_szRow
+local g_szCd -- 종목 등록때 필요
 g_szCd = ""
 
-Dim g_szTitle
+local g_szTitle
 g_szTitle = "알림"
 
-' 20160407 종목다중선택을 위해 필요한 변수
-Dim g_tCode()
+ -- 20160407 종목다중선택을 위해 필요한 변수
+local g_tCode()
 g_tCode = {}
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
+ --****************************************************************************
 
-'============================================================================
-' Insert_cmbGroup :  관심그룹을 그룹콤보에 넣기
-'============================================================================
-Function Insert_cmbGroup()
-	Dim szgrpList, szKey, szNm, szSave
-	Dim nRow, nIdx, nSelect
+ --============================================================================
+ -- Insert_cmbGroup :  관심그룹을 그룹콤보에 넣기
+ --============================================================================
+function Insert_cmbGroup()
+	local szgrpList, szKey, szNm, szSave
+	local nRow, nIdx, nSelect
 
 	nRow = grdGroup.rowcount
 	nIdx = -1
 	nSelect = 0
 	szgrpList = ""
 	
-	' 최종 선택(저장)된 관심그룹 키
+	 -- 최종 선택(저장)된 관심그룹 키
 	szSave = Form.GetEnvData("GLOBAL_INTR_GROUP_SELECT")
 
-	' ---- 관심종목 그룹 리스트 존재시 Start --------------------------------
+	 -- ---- 관심종목 그룹 리스트 존재시 Start --------------------------------
 	if Int(nRow) > 0 then
-		For i = 0 to nRow -1
+		for i = 0, nRow -1 do
 			szKey = grdGroup.GetCellData("bd_code", i)
 			szNm  = grdGroup.GetCellData("bd_name", i)
 
 			if szgrpList == "" then
-				szgrpList = szKey & "`" & szNm
+				szgrpList = szKey .. "`" .. szNm
 			else
-				szgrpList = szgrpList & "\r\n" & szKey & "`" & szNm
-			end if
+				szgrpList = szgrpList .. "\r\n" .. szKey .. "`" .. szNm
+			end
 			
 			if nIdx >= 0 then
 				nIdx = nIdx + 1
 			else
 				nIdx = 0
-			end if
+			end
 			
 			if szSave == szKey then
 				nSelect = nIdx
-			end if
+			end
 			
-			' 폼탭 페이지 추가
-			'fmTab.insertPage = 1			
-		Next
-	end if
-	' ---- 관심종목 그룹 리스트 존재시 End ----------------------------------
+			 -- 폼탭 페이지 추가
+			 --fmTab.insertPage = 1			
+		end
+	end
+	 -- ---- 관심종목 그룹 리스트 존재시 End ----------------------------------
 	
-	' 관심그룹콤보에 리스트 init		
+	 -- 관심그룹콤보에 리스트 init		
 	cmbGroup.cbinputdatatext = szgrpList
 	
-	' 관심그룹콤보에서 최종 저장된 그룹 선택
+	 -- 관심그룹콤보에서 최종 저장된 그룹 선택
 	cmbGroup.currentindex = nSelect		
-End Function
+end
 
-'============================================================================
-' Load_GWGroup :  로컬에 저장된 관심그룹 가져오기
-'============================================================================
-Function Load_GWGroup()
-	Dim tGroup, tList
+ --============================================================================
+ -- Load_GWGroup :  로컬에 저장된 관심그룹 가져오기
+ --============================================================================
+function Load_GWGroup()
+	local tGroup, tList
 	
 	grdGroup.rowcount = 0
 	szGroup = Form.LoadConfigData("GLOBAL_INTR", "GROUP")
 	
-	if szGroup <> "" then
-		tGroup = Split(szGroup, "♣")
+	if szGroup ~= "" then
+		tGroup = gf_Split(szGroup, "♣")
 		
-		For i = 0 to #tGroup-1
-			tList = Split(tGroup(i), "★")
+		for i = 0, #tGroup-1 do
+			tList = gf_Split(tGroup[i+1], "★")
 			
 			grdGroup.insertrow = i
 	
-			grdGroup.SetCellData("bd_code",  i, tList(0))
-			grdGroup.SetCellData("bd_name",  i, tList(1))
-			grdGroup.SetCellData("bd_count", i, tList(2))
-		Next
-	end if
-End Function
+			grdGroup.SetCellData("bd_code",  i, tList[0+1])
+			grdGroup.SetCellData("bd_name",  i, tList[1+1])
+			grdGroup.SetCellData("bd_count", i, tList[2+1])
+		end
+	end
+end
 
-'============================================================================
-' Save_GWGroup :  관심그룹을 로컬에 저장
-'============================================================================
-Function Save_GWGroup()
-	For i = 0 to grdGroup.rowcount-1
+ --============================================================================
+ -- Save_GWGroup :  관심그룹을 로컬에 저장
+ --============================================================================
+function Save_GWGroup()
+	for i = 0, grdGroup.rowcount-1 do
 		szCode = grdGroup.GetCellData("bd_code",  i)
 		szName = grdGroup.GetCellData("bd_name",  i)
 		szCnt  = grdGroup.GetCellData("bd_count", i)
 		
 		if i == 0 then
-			szGroup = szCode & "★" & szName & "★" & szCnt
+			szGroup = szCode .. "★" .. szName .. "★" .. szCnt
 		else
-			szGroup = szGroup & "♣" & szCode & "★" & szName & "★" & szCnt
-		end if
-	Next
+			szGroup = szGroup .. "♣" .. szCode .. "★" .. szName .. "★" .. szCnt
+		end
+	end
 	
 	Form.SaveConfigData("GLOBAL_INTR", "GROUP", szGroup)
-End Function
+end
 
-'============================================================================
-' Load_GWList :  ' 로컬 저장된 관심종목 가져오기
-'============================================================================
-Function Load_GWList()
-	Dim tGroup, tList
+ --============================================================================
+ -- Load_GWList :  ' 로컬 저장된 관심종목 가져오기
+ --============================================================================
+function Load_GWList()
+	local tGroup, tList
 
 	grdList.rowcount = 0
 	szGroup = Form.LoadConfigData("GLOBAL_INTR", cmbGroup.cbkeydata)
 
-	if szGroup <> "" then
-		tGroup = Split(szGroup, "♣")
+	if szGroup ~= "" then
+		tGroup = gf_Split(szGroup, "♣")
 	
-		For i = 0 to #tGroup-1		
-			tList = Split(tGroup(i), "★")
+		for i = 0, #tGroup-1 do
+			tList = gf_Split(tGroup[i+1], "★")
 			grdList.insertrow = i
 	
-			'20180905_01 NOHES : 로컬 저장된 빈칸메모 처리
-			'if Trim(tList(0)) == "" then
-			if Trim(tList(0)) == "" or Trim(tList(0)) == "빈칸" or Trim(tList(0)) == "EMPTY" then
+			 --20180905_01 NOHES : 로컬 저장된 빈칸메모 처리
+			 --if Trim(tList(0)) == "" then
+			if gf_Trim(tList[0+1]) == "" or gf_Trim(tList[0+1]) == "빈칸" or gf_Trim(tList[0+1]) == "EMPTY" then
 				grdList.SetCellFgColor("bd_code", i, "6")
 				grdList.SetCellFgColor("bd_name", i, "6")
 				
 				grdList.SetCellData("bd_code", i, "빈칸")
 				grdList.SetCellData("bd_mk",   i, "")
-				grdList.SetCellData("bd_name", i, tList(2))
-				grdList.SetCellData("bd_memo", i, tList(2))
+				grdList.SetCellData("bd_name", i, tList[2+1])
+				grdList.SetCellData("bd_memo", i, tList[2+1])
 				grdList.SetCellImage("bd_mod", i, "icon_sub_04.9.png")
 			else
-				grdList.SetCellData("bd_code", i, tList(0))
-				grdList.SetCellData("bd_mk",   i, tList(1))
-				'szName = Form.GetItemCodeInfo(tList(0), "name")	' 종목명은 저장 안하므로 메인에서 가져온다.
-				'grdList.SetCellData("bd_name", i, szName)
-				grdList.SetCellData("bd_name", i, tList(3))	' 20160325 위젯위해 종목명 추가
+				grdList.SetCellData("bd_code", i, tList[0+1])
+				grdList.SetCellData("bd_mk",   i, tList[1+1])
+				 --szName = Form.GetItemCodeInfo(tList(0), "name")	' 종목명은 저장 안하므로 메인에서 가져온다.
+				 --grdList.SetCellData("bd_name", i, szName)
+				grdList.SetCellData("bd_name", i, tList[3+1])	 -- 20160325 위젯위해 종목명 추가
 				grdList.SetCellData("bd_memo", i, "")
-			end if
-		Next
-	end if
-End Function
+			end
+		end
+	end
+end
 
-'============================================================================
-' Save_GWList
-'============================================================================
-Function Save_GWList()
-	Dim szList, szCd, szMk
+ --============================================================================
+ -- Save_GWList
+ --============================================================================
+function Save_GWList()
+	local szList, szCd, szMk
 	
-	For i = 0 to grdList.rowcount-1
+	for i = 0, grdList.rowcount-1 do
 		szCd = grdList.GetCellData("bd_code", i)
 		szMk = grdList.GetCellData("bd_mk",   i)
 		
-		if Trim(szMk) == "" then
+		if gf_Trim(szMk) == "" then
 			szMk = ""
-		end if
+		end
 		
-		' 20160325 위젯위해 종목명 추가
+		 -- 20160325 위젯위해 종목명 추가
 		if i == 0 then
-			szList = szCd  & "★" & szMk & "★" & grdList.GetCellData("bd_memo", i) & "★" & grdList.GetCellData("bd_name", i)
+			szList = szCd  .. "★" .. szMk .. "★" .. grdList.GetCellData("bd_memo", i) .. "★" .. grdList.GetCellData("bd_name", i)
 		else
-			szList = szList & "♣" & szCd & "★" & szMk & "★" & grdList.GetCellData("bd_memo", i) & "★" & grdList.GetCellData("bd_name", i)
-		end if
-	Next
+			szList = szList .. "♣" .. szCd .. "★" .. szMk .. "★" .. grdList.GetCellData("bd_memo", i) .. "★" .. grdList.GetCellData("bd_name", i)
+		end
+	end
 
-	' 동기화 시는 파일 저장만.. /////////////////////////////////////////////
+	 -- 동기화 시는 파일 저장만.. /////////////////////////////////////////////
 	if g_szCloud == "0" then
 		szChange = Form.GetCtlProp("#edtChange", "caption")
 			
-		' 그룹편집(1)이 된 상태이면 그룹도 조회해야하기 때문에 그룹편집이 안된상태일때 종목편집(0)조건을 넣어준다.
-		if szChange <> "1" then
+		 -- 그룹편집(1)이 된 상태이면 그룹도 조회해야하기 때문에 그룹편집이 안된상태일때 종목편집(0)조건을 넣어준다.
+		if szChange ~= "1" then
 			Form.SetCtlProp("#edtChange", "caption", "0")
-		end if
+		end
 		
-		For j = 0 to grdGroup.rowcount-1
+		for j = 0, grdGroup.rowcount-1 do
 			szCd = grdGroup.GetCellData("bd_code", j)
 			
 			if cmbGroup.cbkeydata == szCd then
 				grdGroup.SetCellData("bd_count", j, grdList.rowcount)
-				Exit For
-			end if
-		Next
-	end if
+				break
+			end
+		end
+	end
 	
 	Save_GWGroup()
 	
 	Form.SaveConfigData("GLOBAL_INTR", cmbGroup.cbkeydata, szList)
-End Function
+end
 
-'============================================================================
-' Change_Len
-'============================================================================
-Function Change_Len(szData)
-	if Len(szData) == 1 then
-		Change_Len = "0" & CStr(szData)
+ --============================================================================
+ -- Change_Len
+ --============================================================================
+function Change_Len(szData)
+	if string.len(szData) == 1 then
+		return "0" .. gf_Tostring(szData)
 	else
-		Change_Len = CStr(szData)
-	end if 
-End Function
+		return gf_Tostring(szData)
+	end
+end
 
-'============================================================================
-' Check_LocalOrServer : 로컬, 서버 구분하여 종목을 편집한다.
-'============================================================================
-Function Check_LocalOrServer()
+ --============================================================================
+ -- Check_LocalOrServer : 로컬, 서버 구분하여 종목을 편집한다.
+ --============================================================================
+function Check_LocalOrServer()
 	if g_szCloud == "1" then
 		DATAMANAGER.RequestTranData("ohhts_intr_029r")
 		Save_GWList()
 	else
 		Save_GWList()
-	end if
-End Function
+	end
+end
 
-'============================================================================
-' Add_Item : 종목추가 : 20160407 종목다중선택위해 변수 추가
-'============================================================================
-Function Add_Item(nGbn)
+ --============================================================================
+ -- Add_Item : 종목추가 : 20160407 종목다중선택위해 변수 추가
+ --============================================================================
+function Add_Item(nGbn)
 	grdList.insertrow = 0
 	grdList.SetCellData("bd_memo", 0, "")
 	grdList.SetCellData("bd_code", 0, g_szCd)
@@ -411,97 +412,97 @@ Function Add_Item(nGbn)
 	
 	g_szCd = ""
 	
-	if nGbn == 0 then				' 20160407
+	if nGbn == 0 then -- 20160407
 		Check_LocalOrServer()
-	end if
-End Function
+	end
+end
 
-'============================================================================
-' Change_EtcMarket :  해외지수(대표, 업종지수)/ 채권의 마켓구분 변경
-'============================================================================
-Function Change_EtcMarket(szData)
-	if Trim(szData) == "UJ" then
+ --============================================================================
+ -- Change_EtcMarket :  해외지수(대표, 업종지수)/ 채권의 마켓구분 변경
+ --============================================================================
+function Change_EtcMarket(szData)
+	if gf_Trim(szData) == "UJ" then
 		return "N"
-	elseif Trim(szData) == "BN" or Trim(szData) == "MM" then
+	elseif gf_Trim(szData) == "BN" or gf_Trim(szData) == "MM" then
 		return "B"
-	end if	
+	end
 	
 	return szData
-End Function
+end
 
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'============================================================================
-' Form_OnFormInit
-'============================================================================
-Sub Form_OnFormInit()	
-	' 관심 동기화 //////////////////////////////////////////////////////////
+ --============================================================================
+ -- Form_OnFormInit
+ --============================================================================
+function Form_OnFormInit()
+	 -- 관심 동기화 //////////////////////////////////////////////////////////
 	g_szCloud = Form.GetEnvData("common.interest_cloud")
 	
-	if Trim(g_szCloud) == "" then	' 초기값 : 1(동기화 사용)
+	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용)
 		g_szCloud = "1"
-	end if
-	' //////////////////////////////////////////////////////////////////////
+	end
+	 -- //////////////////////////////////////////////////////////////////////
 	
-	' 그리드 로우 위치 변경 위한 속성
+	 -- 그리드 로우 위치 변경 위한 속성
 	grdList.rowmove = "1"
 	
-	' 설정에서 구분자를 받아온다.
-	if g_szCloud == "1" then		' Server 저장시
-		' 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
+	 -- 설정에서 구분자를 받아온다.
+	if g_szCloud == "1" then -- Server 저장시
+		 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 		DATAMANAGER.RequestTranData("ohhts_intr_026r")
-	else							' Local 저장시
-		' 로컬 저장된 관심그룹 가져오기
+	else -- Local 저장시
+		 -- 로컬 저장된 관심그룹 가져오기
 		Load_GWGroup()
 		
-		' 관심그룹을 그룹콤보에 넣기
+		 -- 관심그룹을 그룹콤보에 넣기
 		Insert_cmbGroup()
 		
-		' 로컬 저장된 관심종목 가져오기
-		'Load_GWList()		
-	end if
-End Sub
+		 -- 로컬 저장된 관심종목 가져오기
+		 --Load_GWList()		
+	end
+end
 
-'============================================================================
-' Form_OnMsgBoxClose
-'============================================================================
-Sub Form_OnMsgBoxClose(sKeyName, sRet)
-	' 종목삭제
+ --============================================================================
+ -- Form_OnMsgBoxClose
+ --============================================================================
+function Form_OnMsgBoxClose(sKeyName, sRet)
+	 -- 종목삭제
 	if sKeyName == "DELETE" then
 		if sRet == "ok" then
 			grdList.SetDeleteRow(g_szRow)
 			Check_LocalOrServer()
-		end if
-	' 종목 추가
+		end
+	 -- 종목 추가
 	elseif sKeyName == "ADD_ITEM" then
-		if sRet == "ok" then	
+		if sRet == "ok" then
 			Add_Item(0)
-		end if
-	' 20160407 : 다건종목 추가
+		end
+	 -- 20160407 : 다건종목 추가
 	elseif sKeyName == "ADD_ITEMS" then
 		if sRet == "ok" then
-			For j = 0 to #g_tCode - 1					
+			for j = 0, #g_tCode - 1 do
 				g_szCd = g_tCode[j]
 				Add_Item(1)
-			Next
+			end
 			
 			Check_LocalOrServer()		
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-'============================================================================
-' Form_OnPopupReturn
-'============================================================================
-Sub Form_OnPopupReturn(sKeyName, sRet)
-	' 빈칸 추가
+ --============================================================================
+ -- Form_OnPopupReturn
+ --============================================================================
+function Form_OnPopupReturn(sKeyName, sRet)
+	 -- 빈칸 추가
 	if sKeyName == "BLANK_ADD" then
 		grdList.insertrow = 0
 		
-		' 빈칸 색상 적용 (색상은 임시색상)
+		 -- 빈칸 색상 적용 (색상은 임시색상)
 		grdList.SetCellFgColor("bd_code", 0, "6")
 		grdList.SetCellFgColor("bd_name", 0, "6")
 		
@@ -511,206 +512,206 @@ Sub Form_OnPopupReturn(sKeyName, sRet)
 		grdList.SetCellData("bd_memo", 0, sRet)
 		grdList.SetCellImage("bd_mod", 0, "icon_sub_04.9.png")
 		
-	' 빈칸 수정
+	 -- 빈칸 수정
 	elseif sKeyName == "BLANK_MOD" then
 		grdList.SetCellData("bd_code", g_szRow, "빈칸")
 		grdList.SetCellData("bd_name", g_szRow, sRet)	
 		grdList.SetCellData("bd_memo", g_szRow, sRet)
-	end if
+	end
 	
-	'Form.SetCtlProp("#edtChange", "caption", "0")
+	 --Form.SetCtlProp("#edtChange", "caption", "0")
 	Check_LocalOrServer()
-End Sub
+end
 
-'============================================================================
-' Form_OnCommonDialogReturn : 종목검색창에서 선택된 종목 가져오기
-' 20160407 : 종목다중선택 로직 추가
-'============================================================================
-Sub Form_OnCommonDialogReturn(sDlgName, sReturn1, sReturn2)
-	Dim nRow
-	Dim szCode, szName
+ --============================================================================
+ -- Form_OnCommonDialogReturn : 종목검색창에서 선택된 종목 가져오기
+ -- 20160407 : 종목다중선택 로직 추가
+ --============================================================================
+function Form_OnCommonDialogReturn(sDlgName, sReturn1, sReturn2)
+	local nRow
+	local szCode, szName
 	
 	nRow = 0
 	szCode, szName = "", ""
 	g_tCode = {}
 	
 	if sDlgName == "SEARCH" then
-		if Trim(sReturn1) <> "" then
-			g_tCode = Split(sReturn1, ":")
+		if gf_Trim(sReturn1) ~= "" then
+			g_tCode = gf_Split(sReturn1, ":")
 
-			nRow = grdList.rowcount()
+			nRow = grdList.Rowcount()
 	
 			if #g_tCode == 1 then
-				For i = 0 to nRow - 1
-					szCode = Trim(grdList.GetCellData("bd_code", i))
+				for i = 0, nRow - 1 do
+					szCode = gf_Trim(grdList.GetCellData("bd_code", i))
 
-					if szCode == Trim(g_tCode[0]) then
+					if szCode == gf_Trim(g_tCode[0+1]) then
 						szName = Form.GetItemCodeInfo(sReturn1, "name")
-						g_szCd = g_tCode[0]
+						g_szCd = g_tCode[0+1]
 						
-						Form.MsgBox(g_szTitle, szName & "은(는) 이미 등록되어 있습니다.\r\n\n중복해서 등록하시겠습니까?", "ADD_ITEM", 1)
-						Exit Sub
-					end if
-				Next
+						Form.MsgBox(g_szTitle, szName .. "은(는) 이미 등록되어 있습니다.\r\n\n중복해서 등록하시겠습니까?", "ADD_ITEM", 1)
+						return
+					end
+				end
 				
-				g_szCd = g_tCode[0]
+				g_szCd = g_tCode[0+1]
 				Add_Item(0)
 			elseif #g_tCode > 1 then
-				For j = 0 to #g_tCode - 1
-					For i = 0 to nRow - 1
-						szCode = Trim(grdList.GetCellData("bd_code", i))
+				for j = 0, #g_tCode - 1 do
+					for i = 0, nRow - 1 do
+						szCode = gf_Trim(grdList.GetCellData("bd_code", i))
 
-						if szCode == Trim(g_tCode[j]) then
+						if szCode == gf_Trim(g_tCode[j]) then
 							g_szCd = g_tCode[j]
 							
 							Form.MsgBox(g_szTitle, "선택종목들 중 이미 등록되어 있는 종목이 있습니다.\r\n\n중복해서 등록하시겠습니까?", "ADD_ITEMS", 1)
-							Exit Sub
-						end if
-					Next					
-				Next
+							return
+						end
+					end
+				end
 				
-				' 20160411 : 확인이 다 되었으면 리스트에 담는다.
-				For k = 0 to #g_tCode - 1
+				 -- 20160411 : 확인이 다 되었으면 리스트에 담는다.
+				for k = 0, #g_tCode - 1 do
 					g_szCd = g_tCode[k]
 					Add_Item(1)
-				Next				
+				end
 
 				Check_LocalOrServer()
-			end if
-		end if	
-	end if
-End Sub
+			end
+		end
+	end
+end
 
-'============================================================================
-' DATAMANAGER_OnSendTranBefore
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
-	' ----------------------------------------------------------------------
-	' 관심그룹 조회
-	' ----------------------------------------------------------------------
+ --============================================================================
+ -- DATAMANAGER_OnSendTranBefore
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	 -- ----------------------------------------------------------------------
+	 -- 관심그룹 조회
+	 -- ----------------------------------------------------------------------
 	if szTranID == "ohhts_intr_026r" then
 		DATAMANAGER.ClearInputData(0, "ohhts_intr_026r")
 		
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_026r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("&USER_ID", false))	' USER ID
-	' ----------------------------------------------------------------------
-	' 관심종목 종목 조회
-	' ----------------------------------------------------------------------
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_026r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("..USER_ID", false))	 -- USER ID
+	 -- ----------------------------------------------------------------------
+	 -- 관심종목 종목 조회
+	 -- ----------------------------------------------------------------------
 	elseif szTranID == "ohhts_intr_027r" then
 		DATAMANAGER.ClearInputData(0, "ohhts_intr_027r")
 		
-		grdList.rowcount = 0	' 종목그리드 초기화
+		grdList.rowcount = 0	 -- 종목그리드 초기화
 		
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_027r", "InBlock1", "FID_USER_ID",          0, Form.GetSharedData("&USER_ID", false))	' USER ID	
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_027r", "InBlock1", "FID_USER_ID",          0, Form.GetSharedData("..USER_ID", false))	 -- USER ID	
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_027r", "InBlock1", "FID_CNCN_ISSU_GRP_ID", 0, cmbGroup.cbkeydata)	
-	' ----------------------------------------------------------------------
-	' 관심 수정 TR :그룹추가, 종목추가, 빈칸추가
-	' ----------------------------------------------------------------------
+	 -- ----------------------------------------------------------------------
+	 -- 관심 수정 TR :그룹추가, 종목추가, 빈칸추가
+	 -- ----------------------------------------------------------------------
 	elseif szTranID == "ohhts_intr_029r" then
 		DATAMANAGER.ClearInputData(0, "ohhts_intr_029r")
-		' ////////////// 종목추가, 빈칸적용시 ////////////////
-		' FID사용자ID
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock1", "FID_USER_ID",     0, Form.GetSharedData("&USER_ID", false))	' USER ID
-		' FID버전ID
+		 -- ////////////// 종목추가, 빈칸적용시 ////////////////
+		 -- FID사용자ID
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock1", "FID_USER_ID",     0, Form.GetSharedData("..USER_ID", false))	 -- USER ID
+		 -- FID버전ID
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock1", "FID_VRSN_ID",     0, edtvrsnID.caption)	
-		'DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock1", "FID_VRSN_ID",     0, "12")	
-		' FID수정여부
+		 --DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock1", "FID_VRSN_ID",     0, "12")	
+		 -- FID수정여부
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock1", "FID_MOD_YN",      0, "0")				
-		' FID종목수정여부
+		 -- FID종목수정여부
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock1", "FID_ISSU_MOD_YN", 0, "0")				
 
 
-		' FID관심종목그룹ID
+		 -- FID관심종목그룹ID
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock2", "FID_CNCN_ISSU_GRP_ID", 0, cmbGroup.cbkeydata)
-		' FID관심그룹명
+		 -- FID관심그룹명
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock2", "FID_CNCN_GRP_NAME",    0, cmbGroup.caption)	
-		' FID종목수정여부
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock2", "FID_ISSU_MOD_YN", 0, "1")			' 수정
+		 -- FID종목수정여부
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock2", "FID_ISSU_MOD_YN", 0, "1")			 -- 수정
 		
-		Dim szCode , szExch , szMemo , szName
-		For j = 0 to grdList.rowcount - 1
+		local szCode , szExch , szMemo , szName
+		for j = 0, grdList.rowcount - 1 do
 			szCode = grdList.GetCellData("bd_code", j)
 			szExch = grdList.GetCellData("bd_mk", j)
 			szMemo = grdList.GetCellData("bd_memo", j)
 			szName = grdList.GetCellData("bd_name", j)
 			
-			' FID관심종목그룹
+			 -- FID관심종목그룹
 			DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock3", "FID_CNCN_ISSU_GRP_ID",    j, cmbGroup.cbkeydata)	
-			' FID관심종목
+			 -- FID관심종목
 			DATAMANAGER.SetDataValue(0, "ohhts_intr_029r", "InBlock3", "FID_CNCN_ISSU_ID2",       j, Change_Len(j))	
 
 
-			If Trim( szCode ) == "빈칸" Then
-				If Trim( szMemo ) == "" Then
-					DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j, "2")	' 빈칸 / FID코드구분코드
-				Else
-					DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j, "3")	' 메모 / FID코드구분코드
-				End If
+			if gf_Trim(szCode) == "빈칸" then
+				if gf_Trim(szMemo) == "" then
+					DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j, "2")	 -- 빈칸 / FID코드구분코드
+				else
+					DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j, "3")	 -- 메모 / FID코드구분코드
+				end
 				
-				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_OVDV_ISCD", j, "EMPTY")		' FID관심종목코드
-				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_MEMO_CNTT", j, szMemo)			' FID메모내용
+				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_OVDV_ISCD", j, "EMPTY")		 -- FID관심종목코드
+				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_MEMO_CNTT", j, szMemo)			 -- FID메모내용
 				
-			Else
-				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j, "1")		' 종목 / FID코드구분코드
+			else
+				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j, "1")		 -- 종목 / FID코드구분코드
 				
-				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_OVDV_ISCD", j, szCode)			' FID관심종목코드
-				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_MEMO_CNTT", j, "")			' FID메모내용
-			End If
+				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_OVDV_ISCD", j, szCode)			 -- FID관심종목코드
+				DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_MEMO_CNTT", j, "")			 -- FID메모내용
+			end
 			
-			DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_INPUT_MRKT_CLS_CODE", j, szExch)	' FID입력시장구분코드
+			DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_INPUT_MRKT_CLS_CODE", j, szExch)	 -- FID입력시장구분코드
 			
 			
-'Form.Log("\n[_DEBUG]", "\n:j:" & j &":\n:szCode:"& szCode &":\n:szExch:"& szExch &":\n:"&
-'"szMemo:"& szMemo &":\n:szName:"& szName &":\n:"&
-'"FID_CODE_CLS_CODE:"& DATAMANAGER.GetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j) &":")
-		Next
-	end if
-End Sub
+ --Form.Log("\n[_DEBUG]", "\n:j:" & j &":\n:szCode:"& szCode &":\n:szExch:"& szExch &":\n:"&
+ --"szMemo:"& szMemo &":\n:szName:"& szName &":\n:"&
+ --"FID_CODE_CLS_CODE:"& DATAMANAGER.GetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j) &":")
+		end
+	end
+end
 
-'============================================================================
-' DATAMANAGER_OnReceiveTranData
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranData(szTranID)
-	' ----------------------------------------------------------------------
-	' 관심종목 종목 조회
-	' ----------------------------------------------------------------------
+ --============================================================================
+ -- DATAMANAGER_OnReceiveTranData
+ --============================================================================
+function DATAMANAGER_OnReceiveTranData(szTranID)
+	 -- ----------------------------------------------------------------------
+	 -- 관심종목 종목 조회
+	 -- ----------------------------------------------------------------------
 	if szTranID == "ohhts_intr_027r" then
-		Dim nCnt
-		Dim szCode
+		local nCnt
+		local szCode
 		
 		nCnt = DATAMANAGER.GetDataCount(0, "ohhts_intr_027r", "OutBlock1")
 		
-		For i = 0 to nCnt-1
-			szCode = Trim(DATAMANAGER.GetDataValue(0, "ohhts_intr_027r", "OutBlock1", "FID_OVDV_ISCD", i))
+		for i = 0, nCnt-1 do
+			szCode = gf_Trim(DATAMANAGER.GetDataValue(0, "ohhts_intr_027r", "OutBlock1", "FID_OVDV_ISCD", i))
 			
 			if szCode == "EMPTY" then
 				DATAMANAGER.SetDataValue(0, "ohhts_intr_027r", "OutBlock1", "FID_OVDV_ISCD", i, "빈칸")
-			end if
-		Next
-	end if
-End Sub
+			end
+		end
+	end
+end
 
-'============================================================================
-' DATAMANAGER_OnReceiveTranComplete
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	' ----------------------------------------------------------------------
-	' 관심그룹 조회
-	' ----------------------------------------------------------------------
+ --============================================================================
+ -- DATAMANAGER_OnReceiveTranComplete
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	 -- ----------------------------------------------------------------------
+	 -- 관심그룹 조회
+	 -- ----------------------------------------------------------------------
 	if szTranID == "ohhts_intr_026r" then
-		' 관심그룹을 그룹콤보에 넣기
+		 -- 관심그룹을 그룹콤보에 넣기
 		Insert_cmbGroup()
-	' ----------------------------------------------------------------------
-	' 관심종목 종목 조회
-	' ----------------------------------------------------------------------
+	 -- ----------------------------------------------------------------------
+	 -- 관심종목 종목 조회
+	 -- ----------------------------------------------------------------------
 	elseif szTranID == "ohhts_intr_027r" then
-		Dim szMk, szCode, szMemo
+		local szMk, szCode, szMemo
 		
-		For i = 0 to grdList.rowcount - 1
+		for i = 0, grdList.rowcount - 1 do
 			szMk   = grdList.GetCellData("bd_mk",   i)
 			szCode = grdList.GetCellData("bd_code", i)
 			
 			if szCode == "빈칸" then
-				' 빈칸 색상 적용 (색상은 임시색상)
+				 -- 빈칸 색상 적용 (색상은 임시색상)
 				szMemo = grdList.GetCellData("bd_memo", i)
 				grdList.SetCellData("bd_name", i, szMemo)
 				
@@ -718,149 +719,150 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 				grdList.SetCellFgColor("bd_name", i, "6")
 				grdList.SetCellImage("bd_mod", i, "icon_sub_04.9.png")
 			else
-				' 종목명 가져오는 함수
+				 -- 종목명 가져오는 함수
 				szName = Form.GetItemCodeInfo(szCode, "name")
 			
 				grdList.SetCellData("bd_name", i, szName)
-			end if
-		Next
-	' ----------------------------------------------------------------------
-	' 관심 수정 TR
-	' ----------------------------------------------------------------------
+			end
+		end
+	 -- ----------------------------------------------------------------------
+	 -- 관심 수정 TR
+	 -- ----------------------------------------------------------------------
 	elseif szTranID == "ohhts_intr_029r" then
 		szChange = Form.GetCtlProp("#edtChange", "caption")
-		Form.SetSharedData("GLOBAL_INTR_VRSN_ID", edtvrsnID.caption) ' 20160317 편집시 ID가 메인화면과 연동안되는부분 때문에 추가
+		Form.SetSharedData("GLOBAL_INTR_VRSN_ID", edtvrsnID.caption)  -- 20160317 편집시 ID가 메인화면과 연동안되는부분 때문에 추가
 		
-		' 그룹편집(1)이 된 상태이면 그룹도 조회해야하기 때문에 그룹편집이 안된상태일때 종목편집(0)조건을 넣어준다.
-		if szChange <> "1" then
+		 -- 그룹편집(1)이 된 상태이면 그룹도 조회해야하기 때문에 그룹편집이 안된상태일때 종목편집(0)조건을 넣어준다.
+		if szChange ~= "1" then
 			Form.SetCtlProp("#edtChange", "caption", "0")
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-'============================================================================
-' DATAMANAGER_OnReceiveTranError : 확인용
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
-'		Form.ShowAlert(szTranID, szErrMsg)
-End Sub
+ --============================================================================
+ -- DATAMANAGER_OnReceiveTranError : 확인용
+ --============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+ --		Form.ShowAlert(szTranID, szErrMsg)
+end
 
-'============================================================================
-' cmbGroup_OnEditComplete
-'============================================================================
-Sub cmbGroup_OnEditComplete(iIndex)
+ --============================================================================
+ -- cmbGroup_OnEditComplete
+ --============================================================================
+function cmbGroup_OnEditComplete(iIndex)
 	grdList.rowcount = 0
 
-	'20160906 NOHES START 선택되어 있는 그룹의 키를 저장한다.
+	 --20160906 NOHES START 선택되어 있는 그룹의 키를 저장한다.
 	Form.SetEnvData("1", "GLOBAL_INTR_GROUP_SELECT" , cmbGroup.cbkeydata)
-	'20160906 NOHES END
+	 --20160906 NOHES END
 	
-	if g_szCloud == "0" then	' 로컬
+	if g_szCloud == "0" then -- 로컬
 		Load_GWList()
-	else						' 서버
-		' 관심종목 종목 조회
+	else -- 서버
+		 -- 관심종목 종목 조회
 		DATAMANAGER.RequestTranData("ohhts_intr_027r")	
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' tblSelect_OnClick
-'============================================================================
-Sub tblSelect_OnClick(lRow , lColumn)
-	if Trim(cmbGroup.cbkeydata) == "" then
-			'Form.ShowAlert("관심종목추가", "새 그룹으로 등록하여 주십시오.")
+ --============================================================================
+ -- tblSelect_OnClick
+ --============================================================================
+function tblSelect_OnClick(lRow , lColumn)
+	if gf_Trim(cmbGroup.cbkeydata) == "" then
+			 --Form.ShowAlert("관심종목추가", "새 그룹으로 등록하여 주십시오.")
 			Form.ShowAlert(g_szTitle, "새 그룹으로 등록하여 주십시오.")
-		Exit Sub
-	end if
+		return
+	end
 
-	if CInt(grdList.rowcount) == 100 then
-		if CInt(lColumn) == 0 then
-			'Form.ShowAlert("관심종목추가", "1개의 관심그룹에는 최대 100개의 종목만 등록하실 수 있습니다. 추가하시려면 이전 종목을 삭제하거나 또는 새 그룹으로 등록하여 주십시오.")
+	if gf_Tonumber(grdList.rowcount) == 100 then
+		if gf_Tonumber(lColumn) == 0 then
+			 --Form.ShowAlert("관심종목추가", "1개의 관심그룹에는 최대 100개의 종목만 등록하실 수 있습니다. 추가하시려면 이전 종목을 삭제하거나 또는 새 그룹으로 등록하여 주십시오.")
 			Form.ShowAlert(g_szTitle, "1개의 관심그룹에는 최대 100개의 종목만 등록하실 수 있습니다. 추가하시려면 이전 종목을 삭제하거나 또는 새 그룹으로 등록하여 주십시오.")
 		else
-			'Form.ShowAlert("관심빈칸추가", "1개의 관심그룹에는 최대 100개의 종목만 등록하실 수 있습니다. 추가하시려면 이전 종목을 삭제하거나 또는 새 그룹으로 등록하여 주십시오.")
+			 --Form.ShowAlert("관심빈칸추가", "1개의 관심그룹에는 최대 100개의 종목만 등록하실 수 있습니다. 추가하시려면 이전 종목을 삭제하거나 또는 새 그룹으로 등록하여 주십시오.")
 			Form.ShowAlert(g_szTitle, "1개의 관심그룹에는 최대 100개의 종목(빈칸)만 등록하실 수 있습니다. 추가하시려면 이전 종목을 삭제하거나 또는 새 그룹으로 등록하여 주십시오.")
-		end if
+		end
 		
-		Exit Sub
-	end if
+		return
+	end
 	
 	if lColumn == 0 then
-		' 종목검색창 열기
+		 -- 종목검색창 열기
 		Form.OpenCommonDialog("SEARCH", "18", grdList.rowcount)
 	elseif lColumn == 1 then
 		Form.OpenPopup("mhtrd43110_p3" , "BLANK_ADD★" , "")
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' grdList_OnClickUp
-'============================================================================
-Sub grdList_OnClickUp(lRow, szCellID)
-	Dim szCode, szName
-	Dim nRow
+ --============================================================================
+ -- grdList_OnClickUp
+ --============================================================================
+function grdList_OnClickUp(lRow, szCellID)
+	local szCode, szName
+	local nRow
 	
 	szCode = grdList.GetCellData("bd_code", lRow)
 	szName = grdList.GetCellData("bd_name", lRow)
 		
 	if szCellID == "bd_cancel" then
-		' 20160407 : 기존그룹의 종목은 최소 1개 이상 체크 예외처리 추가(요청자 : 박성민과장)
-		' 20160408 : 다시 원복 요청(요청자 : 박성민과장)
-'		nRow = _tonumber(grdList.rowcount)
-'		
-'		if nRow <= 1 then
-'			Form.ShowAlert(g_szTitle, "그룹내 최소 1개 이상의 종목이 등록되어 있어야 합니다.")
-'		else
+		 -- 20160407 : 기존그룹의 종목은 최소 1개 이상 체크 예외처리 추가(요청자 : 박성민과장)
+		 -- 20160408 : 다시 원복 요청(요청자 : 박성민과장)
+ --		nRow = _tonumber(grdList.rowcount)
+ --		
+ --		if nRow <= 1 then
+ --			Form.ShowAlert(g_szTitle, "그룹내 최소 1개 이상의 종목이 등록되어 있어야 합니다.")
+ --		else
 			g_szRow = lRow
-			Form.MsgBox(g_szTitle, "현재 관심그룹에서 선택된 종목을 삭제하겠습니까?\r\n\n["& szCode & "] " & szName , "DELETE", 1)
-'		end if
+			Form.MsgBox(g_szTitle, "현재 관심그룹에서 선택된 종목을 삭제하겠습니까?\r\n\n[".. szCode .. "] " .. szName , "DELETE", 1)
+ --		end if
 	elseif szCellID == "bd_mod" then
 		g_szRow = lRow
 		
-		' 메모선택시만 빈칸팝업 생성
-		if Trim(szCode) == "빈칸" then
-			Form.OpenPopup("mhtrd43110_p3" , "BLANK_MOD★" & szName , "")
-		end if
-	end if
-End Sub
+		 -- 메모선택시만 빈칸팝업 생성
+		if gf_Trim(szCode) == "빈칸" then
+			Form.OpenPopup("mhtrd43110_p3" , "BLANK_MOD★" .. szName , "")
+		end
+	end
+end
 
-Function _tonumber(szData)
-	return tonumber(szData) or 0
-End Function
-'============================================================================
-' grdList_OnDropRow : 종목위치 변경시
-'============================================================================
-Sub grdList_OnDropRow()
+function _tonumber(szData)
+	return gf_Tonumber(szData) or 0
+end
+ --============================================================================
+ -- grdList_OnDropRow : 종목위치 변경시
+ --============================================================================
+function grdList_OnDropRow()
 	Check_LocalOrServer()
-End Sub
+end
 
-'============================================================================
-' btnPrev_OnClick : 관심그룹보기 ◁(이전)버튼
-'============================================================================
-Sub btnPrev_OnClick()
+ --============================================================================
+ -- btnPrev_OnClick : 관심그룹보기 ◁(이전)버튼
+ --============================================================================
+function btnPrev_OnClick()
 
 	if Int(cmbGroup.currentindex) == 0 then
 		cmbGroup.currentindex = cmbGroup.rowcount-1
 	else
 		cmbGroup.currentindex = cmbGroup.currentindex - 1
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' btnNext_OnClick : 관심그룹보기 ▷(다음)버튼
-'============================================================================
-Sub btnNext_OnClick()
+ --============================================================================
+ -- btnNext_OnClick : 관심그룹보기 ▷(다음)버튼
+ --============================================================================
+function btnNext_OnClick()
 	if Int(cmbGroup.currentindex) == Int(cmbGroup.rowcount-1) then
 		cmbGroup.currentindex = 0
 	else
 		cmbGroup.currentindex = cmbGroup.currentindex + 1
-	end if
+	end
 
-	' 콤보의 currentindex변경시 OnEditComplete 이벤트가 적용됨	
-End Sub
+	 -- 콤보의 currentindex변경시 OnEditComplete 이벤트가 적용됨	
+end
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_intr_026r" trcode="ohhts_intr_026r" compress="1" encryption="1" inputcheck="1" useattr="0" />

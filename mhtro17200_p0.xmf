@@ -29,169 +29,171 @@
 		<BUTTON name="btnOk" caption="확인" btnimage="btn_20.9" ly_vert="0,592,375,55,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="14071" _ulen="12971" >
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-'****************************************************************************
-' 수정사항
-' 최초개발 : HWG : v20250924_02 : 물타기 계산기 신규개발
-'****************************************************************************
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+ --****************************************************************************
+ -- 수정사항
+ -- 최초개발 : HWG : v20250924_02 : 물타기 계산기 신규개발
+ --****************************************************************************
 
-'-----------------------------------------------
-' OS TYPE
-'-----------------------------------------------
-Dim g_szOsType
-g_szOsType = Form.GetSharedData("&OS_TYPE", false)
+ -------------------------------------------------
+ -- OS TYPE
+ -------------------------------------------------
+local g_szOsType
+g_szOsType = Form.GetSharedData("..OS_TYPE", false)
 
-'-----------------------------------------------
-' 설정 글자크기
-'-----------------------------------------------
-Dim g_szTextSize
-g_szTextSize = Form.getEnvData("common.textsize")
+ -------------------------------------------------
+ -- 설정 글자크기
+ -------------------------------------------------
+local g_szTextSize
+g_szTextSize = Form.GetEnvData("common.textsize")
 
-'-----------------------------------------------
-' 공통 이미지
-'-----------------------------------------------
-Dim g_szBgImg
+ -------------------------------------------------
+ -- 공통 이미지
+ -------------------------------------------------
+local g_szBgImg
 g_szBgImg = "popup_bg.9"
 
-Dim g_szCloseImg  
+local g_szCloseImg
 g_szCloseImg = "icon_close"
 
-'-----------------------------------------------
-' 컬러코드
-'-----------------------------------------------
-' 기본 텍스트 컬러 (검정색)
-Dim g_szTxtColor_Normal 
+ -------------------------------------------------
+ -- 컬러코드
+ -------------------------------------------------
+ -- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal
 g_szTxtColor_Normal 	= "334"
 
-' 기본 텍스트 컬러 (회색)
-Dim g_szTxtColor_Grey 
+ -- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey
 g_szTxtColor_Grey 	= "333"
 
-' 기본 텍스트 컬러 (흰색)
-Dim g_szTxtColor_White 
+ -- 기본 텍스트 컬러 (흰색)
+local g_szTxtColor_White
 g_szTxtColor_White 	= "338"
 
-' 빨강
-Dim g_szTxtColor_Red 
+ -- 빨강
+local g_szTxtColor_Red
 g_szTxtColor_Red = "290"
 
-' 파랑
-Dim g_szTxtColor_Blue 
+ -- 파랑
+local g_szTxtColor_Blue
 g_szTxtColor_Blue = "291"
 
-'-----------------------------------------------
-' 기타 전역변수
-'-----------------------------------------------
-Dim g_szTitle
-Dim g_sScrNo
+ -------------------------------------------------
+ -- 기타 전역변수
+ -------------------------------------------------
+local g_szTitle
+local g_sScrNo
 
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
 
-Function DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
+function DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
 	
-	' 글머리 기호
-	Pannel0.setPropCardCell("paddinginfo" 	,"lblGuide", nIdx, "0,1,0,0")
-	Pannel0.setPropCardCell("fgcolor" 		,"lblGuide", nIdx, szFgColor)
+	 -- 글머리 기호
+	Pannel0.SetPropCardCell("paddinginfo" 	,"lblGuide", nIdx, "0,1,0,0")
+	Pannel0.SetPropCardCell("fgcolor" 		,"lblGuide", nIdx, szFgColor)
 
-	' 본문
-	Pannel0.setPropCardCell("paddinginfo" ,"lblInfo",nIdx,"0,0,0,0")
-	Pannel0.setPropCardCell("fgcolor" ,"lblInfo",nIdx,szFgColor)
+	 -- 본문
+	Pannel0.SetPropCardCell("paddinginfo" ,"lblInfo",nIdx,"0,0,0,0")
+	Pannel0.SetPropCardCell("fgcolor" ,"lblInfo",nIdx,szFgColor)
 	
-	' 이미지
-	Pannel0.setPropCardCell("maintainratio" ,"imgGuide0",nIdx, "1")
+	 -- 이미지
+	Pannel0.SetPropCardCell("maintainratio" ,"imgGuide0",nIdx, "1")
 	
-	' 구분라인
-	Pannel0.setPropCardCell("bgcolor" ,"lblDiv",nIdx, szFgColor)
+	 -- 구분라인
+	Pannel0.SetPropCardCell("bgcolor" ,"lblDiv",nIdx, szFgColor)
 	
-	'---------------------------------------------------------------
-	'들여쓰기 단계
-	'---------------------------------------------------------------
+	 -----------------------------------------------------------------
+	 --들여쓰기 단계
+	 -----------------------------------------------------------------
 	szCtlNm = ""
-	'0단계(기본) : 글머리 20 / 본문 35 (310)
+	 --0단계(기본) : 글머리 20 / 본문 35 (310)
 	if nDepth == 0 then
-		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "20")
+		Pannel0.SetPropCardCell("left",  "lblGuide", nIdx, "20")
 		
-		'글머리 유무 체크
+		 --글머리 유무 체크
 		if szHead == "" then
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "20")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "335")
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "20")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "335")
 			szCtlNm = "lblTempTitle"
 		else
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "35")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "310")
 			szCtlNm = "lblTemp0"
-		end if
+		end
 		
-	'1단계 : 글머리 35 / 본문 50 (295) 
+	 --1단계 : 글머리 35 / 본문 50 (295) 
 	elseif nDepth == 1 then
-		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "35")
+		Pannel0.SetPropCardCell("left",  "lblGuide", nIdx, "35")
 		
-		'글머리 유무 체크
+		 --글머리 유무 체크
 		if szHead == "" then
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "35")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "310")
 			szCtlNm = "lblTemp0"
 		else
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "50")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "295")
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "50")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "295")
 			szCtlNm = "lblTemp1"
-		end if
+		end
 		
-	'2단계 : 글며리 50 / 본문 75 (280)
+	 --2단계 : 글며리 50 / 본문 75 (280)
 	elseif nDepth == 2 then
-		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "50")
+		Pannel0.SetPropCardCell("left",  "lblGuide", nIdx, "50")
 		
-		'글머리 유무 체크
+		 --글머리 유무 체크
 		if szHead == "" then
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "50")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "295")
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "50")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "295")
 			szCtlNm = "lblTemp1"
 		else
-			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "65")
-			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "280")
+			Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "65")
+			Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "280")
 			szCtlNm = "lblTemp2"
-		end if
+		end
 		
 	else
-		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "20")
-		Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
-		Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+		Pannel0.SetPropCardCell("left",  "lblGuide", nIdx, "20")
+		Pannel0.SetPropCardCell("left",  "lblInfo" , nIdx, "35")
+		Pannel0.SetPropCardCell("width", "lblInfo" , nIdx, "310")
 		szCtlNm = "lblTemp0"
-	end if
-	'---------------------------------------------------------------
+	end
+	 -----------------------------------------------------------------
 	
-	'---------------------------------------------------------------
-	'폰트스타일 (사이즈 / 볼드 / 글자색)
-	'---------------------------------------------------------------
-	Pannel0.setPropCardCell("fontsize" ,"lblGuide",nIdx, szSize)
-	Pannel0.setPropCardCell("fontsize" ,"lblInfo",nIdx, szSize)
-'	Form.SetCtlProp(szCtlNm, "fontsize", szSize)
+	 -----------------------------------------------------------------
+	 --폰트스타일 (사이즈 / 볼드 / 글자색)
+	 -----------------------------------------------------------------
+	Pannel0.SetPropCardCell("fontsize" ,"lblGuide",nIdx, szSize)
+	Pannel0.SetPropCardCell("fontsize" ,"lblInfo",nIdx, szSize)
+ --	Form.SetCtlProp(szCtlNm, "fontsize", szSize)
 	
 
-	Pannel0.setPropCardCell("fontbold" ,"lblGuide",nIdx, szBold)
-	Pannel0.setPropCardCell("fontbold" ,"lblInfo",nIdx, szBold)
-'	Form.SetCtlProp(szCtlNm, "fontbold", szBold)
+	Pannel0.SetPropCardCell("fontbold" ,"lblGuide",nIdx, szBold)
+	Pannel0.SetPropCardCell("fontbold" ,"lblInfo",nIdx, szBold)
+ --	Form.SetCtlProp(szCtlNm, "fontbold", szBold)
 	
-	Pannel0.setPropCardCell("fgcolor" ,"lblGuide",nIdx, szFgColor)
-	Pannel0.setPropCardCell("fgcolor" ,"lblInfo",nIdx, szFgColor)
-	'---------------------------------------------------------------
+	Pannel0.SetPropCardCell("fgcolor" ,"lblGuide",nIdx, szFgColor)
+	Pannel0.SetPropCardCell("fgcolor" ,"lblInfo",nIdx, szFgColor)
+	 -----------------------------------------------------------------
 	
 	nHeight = 0
-	'---------------------------------------------------------------
-	'데이터 세팅
-	'---------------------------------------------------------------
-	'텍스트
+	 -----------------------------------------------------------------
+	 --데이터 세팅
+	 -----------------------------------------------------------------
+	 --텍스트
 	if szType == "0" then
-		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, szHead)
-		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, szText)
+		Pannel0.SetPropCardCell("caption" ,"lblGuide",nIdx, szHead)
+		Pannel0.SetPropCardCell("caption" ,"lblInfo",nIdx, szText)
 		
-		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
-		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+		Pannel0.SetPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.SetPropCardCell("left" ,"lblDiv",nIdx, "500")
 		
 		nLineCnt = 0
 		if szCtlNm == "lblTempTitle" then
@@ -206,42 +208,42 @@ Function DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, 
 		elseif szCtlNm == "lblTemp2" then
 			lblTemp2.caption = szText
 			nLineCnt = lblTemp2.linecnt
-		end if
+		end
 		
-		nHeight = Resize_LineH(szText, Cint(szSize), nLineCnt)
-'		Form.ShowAlert( szText, nHeight )
+		nHeight = Resize_LineH(szText, gf_Tonumber(szSize), nLineCnt)
+ --		Form.ShowAlert( szText, nHeight )
 		Pannel0.SetCardWHAt(nIdx, nHeight)
-	'이미지
+	 --이미지
 	elseif szType == "1" then
-		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
-		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblInfo",nIdx, "")
 		
-		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
-		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+		Pannel0.SetPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.SetPropCardCell("left" ,"lblDiv",nIdx, "500")
 		
-	'구분선(Divide)
+	 --구분선(Divide)
 	elseif szType == "2" then
-		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
-		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblInfo",nIdx, "")
 		
-		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
-		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "20")
-		Pannel0.setPropCardCell("width" ,"lblDiv",nIdx, "335")
+		Pannel0.SetPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.SetPropCardCell("left" ,"lblDiv",nIdx, "20")
+		Pannel0.SetPropCardCell("width" ,"lblDiv",nIdx, "335")
 		
-	'초기화	
+	 --초기화	
 	else
-		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
-		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.SetPropCardCell("caption" ,"lblInfo",nIdx, "")
 		
-		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
-		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
-	end if
-	'---------------------------------------------------------------
+		Pannel0.SetPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.SetPropCardCell("left" ,"lblDiv",nIdx, "500")
+	end
+	 -----------------------------------------------------------------
 	
 	return nHeight
-End Function
+end
 
-Function Resize_LineH(szText, nFontSize, nLineCnt)
+function Resize_LineH(szText, nFontSize, nLineCnt)
 	nResult = 0
 	nLineHeigth = 23 + nFontSize
 	nGap = 0 
@@ -250,27 +252,27 @@ Function Resize_LineH(szText, nFontSize, nLineCnt)
 		nGap = 2
 	else
 		nGap = 1
-	end if
+	end
 	
-'	Form.SetCtlProp(szCtlNm, "caption", szText)
-'	nLineCnt = Form.GetCtlProp(szCtlNm, "linecnt")
-	nResult = (nLineHeigth + (Cint(g_szTextSize) * nGap)) * nLineCnt
+ --	Form.SetCtlProp(szCtlNm, "caption", szText)
+ --	nLineCnt = Form.GetCtlProp(szCtlNm, "linecnt")
+	nResult = (nLineHeigth + (gf_Tonumber(g_szTextSize) * nGap)) * nLineCnt
 	
 	return nResult
-End Function
+end
 
-'===============================================
-' 컨트롤 초기설정
-'===============================================
-Function Init_Control()
-	'-----------------------------------------------
-	' 배경이미지 초기화
-	'-----------------------------------------------
+ --===============================================
+ -- 컨트롤 초기설정
+ --===============================================
+function Init_Control()
+	 -------------------------------------------------
+	 -- 배경이미지 초기화
+	 -------------------------------------------------
 	imgBg.imgpath = g_szBgImg
 	
-	'-----------------------------------------------
-	' 타이틀 초기화
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- 타이틀 초기화
+	 -------------------------------------------------
 	lblTitle.paddinginfo = "0,0,0,0"
 	
 	g_szTitle = "물타기 계산기 안내"
@@ -278,17 +280,17 @@ Function Init_Control()
 	
 	
 	
-	'-----------------------------------------------
-	' 닫기 버튼 초기화
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- 닫기 버튼 초기화
+	 -------------------------------------------------
 	imgClose.SetMaintainingRatio("3")
 	imgClose.imgpath = g_szCloseImg
 	imgClose.visible = false
 	
-	'-----------------------------------------------
-	' 유의사항 본문내용 초기화
-	'-----------------------------------------------
-	' 2025.06.19 YYJ 문구변경
+	 -------------------------------------------------
+	 -- 유의사항 본문내용 초기화
+	 -------------------------------------------------
+	 -- 2025.06.19 YYJ 문구변경
 	szInfo1 = "물타기 계산기란?"
 	szInfo2 = "보유한 잔고에서 추가로 매수할 종목의 단가, 수량을 입력하면 보유하게 되는 예상 평균금액과 수익률을 계산해주는 서비스입니다."
 	szInfo3 = "대상 종목 : 국내 주식, 해외 주식"
@@ -300,17 +302,17 @@ Function Init_Control()
 	szInfo9 = "본 기능은 투자 판단을 돕기 위한 보조수단이며, 결과값은 실제 투자 성과를 보장하지 않습니다."
 	szInfo10 = "투자권유가 아니며, 최종 의사결정과 책임은 투자자 본인에게 있습니다."
 	
-	'==================================================================================================================================================
+	 --==================================================================================================================================================
 	nHeight = 0
 	nTotalH = 0
-	'------------------------------------------------------------------------------------------
-	' DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
-	' szType 설명
-	' - "0" : 텍스트 
-	' - "1" : 이미지
-	' - "2" : 가이드 라인
-	' - "empty" : 공백
-	'------------------------------------------------------------------------------------------
+	 --------------------------------------------------------------------------------------------
+	 -- DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
+	 -- szType 설명
+	 -- - "0" : 텍스트 
+	 -- - "1" : 이미지
+	 -- - "2" : 가이드 라인
+	 -- - "empty" : 공백
+	 --------------------------------------------------------------------------------------------
 	nIdx = Pannel0.AddRow()
 	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo1, "-2", "1", g_szTxtColor_Normal)
 	nTotalH = nTotalH + nHeight
@@ -353,79 +355,80 @@ Function Init_Control()
 	imgBg.top = nTop - 50  -10
 	
 	lblTitle.highlight = "332"
-	'nIdx = Pannel0.AddRow()
-	'nHeight = DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo2_7, "-2", "0", g_szTxtColor_Grey)
+	 --nIdx = Pannel0.AddRow()
+	 --nHeight = DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo2_7, "-2", "0", g_szTxtColor_Grey)
 	
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'============================================================================
+ --============================================================================
 
-'============================================================================
-' Form_OnFormInitBefore
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+ -- Form_OnFormInitBefore
+ --============================================================================
+function Form_OnFormInitBefore()
 	
-	g_sScrNo = Form.GetSharedData("&SCREEN_NO", false)
+	g_sScrNo = Form.GetSharedData("..SCREEN_NO", false)
 	
-End Sub
+end
 
-'===============================================
-' Form_OnFormInit
-'===============================================
-Sub Form_OnFormInit()
-	'-----------------------------------------------
-	' 패딩값 초기화 (위치변경 X)
-	'-----------------------------------------------
+ --===============================================
+ -- Form_OnFormInit
+ --===============================================
+function Form_OnFormInit()
+	 -------------------------------------------------
+	 -- 패딩값 초기화 (위치변경 X)
+	 -------------------------------------------------
 	lblTempTitle.paddinginfo = "0,0,0,0"
 	lblTemp0.paddinginfo = "0,0,0,0"
 	lblTemp1.paddinginfo = "0,0,0,0"
 	lblTemp2.paddinginfo = "0,0,0,0"
 	
-	'----------------------------------------------------------------------------
-	' 라벨컨트롤 라인수 체크 시 OS별 동작 타이밍 다름
-	' iOS : 즉시 라인수 체크 가능
-	' 안드로이드 : 지연처리 후 라인수 체크 가능(컨트롤 생성 타이밍 때문으로 보임)
-	'----------------------------------------------------------------------------
+	 ------------------------------------------------------------------------------
+	 -- 라벨컨트롤 라인수 체크 시 OS별 동작 타이밍 다름
+	 -- iOS : 즉시 라인수 체크 가능
+	 -- 안드로이드 : 지연처리 후 라인수 체크 가능(컨트롤 생성 타이밍 때문으로 보임)
+	 ------------------------------------------------------------------------------
 	if g_szOsType == "2" then
 		Init_Control()
 	else
-		Form.setDelayEvent(1, 0.2)
-	end if
-End Sub
+		Form.SetDelayEvent(1, 0.2)
+	end
+end
 
-'===============================================
-' Form_OnDelayEvent(1회 실행)
-'===============================================
-Sub Form_OnDelayEvent(nID)
-	if Cint(nID) == 1 then
+ --===============================================
+ -- Form_OnDelayEvent(1회 실행)
+ --===============================================
+function Form_OnDelayEvent(nID)
+	if gf_Tonumber(nID) == 1 then
 		Init_Control()
-	end if
-End Sub
+	end
+end
 
-'===============================================
-' imgInfo_OnClick
-'===============================================
-Sub imgClose_OnClick()
+ --===============================================
+ -- imgInfo_OnClick
+ --===============================================
+function imgClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'===============================================
-' imgAlpha_OnClick
-'===============================================
-Sub imgAlpha_OnClick()
+ --===============================================
+ -- imgAlpha_OnClick
+ --===============================================
+function imgAlpha_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'===============================================
-' imgAlpha_OnClick
-'===============================================
-Sub btnOk_OnClick()
+ --===============================================
+ -- imgAlpha_OnClick
+ --===============================================
+function btnOk_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>
