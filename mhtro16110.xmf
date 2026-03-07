@@ -210,374 +210,377 @@
 		<LABEL name="lblLow" visible="0" mask="0,0,,,0,,-1,1,0,0,0" ly_vert="200,480,150,32,0" import="2,1,13" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="58841" _ulen="53039" >
-'---------------------------------------------
-'20241216 LES START - 미국장 장운영 정보 조회
-'v1000 강경완 : 해외주식 예약주문 화면 수정 [T2502130001]
-'---------------------------------------------
+dofile("scr/script.lua")
+dofile("scr/json.lua")
 
-'----------------------------------------------
-'주문설정값(주문번호 연동/계좌비밀번호 저장)
-'----------------------------------------------
-Dim g_szAfterOrg
-Dim g_szSavePwd 
+ -----------------------------------------------
+ --20241216 LES START - 미국장 장운영 정보 조회
+ --v1000 강경완 : 해외주식 예약주문 화면 수정 [T2502130001]
+ -----------------------------------------------
+
+ ------------------------------------------------
+ --주문설정값(주문번호 연동/계좌비밀번호 저장)
+ ------------------------------------------------
+local g_szAfterOrg
+local g_szSavePwd
 g_szSavePwd  = "0"
 
-'-------------------
-' 종목정보
-'-------------------
-Dim g_sCode 		' 종목코드
+ ---------------------
+ -- 종목정보
+ ---------------------
+local g_sCode -- 종목코드
 g_sCode = ""
 
-Dim g_sItemInfo	' 탭변경 시 넘겨줄 종목정보
+local g_sItemInfo -- 탭변경 시 넘겨줄 종목정보
 g_sItemInfo = ""
 
-'----------------------
-' 체결그리드 최대행 수
-'----------------------
-Dim g_nMaxCount
+ ------------------------
+ -- 체결그리드 최대행 수
+ ------------------------
+local g_nMaxCount
 g_nMaxCount = 300
 
-'----------------------
-' 비밀번호 검증 후 자동 주문확인창 오픈
-'----------------------
-Dim g_OpenConfirmNextCheckPwd
+ ------------------------
+ -- 비밀번호 검증 후 자동 주문확인창 오픈
+ ------------------------
+local g_OpenConfirmNextCheckPwd
 g_OpenConfirmNextCheckPwd = false
 
-'----------------------
-' 관심종목 그룹 갯수
-'----------------------
-Dim g_szIntrGrpCnt
+ ------------------------
+ -- 관심종목 그룹 갯수
+ ------------------------
+local g_szIntrGrpCnt
 g_szIntrGrpCnt = 0
 
-Dim gOsType
+local gOsType
 
-'---------------------------------------------
-'20241216 LES START - 미국장 장운영 정보 조회
-'---------------------------------------------
-Dim gMkClsCode
+ -----------------------------------------------
+ --20241216 LES START - 미국장 장운영 정보 조회
+ -----------------------------------------------
+local gMkClsCode
 gMkClsCode = ""
 
-Dim g_NoSendItemInfo
+local g_NoSendItemInfo
 g_NoSendItemInfo = false
 
-Dim g_NoSendHogaData
+local g_NoSendHogaData
 g_NoSendHogaData = false
 
-'============================================================================
-' 20241216 LES START - 미국장 장운영 정보 조회
-'============================================================================
-Sub Form_OnFormInitBefore()
-	Dim szPopup
+ --============================================================================
+ -- 20241216 LES START - 미국장 장운영 정보 조회
+ --============================================================================
+function Form_OnFormInitBefore()
+	local szPopup
 	szPopup = Form.LoadConfigData( "mhtro16061", "mhtro16061_p4" )
 	
-	If szPopup <> "1" Then
+	if szPopup ~= "1" then
 		Form.OpenPopupAnimation("mhtro16061_p4", "", "", "2")
-	End If
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
-	'20250703 YSH : 해외주식 장운영 정보 조회방식 변경
-	gMkClsCode = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+ --============================================================================
+function Form_OnFormInit()
+	 --20250703 YSH : 해외주식 장운영 정보 조회방식 변경
+	gMkClsCode = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 	if gMkClsCode == "" then
 		g_NoSendItemInfo = true
 		g_NoSendHogaData = true
-	end if
+	end
 	
-	gOsType = Form.GetSharedData("&OS_TYPE", false)
+	gOsType = Form.GetSharedData("..OS_TYPE", false)
 
-	'-----------------------------------------------------------------------------
-	' 20240617 LES START - 돋보기버튼 눌렀을때, 메인쪽에서 TITLE_CLICK으로 내려줄수 있도록 서치타입 설정
-	'-----------------------------------------------------------------------------
-	Form.setSearchTypeClick("1")
+	 -------------------------------------------------------------------------------
+	 -- 20240617 LES START - 돋보기버튼 눌렀을때, 메인쪽에서 TITLE_CLICK으로 내려줄수 있도록 서치타입 설정
+	 -------------------------------------------------------------------------------
+	Form.SetSearchTypeClick("1")
 	
-	'화면상단 세팅
+	 --화면상단 세팅
 	Form.SetButtonTitle("현재가")
 	
-	'-----------------------------------------------------------------------------
-	' 호가테이블 설정(현재가 테두리 영역 범위 지정 / 등락률 글자색)
-	'-----------------------------------------------------------------------------
+	 -------------------------------------------------------------------------------
+	 -- 호가테이블 설정(현재가 테두리 영역 범위 지정 / 등락률 글자색)
+	 -------------------------------------------------------------------------------
 	contHoga.hogaTbl.SetHogaRect("1")
-	contHoga.hogaTbl.setRateColor(69,69,69)
-	contHoga.hogaTbl.setTextAutoSize(true)
-	contHoga.setScrollBarVisible("0")
+	contHoga.hogaTbl.SetRateColor(69,69,69)
+	contHoga.hogaTbl.SetTextAutoSize(true)
+	contHoga.SetScrollBarVisible("0")
 	
 
-	'-----------------------------------------------------------------------------
-	' 폼탭 이미지 및 글자색상 변경
-	'-----------------------------------------------------------------------------
-	FormTab0.setTabHeaderFgColorWithIndex(0,290,110)
-	FormTab0.setTabHeaderFgColorWithIndex(1,291,110)
-	FormTab0.setTabHeaderFgColorWithIndex(2,49,110)
-	FormTab0.setTabHeaderFgColorWithIndex(3,49,110)
+	 -------------------------------------------------------------------------------
+	 -- 폼탭 이미지 및 글자색상 변경
+	 -------------------------------------------------------------------------------
+	FormTab0.SetTabHeaderFgColorWithIndex(0,290,110)
+	FormTab0.SetTabHeaderFgColorWithIndex(1,291,110)
+	FormTab0.SetTabHeaderFgColorWithIndex(2,49,110)
+	FormTab0.SetTabHeaderFgColorWithIndex(3,49,110)
 	
-	FormTab0.setTabHeaderImageWithIndex(0,"tab_04_o.9","tab_03_n.9")
-	FormTab0.setTabHeaderImageWithIndex(1,"tab_05_o.9","tab_03_n.9")
+	FormTab0.SetTabHeaderImageWithIndex(0,"tab_04_o.9","tab_03_n.9")
+	FormTab0.SetTabHeaderImageWithIndex(1,"tab_05_o.9","tab_03_n.9")
 
-	'-----------------------------------------------------------------------------
-	' (안드로이드 전용) 비밀번호 에디트 클릭 방지, 에디트 위에있는 버튼이 클릭되도록 앞으로 가져옴
-	'-----------------------------------------------------------------------------
-	btnPwd.bringfront("1")
+	 -------------------------------------------------------------------------------
+	 -- (안드로이드 전용) 비밀번호 에디트 클릭 방지, 에디트 위에있는 버튼이 클릭되도록 앞으로 가져옴
+	 -------------------------------------------------------------------------------
+	btnPwd.Bringfront("1")
 	
-	'-----------------------------------------------------------------------------
-	' 비활성화로 기본 세팅 20230722 HSZ
-	'-----------------------------------------------------------------------------
-	'Form.SetInterestTitle("N")	
+	 -------------------------------------------------------------------------------
+	 -- 비활성화로 기본 세팅 20230722 HSZ
+	 -------------------------------------------------------------------------------
+	 --Form.SetInterestTitle("N")	
 	
-	'-----------------------------------------------------------------------------
-	' 주문설정값(주문번호 연동/계좌비밀번호 저장) 세팅
-	'-----------------------------------------------------------------------------
+	 -------------------------------------------------------------------------------
+	 -- 주문설정값(주문번호 연동/계좌비밀번호 저장) 세팅
+	 -------------------------------------------------------------------------------
 	Load_OrderSet()
 	
-	'-----------------------------------------------------------------------------
-	' 타 화면 연동
-	'-----------------------------------------------------------------------------
-	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0	then			'매수
+	 -------------------------------------------------------------------------------
+	 -- 타 화면 연동
+	 -------------------------------------------------------------------------------
+	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end end
 	
 		FormTab0.currenttabpageid = "page0"
 	
-	elseif Form.GetOpenLinkData( ) == "1" or Form.GetOpenLinkData( ) == 1	then		'매도
+	elseif Form.GetOpenLinkData( ) == "1" or Form.GetOpenLinkData( ) == 1 then --매도
 		
 		FormTab0.currenttabpageid = "page1"	
 		
 	else
 		
 		szData = Form.GetOpenLinkData()
-		arrData = Split(szData, "♥")
+		arrData = gf_Split(szData, "♥")
 		
-		if arrData(0) <> "" then
+		if arrData[0+1] ~= "" then
 		
-			arrLinkCode = Split(arrData(0),"★")
-			szLinkCode = arrLinkCode(0)
+			arrLinkCode = gf_Split(arrData[0+1],"★")
+			szLinkCode = arrLinkCode[0+1]
 			if CheckMasterFile(szLinkCode) then
 				
 			else
 				Form.ShowAlert("안내", "MTS에서 거래가 불가능한 종목입니다")
-				Exit Sub
-			end if
+				return
+			end
 			
-			Form.setOverStockItemCode(arrData(0))
+			Form.SetOverStockItemCode(arrData[0+1])
 			
-			if arrData(1) == "0" then
+			if arrData[1+1] == "0" then
 				FormTab0.currenttabpageid = "page0"
-			elseif arrData(1) == "1" then
+			elseif arrData[1+1] == "1" then
 				FormTab0.currenttabpageid = "page1"
 				
-				'해외주식 매도상환
-				'매도매수구분/수량/대출일자/대출상세유형코드/대출일련번호
-				Form.SetSharedData("JANGO" , arrData(1).."★"..arrData(2).."★"..arrData(3).."★"..arrData(4).."★"..arrData(6))
+				 --해외주식 매도상환
+				 --매도매수구분/수량/대출일자/대출상세유형코드/대출일련번호
+				Form.SetSharedData("JANGO" , arrData[1+1].."★"..arrData[2+1].."★"..arrData[3+1].."★"..arrData[4+1].."★"..arrData[6+1])
 				
-			end if
-		end if
-	end if
+			end
+		end
+	end
 
-	'-----------------------------------------------------------------------------
-	' 초기종목 세팅
-	'-----------------------------------------------------------------------------
-	ItemCode0.code = Form.GetSharedData("&ITEM_CODE", false)
+	 -------------------------------------------------------------------------------
+	 -- 초기종목 세팅
+	 -------------------------------------------------------------------------------
+	ItemCode0.code = Form.GetSharedData("..ITEM_CODE", false)
 	
-	if Len(ItemCode0.code) > 0 then
+	if string.string.string.len(ItemCode0.code) > 0 then
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "InitCode", ItemCode0.code )
-		Form.triggerEvent( "LinkFormTop", "RequestData", ItemCode0.code)
-	end if
+		Form.TriggerEvent( "LinkFormTop", "RequestData", ItemCode0.code)
+	end
 	
-	'-----------------------------------------------------------------------------
-	' 해외주식 약정체크
-	'-----------------------------------------------------------------------------
+	 -------------------------------------------------------------------------------
+	 -- 해외주식 약정체크
+	 -------------------------------------------------------------------------------
 	DATAMANAGER.RequestTranData("obpds_srvc_323r")
 	
-	RequestTranData_Intr()			' 관심그룹 갯수 조회
-	Form.requestIntrItemList("00")	' 관심종목 목록 조회
+	RequestTranData_Intr()			 -- 관심그룹 갯수 조회
+	Form.RequestIntrItemList("00")	 -- 관심종목 목록 조회
 	
-	DATAMANAGER.RequestTranData("obtro_oder_268r") 'v0001
-end Sub
+	DATAMANAGER.RequestTranData("obtro_oder_268r")  --v0001
+end
 
-'============================================================================
-' 앱 백그라운드 > 포그라운드 전환 시 호출
-'============================================================================
-Sub Form_OnRefresh()
-	'----------------------------------------------------------------------
-	' 20240725 앱 백그라운드 > 포그라운드 로직 추가
-	' 앱 백그라운드에서 포그라운드로 전환 되었을때
-	' 호가테이블의 시세만 재조회 해야함. 주문탭쪽 입력값에는 영향을 안줘야함.
-	'
-	' g_NoSendItemInfo 
-	'=> True일때 : [SendItemInfo] 미발생 시킴 => 주문탭의 주문유형 그대로 유지됨.
-	'
-	' g_NoSendHogaData 
-	'=> True일때 : [HOGA_COMPLETE] 트리거 미발생, 주간/애프터 현재가 미조회 => 주문가격/수량 그대로 유지됨.
-	'----------------------------------------------------------------------
+ --============================================================================
+ -- 앱 백그라운드 > 포그라운드 전환 시 호출
+ --============================================================================
+function Form_OnRefresh()
+	 ------------------------------------------------------------------------
+	 -- 20240725 앱 백그라운드 > 포그라운드 로직 추가
+	 -- 앱 백그라운드에서 포그라운드로 전환 되었을때
+	 -- 호가테이블의 시세만 재조회 해야함. 주문탭쪽 입력값에는 영향을 안줘야함.
+	 --
+	 -- g_NoSendItemInfo 
+	 --=> True일때 : [SendItemInfo] 미발생 시킴 => 주문탭의 주문유형 그대로 유지됨.
+	 --
+	 -- g_NoSendHogaData 
+	 --=> True일때 : [HOGA_COMPLETE] 트리거 미발생, 주간/애프터 현재가 미조회 => 주문가격/수량 그대로 유지됨.
+	 ------------------------------------------------------------------------
 	g_NoSendItemInfo = true
 	g_NoSendHogaData = true
 	
-	'20250704 YSH : 해외주식 장운영 정보 조회방식 변경
-	'ItemCode0_OnEditComplete(ItemCode0.code)
-end Sub 
+	 --20250704 YSH : 해외주식 장운영 정보 조회방식 변경
+	 --ItemCode0_OnEditComplete(ItemCode0.code)
+end
 
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	
 	if sEventName == "SCREEN_REFRESH" then
 		ItemCode0_OnEditComplete(ItemCode0.code)
 		
-	elseif sEventName = "SCREEN_MENU" then							' 연결정보(상단 ...)
+	elseif sEventName == "SCREEN_MENU" then -- 연결정보(상단 ...)
 		
-		if sParam = "REG_INTR" Then									' 관심종목등록
-'			Form.OpenPopup( "mhtro16010_p5" , ItemCode0.code , "" )
+		if sParam == "REG_INTR" then -- 관심종목등록 end end
+ --			Form.OpenPopup( "mhtro16010_p5" , ItemCode0.code , "" )
 			szCode = ItemCode0.code
-			isIntrItem = Form.isIntrItemList(szCode)
+			isIntrItem = Form.IsIntrItemList(szCode)
 			
-			if CInt(g_szIntrGrpCnt) < 1 then
+			if gf_Tonumber(g_szIntrGrpCnt) < 1 then
 				g_szAction = "GROUP_ADD2"
-				'관심그룹&관심종목 동시추가	
-				Form.OpenPopup("mhprc11000_pf", g_szAction & "★" & szCode & "★", "")
+				 --관심그룹..관심종목 동시추가	
+				Form.OpenPopup("mhprc11000_pf", g_szAction .. "★" .. szCode .. "★", "")
 			else
-				'관심그룹 추가
-				Form.OpenPopupAnimation("mhprc11000_pd", szCode& "★"& "ADD","", "2")
-			end if
+				 --관심그룹 추가
+				Form.OpenPopupAnimation("mhprc11000_pd", szCode.. "★".. "ADD","", "2")
+			end
 
-		elseif sParam = "SET_SCREEN" Then							' 화면설정
+		elseif sParam == "SET_SCREEN" then -- 화면설정
 			nCurTabIndex = FormTab0.currenttab
 			Form.SetSharedData("16061_CURTAB_IDNEX" , nCurTabIndex)
 			
 			Form.OpenScreen("90000" , "1")
 
-		end if
+		end
 	
-	'20220922 SWJ START : 상단 바 클릭 시, 종목선택창 팝업 추가
+	 --20220922 SWJ START : 상단 바 클릭 시, 종목선택창 팝업 추가
 	elseif sEventName == "TITLE_CLICK" then
 		
-		'20240617 LES START - 해외/국내 종목선택창 통합
-		'Form.OpenCommonDialog("SEARCH", "19", "MAIN")
+		 --20240617 LES START - 해외/국내 종목선택창 통합
+		 --Form.OpenCommonDialog("SEARCH", "19", "MAIN")
 		Form.OpenPopup("msearchdialog", "종목검색★50:51:52:53:54:55★INTG_DIVIDE_HISTORY★OVRS★12020", "")
-		'20240617 LES END
+		 --20240617 LES END
 	
-	'------------------------------------------------------------------------
-	' (사용) 잔고팝업 선택종목으로 종목변경
-	'------------------------------------------------------------------------
+	 --------------------------------------------------------------------------
+	 -- (사용) 잔고팝업 선택종목으로 종목변경
+	 --------------------------------------------------------------------------
 	elseif sEventName == "16100_BALANCE" then
 		
-		arrLinkCode = Split(sParam,"★")
-		szLinkCode = arrLinkCode(0)
+		arrLinkCode = gf_Split(sParam,"★")
+		szLinkCode = arrLinkCode[0+1]
 		
 		if CheckMasterFile(szLinkCode) then
 			
 		else
 			Form.ShowAlert("안내", "MTS에서 거래가 불가능한 종목입니다")
-			Exit Sub
-		end if
+			return
+		end
 				
-		Form.setOverStockItemCode(sParam)
+		Form.SetOverStockItemCode(sParam)
 		
 	elseif (sEventName == "16060_CONTRACT") then
 		
-		'20220510 LES START
-		arrLinkCode = Split(sParam,"★")
-		szLinkCode = arrLinkCode(0)
+		 --20220510 LES START
+		arrLinkCode = gf_Split(sParam,"★")
+		szLinkCode = arrLinkCode[0+1]
 		
 		if CheckMasterFile(szLinkCode) then
 			
 		else
 			Form.ShowAlert("안내", "MTS에서 거래가 불가능한 종목입니다")
-			Exit Sub
-		end if
-		'20220510 LES END 
+			return
+		end
+		 --20220510 LES END 
 		
-		Form.setOverStockItemCode(sParam)
+		Form.SetOverStockItemCode(sParam)
 		
-	'------------------------------------------------------------------------
-	' (사용) 자동가격입력 설정 시 자동입력값 리턴
-	'------------------------------------------------------------------------
+	 --------------------------------------------------------------------------
+	 -- (사용) 자동가격입력 설정 시 자동입력값 리턴
+	 --------------------------------------------------------------------------
 	elseif sEventName == "RequestAutoPrice" then
 		
 		sPrice = Return_AutoPrice(sParam)
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "ReturnAutoPrice", sPrice )
 		
-	'------------------------------------------------------------------------
-	' (사용) 비밀번호 미입력 시, 비밀번호 입력창 오픈
-	'------------------------------------------------------------------------
+	 --------------------------------------------------------------------------
+	 -- (사용) 비밀번호 미입력 시, 비밀번호 입력창 오픈
+	 --------------------------------------------------------------------------
 	elseif sEventName == "ShowPasswordKeyPad" then
 	
 		g_OpenConfirmNextCheckPwd = true
 		btnPwd_OnClick()
 		
-	'----------------------------------------------------------------------------------------
-	'(사용) 정정/취소탭 종목선택 개수에 따른 호가영역 위치조정(3:선택종목없음/4:선택종목있음)
-	'----------------------------------------------------------------------------------------
+	 ------------------------------------------------------------------------------------------
+	 --(사용) 정정/취소탭 종목선택 개수에 따른 호가영역 위치조정(3:선택종목없음/4:선택종목있음)
+	 ------------------------------------------------------------------------------------------
 	elseif sEventName == "ChangeContHoga" then
 		
 		ChangeContHoga(sParam)
 		
-	'----------------------------------------------------------------------------------------
-	'(사용) 정정/취소탭에서 단일종목 선택한 경우 종목정보 수신
-	'----------------------------------------------------------------------------------------
+	 ------------------------------------------------------------------------------------------
+	 --(사용) 정정/취소탭에서 단일종목 선택한 경우 종목정보 수신
+	 ------------------------------------------------------------------------------------------
 	elseif sEventName == "SendModCancelItem" or sEventName == "SendChegyulItem" then
 		
-		'----------------------------------------
-		'sParam : OQ@AAPL★애플
-		'----------------------------------------
-		arrLinkCode = Split(sParam,"★")
-		szLinkCode = arrLinkCode(0)
+		 ------------------------------------------
+		 --sParam : OQ@AAPL★애플
+		 ------------------------------------------
+		arrLinkCode = gf_Split(sParam,"★")
+		szLinkCode = arrLinkCode[0+1]
 		
 		if CheckMasterFile(szLinkCode) then
 			
 		else
 			Form.ShowAlert("안내", "MTS에서 거래가 불가능한 종목입니다")
-			Exit Sub
-		end if
+			return
+		end
 				
-		Form.setOverStockItemCode(sParam)
+		Form.SetOverStockItemCode(sParam)
 	
-	'----------------------------------------------------------------------------------------
-	'(사용) 주문/체결 탭에서 미체결 종목 선택 시, 정정/취소탭 연동
-	'----------------------------------------------------------------------------------------
+	 ------------------------------------------------------------------------------------------
+	 --(사용) 주문/체결 탭에서 미체결 종목 선택 시, 정정/취소탭 연동
+	 ------------------------------------------------------------------------------------------
 	elseif sEventName == "SendMiChegyulItem" then
 		
 		FormTab0.currenttab = "2"
-		Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, sEventName, sParam)
+		Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, sEventName, sParam)
 	
-	'----------------------------------------------------------------------------------------
-	'(사용) 잔고탭에서 매수/매도탭 연동
-	'----------------------------------------------------------------------------------------
+	 ------------------------------------------------------------------------------------------
+	 --(사용) 잔고탭에서 매수/매도탭 연동
+	 ------------------------------------------------------------------------------------------
 	elseif sEventName == "SendJangoItem" then
 	
-		'----------------------------------------------------------------------------------------------------
-		'sParam : MAESU★szMk@szItemCode★szName★sOrdAbleQty★sJangoGubun★sLoanType★sLoanDate★sLoanSrno
-		'----------------------------------------------------------------------------------------------------
-		arrLinkItem = Split(sParam,"★")
+		 ------------------------------------------------------------------------------------------------------
+		 --sParam : MAESU★szMk@szItemCode★szName★sOrdAbleQty★sJangoGubun★sLoanType★sLoanDate★sLoanSrno
+		 ------------------------------------------------------------------------------------------------------
+		arrLinkItem = gf_Split(sParam,"★")
 		
 		if #arrLinkItem > 0 then
 			
-			szLinkCode = arrLinkItem(1)
-			szName = arrLinkItem(2)
+			szLinkCode = arrLinkItem[1+1]
+			szName = arrLinkItem[2+1]
 			
 			if CheckMasterFile(szLinkCode) then
 			
 			else
 				Form.ShowAlert("안내", "MTS에서 거래가 불가능한 종목입니다")
-				Exit Sub
-			end if
+				return
+			end
 		
-			Form.setOverStockItemCode(szLinkCode.."★"..szName)
+			Form.SetOverStockItemCode(szLinkCode.."★"..szName)
 			
-			if arrLinkItem(0) == "MAESU" then
+			if arrLinkItem[0+1] == "MAESU" then
 				FormTab0.currenttab = "0"
 				FormTab0_OnTabChanged(0) 
 				
-			elseif arrLinkItem(0) == "MAEDO" then
+			elseif arrLinkItem[0+1] == "MAEDO" then
 				FormTab0.currenttab = "1"
 				FormTab0_OnTabChanged(1)
 			
-			end if
+			end
 			
-			Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, sEventName, sParam)
+			Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, sEventName, sParam)
 		
-		end if
+		end
 	
-	'----------------------------------------------------------------------------------------
-	' (사용) 화면상단 [현재가] 버튼 클릭 이벤트
-	'----------------------------------------------------------------------------------------
+	 ------------------------------------------------------------------------------------------
+	 -- (사용) 화면상단 [현재가] 버튼 클릭 이벤트
+	 ------------------------------------------------------------------------------------------
 	elseif sEventName == "CLICK_BUTTON" then
 		
 		Form.OpenScreen("16000" , "")
@@ -586,92 +589,92 @@ Sub Form_OnTriggerEvent(sEventName, sParam)
 	
 		edtOrgNo.caption = sParam
 	
-	'----------------------------------------------------------------------------------------
-	' (사용) 상단시세화면에서 전송. 주문화면에서는 애프터마켓 여부 판단용으로 사용
-	'----------------------------------------------------------------------------------------
+	 ------------------------------------------------------------------------------------------
+	 -- (사용) 상단시세화면에서 전송. 주문화면에서는 애프터마켓 여부 판단용으로 사용
+	 ------------------------------------------------------------------------------------------
 	elseif sEventName == "CHANGE_MKTOP" then
 	
-		'20241216 LES START
-		'Form.ShowAlert(sEventName, gMkClsCode)
+		 --20241216 LES START
+		 --Form.ShowAlert(sEventName, gMkClsCode)
 		gMkClsCode = sParam
 		
-		'20250707 YSH TEST
-		'Form.ShowAlert("mhtro16110_해외주식 예약주문", "실시간 값 정상 확인 : " & gMkClsCode)
+		 --20250707 YSH TEST
+		 --Form.ShowAlert("mhtro16110_해외주식 예약주문", "실시간 값 정상 확인 : " .. gMkClsCode)
 		
 		if sParam == "005" then
 		
-			'가격/수량 입력키패드(16100_p1)에서 애프터장 여부를 판단하기 위해 사용
-			'가능수량 조회 팝업(16100_p11)에서도 애프터장 여부를 판단하기 위해 사용
+			 --가격/수량 입력키패드(16100_p1)에서 애프터장 여부를 판단하기 위해 사용
+			 --가능수량 조회 팝업(16100_p11)에서도 애프터장 여부를 판단하기 위해 사용
 			Form.SetSharedData("OVRS_AFTER_MARKET_ORDER" , "Y")
 			
-			if g_sCode <> "" then
+			if g_sCode ~= "" then
 				
-				arrCode = Split(g_sCode,"@")
+				arrCode = gf_Split(g_sCode,"@")
 			
 				if #arrCode > 1 then
 					
-					szMarket = arrCode(0)
+					szMarket = arrCode[0+1]
 					if szMarket == "OQ" or szMarket == "NY" or szMarket == "AX" then
 						DATAMANAGER.RequestTranData( "ohhts_6000_020r" )
-					end if
+					end
 					
-				end if
+				end
 				
-			end if
+			end
 			
 		else
 		
 			Form.SetSharedData("OVRS_AFTER_MARKET_ORDER" , "N")
 			
-		end if 
+		end
 	
 	elseif sEventName == "AfterOrd" then
 	
 		edtOrgNo.caption = sParam
 	
-	end if
+	end
 	
 	
-end Sub
+end
 
-'============================================================================
-Sub Form_OnLinkData(sKey, sValue)
-	'20240617 LES START - 해외/국내 종목선택창 통합
+ --============================================================================
+function Form_OnLinkData(sKey, sValue)
+	 --20240617 LES START - 해외/국내 종목선택창 통합
 	if "&ITEM_CODE" == sKey then
 		
-		if CheckMasterFile(sValue) then '20240621 
+		if CheckMasterFile(sValue) then --20240621 end end
 			edtOrgNo.caption = ""
 			ItemCode0_OnEditComplete(sValue)
-		end if
-	'20240617 LES END
+		end
+	 --20240617 LES END
 	
-	'20250703 YSH START
-	'해외주식 장운영 정보 조회방식 변경
+	 --20250703 YSH START
+	 --해외주식 장운영 정보 조회방식 변경
 	elseif sKey == "OVRS_MARKET_OPERATION_TRAN" then
-		'20250707 YSH TEST
-		'Form.ShowAlert("mhtro16110_해외주식 예약주문", "최초 조회 정상 확인 : " & sKey & sValue)
+		 --20250707 YSH TEST
+		 --Form.ShowAlert("mhtro16110_해외주식 예약주문", "최초 조회 정상 확인 : " .. sKey .. sValue)
 		if sValue == "SUCCESS" then
-			gMkClsCode = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
-		end if
+			gMkClsCode = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
+		end
 		
 		if g_NoSendItemInfo == true and g_NoSendHogaData == true then
 			ItemCode0_OnEditComplete(ItemCode0.code)
-		end if
+		end
 	
-	'elseif sKey == "OVRS_MARKET_OPERATION_REAL" then
-		'실시간은 "CHANGE_MKTOP" 에서 처리
-	'20250703 YSH END
+	 --elseif sKey == "OVRS_MARKET_OPERATION_REAL" then
+		 --실시간은 "CHANGE_MKTOP" 에서 처리
+	 --20250703 YSH END
 	
-	end if	
-End Sub
+	end
+end
 
-'============================================================================
-Sub ItemCode0_OnEditComplete(sCode)
+ --============================================================================
+function ItemCode0_OnEditComplete(sCode)
 	
-	'20240715 LES START
-	nCurrentTab = Cint(FormTab0.currenttab)
+	 --20240715 LES START
+	nCurrentTab = gf_Tonumber(FormTab0.currenttab)
 	
-	if g_sCode <> sCode then
+	if g_sCode ~= sCode then
 		ItemCode0.code = sCode
 		Request_Hoga(sCode)
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "ChangeCode", ItemCode0.code )
@@ -679,86 +682,86 @@ Sub ItemCode0_OnEditComplete(sCode)
 	else
 		Request_Hoga(sCode)
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "RefreshData", ItemCode0.code )
-	end if
-	'20240715 LES END
+	end
+	 --20240715 LES END
 	
-	Form.triggerEvent( "LinkFormTop", "RequestData", ItemCode0.code)
+	Form.TriggerEvent( "LinkFormTop", "RequestData", ItemCode0.code)
 	
-End Sub
+end
 
-'============================================================================
-Sub FormTab0_OnTabChanged(nCurrentTab)
+ --============================================================================
+function FormTab0_OnTabChanged(nCurrentTab)
 	
-	'======================================================================
-	'종목연동 및 주문설정값 연동
-	'======================================================================
-	if Len(ItemCode0.code) > 0 then
+	 --======================================================================
+	 --종목연동 및 주문설정값 연동
+	 --======================================================================
+	if string.string.string.len(ItemCode0.code) > 0 then
 		
 		if nCurrentTab == 2 or nCurrentTab == "2" then
 			
-			'주문연동시
-			if g_szAfterOrg == "1" then		
-				if edtOrgNo.caption <> "" then
-					Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, "AFTER_ORGNO", edtOrgNo.caption) '주문번호 연동
-				end if
-			end if
+			 --주문연동시
+			if g_szAfterOrg == "1" then
+				if edtOrgNo.caption ~= "" then
+					Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "AFTER_ORGNO", edtOrgNo.caption)  --주문번호 연동
+				end
+			end
 			
-		end if
+		end
 		
-		'종목코드 넘김
+		 --종목코드 넘김
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "ChangeTab", ItemCode0.code )	
 		
-		'종목정보 넘김
-		if g_sItemInfo <> null and g_sItemInfo <> "" then
-			Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, "SEND_ITEM_INFO", g_sItemInfo)
-		end if
+		 --종목정보 넘김
+		if g_sItemInfo ~= nil and g_sItemInfo ~= "" then
+			Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "SEND_ITEM_INFO", g_sItemInfo)
+		end
 		
-	end if
+	end
 	
-	'======================================================================
-	'선택한 탭에따라 호가테이블 영역 조정
-	'======================================================================
+	 --======================================================================
+	 --선택한 탭에따라 호가테이블 영역 조정
+	 --======================================================================
 	
-	'-----------------------------------
-	'매수/매도 탭
-	'-----------------------------------
+	 -------------------------------------
+	 --매수/매도 탭
+	 -------------------------------------
 	if nCurrentTab == 0 or nCurrentTab == "0" or nCurrentTab == 1 or nCurrentTab == "1" then
 		
-		nMaxPrc = Cdbl(tblHigh.GetCellString(0, 1))
-		nMinPrc = Cdbl(tblLow.GetCellString(0, 1))
+		nMaxPrc = gf_Tonumber(tblHigh.GetCellString(0, 1))
+		nMinPrc = gf_Tonumber(tblLow.GetCellString(0, 1))
 		
 		if nMaxPrc > 0 and nMinPrc > 0 then
 			ChangeContHoga("1")
 		else
 			ChangeContHoga("2")
-		end if
+		end
 	
-	'-----------------------------------
-	'예약내역/취소 탭, 주문체결 탭
-	'-----------------------------------
+	 -------------------------------------
+	 --예약내역/취소 탭, 주문체결 탭
+	 -------------------------------------
 	elseif nCurrentTab == 2 or nCurrentTab == "2" or nCurrentTab == 3 or nCurrentTab == "3" then
 		
 		if rdoHoga.currentindex == 1 or rdoHoga.currentindex == "1" then
 			rdoHoga.currentindex = 0
 			contCntg.visible = false
-		end if
+		end
 		
 		ChangeContHoga("3")
 	
-	end if
+	end
 	
 	
 	
-End Sub
-'============================================================================
-' 종목검색창 호출 명령 들어올 경우
-'============================================================================
-Sub Form_OnOpenSearchDialog()
+end
+ --============================================================================
+ -- 종목검색창 호출 명령 들어올 경우
+ --============================================================================
+function Form_OnOpenSearchDialog()
 	Form.OpenPopup( "ItemSearchOverStock" , "" , "I" )
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
 	
 	if szTranID == "obpds_srvc_323r" then
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "ACNO" 				, 0 	, acnt.total )
@@ -768,166 +771,166 @@ Sub DATAMANAGER_OnSendTranBefore(szTranID)
 	
 	elseif szTranID == "ohhts_6000_001r" then
 		
-		'sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
-		sCodeData = Split( g_sCode, "@" )
-		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0], 0 )
+		sCodeData = gf_Split(g_sCode, "@")
+		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
 		
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" ) ' 해외주식 OV
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1] ) ' 종목코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0] ) ' 거래소코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay ) ' 실시간구분 0 : 실시간 (Default), 1:지연
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )  -- 해외주식 OV
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1+1] )  -- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0+1] )  -- 거래소코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay )  -- 실시간구분 0 : 실시간 (Default), 1:지연
 		
 	elseif szTranID == "ohhts_6000_002r" then
 	
-		'sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
-		sCodeData = Split( g_sCode, "@" )
-		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0], 0 )
+		sCodeData = gf_Split(g_sCode, "@")
+		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
 			
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" ) ' 해외주식 OV
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1] ) ' 종목코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0] ) ' 거래소코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay ) ' 실시간구분 0 : 실시간 (Default), 1:지연
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )  -- 해외주식 OV
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1+1] )  -- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0+1] )  -- 거래소코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay )  -- 실시간구분 0 : 실시간 (Default), 1:지연
 	
 	elseif szTranID == "ohhts_6000_003r" then
 		
-		'sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
-		sCodeData = Split( g_sCode, "@" )
-		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0], 0 )
+		sCodeData = gf_Split(g_sCode, "@")
+		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
 
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_003r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" ) ' 해외주식 OV
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_003r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1] ) ' 종목코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_003r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0] ) ' 거래소코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_003r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay ) ' 실시간구분 0 : 실시간 (Default), 1:지연
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_003r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )  -- 해외주식 OV
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_003r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1+1] )  -- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_003r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0+1] )  -- 거래소코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_003r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay )  -- 실시간구분 0 : 실시간 (Default), 1:지연
 	
 	elseif szTranID == "ohhts_6000_017r" then
 	
-		'sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
-		sCodeData = Split( g_sCode, "@" )
-		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0], 0 )
+		sCodeData = gf_Split(g_sCode, "@")
+		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
 
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" ) ' 해외주식 OV
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1] ) ' 종목코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0] ) ' 거래소코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay ) ' 실시간구분 0 : 실시간 (Default), 1:지연
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )  -- 해외주식 OV
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1+1] )  -- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0+1] )  -- 거래소코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay )  -- 실시간구분 0 : 실시간 (Default), 1:지연
 
 	elseif szTranID == "ohhts_6000_020r" then
 	
-		'sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
-		sCodeData = Split( g_sCode, "@" )
-		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0], 0 )
+		sCodeData = gf_Split(g_sCode, "@")
+		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
 
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" ) ' 해외주식 OV
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1] ) ' 종목코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0] ) ' 거래소코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay ) ' 실시간구분 0 : 실시간 (Default), 1:지연
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )  -- 해외주식 OV
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , sCodeData[1+1] )  -- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_COND_MRKT_CLS_CODE" , 0 , sCodeData[0+1] )  -- 거래소코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay )  -- 실시간구분 0 : 실시간 (Default), 1:지연
 
-	'-------------------------------------------------------------------------
-	' 액면분할/권리선반영 시 사용하는 로직 
-	'-------------------------------------------------------------------------
-	'elseif szTranID == "obtro_acnt_900r" then
-	'
-	'	szCustNum = Form.GetSharedData("&CUST_NUM", false)
-	'
-	'	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "BSWR_CLCD" 			, 0 , "08")
-	'	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "CSNO" 				, 0 , szCustNum)
-	'-------------------------------------------------------------------------
+	 ---------------------------------------------------------------------------
+	 -- 액면분할/권리선반영 시 사용하는 로직 
+	 ---------------------------------------------------------------------------
+	 --elseif szTranID == "obtro_acnt_900r" then
+	 --
+	 --	szCustNum = Form.GetSharedData("..CUST_NUM", false)
+	 --
+	 --	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "BSWR_CLCD" 			, 0 , "08")
+	 --	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "CSNO" 				, 0 , szCustNum)
+	 ---------------------------------------------------------------------------
 	
-	'-------------------------------------------------------------------------
-	' v0001 해외주식 예약주문 당일 조회
-	'-------------------------------------------------------------------------
+	 ---------------------------------------------------------------------------
+	 -- v0001 해외주식 예약주문 당일 조회
+	 ---------------------------------------------------------------------------
 	elseif szTranID == "obtro_oder_268r" then
-		DATAMANAGER.SetDataValue(0, szTranID, "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE"		, 0, "01")		' 해외주식시장 거래구분코드 : 미국
-		DATAMANAGER.SetDataValue(0, szTranID, "InBlock1", "OVRS_MKOP_CLS_CODE"				, 0, "005")		' 해외장 운영구분코드 : 정규장+에프터
-	end if
+		DATAMANAGER.SetDataValue(0, szTranID, "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE"		, 0, "01")		 -- 해외주식시장 거래구분코드 : 미국
+		DATAMANAGER.SetDataValue(0, szTranID, "InBlock1", "OVRS_MKOP_CLS_CODE"				, 0, "005")		 -- 해외장 운영구분코드 : 정규장+에프터
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	
 	if szTranID == "obpds_srvc_323r" then
 		szYakCd = DATAMANAGER.GetDataMsgCode(szTranID)
 		
-		if szYakCd <> "5766" then
+		if szYakCd ~= "5766" then
 			
 			nCurrentTab = FormTab0.currenttab
 		
-			'-------------------------------------------------------------------------
-			' 현재 탭이 정정/취소, 주문/체결, 잔고 탭인 경우 조회데이터 클리어
-			'-------------------------------------------------------------------------
+			 ---------------------------------------------------------------------------
+			 -- 현재 탭이 정정/취소, 주문/체결, 잔고 탭인 경우 조회데이터 클리어
+			 ---------------------------------------------------------------------------
 			if nCurrentTab == 2 or nCurrentTab == "2" or nCurrentTab == 3 or nCurrentTab == "3" or nCurrentTab == 4 or nCurrentTab == "4" then
 				Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "ClearData", "" )
 			
-			'-------------------------------------------------------------------------
-			' 20240617 LES START 현재탭이 매수/매도 인 경우 가능수량 조회 서비스를 날리기 위해 그냥 ChangeAcnt 날림.
-			' 매도탭에서 계좌가 변경되었으면 매수 탭에도 알려줌. 자세한 이유는 아래 적혀있음.
-			'-------------------------------------------------------------------------
+			 ---------------------------------------------------------------------------
+			 -- 20240617 LES START 현재탭이 매수/매도 인 경우 가능수량 조회 서비스를 날리기 위해 그냥 ChangeAcnt 날림.
+			 -- 매도탭에서 계좌가 변경되었으면 매수 탭에도 알려줌. 자세한 이유는 아래 적혀있음.
+			 ---------------------------------------------------------------------------
 			else
 				
 				Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "ChangeAcnt", "" )
 				
-				if nCurrentTab <> 0 and nCurrentTab <> "0" then
+				if nCurrentTab ~= 0 and nCurrentTab ~= "0" then
 					Form.TriggerEvent( "FormTab0.page0", "ChangeAcnt", "" )
-				end if
+				end
 			
-			end if
+			end
 				
-			'20240807 매수탭에서만 약정신청 팝업 발생하도록 요건 변경(노민아 과장 요청)
+			 --20240807 매수탭에서만 약정신청 팝업 발생하도록 요건 변경(노민아 과장 요청)
 			if nCurrentTab == 0 or nCurrentTab == "0" then
 				Form.MsgBox("안내", "해외주식 거래신청 미등록 계좌는 약정 신청 후 거래가 가능합니다. 해당 화면으로 이동하시겠습니까?" , "REG", 7, "거래신청하기" , "취소")
-			end if
+			end
 			
 		else
 			nCurrentTab = FormTab0.currenttab
 		
 			Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "ChangeAcnt", "" )
 			
-			'-------------------------------------------------------------------------
-			' 매수탭의 경우 현재 계좌의 통합증거금 약정 여부에 따라 주문가능수량을
-			' 보여주는 UI가 달라지기 때문에, 계좌변경했을 때 매수탭에 위치해있지 않은 경우
-			' 매수탭에도 트리거를 날려 계좌가 변경되었음을 알려줘, 바뀐 계좌의 통합증거금 여부를
-			' 다시 조회하도록 한다.
-			'-------------------------------------------------------------------------
-			if nCurrentTab <> 0 and nCurrentTab <> "0" then
+			 ---------------------------------------------------------------------------
+			 -- 매수탭의 경우 현재 계좌의 통합증거금 약정 여부에 따라 주문가능수량을
+			 -- 보여주는 UI가 달라지기 때문에, 계좌변경했을 때 매수탭에 위치해있지 않은 경우
+			 -- 매수탭에도 트리거를 날려 계좌가 변경되었음을 알려줘, 바뀐 계좌의 통합증거금 여부를
+			 -- 다시 조회하도록 한다.
+			 ---------------------------------------------------------------------------
+			if nCurrentTab ~= 0 and nCurrentTab ~= "0" then
 				Form.TriggerEvent( "FormTab0.page0", "ChangeAcnt", "" )
-			end if
+			end
 			
-			'-------------------------------------------------------------------------
-			' 액면분할/권리선반영 시 사용하는 로직 
-			'-------------------------------------------------------------------------
-			'szToday = Form.GetSharedData("&HOST_DATE", false )
-			'
-			'if tonumber(szToday) >= 20240311 and tonumber(szToday) <= 20240318 then
-			'	DATAMANAGER.RequestTranData("obtro_acnt_900r")
-			'end if
-			'-------------------------------------------------------------------------
+			 ---------------------------------------------------------------------------
+			 -- 액면분할/권리선반영 시 사용하는 로직 
+			 ---------------------------------------------------------------------------
+			 --szToday = Form.GetSharedData("..HOST_DATE", false )
+			 --
+			 --if gf_Tonumber(szToday) >= 20240311 and gf_Tonumber(szToday) <= 20240318 then
+			 --	DATAMANAGER.RequestTranData("obtro_acnt_900r")
+			 --end if
+			 ---------------------------------------------------------------------------
 			
-		end if
+		end
 		
 	
 	elseif szTranID == "ohhts_6000_001r" then
 		
-		'----------------------------------------------------
-		'[체결] 테이블/그리드 세팅
-		'----------------------------------------------------
+		 ------------------------------------------------------
+		 --[체결] 테이블/그리드 세팅
+		 ------------------------------------------------------
 		nCLPrice = _tonumber(DATAMANAGER.GetDataValue(0, szTranID , "OutBlock1", "FIDX_PRDY_CLPR" 	, 0))
 		nPoint 	= _tonumber(DATAMANAGER.GetDataValue(0, szTranID , "OutBlock1", "FIDX_DCPN_CNT" 	, 0))
 		
-		contCntg.tblPrice.SetCellString(3, 1, Replace( FormatNumber(nCLPrice, nPoint) , "," , "" ) )
+		contCntg.tblPrice.SetCellString(3, 1, string.gsub(gf_CommaValue(nCLPrice, string.gsub(nPoint), "([%p])", "%%%1"), "," , "") )
 		
 		Table_Color_Setting()
 		
-		'-------------------------------------------------------------------------------------------
-		' [호가] 상/하한가 데이터 존재 여부에 따라 호가테이블 위치/높이 조정
-		' 단, 현재 탭이 매수/매도 일 경우에만 동작. 정정/취소 & 주문/체결 & 잔고일때는 스킵
-		'-------------------------------------------------------------------------------------------
-		nMaxPrc = CDbl(DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_MXPR" , 0))
-		nMinPrc = CDbl(DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_LLAM" , 0))
+		 ---------------------------------------------------------------------------------------------
+		 -- [호가] 상/하한가 데이터 존재 여부에 따라 호가테이블 위치/높이 조정
+		 -- 단, 현재 탭이 매수/매도 일 경우에만 동작. 정정/취소 .. 주문/체결 .. 잔고일때는 스킵
+		 ---------------------------------------------------------------------------------------------
+		nMaxPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_MXPR" , 0))
+		nMinPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_LLAM" , 0))
 		
 		nCurrentTab = FormTab0.currenttab
 		
@@ -936,38 +939,38 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 				ChangeContHoga("1")
 			else
 				ChangeContHoga("2")
-			end if
-		end if
+			end
+		end
 		
-		'-------------------------------------------------------------------------
-		' [종목정보] 선택종목 정보 탭별로 전달(호가단위는 각 주문화면에서 세팅됨)
-		'-------------------------------------------------------------------------
-		sCurPrice	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRPR" 					, 0 )		' 현재가
-		sOrdSize 	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_SHNU_ODER_QTY_UNIT" 		, 0 )		' 매매단위(매수)
-		sOrdSizeMaedo	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_SELN_ODER_QTY_UNIT" 		, 0)			' 매매단위(매도)
-		sCurrency	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_CRNC_CODE" 				, 0 )		' 통화
-		sKorName		=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_KOR_ISNM" 				, 0 )		' 한글종목명
-		sTickType	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_TICK_CLS" 				, 0 )		' 종목 틱타입
+		 ---------------------------------------------------------------------------
+		 -- [종목정보] 선택종목 정보 탭별로 전달(호가단위는 각 주문화면에서 세팅됨)
+		 ---------------------------------------------------------------------------
+		sCurPrice	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRPR" 					, 0 )		 -- 현재가
+		sOrdSize 	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_SHNU_ODER_QTY_UNIT" 		, 0 )		 -- 매매단위(매수)
+		sOrdSizeMaedo	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_SELN_ODER_QTY_UNIT" 		, 0)			 -- 매매단위(매도)
+		sCurrency	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_CRNC_CODE" 				, 0 )		 -- 통화
+		sKorName		=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_KOR_ISNM" 				, 0 )		 -- 한글종목명
+		sTickType	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_TICK_CLS" 				, 0 )		 -- 종목 틱타입
 		
-		sUpLimit		=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_MXPR" 		, 0 )))	' 상한가
-		sDnLimit		=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_LLAM" 		, 0 )))	' 하한가
-		sDecimalLen 	=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_DCPN_CNT" 	, 0 )))	' 가격소수점
+		sUpLimit		=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_MXPR" 		, 0 )))	 -- 상한가
+		sDnLimit		=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_LLAM" 		, 0 )))	 -- 하한가
+		sDecimalLen 	=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_DCPN_CNT" 	, 0 )))	 -- 가격소수점
 		
-		if g_NoSendItemInfo <> true then
+		if g_NoSendItemInfo ~= true then
 			SendItemInfo(sCurPrice,sUpLimit,sDnLimit,sOrdSize,sCurrency,sDecimalLen,sKorName,sTickType,sOrdSizeMaedo)
-		end if
+		end
 		
 		g_NoSendItemInfo = false
 	
 	elseif szTranID == "ohhts_6000_002r" then
-		'----------------------------------------------
-		'호가창 중앙위치
-		'----------------------------------------------
+		 ------------------------------------------------
+		 --호가창 중앙위치
+		 ------------------------------------------------
 		contHoga.scroll_pos = "vcenter"
 		
-		'----------------------------------------------
-		'호가창 시고저 표시
-		'----------------------------------------------
+		 ------------------------------------------------
+		 --호가창 시고저 표시
+		 ------------------------------------------------
 		sOprc = DATAMANAGER.GetDataValue(0, "ohhts_6000_002r", "OutBlock1", "FIDX_OPRC" , 0)
 		sHprc = DATAMANAGER.GetDataValue(0, "ohhts_6000_002r", "OutBlock1", "FIDX_HPRC" , 0)
 		sLprc = DATAMANAGER.GetDataValue(0, "ohhts_6000_002r", "OutBlock1", "FIDX_LPRC" , 0)
@@ -976,22 +979,22 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 		contHoga.hogaTbl.highprice = sHprc
 		contHoga.hogaTbl.lowprice = sLprc
 		
-		'----------------------------------------------
-		' 실시간 서비스 호출
-		'----------------------------------------------
-		DATAMANAGER.RequestRealData( "ohhts_exst_aspr" ) '정규장 실시간 호가
-		DATAMANAGER.RequestRealData( "ohhts_exst_cntg" ) '정규장 실시간 체결
-		DATAMANAGER.RequestRealData( "ohhts_exst_cnta" ) '애프터마켓 실시간 체결
-		DATAMANAGER.RequestRealData( "ohhts_exst_cntd" ) '주간거래 실시간 체결
+		 ------------------------------------------------
+		 -- 실시간 서비스 호출
+		 ------------------------------------------------
+		DATAMANAGER.RequestRealData( "ohhts_exst_aspr" )  --정규장 실시간 호가
+		DATAMANAGER.RequestRealData( "ohhts_exst_cntg" )  --정규장 실시간 체결
+		DATAMANAGER.RequestRealData( "ohhts_exst_cnta" )  --애프터마켓 실시간 체결
+		DATAMANAGER.RequestRealData( "ohhts_exst_cntd" )  --주간거래 실시간 체결
 		
-		'-------------------------------------------------------------------
-		' 호가조회 완료
-		' 수량/가격 자동입력 설정이 되어있는 경우, 호가조회가 완료된 이후에
-		' 각 주문화면에서 [RequestAutoPrice], [RequestAutoQty] 호출
-		'-------------------------------------------------------------------
-		if g_NoSendHogaData <> true then
-			Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, "HOGA_COMPLETE", "")
-		end if
+		 ---------------------------------------------------------------------
+		 -- 호가조회 완료
+		 -- 수량/가격 자동입력 설정이 되어있는 경우, 호가조회가 완료된 이후에
+		 -- 각 주문화면에서 [RequestAutoPrice], [RequestAutoQty] 호출
+		 ---------------------------------------------------------------------
+		if g_NoSendHogaData ~= true then
+			Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "HOGA_COMPLETE", "")
+		end
 		
 		g_NoSendHogaData = false
 		
@@ -999,125 +1002,125 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 	elseif szTranID == "ohhts_6000_003r" then
 		if _tonumber(contCntg.grdCNTG.rowcount) > g_nMaxCount then
 			contCntg.grdCNTG.rowcount = g_nMaxCount
-		end if
+		end
 		
-	'-------------------------------------------------------------------------
-	' 주간장 시세 조회 처리(미국종목 일때만, 주간현재가 조회됨. 나머지는 다 0)
-	'-------------------------------------------------------------------------
+	 ---------------------------------------------------------------------------
+	 -- 주간장 시세 조회 처리(미국종목 일때만, 주간현재가 조회됨. 나머지는 다 0)
+	 ---------------------------------------------------------------------------
 	elseif szTranID == "ohhts_6000_017r" then
 	
-		szDayPrc = Cdbl(DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0))
+		szDayPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0))
 		
-		'20241216 LES START - 휴장(000),휴일(013)이면 안넘김
-		'----------------------------------------------------
-		'Form.ShowAlert("ohhts_6000_017r", gMkClsCode)
-		if gMkClsCode <> "000" and gMkClsCode <> "013" then
-			if szDayPrc <> 0 then
+		 --20241216 LES START - 휴장(000),휴일(013)이면 안넘김
+		 ------------------------------------------------------
+		 --Form.ShowAlert("ohhts_6000_017r", gMkClsCode)
+		if gMkClsCode ~= "000" and gMkClsCode ~= "013" then
+			if szDayPrc ~= 0 then
 				lblHyun.caption = szDayPrc
-				Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, "SEND_DAYMARKET_PRC", szDayPrc)
-			end if
-		end if
-		'----------------------------------------------------
-		'20241216 LES END
-		'----------------------------------------------------
+				Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "SEND_DAYMARKET_PRC", szDayPrc)
+			end
+		end
+		 ------------------------------------------------------
+		 --20241216 LES END
+		 ------------------------------------------------------
 		
-	'-------------------------------------------------------------------------
-	' 관심그룹 조회
-	'-------------------------------------------------------------------------	
-	elseif szTranID == "ohhts_intr_006r" then	'20240710 HSZ
+	 ---------------------------------------------------------------------------
+	 -- 관심그룹 조회
+	 ---------------------------------------------------------------------------	
+	elseif szTranID == "ohhts_intr_006r" then --20240710 HSZ
 		ResponseTranData_Intr()
 
-	'-------------------------------------------------------------------------
-	' 애프터장 시세 조회 처리(미국종목 일때만
-	'-------------------------------------------------------------------------
+	 ---------------------------------------------------------------------------
+	 -- 애프터장 시세 조회 처리(미국종목 일때만
+	 ---------------------------------------------------------------------------
 	elseif szTranID == "ohhts_6000_020r" then
 	
-		szAfterPrc = Cdbl(DATAMANAGER.GetDataValue(0, "ohhts_6000_020r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0))
+		szAfterPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_020r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0))
 		
-		'----------------------------------------------------
-		'20241216 LES START - 휴장(000),휴일(013)이면 안넘김
-		'----------------------------------------------------
-		'Form.ShowAlert("ohhts_6000_020r", gMkClsCode)
-		if gMkClsCode <> "000" and gMkClsCode <> "013" then
-			if szAfterPrc <> 0 then
+		 ------------------------------------------------------
+		 --20241216 LES START - 휴장(000),휴일(013)이면 안넘김
+		 ------------------------------------------------------
+		 --Form.ShowAlert("ohhts_6000_020r", gMkClsCode)
+		if gMkClsCode ~= "000" and gMkClsCode ~= "013" then
+			if szAfterPrc ~= 0 then
 				lblHyun.caption = szAfterPrc
-				Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, "SEND_AFTERMARKET_PRC", szAfterPrc)
-			end if
-		end if
-		'----------------------------------------------------
-		'20241216 LES END
-		'----------------------------------------------------
+				Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "SEND_AFTERMARKET_PRC", szAfterPrc)
+			end
+		end
+		 ------------------------------------------------------
+		 --20241216 LES END
+		 ------------------------------------------------------
 		
-	'-------------------------------------------------------------------------
-	' v0001 해외주식 예약주문 당일 조회
-	'-------------------------------------------------------------------------
+	 ---------------------------------------------------------------------------
+	 -- v0001 해외주식 예약주문 당일 조회
+	 ---------------------------------------------------------------------------
 	elseif szTranID == "obtro_oder_268r" then
 		s_mangDate = DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "MANG_DATE", 0)
-		Form.SetSharedData("&mhtro16061_t13_mang_date" , s_mangDate)
-	end if
+		Form.SetSharedData("..mhtro16061_t13_mang_date" , s_mangDate)
+	end
 
-	'-------------------------------------------------------------------------
-	' 액면분할/권리선반영 시 사용하는 로직
-	'-------------------------------------------------------------------------
-	'elseif szTranID == "obtro_acnt_900r" then
-	'
-	'	'애플/테슬라 잔고보유 고객한테만 유의사항 팝업 띄어줌.
-	'	agreeYn = DATAMANAGER.GetDataValue(0, "obtro_acnt_900r", "OutBlock1", "AGRM_YN" 		, 0)
-	'	jangoYn = DATAMANAGER.GetDataValue(0, "obtro_acnt_900r", "OutBlock1", "RMND_EXST_YN" 	, 0)
-	'	
-	'	if jangoYn = "Y" then
-	'		if agreeYn = "N" then
-	'			Form.OpenPopup("mhtro16060_p9" , "" , "")
-	'		end if
-	'		
-	'	end if
-	'-------------------------------------------------------------------------
+	 ---------------------------------------------------------------------------
+	 -- 액면분할/권리선반영 시 사용하는 로직
+	 ---------------------------------------------------------------------------
+	 --elseif szTranID == "obtro_acnt_900r" then
+	 --
+	 --	 --애플/테슬라 잔고보유 고객한테만 유의사항 팝업 띄어줌.
+	 --	agreeYn = DATAMANAGER.GetDataValue(0, "obtro_acnt_900r", "OutBlock1", "AGRM_YN" 		, 0)
+	 --	jangoYn = DATAMANAGER.GetDataValue(0, "obtro_acnt_900r", "OutBlock1", "RMND_EXST_YN" 	, 0)
+	 --	
+	 --	if jangoYn = "Y" then
+	 --		if agreeYn = "N" then
+	 --			Form.OpenPopup("mhtro16060_p9" , "" , "")
+	 --		end if
+	 --		
+	 --	end if
+	 ---------------------------------------------------------------------------
 		
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	if szTranID == "obpds_srvc_323r" then
 		szYakCd = DATAMANAGER.GetDataMsgCode(szTranID)
 		
-		if szYakCd <> "5766" then
-			'20240807 매수탭에서만 약정신청 팝업 발생하도록 요건 변경(노민아 과장 요청)
+		if szYakCd ~= "5766" then
+			 --20240807 매수탭에서만 약정신청 팝업 발생하도록 요건 변경(노민아 과장 요청)
 			nCurrentTab = FormTab0.currenttab
 			if nCurrentTab == 0 or nCurrentTab == "0" then
 				Form.MsgBox("안내", "해외주식 거래신청 미등록 계좌는 약정 신청 후 거래가 가능합니다. 해당 화면으로 이동하시겠습니까?" , "REG", 7 , "거래신청하기", "취소")
-			end if
+			end
 		
 		else
 			Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "ChangeAcnt", "" )	
-		end if
-	end if
+		end
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnSendRealBefore(szTranID)
+ --============================================================================
+function DATAMANAGER_OnSendRealBefore(szTranID)
 
 	if szTranID == "ohhts_exst_aspr" then
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_aspr", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )
 	elseif szTranID == "ohhts_exst_cntg" then
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )
-	elseif szTranID == "ohhts_exst_cnta" then '20220404 HSZ 애프터마켓 실시간체결 추가
+	elseif szTranID == "ohhts_exst_cnta" then --20220404 HSZ 애프터마켓 실시간체결 추가
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )
-	elseif szTranID == "ohhts_exst_cntd" then '20221213_01 KBC 해외주식주간거래
+	elseif szTranID == "ohhts_exst_cntd" then --20221213_01 KBC 해외주식주간거래
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , g_sCode )
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveRealComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveRealComplete(szTranID)
 	
 	if szTranID == "ohhts_exst_cntg" then
 		
-		'----------------------------------------------
-		'호가창 시고저 표시
-		'----------------------------------------------
+		 ------------------------------------------------
+		 --호가창 시고저 표시
+		 ------------------------------------------------
 		sOprc = DATAMANAGER.GetDataValue(1, "ohhts_exst_cntg", "OutBlock1", "FIDXR_OPRC" , 0)
 		sHprc = DATAMANAGER.GetDataValue(1, "ohhts_exst_cntg", "OutBlock1", "FIDXR_HPRC" , 0)
 		sLprc = DATAMANAGER.GetDataValue(1, "ohhts_exst_cntg", "OutBlock1", "FIDXR_LPRC" , 0)
@@ -1128,9 +1131,9 @@ Sub DATAMANAGER_OnReceiveRealComplete(szTranID)
 	
 	elseif szTranID == "ohhts_exst_cnta" then
 		
-		'----------------------------------------------
-		'호가창 시고저 표시
-		'----------------------------------------------
+		 ------------------------------------------------
+		 --호가창 시고저 표시
+		 ------------------------------------------------
 		sOprc = DATAMANAGER.GetDataValue(1, "ohhts_exst_cnta", "OutBlock1", "FIDXR_OPRC" , 0)
 		sHprc = DATAMANAGER.GetDataValue(1, "ohhts_exst_cnta", "OutBlock1", "FIDXR_HPRC" , 0)
 		sLprc = DATAMANAGER.GetDataValue(1, "ohhts_exst_cnta", "OutBlock1", "FIDXR_LPRC" , 0)
@@ -1141,9 +1144,9 @@ Sub DATAMANAGER_OnReceiveRealComplete(szTranID)
 	
 	elseif szTranID == "ohhts_exst_cntd" then
 	
-		'----------------------------------------------
-		'호가창 시고저 표시
-		'----------------------------------------------
+		 ------------------------------------------------
+		 --호가창 시고저 표시
+		 ------------------------------------------------
 		sOprc = DATAMANAGER.GetDataValue(1, "ohhts_exst_cntd", "OutBlock1", "FIDXR_OPRC" , 0)
 		sHprc = DATAMANAGER.GetDataValue(1, "ohhts_exst_cntd", "OutBlock1", "FIDXR_HPRC" , 0)
 		sLprc = DATAMANAGER.GetDataValue(1, "ohhts_exst_cntd", "OutBlock1", "FIDXR_LPRC" , 0)
@@ -1152,61 +1155,61 @@ Sub DATAMANAGER_OnReceiveRealComplete(szTranID)
 		contHoga.hogaTbl.highprice = sHprc
 		contHoga.hogaTbl.lowprice = sLprc
 		
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub acnt_ChangeAccount()
+ --============================================================================
+function acnt_ChangeAccount()
 	
-	'20220425 HWG START : 계좌비밀번호 입력 개선
+	 --20220425 HWG START : 계좌비밀번호 입력 개선
 	if g_szSavePwd == "0" then
 		edtPwd.caption = ""
 		edtPwdIcon.imgpath = "icon_save_password_n.9"
 	else
 		edtPwdIcon.imgpath = "icon_save_password_o.9"
-	end if
-	'20220425 HWG END
+	end
+	 --20220425 HWG END
 	
 	edtOrgNo.caption = ""
 	DATAMANAGER.RequestTranData("obpds_srvc_323r")
-End Sub
-'============================================================================
-Sub Form_OnMsgBoxClose(sKeyName, sRet)
+end
+ --============================================================================
+function Form_OnMsgBoxClose(sKeyName, sRet)
 	if sKeyName == "REG" then
 		if sRet == "ok" then
 			szAcct = acnt.caption
 			Form.OpenScreen("87051" , szAcct)
-		end if
-	end if
-End Sub
-'============================================================================
-Sub Form_OnPopupReturn(sKeyName, sRet)
+		end
+	end
+end
+ --============================================================================
+function Form_OnPopupReturn(sKeyName, sRet)
 		
-	'20200827 LES START 애플/테슬라 액면분할 관련 고객유의사항
+	 --20200827 LES START 애플/테슬라 액면분할 관련 고객유의사항
 	if sKeyName == "16060_p9" then
 		if sRet == "cancel" then
-			szPrevScr = Form.GetSharedData("&PREV_SCREEN_NO", false )
+			szPrevScr = Form.GetSharedData("..PREV_SCREEN_NO", false )
 			
 			if szPrevScr == "" or szPrevScr == nil or szPrevScr == "16060" then
 				szPrevScr = "41000"
-			end if
+			end
 			
 			Form.OpenScreen(szPrevScr , "")
-		end if
-	'20200827 LES END
+		end
+	 --20200827 LES END
 	
-	'20220425 HWG START : 계좌비밀번호 입력 개선
-	elseif sKeyName = "CORRECT_PWD" then
-		if sRet <> "" then
-			Dim szAcnt
+	 --20220425 HWG START : 계좌비밀번호 입력 개선
+	elseif sKeyName == "CORRECT_PWD" then
+		if sRet ~= "" then
+			local szAcnt
 			
-			tData = Split(sRet, "★")
+			tData = gf_Split(sRet, "★")
 			
-			if UBOUND(tData) > 0 then
-				edtPwd.pwdlen = tData(1)
-				edtPwd.caption = tData(0)
-			end if
+			if #tData > 0 then
+				edtPwd.pwdlen = tData[1+1]
+				edtPwd.caption = tData[0+1]
+			end
 			
 			g_szSavePwd = Form.GetEnvData("order.save_orderpwd")
 			
@@ -1214,15 +1217,15 @@ Sub Form_OnPopupReturn(sKeyName, sRet)
 				edtPwdIcon.imgpath = "icon_save_password_n.9"
 			else
 				edtPwdIcon.imgpath = "icon_save_password_o.9"
-			end if
+			end
 			
-			'-----------------------------------------
-			'비밀번호 검증 후, 주문확인창 자동 오픈
-			'-----------------------------------------
+			 -------------------------------------------
+			 --비밀번호 검증 후, 주문확인창 자동 오픈
+			 -------------------------------------------
 			if g_OpenConfirmNextCheckPwd then
 				g_OpenConfirmNextCheckPwd = false
-				Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, "OPEN_CONFIRM", "")
-			end if
+				Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "OPEN_CONFIRM", "")
+			end
 			
 		else
 			g_szSavePwd = Form.GetEnvData("order.save_orderpwd")
@@ -1232,172 +1235,164 @@ Sub Form_OnPopupReturn(sKeyName, sRet)
 				edtPwd.caption = ""
 			else
 				szCurAcc = acnt.caption
-				nCnt = Cint(acnt.accountcount)
-				For i = 0 to nCnt - 1
-					szCompAcc = acnt.getAccountByIndex(i)
+				nCnt = gf_Tonumber(acnt.accountcount)
+				for i = 0, nCnt - 1 do
+					szCompAcc = acnt.GetAccountByIndex(i)
 					
 					if szCurAcc == szCompAcc then
 						acnt.currentindex = i
-						Exit For
-					end if
-				Next
+						break
+					end
+				end
 				edtPwdIcon.imgpath = "icon_save_password_o.9"
-			end if
+			end
 			
-			'-----------------------------------------
-			'비밀번호 검증 후, 주문확인창 자동 오픈변수 초기화
-			'-----------------------------------------
+			 -------------------------------------------
+			 --비밀번호 검증 후, 주문확인창 자동 오픈변수 초기화
+			 -------------------------------------------
 			if g_OpenConfirmNextCheckPwd then
 				g_OpenConfirmNextCheckPwd = false
-			end if
+			end
 			
-		end if 
-	'20220425 HWG END
+		end
+	 --20220425 HWG END
 	
-	'--------------------------------
-	'20240617 LES START - 해외/국내 종목선택창 통합
-	'--------------------------------
+	 ----------------------------------
+	 --20240617 LES START - 해외/국내 종목선택창 통합
+	 ----------------------------------
 	elseif sKeyName == "DLG_SELECT" then
 		
-		'--------------------------------
-		'sRet = OQ@AAPL★애플★OVRS
-		'--------------------------------		
-		Dim arrRetData, sItemCd, sItemName
-		arrRetData = Split(sRet,"★")
+		 ----------------------------------
+		 --sRet = OQ@AAPL★애플★OVRS
+		 ----------------------------------		
+		local arrRetData, sItemCd, sItemName
+		arrRetData = gf_Split(sRet,"★")
 		
 		if #arrRetData > 2 then
-			sItemCd = arrRetData(0)
+			sItemCd = arrRetData[0+1]
 			
-			if CheckMasterFile(sItemCd) then '20240621 
+			if CheckMasterFile(sItemCd) then --20240621 end end
 				sItemName = Form.GetItemCodeInfo(sItemCd, "name")
-				Form.setOverStockItemCode(sItemCd.."★"..sItemName)
+				Form.SetOverStockItemCode(sItemCd.."★"..sItemName)
 				ItemCode0_OnEditComplete(sItemCd)
-			end if
+			end
 			
-		End if
+		end
 		
-	'--------------------------------
-	'20240617 LES END
-	'--------------------------------
+	 ----------------------------------
+	 --20240617 LES END
+	 ----------------------------------
 	
-	'관심등록 완료 후
-	elseif sKeyName = "mhprc11000_save" then
-		RequestTranData_Intr()			' 관심그룹 갯수 조회	(관심그룹추가 팝업리턴도 같은 keyname으로 내려옴)
-		Form.requestIntrItemList("00")	' 관심종목 목록 조회
-	end if
-End Sub
+	 --관심등록 완료 후
+	elseif sKeyName == "mhprc11000_save" then
+		RequestTranData_Intr()			 -- 관심그룹 갯수 조회	(관심그룹추가 팝업리턴도 같은 keyname으로 내려옴)
+		Form.RequestIntrItemList("00")	 -- 관심종목 목록 조회
+	end
+end
 
-'============================================================================
-'20220425 HWG START : 계좌비밀번호 입력 개선
-'============================================================================
-Sub btnPwd_OnClick()
-	Form.openPopupAnimation("pwdcheckpopup", acnt.caption ,"","2")
-End Sub
-'20220425 HWG END
+ --============================================================================
+ --20220425 HWG START : 계좌비밀번호 입력 개선
+ --============================================================================
+function btnPwd_OnClick()
+	Form.OpenPopupAnimation("pwdcheckpopup", acnt.caption ,"","2")
+end
+ --20220425 HWG END
 
-'============================================================================
-'20220510 LES START : 마스터파일에 있는 종목인지 체크
-'============================================================================
-Function Transform_Exid(szExid)
+ --============================================================================
+ --20220510 LES START : 마스터파일에 있는 종목인지 체크
+ --============================================================================
+function Transform_Exid(szExid)
 
-	if szExid = "HKS" then
-		Transform_Exid = "HK"
-		exit Function
-	elseif szExid = "SHS" then
-		Transform_Exid = "SH"
-		exit Function
-	elseif szExid = "SZS" then
-		Transform_Exid = "SZ"
-		exit Function
-	elseif szExid = "NYS" then
-		Transform_Exid = "NY"
-		exit Function
-	elseif szExid = "AMX" then
-		Transform_Exid = "AX"
-		exit Function
-	elseif szExid = "NAS" then
-		Transform_Exid = "OQ"
-		exit Function
-	elseif szExid = "TSE" then
-		Transform_Exid = "JP"
-		exit Function
+	if szExid == "HKS" then
+		return "HK"
+	elseif szExid == "SHS" then
+		return "SH"
+	elseif szExid == "SZS" then
+		return "SZ"
+	elseif szExid == "NYS" then
+		return "NY"
+	elseif szExid == "AMX" then
+		return "AX"
+	elseif szExid == "NAS" then
+		return "OQ"
+	elseif szExid == "TSE" then
+		return "JP"
 	else
-		Transform_Exid = szExid
-	end if
+		return szExid
+	end
 
-End Function
+end
 
-'============================================================================
-' 마스터파일에 있는 종목인지 체크
-'============================================================================
-Function CheckMasterFile(szCode)
+ --============================================================================
+ -- 마스터파일에 있는 종목인지 체크
+ --============================================================================
+function CheckMasterFile(szCode)
 	
-	arrCode = Split(szCode,"@")
-	szTransExidCode = Transform_Exid(arrCode(0))
+	arrCode = gf_Split(szCode,"@")
+	szTransExidCode = Transform_Exid(arrCode[0+1])
 	
-	szTransItemCode = szTransExidCode .. "@" .. arrCode(1)
+	szTransItemCode = szTransExidCode .. "@" .. arrCode[1+1]
 
 	szCheckData = Form.GetItemCodeInfo(szTransItemCode, "exchid")
 	
-	if szCheckData = "" or szCheckData = null then
-		CheckMasterFile = false
-		Exit Function
-	end if
+	if szCheckData == "" or szCheckData == nil then
+		return false
+	end
 	
-	CheckMasterFile = true
+	return true
 	
-End Function
+end
 
-'============================================================================
-' 주문관련 환경설정값(원주문/계좌비밀번호) 적용
-' 가격/수량 자동입력 관련 설정값은 각 주문탭에서 각자 적용
-'============================================================================
-Function Load_OrderSet()
+ --============================================================================
+ -- 주문관련 환경설정값(원주문/계좌비밀번호) 적용
+ -- 가격/수량 자동입력 관련 설정값은 각 주문탭에서 각자 적용
+ --============================================================================
+function Load_OrderSet()
 	
-	'--------------------------------------------------------------
-	' 원주문번호 자동입력
-	'--------------------------------------------------------------
+	 ----------------------------------------------------------------
+	 -- 원주문번호 자동입력
+	 ----------------------------------------------------------------
 	g_szAfterOrg = Form.LoadConfigData("SET_ORDER", "AUTO_ORGNO")
 	
-	'원주문번호 자동입력(기본값 : 사용)
-	if Trim(g_szAfterOrg) = "" then
+	 --원주문번호 자동입력(기본값 : 사용)
+	if gf_Trim(g_szAfterOrg) == "" then
 		g_szAfterOrg = "1"
-	end if
+	end
 	
-	'--------------------------------------------------------------
-	' 계좌비밀번호 저장여부
-	'--------------------------------------------------------------
+	 ----------------------------------------------------------------
+	 -- 계좌비밀번호 저장여부
+	 ----------------------------------------------------------------
 	g_szSavePwd = Form.GetEnvData("order.save_orderpwd")				
 
-	'계좌비밀번호사용여부 초기화(기본값 : 미사용)
-	if Trim(g_szSavePwd) = "" then
+	 --계좌비밀번호사용여부 초기화(기본값 : 미사용)
+	if gf_Trim(g_szSavePwd) == "" then
 		g_szSavePwd = "0"
-	end if	
+	end
 
 	if g_szSavePwd == "0" then
 		edtPwdIcon.imgpath = "icon_save_password_n.9"
 		edtPwd.caption = ""
 	else
 		edtPwdIcon.imgpath = "icon_save_password_o.9"
-	end if
+	end
 	
-End Function
+end
 
-'============================================================================
-Function Tonum(sValue)
-	return tonumber( sValue ) or 0
-end Function
+ --============================================================================
+function Tonum(sValue)
+	return gf_Tonumber(sValue) or 0
+end
 
-'============================================================================
-Function Request_Hoga(sCode)
+ --============================================================================
+function Request_Hoga(sCode)
 	
 	g_sCode = sCode
 	contHoga.scroll_pos = "vcenter"
 	
-	DATAMANAGER.CancelRealData( "ohhts_exst_aspr" ) '정규장 실시간 호가
-	DATAMANAGER.CancelRealData( "ohhts_exst_cntg" ) '정규장 실시간 체결
-	DATAMANAGER.CancelRealData( "ohhts_exst_cnta" ) '애프터마켓 실시간 체결
-	DATAMANAGER.CancelRealData( "ohhts_exst_cntd" ) '주간거래 실시간 체결
+	DATAMANAGER.CancelRealData( "ohhts_exst_aspr" )  --정규장 실시간 호가
+	DATAMANAGER.CancelRealData( "ohhts_exst_cntg" )  --정규장 실시간 체결
+	DATAMANAGER.CancelRealData( "ohhts_exst_cnta" )  --애프터마켓 실시간 체결
+	DATAMANAGER.CancelRealData( "ohhts_exst_cntd" )  --주간거래 실시간 체결
 	
 	contHoga.hogaTbl.SetCellClear()
 
@@ -1405,71 +1400,71 @@ Function Request_Hoga(sCode)
 	DATAMANAGER.RequestTranData( "ohhts_6000_002r" )
 	DATAMANAGER.RequestTranData( "ohhts_6000_003r" )
 	
-	'----------------------------------------------------------
-	' 주간장/애프터장이면 주간장/애프터 현재가 조회 서비스 호출
-	' 가격자동입력이 현재가로 되어있는 경우, 주간장/애프터 현재가 세팅을 위해
-	'----------------------------------------------------------
-	sDayYN = Form.GetSharedData( "&OVRS_DAYMARKET", false )
+	 ------------------------------------------------------------
+	 -- 주간장/애프터장이면 주간장/애프터 현재가 조회 서비스 호출
+	 -- 가격자동입력이 현재가로 되어있는 경우, 주간장/애프터 현재가 세팅을 위해
+	 ------------------------------------------------------------
+	sDayYN = Form.GetSharedData( "..OVRS_DAYMARKET", false )
 	sAfterYN = Form.GetSharedData("OVRS_AFTER_MARKET_ORDER", false )
 	
 	if sDayYN == "Y" and g_NoSendHogaData == false then
 		
-		if g_sCode <> "" then
-			arrCode = Split(g_sCode,"@")
+		if g_sCode ~= "" then
+			arrCode = gf_Split(g_sCode,"@")
 			
 			if #arrCode > 1 then
 				
-				szMarket = arrCode(0)
+				szMarket = arrCode[0+1]
 				if szMarket == "OQ" or szMarket == "NY" or szMarket == "AX" then
 					DATAMANAGER.RequestTranData( "ohhts_6000_017r" )
-				end if
+				end
 				
-			end if
+			end
 			
-		end if
+		end
 		
 	elseif sAfterYN == "Y" and g_NoSendHogaData == false then
 	
-		if g_sCode <> "" then
-			arrCode = Split(g_sCode,"@")
+		if g_sCode ~= "" then
+			arrCode = gf_Split(g_sCode,"@")
 			
 			if #arrCode > 1 then
 				
-				szMarket = arrCode(0)
+				szMarket = arrCode[0+1]
 				if szMarket == "OQ" or szMarket == "NY" or szMarket == "AX" then
 					DATAMANAGER.RequestTranData( "ohhts_6000_020r" )
-				end if
+				end
 				
-			end if
+			end
 			
-		end if
+		end
 		
-	end if
+	end
 	
-End Function
+end
 
 
-'============================================================================
-' 시가, 고가, 저가 색상세팅
-'============================================================================
-Function	Table_Color_Setting()
+ --============================================================================
+ -- 시가, 고가, 저가 색상세팅
+ --============================================================================
+function Table_Color_Setting()
 	
-	Dim sOpen
-	Dim sHigh
-	Dim sLow
-	Dim sLast
+	local sOpen
+	local sHigh
+	local sLow
+	local sLast
 
-	sOpen = 0	' 시가
-	sHigh = 0	' 고가
-	sLow  = 0	' 저가
-	sLast = 0	' 전일종가
+	sOpen = 0	 -- 시가
+	sHigh = 0	 -- 고가
+	sLow  = 0	 -- 저가
+	sLast = 0	 -- 전일종가
 	
-	sOpen = CDbl( contCntg.tblPrice.GetCellString( 0, 1 ) )	' 시가
-	sHigh = CDbl( contCntg.tblPrice.GetCellString( 1, 1 ) )	' 고가
-	sLow  = CDbl( contCntg.tblPrice.GetCellString( 2, 1 ) )	' 저가
-	sLast  = CDbl( contCntg.tblPrice.GetCellString( 3, 1 ) )	' 전일종가
+	sOpen = gf_Tonumber(contCntg.tblPrice.GetCellString( 0, 1) )	 -- 시가
+	sHigh = gf_Tonumber(contCntg.tblPrice.GetCellString( 1, 1) )	 -- 고가
+	sLow  = gf_Tonumber(contCntg.tblPrice.GetCellString( 2, 1) )	 -- 저가
+	sLast  = gf_Tonumber(contCntg.tblPrice.GetCellString( 3, 1) )	 -- 전일종가
 	
-	Dim sColor
+	local sColor
 	sColor = "4"
 		
 	if sOpen > sLast then
@@ -1478,7 +1473,7 @@ Function	Table_Color_Setting()
 		sColor = "2"
 	elseif sOpen == sLast then
 		sColor = "3"
-	end if
+	end
 	
 	contCntg.tblPrice.SetCellFgColor( 0, 1, sColor )
 	
@@ -1488,7 +1483,7 @@ Function	Table_Color_Setting()
 		sColor = "2"
 	elseif sHigh == sLast then
 		sColor = "3"
-	end if
+	end
 	
 	contCntg.tblPrice.SetCellFgColor( 1, 1, sColor )
 
@@ -1499,32 +1494,32 @@ Function	Table_Color_Setting()
 		sColor = "2"
 	elseif sLow == sLast then
 		sColor = "3"
-	end if
+	end
 	
 	contCntg.tblPrice.SetCellFgColor( 2, 1, sColor )
 	
 	contCntg.tblPrice.SetCellFgColor( 3, 1, "4" )
 	
-end Function
+end
 
-'============================================================================
-Function _tonumber(data)
-	return tonumber(data) or 0
-end Function
+ --============================================================================
+function _tonumber(data)
+	return gf_Tonumber(data) or 0
+end
 
-'============================================================================
-Sub rdoHoga_OnClick(nIndex)
+ --============================================================================
+function rdoHoga_OnClick(nIndex)
 
 	if nIndex == 0 then
 		
 		sHigh = tblHigh.GetCellString(0, 1)
 		sLow  = tblLow.GetCellString(0, 1)
 		
-		if CDbl(sHigh) > 0 and CDbl(sLow) > 0 then
+		if gf_Tonumber(sHigh) > 0 and gf_Tonumber(sLow) > 0 then
 			ChangeContHoga("1")
 		else
 			ChangeContHoga("2")
-		end if
+		end
 		
 		contCntg.visible = false
 		
@@ -1536,16 +1531,16 @@ Sub rdoHoga_OnClick(nIndex)
 		contHoga.visible = false
 		contCntg.visible = true
 		
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 상/하한가 데이터 존재 여부에 따라 호가테이블 사이즈/위치 조정
-'============================================================================
-Function ChangeContHoga(sType)
+ --============================================================================
+ -- 상/하한가 데이터 존재 여부에 따라 호가테이블 사이즈/위치 조정
+ --============================================================================
+function ChangeContHoga(sType)
 	
-	'sType :1 => 상/하한가 데이터 있음
+	 --sType :1 => 상/하한가 데이터 있음
 	if sType == "1" then
 		
 		rdoHoga.visible = true
@@ -1557,7 +1552,7 @@ Function ChangeContHoga(sType)
 		contHoga.height = 294
 		contHoga.visible = true
 		
-	'sType :2 => 상/하한가 데이터 없음
+	 --sType :2 => 상/하한가 데이터 없음
 	elseif sType == "2" then
 		
 		rdoHoga.visible = true
@@ -1569,7 +1564,7 @@ Function ChangeContHoga(sType)
 		contHoga.height = 344
 		contHoga.visible = true
 	
-	'sType :3 => 정정/취소(선택종목 없을때)
+	 --sType :3 => 정정/취소(선택종목 없을때)
 	elseif sType == "3" then
 		
 		rdoHoga.visible = false
@@ -1582,7 +1577,7 @@ Function ChangeContHoga(sType)
 		
 		contHoga.visible = false
 	
-	'sType :4 => 정정/취소(선택종목 있을때)
+	 --sType :4 => 정정/취소(선택종목 있을때)
 	elseif sType == "4" then
 		
 		rdoHoga.visible = false
@@ -1594,240 +1589,241 @@ Function ChangeContHoga(sType)
 		contHoga.height = 206
 		contHoga.visible = true
 		
-	end if
+	end
 	
-	'(공통) 호가테이블 중앙이동
+	 --(공통) 호가테이블 중앙이동
 	contHoga.scroll_pos = "vcenter"
 
-End Function
+end
 
-'============================================================================
-' (공통)호가클릭 연동
-'============================================================================
-Function Click_Hoga(sPrice)
-	if Trim(sPrice) <> "" and CDbl(sPrice) <> 0 then
-		Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, "CLICK_HOGA", sPrice)
-	end if
-End Function
+ --============================================================================
+ -- (공통)호가클릭 연동
+ --============================================================================
+function Click_Hoga(sPrice)
+	if gf_Trim(sPrice) ~= "" and gf_Tonumber(sPrice) ~= 0 then
+		Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "CLICK_HOGA", sPrice)
+	end
+end
 
-'============================================================================
-' (호가테이블) 호가 클릭 연동
-'============================================================================
-Sub contHoga_hogaTbl_OnClick(lRow, lCol)
+ --============================================================================
+ -- (호가테이블) 호가 클릭 연동
+ --============================================================================
+function contHoga_hogaTbl_OnClick(lRow, lCol)
 	
-	'-----------------------------------------------------------------------
-	'20241108 LES START => 호가영역 클릭시에만 연동. 잔량영역 클릭 시 무시
-	'---------------------------------------------------------------------
-	Dim nRow
+	 -------------------------------------------------------------------------
+	 --20241108 LES START => 호가영역 클릭시에만 연동. 잔량영역 클릭 시 무시
+	 -----------------------------------------------------------------------
+	local nRow
 	
 	if lCol == 0 then
-		nRow = CInt(lRow / 2) * 2
+		nRow = gf_Tonumber(lRow / 2) * 2
 	else
-		nRow = CInt(lRow) * 2
-	end if
+		nRow = gf_Tonumber(lRow) * 2
+	end
 	
-	Dim szPrc
+	local szPrc
 	
 	szPrc = contHoga.hogaTbl.GetCellString(nRow, 0)
 	Click_Hoga(szPrc)
 	
-End Sub
+end
 
-'============================================================================
-' (공통) 종목정보 공유(틱타입/소수점 자리수/매매단위 등...)
-'============================================================================
-Function SendItemInfo(sCurPrice,sUpLimit,sDnLimit,sOrdSize,sCurrency,sDecimalLen,sKorName,sTickType,sOrdsizeMaedo)
+ --============================================================================
+ -- (공통) 종목정보 공유(틱타입/소수점 자리수/매매단위 등...)
+ --============================================================================
+function SendItemInfo(sCurPrice,sUpLimit,sDnLimit,sOrdSize,sCurrency,sDecimalLen,sKorName,sTickType,sOrdsizeMaedo)
 	
-	'sInfo = sCurPrice .. "★" .. sUpLimit .. "★" .. sDnLimit .. "★" .. sOrdsize .. "★" .. sCurrency .. "★" .. sDecimalLen .. "★" .. sKorName .. "★" .. sTickType
+	 --sInfo = sCurPrice .. "★" .. sUpLimit .. "★" .. sDnLimit .. "★" .. sOrdsize .. "★" .. sCurrency .. "★" .. sDecimalLen .. "★" .. sKorName .. "★" .. sTickType
 	g_sItemInfo = sCurPrice .. "★" .. sUpLimit .. "★" .. sDnLimit .. "★" .. sOrdsize .. "★" .. sCurrency .. "★" .. sDecimalLen .. "★" .. sKorName .. "★" .. sTickType .. "★" .. sOrdsizeMaedo
 	
-	if g_sItemInfo <> null and g_sItemInfo <> "" then
-		Form.triggerEvent("FormTab0." & FormTab0.currenttabpageid, "SEND_ITEM_INFO", g_sItemInfo)
-	end if
+	if g_sItemInfo ~= nil and g_sItemInfo ~= "" then
+		Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "SEND_ITEM_INFO", g_sItemInfo)
+	end
 
-End Function
+end
 
-'============================================================================
-' (매수/매도/정정) 가격 자동연동
-'============================================================================
-Function Return_AutoPrice(sGubun)
+ --============================================================================
+ -- (매수/매도/정정) 가격 자동연동
+ --============================================================================
+function Return_AutoPrice(sGubun)
 
 	if sGubun == "BUY" then
-		szAuto = Form.LoadConfigData("SET_ORDER", "AUTO_STOCK_BUYPRC")		' 주식매도주문가격 자동입력
+		szAuto = Form.LoadConfigData("SET_ORDER", "AUTO_STOCK_BUYPRC")		 -- 주식매도주문가격 자동입력
 	elseif sGubun == "SELL" then
-		szAuto  = Form.LoadConfigData("SET_ORDER", "AUTO_STOCK_SELPRC")		' 주식매도주문가격 자동입력
-	elseif sGubun == "MOD" then
-		szAuto  = Form.LoadConfigData("SET_ORDER", "AUTO_STOCK_MODPRC")		' 주식정정주문가격 자동입력
-	end if
+		szAuto  = Form.LoadConfigData("SET_ORDER", "AUTO_STOCK_SELPRC")		 -- 주식매도주문가격 자동입력
+	elseif sGubun == "%" then
+		szAuto  = Form.LoadConfigData("SET_ORDER", "AUTO_STOCK_MODPRC")		 -- 주식정정주문가격 자동입력
+	end
 	
-	'안드로이드에서 szAuto값에 뭐가 따로 들어가는듯.. trim안해주면 else문으로 빠짐
-	szAuto = Trim(szAuto)
+	 --안드로이드에서 szAuto값에 뭐가 따로 들어가는듯.. trim안해주면 else문으로 빠짐
+	szAuto = gf_Trim(szAuto)
 	
-	if szAuto == "1" then 
-		szPrc = contHoga.hogaTbl.GetCellString(0, 0) ' 매도10호가
+	if szAuto == "1" then
+		szPrc = contHoga.hogaTbl.GetCellString(0, 0)  -- 매도10호가
 	elseif szAuto == "2" then
-		szPrc = contHoga.hogaTbl.GetCellString(2, 0) ' 매도9호가
+		szPrc = contHoga.hogaTbl.GetCellString(2, 0)  -- 매도9호가
 	elseif szAuto == "3" then
-		szPrc = contHoga.hogaTbl.GetCellString(4, 0) ' 매도8호가
+		szPrc = contHoga.hogaTbl.GetCellString(4, 0)  -- 매도8호가
 	elseif szAuto == "4" then
-		szPrc = contHoga.hogaTbl.GetCellString(6, 0) ' 매도7호가
+		szPrc = contHoga.hogaTbl.GetCellString(6, 0)  -- 매도7호가
 	elseif szAuto == "5" then
-		szPrc = contHoga.hogaTbl.GetCellString(8, 0) ' 매도6호가
+		szPrc = contHoga.hogaTbl.GetCellString(8, 0)  -- 매도6호가
 	elseif szAuto == "6" then
-		szPrc = contHoga.hogaTbl.GetCellString(10, 0) ' 매도5호가
+		szPrc = contHoga.hogaTbl.GetCellString(10, 0)  -- 매도5호가
 	elseif szAuto == "7" then
-		szPrc = contHoga.hogaTbl.GetCellString(12, 0) ' 매도4호가
+		szPrc = contHoga.hogaTbl.GetCellString(12, 0)  -- 매도4호가
 	elseif szAuto == "8" then
-		szPrc = contHoga.hogaTbl.GetCellString(14, 0) ' 매도3호가
+		szPrc = contHoga.hogaTbl.GetCellString(14, 0)  -- 매도3호가
 	elseif szAuto == "9" then
-		szPrc = contHoga.hogaTbl.GetCellString(16, 0) ' 매도2호가
-	elseif szAuto == "10" then 
-		szPrc = contHoga.hogaTbl.GetCellString(18, 0) ' 매도1호가
-	elseif szAuto == "11" then 					   
-		szPrc = lblHyun.caption				    ' 현재가
+		szPrc = contHoga.hogaTbl.GetCellString(16, 0)  -- 매도2호가
+	elseif szAuto == "10" then
+		szPrc = contHoga.hogaTbl.GetCellString(18, 0)  -- 매도1호가
+	elseif szAuto == "11" then
+		szPrc = lblHyun.caption				     -- 현재가
 	elseif szAuto == "12" then
-		szPrc = contHoga.hogaTbl.GetCellString(20, 0)	' 매수1호가
+		szPrc = contHoga.hogaTbl.GetCellString(20, 0)	 -- 매수1호가
 	elseif szAuto == "13" then
-		szPrc = contHoga.hogaTbl.GetCellString(22, 0)  ' 매수2호가
+		szPrc = contHoga.hogaTbl.GetCellString(22, 0)   -- 매수2호가
 	elseif szAuto == "14" then
-		szPrc = contHoga.hogaTbl.GetCellString(24, 0) ' 매수3호가
+		szPrc = contHoga.hogaTbl.GetCellString(24, 0)  -- 매수3호가
 	elseif szAuto == "15" then
-		szPrc = contHoga.hogaTbl.GetCellString(26, 0) ' 매수4호가
+		szPrc = contHoga.hogaTbl.GetCellString(26, 0)  -- 매수4호가
 	elseif szAuto == "16" then
-		szPrc = contHoga.hogaTbl.GetCellString(28, 0) ' 매수5호가
+		szPrc = contHoga.hogaTbl.GetCellString(28, 0)  -- 매수5호가
 	elseif szAuto == "17" then
-		szPrc = contHoga.hogaTbl.GetCellString(30, 0) ' 매수6호가
+		szPrc = contHoga.hogaTbl.GetCellString(30, 0)  -- 매수6호가
 	elseif szAuto == "18" then
-		szPrc = contHoga.hogaTbl.GetCellString(32, 0) ' 매수7호가
+		szPrc = contHoga.hogaTbl.GetCellString(32, 0)  -- 매수7호가
 	elseif szAuto == "19" then
-		szPrc = contHoga.hogaTbl.GetCellString(34, 0) ' 매수8호가
+		szPrc = contHoga.hogaTbl.GetCellString(34, 0)  -- 매수8호가
 	elseif szAuto == "20" then
-		szPrc = contHoga.hogaTbl.GetCellString(36, 0) ' 매수9호가
+		szPrc = contHoga.hogaTbl.GetCellString(36, 0)  -- 매수9호가
 	elseif szAuto == "21" then
-		szPrc = contHoga.hogaTbl.GetCellString(38, 0) ' 매수10호가
+		szPrc = contHoga.hogaTbl.GetCellString(38, 0)  -- 매수10호가
 	elseif szAuto == "22" then
-		szPrc = lblHigh.caption					' 상한가
-	elseif szAuto == "23" then 
-		szPrc = lblLow.caption						' 하한가
+		szPrc = lblHigh.caption					 -- 상한가
+	elseif szAuto == "23" then
+		szPrc = lblLow.caption						 -- 하한가
 	else
-		szPrc = ""  								' 미적용 및 기타에러
-	end if
+		szPrc = ""  								 -- 미적용 및 기타에러
+	end
 	
 	return szPrc
 	
-End Function
+end
 
-'============================================================================
-' 주문환경설정 화면 > 백버튼으로 다시 돌아온 경우 직전 탭으로 세팅
-'============================================================================
-Sub Form_OnTriggerEventSCREEN(sEventName,sParam)
+ --============================================================================
+ -- 주문환경설정 화면 > 백버튼으로 다시 돌아온 경우 직전 탭으로 세팅
+ --============================================================================
+function Form_OnTriggerEventSCREEN(sEventName,sParam)
 	
-	if sEventName = "PREV" then
+	if sEventName == "PREV" then
 	
-		nPrevScrNo = Form.GetSharedData("&PREV_SCREEN_NO", false)
+		nPrevScrNo = Form.GetSharedData("..PREV_SCREEN_NO", false)
 		
-		'90000 : 환경설정 / 16000 : 해외주식 현재가
+		 --90000 : 환경설정 / 16000 : 해외주식 현재가
 		if nPrevScrNo == "90000" or nPrevScrNo == "16000" then
 			
 			nSetTabIndex = Form.GetSharedData("16061_CURTAB_IDNEX", true)
 			
-			if nSetTabIndex <> "" then
+			if nSetTabIndex ~= "" then
 				
-				FormTab0.currenttab = Cint(nSetTabIndex)
-				call FormTab0_OnTabChanged(nSetTabIndex)
+				FormTab0.currenttab = gf_Tonumber(nSetTabIndex)
+				FormTab0_OnTabChanged(nSetTabIndex)
 				
-				'---------------------------------------------------------------------
-				' 안드로이드에서 주문환경설정에서 백버튼으로 돌아온 경우
-				' 탭변경 시, changeCode호출이 안되서 수동으로 호출해준다.
-				' 호출해주지 않으면 매도탭에서 현재보고있는 종목코드가 빈값으로 나옴.
-				'---------------------------------------------------------------------
+				 -----------------------------------------------------------------------
+				 -- 안드로이드에서 주문환경설정에서 백버튼으로 돌아온 경우
+				 -- 탭변경 시, changeCode호출이 안되서 수동으로 호출해준다.
+				 -- 호출해주지 않으면 매도탭에서 현재보고있는 종목코드가 빈값으로 나옴.
+				 -----------------------------------------------------------------------
 				if gOsType == "1" then
 					Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "ChangeCode", g_sCode)
-				end if
+				end
 			
-			end if
+			end
 			
-		end if
+		end
 		
 	else
 		
 		Form.SetSharedData("16061_CURTAB_IDNEX", "")
 	
-	end if
+	end
 
-End Sub
+end
 
-'============================================================================
-' 상한가 가격연동
-'============================================================================
-Sub tblHigh_OnClick(lRow , lColumn)
+ --============================================================================
+ -- 상한가 가격연동
+ --============================================================================
+function tblHigh_OnClick(lRow , lColumn)
 
-	Dim sPrice
+	local sPrice
 	sPrice = tblHigh.GetCellString(0, 1)
 	
-	if sPrice <> null and sPrice <> ""	then
+	if sPrice ~= nil and sPrice ~= "" then
 		Click_Hoga(sPrice)
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 하한가 가격연동
-'============================================================================
-Sub tblLow_OnClick(lRow , lColumn)
+ --============================================================================
+ -- 하한가 가격연동
+ --============================================================================
+function tblLow_OnClick(lRow , lColumn)
 
-	Dim sPrice
+	local sPrice
 	sPrice = tblLow.GetCellString(0, 1)
 	
-	if sPrice <> null and sPrice <> ""	then
+	if sPrice ~= nil and sPrice ~= "" then
 		Click_Hoga(sPrice)
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 체결 > 시/고/저/전일종가 테이블 가격연동
-'============================================================================
-Sub contCntg_tblPrice_OnClick(lRow , lColumn)
+ --============================================================================
+ -- 체결 > 시/고/저/전일종가 테이블 가격연동
+ --============================================================================
+function contCntg_tblPrice_OnClick(lRow , lColumn)
 
-	Dim sPrice
+	local sPrice
 	sPrice = contCntg.tblPrice.GetCellString(lRow, 1)
 	
-	if sPrice <> null and sPrice <> ""	then
+	if sPrice ~= nil and sPrice ~= "" then
 		Click_Hoga(sPrice)
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 체결 > 체결가 그리드 가격연동
-'============================================================================
-Sub contCntg_grdCNTG_OnClickUp(lRow, szCellID)
+ --============================================================================
+ -- 체결 > 체결가 그리드 가격연동
+ --============================================================================
+function contCntg_grdCNTG_OnClickUp(lRow, szCellID)
 	
-	Dim sPrice
+	local sPrice
 	sPrice = contCntg.grdCNTG.GetCellData("bd_cell0", lRow)
 	
-	if sPrice <> null and sPrice <> ""	then
+	if sPrice ~= nil and sPrice ~= "" then
 		Click_Hoga(sPrice)
-	end if
+	end
 	
-End Sub
+end
 
 
-'============================================================================
-Function RequestTranData_Intr()
+ --============================================================================
+function RequestTranData_Intr()
 	DATAMANAGER.ClearInputData(0, "ohhts_intr_006r")
-	DATAMANAGER.SetDataValue(0, "ohhts_intr_006r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("&USER_ID", false))
+	DATAMANAGER.SetDataValue(0, "ohhts_intr_006r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("..USER_ID", false))
 	DATAMANAGER.RequestTranData("ohhts_intr_006r")
-End Function
+end
 
-'============================================================================
-Function ResponseTranData_Intr()
+ --============================================================================
+function ResponseTranData_Intr()
 	g_szIntrGrpCnt = DATAMANAGER.GetDataCount(0, "ohhts_intr_006r" , "OutBlock1")
-End Function
+end
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_aspr" trcode="ohhts_exst_aspr" />

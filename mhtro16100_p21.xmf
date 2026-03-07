@@ -47,151 +47,154 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="4446" _ulen="4242" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
 
-Dim g_szCode		'거래국가코드
-Dim g_szCodeName	'거래국가코드한글명
+local g_szCode --거래국가코드
+local g_szCodeName --거래국가코드한글명
 
 
-Dim g_tCrCd	'거래국가코드 인덱스
-'g_tCrCd = Array("000", "840", "156", "344", "392", "276@246@250@056@528@620@300@372@380@724@040", "704", "124", "702", "036", "756")
+local g_tCrCd --거래국가코드 인덱스
+ --g_tCrCd = Array("000", "840", "156", "344", "392", "276@246@250@056@528@620@300@372@380@724@040", "704", "124", "702", "036", "756")
 g_tCrCd = Array("000", "840", "156", "344", "392", "999", "704", "124", "702", "036", "756")
 
-Dim g_tCrCdNm	'거래국가코드명 인덱스
+local g_tCrCdNm --거래국가코드명 인덱스
 g_tCrCdNm = Array("전체", "미국", "중국", "홍콩", "일본", "유로", "베트남", "캐나다", "싱가포르", "호주", "스위스")
 
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	contMain.icon1.setMaintainingRatio("1")
-	contMain.icon2.setMaintainingRatio("1")
-	contMain.icon3.setMaintainingRatio("1")
-	contMain.icon4.setMaintainingRatio("1")
-	contMain.icon5.setMaintainingRatio("1")
-	contMain.icon6.setMaintainingRatio("1")
-	contMain.icon7.setMaintainingRatio("1")
-	contMain.icon8.setMaintainingRatio("1")
-	contMain.icon9.setMaintainingRatio("1")
-	contMain.icon10.setMaintainingRatio("1")
+	contMain.icon1.SetMaintainingRatio("1")
+	contMain.icon2.SetMaintainingRatio("1")
+	contMain.icon3.SetMaintainingRatio("1")
+	contMain.icon4.SetMaintainingRatio("1")
+	contMain.icon5.SetMaintainingRatio("1")
+	contMain.icon6.SetMaintainingRatio("1")
+	contMain.icon7.SetMaintainingRatio("1")
+	contMain.icon8.SetMaintainingRatio("1")
+	contMain.icon9.SetMaintainingRatio("1")
+	contMain.icon10.SetMaintainingRatio("1")
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
-	Dim szOpenData
+ --============================================================================
+function Form_OnFormInit()
+	local szOpenData
 	szOpenData = Form.GetOpenLinkData()
-	If szOpenData <> "" And szOpenData <> null Then
-		tData = Split(szOpenData, "★")	
+	if szOpenData ~= "" and szOpenData ~= nil then
+		tData = gf_Split(szOpenData, "★")	
 		
-		g_szCode = tData(0)
-		g_szCodeName = tData(1)
+		g_szCode = tData[0+1]
+		g_szCodeName = tData[1+1]
 	else
 		g_szCode = g_tCrCd[0]
 		g_szCodeName = g_tCrCdNm[0]
-	end if
+	end
 
-	'기선택된 코드 표시
-	for i = 0 to #g_tCrCdNm - 1
-		if g_szCodeName = g_tCrCdNm[i] then
-			Form.SetCtlProp("contMain.img" & i, "imgpath", "btn_line2_o.9.png")
+	 --기선택된 코드 표시
+	for i = 0, #g_tCrCdNm - 1 do
+		if g_szCodeName == g_tCrCdNm[i] then
+			Form.SetCtlProp("contMain.img" .. i, "imgpath", "btn_line2_o.9.png")
 		else
-			Form.SetCtlProp("contMain.img" & i, "imgpath", "btn_line2_n.9.png")
-		end if
-	next
-End Sub
+			Form.SetCtlProp("contMain.img" .. i, "imgpath", "btn_line2_n.9.png")
+		end
+	end
+end
 
-'============================================================================
-Sub BtnClose_OnClick()
+ --============================================================================
+function BtnClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormClose()
-	'Form.SendReturnToParent("STOCK_COUNTRY_SELECT", g_szCode .. "★" .. g_szCodeName)
-End Sub
+ --============================================================================
+function Form_OnFormClose()
+	 --Form.SendReturnToParent("STOCK_COUNTRY_SELECT", g_szCode .. "★" .. g_szCodeName)
+end
 
-'============================================================================
-Function SetCheckFilter(iPos)
+ --============================================================================
+function SetCheckFilter(iPos)
 	
-	'체크된 버튼 라인 색 변경하고
-	for i = 0 to 10
-		'비활성화
-		Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_n.9.png")
-'		Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "146")
-'		Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "00")
+	 --체크된 버튼 라인 색 변경하고
+	for i = 0, 10 do
+		 --비활성화
+		Form.SetCtlProp("contMain.img" .. gf_Tostring(i), "imgpath", "btn_line2_n.9.png")
+ --		Form.SetCtlProp("contMain.lbl" .. gf_Tostring(i), "fgcolor", "146")
+ --		Form.SetCtlProp("contMain.lbl" .. gf_Tostring(i), "fontstyle", "00")
 	
-		if i = iPos then
-			'활성화
-			Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_o.9.png")
-'			Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "334")
-'			Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "01")			
-		end if
-	next	
+		if i == iPos then
+			 --활성화
+			Form.SetCtlProp("contMain.img" .. gf_Tostring(i), "imgpath", "btn_line2_o.9.png")
+ --			Form.SetCtlProp("contMain.lbl" .. gf_Tostring(i), "fgcolor", "334")
+ --			Form.SetCtlProp("contMain.lbl" .. gf_Tostring(i), "fontstyle", "01")			
+		end
+	end
 	
-	g_szCode = g_tCrCd[iPos]		'거래국가코드
-	g_szCodeName = g_tCrCdNm[iPos]	'거래국가명
+	g_szCode = g_tCrCd[iPos]		 --거래국가코드
+	g_szCodeName = g_tCrCdNm[iPos]	 --거래국가명
 	Form.SendReturnToParent("STOCK_COUNTRY_SELECT", g_szCode .. "★" .. g_szCodeName)
 	
 	Form.CloseForm()
 	
-End Function
-'============================================================================
-Sub contMain_lbl0_OnClick()
+end
+ --============================================================================
+function contMain_lbl0_OnClick()
 	SetCheckFilter(0)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl1_OnClick()
+ --============================================================================
+function contMain_lbl1_OnClick()
 	SetCheckFilter(1)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl2_OnClick()
+ --============================================================================
+function contMain_lbl2_OnClick()
 	SetCheckFilter(2)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl3_OnClick()
+ --============================================================================
+function contMain_lbl3_OnClick()
 	SetCheckFilter(3)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl4_OnClick()
+ --============================================================================
+function contMain_lbl4_OnClick()
 	SetCheckFilter(4)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl5_OnClick()
+ --============================================================================
+function contMain_lbl5_OnClick()
 	SetCheckFilter(5)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl6_OnClick()
+ --============================================================================
+function contMain_lbl6_OnClick()
 	SetCheckFilter(6)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl7_OnClick()
+ --============================================================================
+function contMain_lbl7_OnClick()
 	SetCheckFilter(7)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl8_OnClick()
+ --============================================================================
+function contMain_lbl8_OnClick()
 	SetCheckFilter(8)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl9_OnClick()
+ --============================================================================
+function contMain_lbl9_OnClick()
 	SetCheckFilter(9)
-End Sub
+end
 
-'============================================================================
-Sub contMain_lbl10_OnClick()
+ --============================================================================
+function contMain_lbl10_OnClick()
 	SetCheckFilter(10)
-End Sub
+end
 
 
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>
