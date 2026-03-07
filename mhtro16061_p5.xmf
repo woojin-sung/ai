@@ -64,342 +64,344 @@
 		<CALENDAR name="cldSpfDate" visible="0" dispmode="402653208" ly_vert="466,499,140,32,0" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="13504" _ulen="11932" >
-'-------------------------------------------------------------------------------------------
-' 01. 화 면 명 : 예약주문
-' 02. 화면설명 : 예약주문 기간설정 창
-' 03. 작    성 : 2016.07.15 NOHES
-'-------------------------------------------------------------------------------------------
-' v0001 강경완 : 예약설정 최근 설정 저장 기능 추가 [T2502130001]
-'-------------------------------------------------------------------------------------------
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ ---------------------------------------------------------------------------------------------
+ -- 01. 화 면 명 : 예약주문
+ -- 02. 화면설명 : 예약주문 기간설정 창
+ -- 03. 작    성 : 2016.07.15 NOHES
+ ---------------------------------------------------------------------------------------------
+ -- v0001 강경완 : 예약설정 최근 설정 저장 기능 추가 [T2502130001]
+ ---------------------------------------------------------------------------------------------
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-
-
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
-'****************************************************************************
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
+ --****************************************************************************
 
 
-Dim g_Vendor
-Dim g_szTextSize, g_szDeviceOS
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-' v0001
-Dim g_orderType		'0:일반예약 1:기간설정
-Dim g_orderDetailType	'0:기간잔량 1:기간예약 2:특정일주문
-Dim g_orderRangeStart	'기간시작일
-Dim g_orderRangeEnd	'기간종료일
-Dim g_orderDate		'특정일
-Dim g_orderTime		'주문시간
 
-'============================================================================
-Sub Form_OnFormInit()
+local g_Vendor
+local g_szTextSize, g_szDeviceOS
+
+ -- v0001
+local g_orderType --0:일반예약 1:기간설정
+local g_orderDetailType --0:기간잔량 1:기간예약 2:특정일주문
+local g_orderRangeStart --기간시작일
+local g_orderRangeEnd --기간종료일
+local g_orderDate --특정일
+local g_orderTime --주문시간
+
+ --============================================================================
+function Form_OnFormInit()
 	g_szTextSize = Form.GetEnvData("common.textsize")
-	g_szDeviceOS = Form.GetSharedData("&OS_TYPE", False) '1.안드로이드 2.iOS
+	g_szDeviceOS = Form.GetSharedData("..OS_TYPE", False)  --1.안드로이드 2.iOS
 	
-	' v0001
+	 -- v0001
 	g_orderType = Form.GetEnvData("mhtro16061_order_type")
 	g_orderDetailType = Form.GetEnvData("mhtro16061_order_detail_type")
-	g_orderRangeStart = Form.GetSharedData("&mhtro16061_order_range_start", False)
-	g_orderRangeEnd = Form.GetSharedData("&mhtro16061_order_range_end", False)
-	g_orderDate = Form.GetSharedData("&mhtro16061_order_date", False)
-	g_orderTime = Form.GetSharedData("&mhtro16061_order_time", False)
+	g_orderRangeStart = Form.GetSharedData("..mhtro16061_order_range_start", False)
+	g_orderRangeEnd = Form.GetSharedData("..mhtro16061_order_range_end", False)
+	g_orderDate = Form.GetSharedData("..mhtro16061_order_date", False)
+	g_orderTime = Form.GetSharedData("..mhtro16061_order_time", False)
 	
 	sData = Form.GetOpenLinkData()
-	tData = Split(sData, "★")
-	If UBound(tData) > 0 then
-		'거래소
-		g_Vendor = tData(0)
+	tData = gf_Split(sData, "★")
+	if #tData > 0 then
+		 --거래소
+		g_Vendor = tData[0+1]
 		
-		'주문유형별 주문시간 콤보 세팅
-		szOrdType = tData(1)
-		if szOrdType = "31" or szOrdType = "32" or szOrdType = "33" or szOrdType = "34" then
+		 --주문유형별 주문시간 콤보 세팅
+		szOrdType = tData[1+1]
+		if szOrdType == "31" or szOrdType == "32" or szOrdType == "33" or szOrdType == "34" then
 			rgptime.currentindex = 0
 			rdoOrdTime.enable = false
 		else
-			' v0001
-			if g_orderTime <> "" then
-				rdoOrdTime.currentindex = Cint(g_orderTime)
+			 -- v0001
+			if g_orderTime ~= "" then
+				rdoOrdTime.currentindex = gf_Tonumber(g_orderTime)
 			else
 				rdoOrdTime.currentindex = 0
-			end if
+			end
 			rdoOrdTime.enable = true
-			Call rdoOrdTime_OnClick(rdoOrdTime.currentindex)
-		end if
+			rdoOrdTime_OnClick(rdoOrdTime.currentindex)
+		end
 		
 		DATAMANAGER.RequestTranData("obtro_comn_027r"  )
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub btnSave_OnClick()
+ --============================================================================
+function btnSave_OnClick()
 
-	Dim flag 
-	'예약구분★시작일자★종료일자★시간구분
-	nType = CInt(rdoOrdType.currentindex)
-	nRange = CInt(rdoRange.currentindex)
+	local flag
+	 --예약구분★시작일자★종료일자★시간구분
+	nType = gf_Tonumber(rdoOrdType.currentindex)
+	nRange = gf_Tonumber(rdoRange.currentindex)
 	
-	if nType = 1 then
+	if nType == 1 then
 		if nRange < 0 then
 			Form.ShowAlert("기간설정", "주문유형을 선택해주세요.")
-			exit sub
+			return
 		else
 			flag = nRange + 1
-		end if
+		end
 	else
 		flag = nType
-	end if
+	end
 	
-	If flag == 1 or flag == 2 Then
-		If cldStart.caption == "" or Len(cldStart.caption) <> 8 Then
+	if flag == 1 or flag == 2 then
+		if cldStart.caption == "" or string.len(cldStart.caption) ~= 8 then
 			Form.ShowAlert("기간설정", "예약주문 시작일자가 유효하지 않습니다.")
-			Exit Sub
-		End If
-		If cldFinish.caption == "" or Len(cldFinish.caption) <> 8 Then
+			return
+		end
+		if cldFinish.caption == "" or string.len(cldFinish.caption) ~= 8 then
 			Form.ShowAlert("기간설정", "예약주문 종료일자가 유효하지 않습니다.")
-			Exit Sub
-		End If
+			return
+		end
 		
-		' v0001 start
-		If CDbl(cldStart.caption) < CDbl(cldHost.caption) Then
-			'-----------------------------------------------------------------------
-			'국가별 메시지 분기처리 추가
-			'-----------------------------------------------------------------------
-			'미국(뉴욕, 나스닥, 아멕스)
+		 -- v0001 start
+		if gf_Tonumber(cldStart.caption) < gf_Tonumber(cldHost.caption) then
+			 -------------------------------------------------------------------------
+			 --국가별 메시지 분기처리 추가
+			 -------------------------------------------------------------------------
+			 --미국(뉴욕, 나스닥, 아멕스)
 			if g_Vendor == "0321" or g_Vendor == "0537" or g_Vendor == "0066" then
 				Form.ShowAlert("기간설정", "시작일을 오늘날짜로 변경합니다.")
-			'그 외(중국, 홍콩, 일본) 
+			 --그 외(중국, 홍콩, 일본) 
 			else
 				Form.ShowAlert("기간설정", "시작일은 익영업일부터 지정 가능합니다.")
-			end if
+			end
 			
 			cldStart.caption = cldHost.caption
 			
-			Exit Sub
-		End If
+			return
+		end
 		
-		' v0001 end
+		 -- v0001 end
 		
-		If CDbl(cldStart.caption) >= CDbl(cldFinish.caption) Then
+		if gf_Tonumber(cldStart.caption) >= gf_Tonumber(cldFinish.caption) then
 			Form.ShowAlert("기간설정", "기간예약 종료일이 시작일과 같거나 앞설 수 없습니다.")
-			Exit Sub
-		End If
+			return
+		end
 		
-		'20200911 LES START 예약시간 추가
-		sLnkData = flag &"★"& cldStart.caption &"★"& cldFinish.caption & "★" & rgptime.cbkeydata
-		'20200911 LES END
+		 --20200911 LES START 예약시간 추가
+		sLnkData = flag .."★".. cldStart.caption .."★".. cldFinish.caption .. "★" .. rgptime.cbkeydata
+		 --20200911 LES END
 	
-	Elseif flag == 3 Then
-			If cldStart.caption == "" or Len(cldStart.caption) <> 8 Then
+	elseif flag == 3 then
+			if cldStart.caption == "" or string.len(cldStart.caption) ~= 8 then
 				Form.ShowAlert("기간설정", "예약주문 시작일자가 유효하지 않습니다.")
-				Exit Sub
-			End If
+				return
+			end
 		
-		'20200911 LES START 예약시간 추가
-		sLnkData =  flag &"★"& cldStart.caption &"★"& "" & "★" & rgptime.cbkeydata
-		'20200911 LEs END
+		 --20200911 LES START 예약시간 추가
+		sLnkData =  flag .."★".. cldStart.caption .."★".. "" .. "★" .. rgptime.cbkeydata
+		 --20200911 LEs END
 		
-	Else
-		'20200911 LES START 예약시간 추가
-		sLnkData =  flag &"★"& Form.GetSharedData("&HOST_DATE", false) &"★"& Form.GetSharedData("&HOST_DATE", false) & "★" & rgptime.cbkeydata
-		'20200911 LES END
-	End If
+	else
+		 --20200911 LES START 예약시간 추가
+		sLnkData =  flag .."★".. Form.GetSharedData("..HOST_DATE", false) .."★".. Form.GetSharedData("..HOST_DATE", false) .. "★" .. rgptime.cbkeydata
+		 --20200911 LES END
+	end
 		
 	Form.SendReturnToParent("Range" , sLnkData)
 
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub cldStart_OnEditComplete()
-	If Len(cldStart.caption) <> 8 Then
+ --============================================================================
+function cldStart_OnEditComplete()
+	if string.len(cldStart.caption) ~= 8 then
 		Form.ShowAlert("기간설정", "예약주문 시작일자가 유효하지 않습니다.")
 		cldStart.caption = ""
-		Exit Sub
-	End If
+		return
+	end
 	
-	If CDbl(cldStart.caption) > CDbl(cldadd30.caption) Then
+	if gf_Tonumber(cldStart.caption) > gf_Tonumber(cldadd30.caption) then
 		Form.ShowAlert("기간설정", "주문예약기간은 90일 이내만 지정가능합니다.")
 		cldStart.caption = cldadd30.caption
 		cldFinish.caption = cldadd30.caption
-		Exit Sub
-	End If
+		return
+	end
 	
-	If CDbl(cldStart.caption) < CDbl(cldHost.caption) Then
-		'-----------------------------------------------------------------------
-		'국가별 메시지 분기처리 추가
-		'-----------------------------------------------------------------------
-		'미국(뉴욕, 나스닥, 아멕스)
+	if gf_Tonumber(cldStart.caption) < gf_Tonumber(cldHost.caption) then
+		 -------------------------------------------------------------------------
+		 --국가별 메시지 분기처리 추가
+		 -------------------------------------------------------------------------
+		 --미국(뉴욕, 나스닥, 아멕스)
 		if g_Vendor == "0321" or g_Vendor == "0537" or g_Vendor == "0066" then
 			Form.ShowAlert("기간설정", "시작일을 오늘날짜로 변경합니다.")
-		'그 외(중국, 홍콩, 일본)
+		 --그 외(중국, 홍콩, 일본)
 		else
 			Form.ShowAlert("기간설정", "시작일은 익영업일부터 지정 가능합니다.")
-		end if
+		end
 		
 		cldStart.caption = cldHost.caption
-	End If
+	end
 
-	' v0001
-	if Cint(rdoRange.currentindex) == 2 then
-		Form.SetSharedData("&mhtro16061_order_date", cldStart.caption)
+	 -- v0001
+	if gf_Tonumber(rdoRange.currentindex) == 2 then
+		Form.SetSharedData("..mhtro16061_order_date", cldStart.caption)
 		g_orderDate = cldStart.caption
 	else
-		Form.SetSharedData("&mhtro16061_order_range_start", cldStart.caption)
+		Form.SetSharedData("..mhtro16061_order_range_start", cldStart.caption)
 		g_orderRangeStart = cldStart.caption
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub cldFinish_OnEditComplete()
-	If Len(cldFinish.caption) <> 8 Then
+ --============================================================================
+function cldFinish_OnEditComplete()
+	if string.len(cldFinish.caption) ~= 8 then
 		Form.ShowAlert("기간설정", "예약주문 종료일자가 유효하지 않습니다.")
 		cldFinish.caption = ""
-		Exit Sub
-	End If
+		return
+	end
 		
-	If cldadd30.caption == "" Then
+	if cldadd30.caption == "" then
 		Form.ShowAlert("기간설정", "예약 시작날짜를 확인해주십시오.")
-		Exit Sub
-	End If
-	If CDbl(cldFinish.caption) > CDbl(cldadd30.caption) Then
+		return
+	end
+	if gf_Tonumber(cldFinish.caption) > gf_Tonumber(cldadd30.caption) then
 		Form.ShowAlert("기간설정", "주문예약기간은 90일 이내만 지정가능합니다.(종료일자 90일 이후 지정 불가)")
 		cldFinish.caption = cldadd30.caption
-		Exit Sub
-	End If
+		return
+	end
 	
-	Form.SetSharedData("&mhtro16061_order_range_end", cldFinish.caption) 'v0001
+	Form.SetSharedData("..mhtro16061_order_range_end", cldFinish.caption)  --v0001
 	g_orderRangeEnd = cldFinish.caption
-End Sub
+end
 
-'============================================================================
-Sub rdoRange_OnClick(nIndex)
+ --============================================================================
+function rdoRange_OnClick(nIndex)
 	lblRangeTxt.caption = " "
 	lblTxt0.visible = false
 	
-	If CInt(nIndex) == 2  Then
+	if gf_Tonumber(nIndex) == 2 then
 		cldStart.visible = True
 		lblcal.visible = false
 		cldFinish.visible = False
 		cldFinish.caption = ""
 		
-		' v0001
-		if g_orderDate <> "" then
+		 -- v0001
+		if g_orderDate ~= "" then
 			cldStart.caption = g_orderDate
 		else
 			cldStart.caption = cldSpfDate.caption
-'			if g_Vendor == "0321" or g_Vendor == "0537" or g_Vendor == "0066" then
-'				cldStart.caption = cldNextDay.caption
-'			else
-'				cldStart.caption = cldHost.caption
-'			end if
-		end if
-'		Form.SetSharedData("&mhtro16061_order_date", cldStart.caption)
-'		g_orderDate = cldStart.caption
+ --			if g_Vendor == "0321" or g_Vendor == "0537" or g_Vendor == "0066" then
+ --				cldStart.caption = cldNextDay.caption
+ --			else
+ --				cldStart.caption = cldHost.caption
+ --			end if
+		end
+ --		Form.SetSharedData("&mhtro16061_order_date", cldStart.caption)
+ --		g_orderDate = cldStart.caption
 		
-	Elseif CInt(nIndex) == 0 or CInt(nIndex) == 1 then
+	elseif gf_Tonumber(nIndex) == 0 or gf_Tonumber(nIndex) == 1 then
 		cldStart.visible = True
 		lblcal.visible = True
 		cldFinish.visible = True
 		
-		' v0001
-		if g_orderRangeStart <> "" then
+		 -- v0001
+		if g_orderRangeStart ~= "" then
 			cldStart.caption = g_orderRangeStart
 		else
 			cldStart.caption = cldHost.caption
-		end if
+		end
 		
-		if g_orderRangeEnd <> "" then
+		if g_orderRangeEnd ~= "" then
 			cldFinish.caption = g_orderRangeEnd
 		else
 			cldFinish.caption = cldNextDay.caption
-		end if
+		end
 		
-'		Form.SetSharedData("&mhtro16061_order_range_start", cldStart.caption)
-'		Form.SetSharedData("&mhtro16061_order_range_end", cldFinish.caption)
-'		g_orderRangeStart = cldStart.caption
-'		g_orderRangeEnd = cldFinish.caption
-	End If
+ --		Form.SetSharedData("&mhtro16061_order_range_start", cldStart.caption)
+ --		Form.SetSharedData("&mhtro16061_order_range_end", cldFinish.caption)
+ --		g_orderRangeStart = cldStart.caption
+ --		g_orderRangeEnd = cldFinish.caption
+	end
 	
 	
-	Form.SetEnvData(1, "mhtro16061_order_detail_type", rdoRange.currentindex) 'v0001
+	Form.SetEnvData(1, "mhtro16061_order_detail_type", rdoRange.currentindex)  --v0001
 	
-	Select Case Cint(rdoRange.currentindex)
-	' 기간잔량
-	Case 0
-		if CInt(g_szTextSize) > 0 then '글자크기 세팅(특정일주문 선택 후 글자크기 초기화 필요)
+	-- SELECT CASE 변환 (수동 보정 필요)
+	 -- 기간잔량
+	if gf_Tonumber(rdoRange.currentindex) == 0 then
+		if gf_Tonumber(g_szTextSize) > 0 then --글자크기 세팅(특정일주문 선택 후 글자크기 초기화 필요)
 			lblRangeTxt.fontsize = -2
-		end if
+		end
 		lblRangeTxt.caption = "예약수량이 전부 체결될 때까지 주문이 진행돼요. \n기간은 90일 이내만 지정 가능해요."
-		lblRangeTxt.changeTextAttr(6, 8, 10, -2, false)
+		lblRangeTxt.ChangeTextAttr(6, 8, 10, -2, false)
 	
-	' 기간예약
-	Case 1
-		if CInt(g_szTextSize) > 0 then '글자크기 세팅(특정일주문 선택 후 글자크기 초기화 필요)
+	 -- 기간예약
+	elseif gf_Tonumber(rdoRange.currentindex) == 1 then
+		if gf_Tonumber(g_szTextSize) > 0 then --글자크기 세팅(특정일주문 선택 후 글자크기 초기화 필요)
 			lblRangeTxt.fontsize = -2
-		end if
+		end
 		lblRangeTxt.caption = "지정기간 동안 예약수량을 매일 반복해서 주문이 진행돼요. 기간은 90일 이내만 지정 가능해요."
-		lblRangeTxt.changeTextAttr(0, 7, 10, -2, false)
-		lblRangeTxt.changeTextAttr(14, 14, 10, -2, false)
+		lblRangeTxt.ChangeTextAttr(0, 7, 10, -2, false)
+		lblRangeTxt.ChangeTextAttr(14, 14, 10, -2, false)
 	
-	'특정일주문
-	Case 2
-		if g_Vendor == "0321" or g_Vendor == "0537" or g_Vendor == "0066" then	'미국
-			if CInt(g_szTextSize) > 0 then '큰글씨
-				nSize = - 3 - CInt(szTextSize)
+	 --특정일주문
+	elseif gf_Tonumber(rdoRange.currentindex) == 2 then
+		if g_Vendor == "0321" or g_Vendor == "0537" or g_Vendor == "0066" then --미국
+			if gf_Tonumber(g_szTextSize) > 0 then --큰글씨
+				nSize = - 3 - gf_Tonumber(szTextSize)
 				lblRangeTxt.fontsize = nSize
 			else
 				nSize = -2
-			end if
+			end
 			
-'			lblRangeTxt.caption = "지정한 날짜에 예약 주문이 진행돼요. \n익영업일부터 지정 가능하며, 기간은 90일 이내만 지정 가능해요."
-		else																'미국 외(중국, 홍콩, 일본)
+ --			lblRangeTxt.caption = "지정한 날짜에 예약 주문이 진행돼요. \n익영업일부터 지정 가능하며, 기간은 90일 이내만 지정 가능해요."
+		else --미국 외(중국, 홍콩, 일본)
 			nSize = -2
-'			lblRangeTxt.caption = "지정한 날짜에 예약 주문이 진행돼요. \n기간은 90일 이내만 지정 가능해요."
-		end if
+ --			lblRangeTxt.caption = "지정한 날짜에 예약 주문이 진행돼요. \n기간은 90일 이내만 지정 가능해요."
+		end
 		lblRangeTxt.caption = "지정한 날짜에 예약 주문이 진행돼요. \n익영업일부터 지정 가능하며, 기간은 90일 이내만 지정 가능해요."
-		lblRangeTxt.changeTextAttr(0, 7, 10, nSize, false)
-	End Select
+		lblRangeTxt.ChangeTextAttr(0, 7, 10, nSize, false)
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
 	DATAMANAGER.SetDataValue( False, "obtro_comn_027r", "InBlock1", "OVRS_EXCH_VNDR_IDNO", 0 , g_Vendor)
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	If szTranID == "obtro_comn_027r" Then
-		cldHost.caption =  DATAMANAGER.GetDataValue(False, "obtro_comn_027r", "OutBlock1", "BSOP_DATE"  , 0)		'영업일
-		cldNextDay.caption =  DATAMANAGER.GetDataValue(False, "obtro_comn_027r", "OutBlock1", "NX_BSDY"  , 0)	'익영업일 v0001
-		cldadd30.caption =  DATAMANAGER.GetDataValue(False, "obtro_comn_027r", "OutBlock1", "APLY_DATE"  , 0)	'주문최대가능일자
-		cldSpfDate.caption =  DATAMANAGER.GetDataValue(False, "obtro_comn_027r", "OutBlock1", "SPF_DATE"  , 0)	'한국시간 기준 익영업일
-'		Form.SetCtlProp("cldadd30", "addday", "29")
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	if szTranID == "obtro_comn_027r" then
+		cldHost.caption =  DATAMANAGER.GetDataValue(False, "obtro_comn_027r", "OutBlock1", "BSOP_DATE"  , 0)		 --영업일
+		cldNextDay.caption =  DATAMANAGER.GetDataValue(False, "obtro_comn_027r", "OutBlock1", "NX_BSDY"  , 0)	 --익영업일 v0001
+		cldadd30.caption =  DATAMANAGER.GetDataValue(False, "obtro_comn_027r", "OutBlock1", "APLY_DATE"  , 0)	 --주문최대가능일자
+		cldSpfDate.caption =  DATAMANAGER.GetDataValue(False, "obtro_comn_027r", "OutBlock1", "SPF_DATE"  , 0)	 --한국시간 기준 익영업일
+ --		Form.SetCtlProp("cldadd30", "addday", "29")
 		
-		' v0001
-		if g_orderType <> "" then
-			rdoOrdType.currentindex = Cint(g_orderType)
-			if g_orderDetailType <> "" then
-				rdoRange.currentindex = Cint(g_orderDetailType)
-			end if
-			Call rdoOrdType_OnClick(g_orderType)
+		 -- v0001
+		if g_orderType ~= "" then
+			rdoOrdType.currentindex = gf_Tonumber(g_orderType)
+			if g_orderDetailType ~= "" then
+				rdoRange.currentindex = gf_Tonumber(g_orderDetailType)
+			end
+			rdoOrdType_OnClick(g_orderType)
 		else
-			Call rdoOrdType_OnClick(0)
-		end if
-	End If
-End Sub
+			rdoOrdType_OnClick(0)
+		end
+	end
+end
 
-'============================================================================
-Sub rdoOrdType_OnClick(nIndex)
-	if CInt(nIndex) == 0 then		'일반예약
+ --============================================================================
+function rdoOrdType_OnClick(nIndex)
+	if gf_Tonumber(nIndex) == 0 then --일반예약
 		imgBG.top = 140
 		lblTitle.top = 140
 		lblTitle1.top = 195
@@ -414,7 +416,7 @@ Sub rdoOrdType_OnClick(nIndex)
 		lblcal.visible = false
 		lblRangeTxt.visible = false
 		
-	elseif CInt(nIndex) == 1 then	 '기간설정
+	elseif gf_Tonumber(nIndex) == 1 then --기간설정
 		imgBG.top = 50
 		lblTitle.top = 50
 		lblTitle1.top = 110
@@ -428,34 +430,35 @@ Sub rdoOrdType_OnClick(nIndex)
 		cldFinish.visible = false
 		lblcal.visible = false
 		
-		nIdx = CInt(rdoRange.currentindex)
+		nIdx = gf_Tonumber(rdoRange.currentindex)
 		if nIdx >= 0 then
-			call rdoRange_OnClick(nIdx)
+			rdoRange_OnClick(nIdx)
 		else
 			lblTxt0.visible = true
-		end if
-	end if
+		end
+	end
 	
-	Form.SetEnvData(0, "mhtro16061_order_type", CInt(nIndex)) 'v0001
-End Sub
+	Form.SetEnvData(0, "mhtro16061_order_type", gf_Tonumber(nIndex))  --v0001
+end
 
-'============================================================================
-Sub btnCancel_OnClick()
+ --============================================================================
+function btnCancel_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub rdoOrdTime_OnClick(nIndex)
+ --============================================================================
+function rdoOrdTime_OnClick(nIndex)
 	rgptime.currentindex = nIndex
-	Form.SetSharedData("&mhtro16061_order_time", CInt(nIndex)) 'v0001
-End Sub
+	Form.SetSharedData("..mhtro16061_order_time", gf_Tonumber(nIndex))  --v0001
+end
 
-'============================================================================
-Sub Form_OnFormInitBefore()
-	imgInfo.setmaintainingratio("1")
-End Sub
+ --============================================================================
+function Form_OnFormInitBefore()
+	imgInfo.Setmaintainingratio("1")
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_comn_027r" trcode="obtro_comn_027r" compress="1" encryption="1" inputcheck="1" useattr="0" />

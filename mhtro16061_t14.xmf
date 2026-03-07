@@ -410,494 +410,496 @@
 		<BUTTON name="ButtonFilter" btnimage="alpha" ly_vert="295,5,70,34,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="15066" _ulen="13973" >
-'-------------------------------------------------------------------------------------------
-' 01. 화 면 명 : 예약주문
-' 02. 화면설명 : 예약주문의 처리결과 조회 화면
-' 03. 작    성 : 2016.04.30 LJS
-'-------------------------------------------------------------------------------------------
-'20200910 SWJ START 메모리평문제거 (plain_rm = 0 미적용 / plain_rm = 1 적용)
-' v0002 강경완 : 조회 조건 추가 [T2502130001]
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim g_szTitle
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ ---------------------------------------------------------------------------------------------
+ -- 01. 화 면 명 : 예약주문
+ -- 02. 화면설명 : 예약주문의 처리결과 조회 화면
+ -- 03. 작    성 : 2016.04.30 LJS
+ ---------------------------------------------------------------------------------------------
+ --20200910 SWJ START 메모리평문제거 (plain_rm = 0 미적용 / plain_rm = 1 적용)
+ -- v0002 강경완 : 조회 조건 추가 [T2502130001]
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+local g_szTitle
 g_szTitle = "알림"
 
-' 20200910 SWJ START : 메모리평문제거 적용구분값
-Dim plain_rm
+ -- 20200910 SWJ START : 메모리평문제거 적용구분값
+local plain_rm
 plain_rm = ""
 
-'v0002
-Dim g_rsltCls			' 결과구분 			%:전체 1:정상 2:거부
-Dim g_selnByovClcd	' 해도매수구분코드	0:전체 1:매도 2:매수
-Dim g_mangDate		' 해외주식 당일 일자
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
-'****************************************************************************
-'============================================================================
-'	계좌번호/비밀번호 확인
-'	내역조회는 비밀번호 없이 조회가능하도록 수정함. 	20160502 LKM 
-'	주문올릴때만 비밀번호 확인하도록 로직 수정
-'============================================================================
-Function Check_Accout()
+ --v0002
+local g_rsltCls -- 결과구분 			%:전체 1:정상 2:거부
+local g_selnByovClcd -- 해도매수구분코드	0:전체 1:매도 2:매수
+local g_mangDate -- 해외주식 당일 일자
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
+ --****************************************************************************
+ --============================================================================
+ --	계좌번호/비밀번호 확인
+ --	내역조회는 비밀번호 없이 조회가능하도록 수정함. 	20160502 LKM 
+ --	주문올릴때만 비밀번호 확인하도록 로직 수정
+ --============================================================================
+function Check_Accout()
 
-'20160502 LKM START
+ --20160502 LKM START
 
-	Dim szAcctNo
+	local szAcctNo
 	
 	szAcctNo = Form.GetTopCtlProp("acnt", "caption")
     
-    If Len(Trim(szAcctNo)) < 10 Then
+    if string.len(gf_Trim(szAcctNo)) < 10 then
 	    Form.ShowAlert( g_szTitle, "계좌번호를 확인후 다시 입력하십시오." )
-	    Check_Accout = False
-	    Exit Function
-	End If
+	    return False
+	end
 
-	Check_Accout = True
+	return True
 	
-End Function
+end
 
-'============================================================================
-' 국가코드 => 국가명 가져오기
-'============================================================================
-Function GetCountryNameByCode(sCountryCode,sVndrCode)
-	if sCountryCode = "01" then
+ --============================================================================
+ -- 국가코드 => 국가명 가져오기
+ --============================================================================
+function GetCountryNameByCode(sCountryCode,sVndrCode)
+	if sCountryCode == "01" then
 		return "미국"
-	elseif sCountryCode = "02" then
+	elseif sCountryCode == "02" then
 		return "홍콩"
-	elseif sCountryCode = "03" then
-'		return "상해"
+	elseif sCountryCode == "03" then
+ --		return "상해"
 		return "중국"
-	elseif sCountryCode = "04" then
-'		return "심천"
+	elseif sCountryCode == "04" then
+ --		return "심천"
 		return "중국"
-	elseif sCountryCode = "05" then 
+	elseif sCountryCode == "05" then
 		return "일본"
-	elseif sCountryCode = "06" then
+	elseif sCountryCode == "06" then
 		return "호주"
-	elseif sCountryCode = "07" then
+	elseif sCountryCode == "07" then
 		return "싱가폴"
-	elseif sCountryCode = "08" then
+	elseif sCountryCode == "08" then
 		return "영국"
-	elseif sCountryCode = "09" then
+	elseif sCountryCode == "09" then
 		return "영국"
-	elseif sCountryCode = "10" then
+	elseif sCountryCode == "10" then
 		return "독일"
-	elseif sCountryCode = "11" then
+	elseif sCountryCode == "11" then
 		return "핀란드"
-	elseif sCountryCode = "12" then
+	elseif sCountryCode == "12" then
 		return "프랑스"
-	elseif sCountryCode = "13" then
+	elseif sCountryCode == "13" then
 		return "벨기에"
-	elseif sCountryCode = "14" then
+	elseif sCountryCode == "14" then
 		return "네덜란드"
-	elseif sCountryCode = "15" then
+	elseif sCountryCode == "15" then
 		return "포르투갈"
-	elseif sCountryCode = "16" then
+	elseif sCountryCode == "16" then
 		return "그리스"
-	elseif sCountryCode = "17" then
+	elseif sCountryCode == "17" then
 		return "아일랜드"
-	elseif sCountryCode = "18" then
+	elseif sCountryCode == "18" then
 		return "이탈리아"
-	elseif sCountryCode = "19" then
+	elseif sCountryCode == "19" then
 		return "스페인"
-	elseif sCountryCode = "20" then
+	elseif sCountryCode == "20" then
 		return "오스트리아"
-	elseif sCountryCode = "21" then
+	elseif sCountryCode == "21" then
 		return "캐나다"
-	elseif sCountryCode = "23" then
+	elseif sCountryCode == "23" then
 		return "인도네시아"
-	elseif sCountryCode = "24" then
+	elseif sCountryCode == "24" then
 		
-		if sVndrCode == "XSTC" then 
+		if sVndrCode == "XSTC" then
 			return "호치민"
 		elseif sVndrCode == "HSTC" then
 			return "하노이"
-		end if
+		end
 	
-	elseif sCountryCode = "26" then
+	elseif sCountryCode == "26" then
 		return "스위스"
 		
 	else
 		return ""
-	end if 
+	end
 
-End Function
+end
 
-'============================================================================
-' Set_Unit
-'============================================================================
-Function Set_Unit(szData, sDecimal)
+ --============================================================================
+ -- Set_Unit
+ --============================================================================
+function Set_Unit(szData, sDecimal)
 	
-	sztemp = CStr(szData)
-	szChk = InStr(sztemp, ".")
-	sDecimal = CStr(CInt(sDecimal))
+	sztemp = gf_Tostring(szData)
+	szChk = string.find(sztemp, ".")
+	sDecimal = gf_Tostring(gf_Tonumber(sDecimal))
 	
-	if CStr(szChk) == "0" then
-		if sDecimal = "1" then
-			sztemp = sztemp & ".0"	
-		elseif sDecimal = "2" then
-			sztemp = sztemp & ".00"	
-		elseif sDecimal = "3" then
-			sztemp = sztemp & ".000"	
-		elseif sDecimal = "4" then
-			sztemp = sztemp & ".0000"	
-		end if 
+	if gf_Tostring(szChk) == "0" then
+		if sDecimal == "1" then
+			sztemp = sztemp .. ".0"	
+		elseif sDecimal == "2" then
+			sztemp = sztemp .. ".00"	
+		elseif sDecimal == "3" then
+			sztemp = sztemp .. ".000"	
+		elseif sDecimal == "4" then
+			sztemp = sztemp .. ".0000"	
+		end
 	else
-		szCha = CInt(Len(sztemp) - szChk)
+		szCha = gf_Tonumber(string.len(sztemp) - szChk)
 	
 	
-		if CStr(szCha) == "1" then 
+		if gf_Tostring(szCha) == "1" then
 			if sDecimal == "2" then
-				sztemp = sztemp & "0"	
+				sztemp = sztemp .. "0"	
 			elseif sDecimal == "3" then
-				sztemp = sztemp & "00"	
+				sztemp = sztemp .. "00"	
 			elseif sDecimal == "4" then
-				sztemp = sztemp & "000"
-			else 
-				sztemp = sztemp
-			end if 	
-		elseif CStr(szCha) == "2" then 
-			if sDecimal == "3" then
-				sztemp = sztemp & "0"	
-			elseif sDecimal == "4" then
-				sztemp = sztemp & "00"
+				sztemp = sztemp .. "000"
 			else
 				sztemp = sztemp
-			end if	
-		elseif CStr(szCha) == "3" then 
-			if sDecimal == "4" then
-				sztemp = sztemp & "0"
-			else 
+			end
+		elseif gf_Tostring(szCha) == "2" then
+			if sDecimal == "3" then
+				sztemp = sztemp .. "0"	
+			elseif sDecimal == "4" then
+				sztemp = sztemp .. "00"
+			else
 				sztemp = sztemp
-			end if	
+			end
+		elseif gf_Tostring(szCha) == "3" then
+			if sDecimal == "4" then
+				sztemp = sztemp .. "0"
+			else
+				sztemp = sztemp
+			end
 		else
 			sztemp = sztemp
-		end if
-	end if
+		end
+	end
 	
 	return sztemp
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'============================================================================
-Sub Form_OnFormInitBefore()
-	imgSearch.setmaintainingratio("1")
-	imgNodata.setmaintainingratio("1")
-	imgDownArrow.setMaintainingRatio("1") 'v0002
-End Sub
+ --============================================================================
+function Form_OnFormInitBefore()
+	imgSearch.Setmaintainingratio("1")
+	imgNodata.Setmaintainingratio("1")
+	imgDownArrow.SetMaintainingRatio("1")  --v0002
+end
 
-'============================================================================
-Sub Form_OnFormInit()
-	'20200910 SWJ START
-	'MTS메모리평문 적용유무
-	'plain_rm = ( 0 : 미적용/ 1 : 적용)
-	 plain_rm = Form.GetSharedData("&PLAIN_RM", false)
-	'20200910 SWJ END
+ --============================================================================
+function Form_OnFormInit()
+	 --20200910 SWJ START
+	 --MTS메모리평문 적용유무
+	 --plain_rm = ( 0 : 미적용/ 1 : 적용)
+	 plain_rm = Form.GetSharedData("..PLAIN_RM", false)
+	 --20200910 SWJ END
 	
-	'============================================================================
-	'v0002
-	g_rsltCls 		= Form.GetSharedData("&mhtro16061_t14_RSLT_CLS", false)
-	g_selnByovClcd 	= Form.GetSharedData("&mhtro16061_t14_SELN_BYOV_CLCD", false)
-	g_mangDate 		= Form.GetSharedData("&mhtro16061_t13_mang_date", false)
+	 --============================================================================
+	 --v0002
+	g_rsltCls 		= Form.GetSharedData("..mhtro16061_t14_RSLT_CLS", false)
+	g_selnByovClcd 	= Form.GetSharedData("..mhtro16061_t14_SELN_BYOV_CLCD", false)
+	g_mangDate 		= Form.GetSharedData("..mhtro16061_t13_mang_date", false)
 	
-	if g_mangDate <> "" then
+	if g_mangDate ~= "" then
 		cld0.caption = g_mangDate
-	end if
+	end
 	
 	if g_rsltCls == "" then
 		g_rsltCls = "%"
-	end if
+	end
 	
 	if g_selnByovClcd == "" then
 		g_selnByovClcd = "0"
-	end if
+	end
 	
-	Call setLabelFilterCaption()
-	'============================================================================
+	setLabelFilterCaption()
+	 --============================================================================
 	
-	Call btnSearch_OnClick()
-End Sub
+	btnSearch_OnClick()
+end
 
-'============================================================================
-Sub Form_OnLinkData(sKey, sValue)
+ --============================================================================
+function Form_OnLinkData(sKey, sValue)
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
-	if sEventName == "InitCode" or sEventName == "ChangeCode" or sEventName == "ChangeTab" then	
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
+	if sEventName == "InitCode" or sEventName == "ChangeCode" or sEventName == "ChangeTab" then
 		btnSearch_OnClick()
-	'20160502 LKM START
-	elseif sEventName = "ChangeAcnt" Then
+	 --20160502 LKM START
+	elseif sEventName == "ChangeAcnt" then
 		
-		grd0.rowcount = 0	'기존내역 Clear
+		grd0.rowcount = 0	 --기존내역 Clear
 			
-		If Check_Accout() = False Then
-			Exit Sub
-		End If
+		if Check_Accout() == False then
+			return
+		end
 		
 		btnSearch_OnClick()
-	'20160502 LKM END
-	End If
+	 --20160502 LKM END
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
-	If szTranID = "obtro_oder_240r" Then
-		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "ACNO" 		, 0 , Form.GetTopCtlProp("acnt", "total"))		' 계좌번호(8)
-		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "ASNO" 		, 0 , Form.GetTopCtlProp("acnt", "sequence"))		' 계좌일련번호(2)
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	if szTranID == "obtro_oder_240r" then
+		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "ACNO" 		, 0 , Form.GetTopCtlProp("acnt", "total"))		 -- 계좌번호(8)
+		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "ASNO" 		, 0 , Form.GetTopCtlProp("acnt", "sequence"))		 -- 계좌일련번호(2)
 		
-		'20200910 SWJ START
-		'MTS메모리평문제거 적용상태일 때
+		 --20200910 SWJ START
+		 --MTS메모리평문제거 적용상태일 때
 		if plain_rm == "1" then
-			DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "ACNT_PWD" 	, 0 , Form.GetTopCtlProp("edtPwd", "caption"))	' 계좌비밀번호
-		'MTS메모리평문제거 미적용상태일 때
-		else	
-			DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "ACNT_PWD" 	, 0 , Form.GetTopCtlProp("edtPwd", "encdata"))	' 계좌비밀번호
-		end if
-		'20200910 SWJ END
+			DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "ACNT_PWD" 	, 0 , Form.GetTopCtlProp("edtPwd", "caption"))	 -- 계좌비밀번호
+		 --MTS메모리평문제거 미적용상태일 때
+		else
+			DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "ACNT_PWD" 	, 0 , Form.GetTopCtlProp("edtPwd", "encdata"))	 -- 계좌비밀번호
+		end
+		 --20200910 SWJ END
 		
-		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "RSEV_STA_DATE"	, 0 , cld0.caption)		' 예약시작일자
-		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "RSEV_FIN_DATE"	, 0 , cld0.caption)		' 예약종료일자
-		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE"	, 0 , "00")	' 해외시장구분코드
+		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "RSEV_STA_DATE"	, 0 , cld0.caption)		 -- 예약시작일자
+		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "RSEV_FIN_DATE"	, 0 , cld0.caption)		 -- 예약종료일자
+		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE"	, 0 , "00")	 -- 해외시장구분코드
 		
-		'v0002
-		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "RSLT_CLS"		, 0 , g_rsltCls)			' 결과구분
-		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "SELN_BYOV_CLCD"	, 0 , g_selnByovClcd)		' 해도매수구분코드
-	End If
-End Sub
+		 --v0002
+		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "RSLT_CLS"		, 0 , g_rsltCls)			 -- 결과구분
+		DATAMANAGER.SetDataValue( 0, "obtro_oder_240r", "InBlock1", "SELN_BYOV_CLCD"	, 0 , g_selnByovClcd)		 -- 해도매수구분코드
+	end
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 
-	If szTranID = "obtro_oder_240r" Then
-		if CInt(grd0.rowcount) == 0 then
+	if szTranID == "obtro_oder_240r" then
+		if gf_Tonumber(grd0.rowcount) == 0 then
 			imgNodata.visible = true
 			lblNodata.visible = true
 		else
 			imgNodata.visible = false
 			lblNodata.visible = false
-		end if
+		end
 		
-		'------------------------------------------------------------
-		' 종목명 최대라인수 설정
-		'------------------------------------------------------------
+		 --------------------------------------------------------------
+		 -- 종목명 최대라인수 설정
+		 --------------------------------------------------------------
 		grd0.SetCellMaxLineCount("bd_cell25",2)
-		grd0.SetCellMaxLineCount("bd_cell16",2)	'거부사유
+		grd0.SetCellMaxLineCount("bd_cell16",2)	 --거부사유
 		
-		For i = 0 To grd0.rowcount -1 
+		for i = 0, grd0.rowcount -1 do
 			szMkCd	 = grd0.GetCellData("bd_cell17", i)
 			szType  	 = grd0.GetCellData("bd_cell8", i)
 			szOdrStat = grd0.GetCellData("bd_cell18", i)
-'			szDecimal = grd0.GetCellData("bd_cell7", i)
-			rSevType  = grd0.GetCellData( "bd_cell0"	, i)	'주문예약구분코드     - 2019.10.14
-			hOurType  = grd0.GetCellData( "bd_cell9", i)	'주문예약시간구분코드 - 2019.10.14
+ --			szDecimal = grd0.GetCellData("bd_cell7", i)
+			rSevType  = grd0.GetCellData( "bd_cell0"	, i)	 --주문예약구분코드     - 2019.10.14
+			hOurType  = grd0.GetCellData( "bd_cell9", i)	 --주문예약시간구분코드 - 2019.10.14
 
-'			szOdrPrc = grd0.GetCellData("bd_cell15", i)
-'			szOdrPrc2 = Set_Unit(CDbl(szOdrPrc), szDecimal)
-'			grd0.SetCellData("bd_cell15", i, szOdrPrc2)
+ --			szOdrPrc = grd0.GetCellData("bd_cell15", i)
+ --			szOdrPrc2 = Set_Unit(CDbl(szOdrPrc), szDecimal)
+ --			grd0.SetCellData("bd_cell15", i, szOdrPrc2)
 
 			
-			'20201124 LES START 해외주식 시장가매도
+			 --20201124 LES START 해외주식 시장가매도
 			szOrdType = grd0.GetCellData("bd_cell22", i)
 			
-			Select Case szOrdType
-				Case "1"
+			-- SELECT CASE 변환 (수동 보정 필요)
+				if szOrdType == "1" then
 					grd0.SetCellData("bd_cell26", i, "지정가")
-				Case "2"
+				elseif szOrdType == "2" then
 					grd0.SetCellData("bd_cell26", i, "시장가")
-				Case "4"
+				elseif szOrdType == "4" then
 					grd0.SetCellData("bd_cell26", i, "LOO")
-				Case "5"
+				elseif szOrdType == "5" then
 					grd0.SetCellData("bd_cell26", i, "LOC")
-				Case "6"
+				elseif szOrdType == "6" then
 					grd0.SetCellData("bd_cell26", i, "MOO")
-				Case "7"
+				elseif szOrdType == "7" then
 					grd0.SetCellData("bd_cell26", i, "MOC")
-				Case "8"
+				elseif szOrdType == "8" then
 					grd0.SetCellData("bd_cell26", i, "Limit VWAP")
-				Case "9"
+				elseif szOrdType == "9" then
 					grd0.SetCellData("bd_cell26", i, "Limit TWAP")
-				Case "A"
+				elseif szOrdType == "A" then
 					grd0.SetCellData("bd_cell26", i, "VWAP")
-				Case "B"
+				elseif szOrdType == "B" then
 					grd0.SetCellData("bd_cell26", i, "TWAP")
-			End Select
+			end
 			
-			'20201124 LES END
+			 --20201124 LES END
 
 
-			'주문예약구분코드 - 2019.10.14
-			Select Case rSevType
-				Case "1"
+			 --주문예약구분코드 - 2019.10.14
+			-- SELECT CASE 변환 (수동 보정 필요)
+				if rSevType == "1" then
 					grd0.SetCellData( "bd_cell0", i, "일반예약")
-				Case "2" 
+				elseif rSevType == "2" then
 					grd0.SetCellData( "bd_cell0", i, "기간잔량")
-				Case "3" 
+				elseif rSevType == "3" then
 					grd0.SetCellData( "bd_cell0", i, "기간예약")
-				Case "4" 
+				elseif rSevType == "4" then
 					grd0.SetCellData( "bd_cell0", i, "특정일주문")
-			End Select
+			end
 			
-			'주문예약시간구분코드 - 2019.10.14
-			Select Case hOurType
-				Case "0"
+			 --주문예약시간구분코드 - 2019.10.14
+			-- SELECT CASE 변환 (수동 보정 필요)
+				if hOurType == "0" then
 					grd0.SetCellData( "bd_cell9", i, "장개시")
-				Case "1" 
+				elseif hOurType == "1" then
 					grd0.SetCellData( "bd_cell9", i, "장마감10분전")
-				Case "2" 
+				elseif hOurType == "2" then
 					grd0.SetCellData( "bd_cell9", i, "장마감30분전")
 				
-				'20200911 LES START 예약시간 추가
-				Case "3" 
+				 --20200911 LES START 예약시간 추가
+				elseif hOurType == "3" then
 					grd0.SetCellData( "bd_cell9", i, "장개시30분후")
-				'20200911 LES END
+				 --20200911 LES END
 				
-			End Select
+			end
 
 
-			'매매구분
-			Select Case szType
-				Case "1"	
+			 --매매구분
+			-- SELECT CASE 변환 (수동 보정 필요)
+				if szType == "1" then
 					grd0.SetCellFgColor( "bd_cell2", i, "2" )
 					grd0.SetCellFgColor( "bd_cell142", i, "2" )
 					
-					'v0002 --------------------------- 예탁담보매도 -> 매도로 표시
+					 --v0002 --------------------------- 예탁담보매도 -> 매도로 표시
 					grd0.SetCellData( "bd_cell2", i, "매도")
 					grd0.SetCellData( "bd_cell142", i, "매도")
 					
-					'20201021 LES START 해외주식 매도상환
-'					szGubun = grd0.GetCellData("bd_cell19", i)
-'					if szGubun == "0251" then
-'						grd0.SetCellData( "bd_cell2", i, "예탁담보매도")
-'						grd0.SetCellData( "bd_cell142", i, "예탁담보매도")
-'					else
-'						grd0.SetCellData( "bd_cell2", i, "매도")
-'						grd0.SetCellData( "bd_cell142", i, "매도")
-'					end if
-					'20201021 LES END
-					'v0002 -----------------------------
+					 --20201021 LES START 해외주식 매도상환
+ --					szGubun = grd0.GetCellData("bd_cell19", i)
+ --					if szGubun == "0251" then
+ --						grd0.SetCellData( "bd_cell2", i, "예탁담보매도")
+ --						grd0.SetCellData( "bd_cell142", i, "예탁담보매도")
+ --					else
+ --						grd0.SetCellData( "bd_cell2", i, "매도")
+ --						grd0.SetCellData( "bd_cell142", i, "매도")
+ --					end if
+					 --20201021 LES END
+					 --v0002 -----------------------------
 					
-				Case "2"	
+				elseif szType == "2" then
 					grd0.SetCellFgColor( "bd_cell2", i, "1" )
 					grd0.SetCellFgColor( "bd_cell142", i, "1" )
 					grd0.SetCellData( "bd_cell2", i, "매수")
 					grd0.SetCellData( "bd_cell142", i, "매수")
-			End Select
+			end
 			
-			'2024 HSZ START
-			' 매매구분 추가
+			 --2024 HSZ START
+			 -- 매매구분 추가
 			szLoanDate = grd0.GetCellData("bd_cell11", i)
-			if Trim(szLoanDate) = "" then
+			if gf_Trim(szLoanDate) == "" then
 				grd0.SetCellData( "bd_cell14", i, "현금")
 				grd0.SetCellData( "bd_cell140", i, "현금")
 			else
 				grd0.SetCellData( "bd_cell14", i, "대출")
 				grd0.SetCellData( "bd_cell140", i, "대출")
-			end if
+			end
 
-			'------------------------------------------------------------
-			'시장구분
-			'------------------------------------------------------------
+			 --------------------------------------------------------------
+			 --시장구분
+			 --------------------------------------------------------------
 			sCountryCode = grd0.GetCellData("bd_mrktcode", i)
 			sVndrCode = grd0.GetCellData("bd_vndrcode", i)
 			sCountryName = GetCountryNameByCode(sCountryCode,sVndrCode)
 			grd0.SetCellData("bd_marketgubun", i, sCountryName)
 			
-			' 주문상태
+			 -- 주문상태
 			if szOdrStat == "0" then
 				grd0.SetCellData("bd_cell6", i, "주문대기")
 			elseif szOdrStat == "1" then
 				grd0.SetCellData("bd_cell6", i, "정상")
 			elseif szOdrStat == "2" then
 				grd0.SetCellData("bd_cell6", i, "거부")
-			end if
-		Next
-	End If
-End Sub
+			end
+		end
+	end
+end
 
-'============================================================================
-Sub btnSearch_OnClick()
+ --============================================================================
+function btnSearch_OnClick()
 	
-	If Check_Accout() = False Then
-		Exit Sub
-	End If
+	if Check_Accout() == False then
+		return
+	end
 	
 	grd0.SetClear()
 	grd0.rowcount = 0
 	
 	DATAMANAGER.RequestTranData( "obtro_oder_240r" )
 	
-End Sub
+end
 
-'============================================================================ 'v0002
-Sub btnMove_OnClick()
+ --============================================================================ 'v0002
+function btnMove_OnClick()
 	Form.OpenScreen("16074" , "")
-End Sub
+end
 
-'============================================================================ 'v0002
-Sub LabelFilter_OnClick()
-	Form.OpenPopupAnimation("mhtro16061_p9", g_rsltCls & "★" & g_selnByovClcd, "", "2")
-End Sub
+ --============================================================================ 'v0002
+function LabelFilter_OnClick()
+	Form.OpenPopupAnimation("mhtro16061_p9", g_rsltCls .. "★" .. g_selnByovClcd, "", "2")
+end
 
-'============================================================================ 'v0002
-Sub ButtonFilter_OnClick()
+ --============================================================================ 'v0002
+function ButtonFilter_OnClick()
 	LabelFilter_OnClick()
-End Sub
+end
 
-'============================================================================ 'v0002
-Sub Form_OnPopupReturn(sKeyName, sRet)
+ --============================================================================ 'v0002
+function Form_OnPopupReturn(sKeyName, sRet)
 	if sKeyName == "mhtro16061_p9" then
-		arrData = Split(sRet,"★")
+		arrData = gf_Split(sRet,"★")
 		
-		g_rsltCls = arrData[0]
-		g_selnByovClcd = arrData[1]
+		g_rsltCls = arrData[0+1]
+		g_selnByovClcd = arrData[1+1]
 		
-		Form.SetSharedData("&mhtro16061_t14_RSLT_CLS", g_rsltCls)
-		Form.SetSharedData("&mhtro16061_t14_SELN_BYOV_CLCD", g_selnByovClcd)
+		Form.SetSharedData("..mhtro16061_t14_RSLT_CLS", g_rsltCls)
+		Form.SetSharedData("..mhtro16061_t14_SELN_BYOV_CLCD", g_selnByovClcd)
 		
-		Call setLabelFilterCaption()
+		setLabelFilterCaption()
 		btnSearch_OnClick()
-	end if
-End Sub
+	end
+end
 
-'============================================================================ 'v0002
-Function setLabelFilterCaption()
-	Dim s_rsltCls, s_selnByovClcd
+ --============================================================================ 'v0002
+function setLabelFilterCaption()
+	local s_rsltCls, s_selnByovClcd
 	
-	Select Case g_rsltCls
-		Case "%"	
+	-- SELECT CASE 변환 (수동 보정 필요)
+		if g_rsltCls == "%" then
 			s_rsltCls = "전체"
-		Case "1"	
+		elseif g_rsltCls == "1" then
 			s_rsltCls = "정상"
-		Case "2"
+		elseif g_rsltCls == "2" then
 			s_rsltCls = "거부"
-	End Select
+	end
 	
-	Select Case g_selnByovClcd
-		Case "0"	
+	-- SELECT CASE 변환 (수동 보정 필요)
+		if g_selnByovClcd == "0" then
 			s_selnByovClcd = "매수매도"
-		Case "1"	
+		elseif g_selnByovClcd == "1" then
 			s_selnByovClcd = "매도"
-		Case "2"
+		elseif g_selnByovClcd == "2" then
 			s_selnByovClcd = "매수"
-	End Select
+	end
 	
-	LabelFilter.caption = s_rsltCls & "·" & s_selnByovClcd
+	LabelFilter.caption = s_rsltCls .. "·" .. s_selnByovClcd
 	
-End Function
+end
 
-'============================================================================ 'v0002
-Sub cld0_OnEditComplete()
+ --============================================================================ 'v0002
+function cld0_OnEditComplete()
 	btnSearch_OnClick()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_240r" trcode="obtro_oder_240r" compress="1" encryption="1" inputcheck="1" useattr="0" >

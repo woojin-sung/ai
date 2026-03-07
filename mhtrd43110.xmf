@@ -139,7 +139,7 @@ function Form_OnFormInitBefore( )
 	szPopup = Form.LoadConfigData( "mhtrd43110", "mhtrd43110_p0" )
 
  --20240425 KKM 가이드팝업 삭제
- --	If szPopup <> "1" Then
+ --	If szPopup ~= "1" Then
  --		Form.OpenPopup( "mhtrd43110_p0", "" , "")
  --	End If
 end
@@ -154,7 +154,7 @@ function Form_OnFormInit( )
 	 -- 관심 동기화
 	g_szCloud = Form.GetEnvData("common.interest_cloud")
 	
-	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용)
+	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용) end
 		g_szCloud = "1"
 	end
 	
@@ -221,7 +221,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		end
 		 -- //////////////////////////////////////////////////////////////////
 		
-		if sRet == "0" then -- 종목편집
+		if sRet == "0" then -- 종목편집 end
 			edtListCnt.caption = ""		 -- 종목리스크 카운트 에디트 클리어
 			Form.TriggerEvent("fmTab." .. fmTab.currenttabpageid, "GLOBAL_INTR_LIST", cmbGroup.cbkeydata .. "♥" .. edtvrsnID.caption)
 		else -- 그룹편집
@@ -284,7 +284,7 @@ end
  -- init_GWGroup :  관심그룹 재설정 (로컬/서버)
  --============================================================================
 function init_GWGroup( )
-	if g_szCloud == "1" then -- Server 저장시
+	if g_szCloud == "1" then -- Server 저장시 end
 		 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 		DATAMANAGER.RequestTranData("ohhts_intr_026r")
 	else
@@ -317,7 +317,7 @@ function Insert_cmbGroup( )
  --20200525 SWJ START : 고유MTS 보유종목 콤보 삭제
 	szMediaCode = Form.GetSharedData("..MEDIA_CODE", false )
 	
-	if szMediaCode == "156" or szMediaCode == "157" or szMediaCode == "412" or szMediaCode == "413" then --20210804 SWJ START : 모의투자 채널코드 추가
+	if szMediaCode == "156" or szMediaCode == "157" or szMediaCode == "412" or szMediaCode == "413" then --20210804 SWJ START : 모의투자 채널코드 추가 end
 		for i = 0, #g_tDefault-1 do
 			g_tGSelect[i] = Form.GetEnvData(g_tDefault[i])
 		
@@ -412,7 +412,7 @@ function Insert_cmbGroup( )
 	 -- ---- 관심 환경설정에서 가져온 관심그룹 추가 여부 End ------------------
 
 	 -- ---- 관심종목 그룹 리스트 존재시 Start --------------------------------
-	if szMediaCode == "156" or szMediaCode == "157" or szMediaCode == "412" or szMediaCode == "413" then --20210804 SWJ START : 모의투자 채널코드 추가
+	if szMediaCode == "156" or szMediaCode == "157" or szMediaCode == "412" or szMediaCode == "413" then --20210804 SWJ START : 모의투자 채널코드 추가 end
 		if Int(nRow) > 0 then
 		
 			for i = 0, nRow -1 do
@@ -656,7 +656,7 @@ function DATAMANAGER_OnReceiveRealComplete(szTranID)
 		local szID, szReturn
 		szID, szReturn = "", ""
 		
-		if g_szCloud == "1" then -- Server 저장시
+		if g_szCloud == "1" then -- Server 저장시 end
 			szID = Form.GetSharedData("..USER_ID", false)	 -- USER ID
 			szReturn = DATAMANAGER.GetDataValue(1, szTranID, "OutBlock1", "FIDR_USER_ID", 0)
 			

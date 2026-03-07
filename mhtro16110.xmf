@@ -335,7 +335,7 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	 -- 타 화면 연동
 	 -------------------------------------------------------------------------------
-	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수
+	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end
 	
 		FormTab0.currenttabpageid = "page0"
 	
@@ -379,7 +379,7 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	ItemCode0.code = Form.GetSharedData("..ITEM_CODE", false)
 	
-	if string.len(ItemCode0.code) > 0 then
+	if string.string.len(ItemCode0.code) > 0 then
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "InitCode", ItemCode0.code )
 		Form.TriggerEvent( "LinkFormTop", "RequestData", ItemCode0.code)
 	end
@@ -425,14 +425,14 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		
 	elseif sEventName == "SCREEN_MENU" then -- 연결정보(상단 ...)
 		
-		if sParam == "REG_INTR" then -- 관심종목등록
+		if sParam == "REG_INTR" then -- 관심종목등록 end
  --			Form.OpenPopup( "mhtro16010_p5" , ItemCode0.code , "" )
 			szCode = ItemCode0.code
 			isIntrItem = Form.IsIntrItemList(szCode)
 			
 			if gf_Tonumber(g_szIntrGrpCnt) < 1 then
 				g_szAction = "GROUP_ADD2"
-				 --관심그룹&관심종목 동시추가	
+				 --관심그룹..관심종목 동시추가	
 				Form.OpenPopup("mhprc11000_pf", g_szAction .. "★" .. szCode .. "★", "")
 			else
 				 --관심그룹 추가
@@ -598,7 +598,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		gMkClsCode = sParam
 		
 		 --20250707 YSH TEST
-		 --Form.ShowAlert("mhtro16110_해외주식 예약주문", "실시간 값 정상 확인 : " & gMkClsCode)
+		 --Form.ShowAlert("mhtro16110_해외주식 예약주문", "실시간 값 정상 확인 : " .. gMkClsCode)
 		
 		if sParam == "005" then
 		
@@ -641,7 +641,7 @@ function Form_OnLinkData(sKey, sValue)
 	 --20240617 LES START - 해외/국내 종목선택창 통합
 	if "&ITEM_CODE" == sKey then
 		
-		if CheckMasterFile(sValue) then --20240621 
+		if CheckMasterFile(sValue) then --20240621 end
 			edtOrgNo.caption = ""
 			ItemCode0_OnEditComplete(sValue)
 		end
@@ -651,7 +651,7 @@ function Form_OnLinkData(sKey, sValue)
 	 --해외주식 장운영 정보 조회방식 변경
 	elseif sKey == "OVRS_MARKET_OPERATION_TRAN" then
 		 --20250707 YSH TEST
-		 --Form.ShowAlert("mhtro16110_해외주식 예약주문", "최초 조회 정상 확인 : " & sKey & sValue)
+		 --Form.ShowAlert("mhtro16110_해외주식 예약주문", "최초 조회 정상 확인 : " .. sKey .. sValue)
 		if sValue == "SUCCESS" then
 			gMkClsCode = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 		end
@@ -694,7 +694,7 @@ function FormTab0_OnTabChanged(nCurrentTab)
 	 --======================================================================
 	 --종목연동 및 주문설정값 연동
 	 --======================================================================
-	if string.len(ItemCode0.code) > 0 then
+	if string.string.len(ItemCode0.code) > 0 then
 		
 		if nCurrentTab == 2 or nCurrentTab == "2" then
 			
@@ -770,7 +770,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	
 	elseif szTranID == "ohhts_6000_001r" then
 		
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -782,7 +782,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		
 	elseif szTranID == "ohhts_6000_002r" then
 	
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -794,7 +794,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	
 	elseif szTranID == "ohhts_6000_003r" then
 		
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -806,7 +806,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	
 	elseif szTranID == "ohhts_6000_017r" then
 	
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -818,7 +818,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 
 	elseif szTranID == "ohhts_6000_020r" then
 	
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -833,7 +833,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	 ---------------------------------------------------------------------------
 	 --elseif szTranID == "obtro_acnt_900r" then
 	 --
-	 --	szCustNum = Form.GetSharedData("&CUST_NUM", false)
+	 --	szCustNum = Form.GetSharedData("..CUST_NUM", false)
 	 --
 	 --	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "BSWR_CLCD" 			, 0 , "08")
 	 --	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "CSNO" 				, 0 , szCustNum)
@@ -902,9 +902,9 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			 ---------------------------------------------------------------------------
 			 -- 액면분할/권리선반영 시 사용하는 로직 
 			 ---------------------------------------------------------------------------
-			 --szToday = Form.GetSharedData("&HOST_DATE", false )
+			 --szToday = Form.GetSharedData("..HOST_DATE", false )
 			 --
-			 --if tonumber(szToday) >= 20240311 and tonumber(szToday) <= 20240318 then
+			 --if gf_Tonumber(szToday) >= 20240311 and gf_Tonumber(szToday) <= 20240318 then
 			 --	DATAMANAGER.RequestTranData("obtro_acnt_900r")
 			 --end if
 			 ---------------------------------------------------------------------------
@@ -926,7 +926,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		
 		 ---------------------------------------------------------------------------------------------
 		 -- [호가] 상/하한가 데이터 존재 여부에 따라 호가테이블 위치/높이 조정
-		 -- 단, 현재 탭이 매수/매도 일 경우에만 동작. 정정/취소 & 주문/체결 & 잔고일때는 스킵
+		 -- 단, 현재 탭이 매수/매도 일 경우에만 동작. 정정/취소 .. 주문/체결 .. 잔고일때는 스킵
 		 ---------------------------------------------------------------------------------------------
 		nMaxPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_MXPR" , 0))
 		nMinPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_LLAM" , 0))
@@ -1063,7 +1063,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	 ---------------------------------------------------------------------------
 	 --elseif szTranID == "obtro_acnt_900r" then
 	 --
-	 --	'애플/테슬라 잔고보유 고객한테만 유의사항 팝업 띄어줌.
+	 --	 --애플/테슬라 잔고보유 고객한테만 유의사항 팝업 띄어줌.
 	 --	agreeYn = DATAMANAGER.GetDataValue(0, "obtro_acnt_900r", "OutBlock1", "AGRM_YN" 		, 0)
 	 --	jangoYn = DATAMANAGER.GetDataValue(0, "obtro_acnt_900r", "OutBlock1", "RMND_EXST_YN" 	, 0)
 	 --	
@@ -1270,7 +1270,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		if #arrRetData > 2 then
 			sItemCd = arrRetData[0+1]
 			
-			if CheckMasterFile(sItemCd) then --20240621 
+			if CheckMasterFile(sItemCd) then --20240621 end
 				sItemName = Form.GetItemCodeInfo(sItemCd, "name")
 				Form.SetOverStockItemCode(sItemCd.."★"..sItemName)
 				ItemCode0_OnEditComplete(sItemCd)

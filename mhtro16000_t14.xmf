@@ -42,7 +42,7 @@ function Transform_Exid(szExid)
 	elseif szExid == "OQ" then
 		return "O" --나스닥		
 	elseif szExid == "AX" or szExid == "NY" then
-		if string.len(g_szOnlyCd) >= 4 then
+		if string.string.len(g_szOnlyCd) >= 4 then
 			return "K"
 		else
 			return ""
@@ -126,14 +126,14 @@ function Form_OnTriggerEvent(sEventName, sParam)
 			end
 		
 			 --방법2
- --			if LEN(szName) >= 4 then
- --				if RIGHT(szName, 4) == " ETF" then
- --					szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
+ --			if string.len(szName) >= 4 then
+ --				if string.sub(szName, -4) == " ETF" then
+ --					szUrl = "https://m.stock.naver.com/worldstock/etf/" .. szData .. "/discuss"
  --				end if
  --
- --				if LEN(szName) >= 5 then
- --					if InStr( szName, " ETF " ) > 0 then 
- --						szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
+ --				if string.len(szName) >= 5 then
+ --					if string.find(szName, " ETF ") > 0 then 
+ --						szUrl = "https://m.stock.naver.com/worldstock/etf/" .. szData .. "/discuss"
  --					end if
  --				end if
  --			end if

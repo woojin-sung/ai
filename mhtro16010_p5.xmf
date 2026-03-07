@@ -199,240 +199,242 @@
 		</GRID>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="11580" _ulen="10728" >
-'-------------------------------------------------------------------------------------------
-' 01. 화 면 명 : 해외주식 관심종목 종목추가
-' 02. 화면설명 : 해외주식주식현재가 종목추가
-' 03. 작    성 : 2021.05.26 YYJ
-'-------------------------------------------------------------------------------------------
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ ---------------------------------------------------------------------------------------------
+ -- 01. 화 면 명 : 해외주식 관심종목 종목추가
+ -- 02. 화면설명 : 해외주식주식현재가 종목추가
+ -- 03. 작    성 : 2021.05.26 YYJ
+ ---------------------------------------------------------------------------------------------
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
-Dim g_szCode
+local g_szCode
 g_szCode = ""
 
-Dim g_szRow
-Dim g_szGroupID, g_szGroupName
+local g_szRow
+local g_szGroupID, g_szGroupName
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
+ --****************************************************************************
 
-'============================================================================
-' Change_Len
-'============================================================================
-Function Change_Len(szData)
-	if Len(szData) == 1 then
-		Change_Len = "0" & CStr(szData)
+ --============================================================================
+ -- Change_Len
+ --============================================================================
+function Change_Len(szData)
+	if string.len(szData) == 1 then
+		return "0" .. gf_Tostring(szData)
 	else
-		Change_Len = CStr(szData)
-	end if 
-End Function
+		return gf_Tostring(szData)
+	end
+end
 
-'============================================================================
-' Check_LocalOrServer
-'============================================================================
-Function Check_LocalOrServer()
+ --============================================================================
+ -- Check_LocalOrServer
+ --============================================================================
+function Check_LocalOrServer()
 	DATAMANAGER.RequestTranData("ohhts_intr_039r")
 	Form.Toast(0, "등록되었습니다.", true)
-End Function
+end
 
-'============================================================================
-' Insert_GrdList : grdList에 종목 추가
-'============================================================================
-Function Insert_GrdList()
+ --============================================================================
+ -- Insert_GrdList : grdList에 종목 추가
+ --============================================================================
+function Insert_GrdList()
 
-	if Trim(g_szCode) <> "" then
+	if gf_Trim(g_szCode) ~= "" then
 		grdList.insertrow = 0
 		grdList.SetCellData("bd_memo", 0, "")
-		Dim szMk, szCode
+		local szMk, szCode
 		szMk = ""
-		if Trim(g_szCode) <> "" then
-			if Instr(1, g_szCode, "@") > 0	then								
-				tCode = Split(g_szCode, "@")
-				szMk = tCode[0]
-				szCode = tCode[1]
-			end if
-		end if
+		if gf_Trim(g_szCode) ~= "" then
+			if string.find(1, g_szCode, "@") > 0 then
+				tCode = gf_Split(g_szCode, "@")
+				szMk = tCode[0+1]
+				szCode = tCode[1+1]
+			end
+		end
 		
 		grdList.SetCellData("bd_code", 0, szCode)		
 		grdList.SetCellData("bd_mk", 0, szMk)
 		
 		szName = Form.GetItemCodeInfo(g_szCode, "name")
 		grdList.SetCellData("bd_name", 0, szName)
-	end if
+	end
 	
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'============================================================================
+ --============================================================================
 
-'============================================================================
-Sub Form_OnFormInit()
-	Dim szData, arrData
+ --============================================================================
+function Form_OnFormInit()
+	local szData, arrData
 
 	szData = Form.GetOpenLinkData()
 	
-	if Trim(szData) = "" then
-	    Exit sub
-	End if	
+	if gf_Trim(szData) == "" then
+	    return
+	end
 
 	g_szCode = szData
 	
 	
-	' 그리드 로우 위치 변경 위한 속성
+	 -- 그리드 로우 위치 변경 위한 속성
 	grdGroup.rowmove = "1"
 	
 	DATAMANAGER.RequestTranData("ohhts_intr_036r")
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
-	' ----------------------------------------------------------------------
-	' 관심그룹 조회
-	' ----------------------------------------------------------------------
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	 -- ----------------------------------------------------------------------
+	 -- 관심그룹 조회
+	 -- ----------------------------------------------------------------------
 	if szTranID == "ohhts_intr_036r" then
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_036r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("&USER_ID", false))	' USER ID
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_036r", "InBlock1", "FID_KIND_CODE", 0, "1")	' 통합구분 (0:국내해외통합, 1:해외주식전용)
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_036r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("..USER_ID", false))	 -- USER ID
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_036r", "InBlock1", "FID_KIND_CODE", 0, "1")	 -- 통합구분 (0:국내해외통합, 1:해외주식전용)
 	
-	' ----------------------------------------------------------------------
-	' 관심종목 종목 조회
-	' ----------------------------------------------------------------------
+	 -- ----------------------------------------------------------------------
+	 -- 관심종목 종목 조회
+	 -- ----------------------------------------------------------------------
 	elseif szTranID == "ohhts_intr_037r" then
 		grdList.rowcount = "0"
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_037r", "InBlock1", "FID_USER_ID",          0, Form.GetSharedData("&USER_ID", false))	' USER ID	
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_037r", "InBlock1", "FID_KIND_CODE",         0, "1")	' 통합구분 (0:국내해외통합, 1:해외주식전용)
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_037r", "InBlock1", "FID_CNCN_ISSU_GRP_ID", 0, g_szGroupID)								' 관심그룹ID	
-	' ----------------------------------------------------------------------
-	' 관심 수정 TR : 종목추가, 빈칸추가
-	' ----------------------------------------------------------------------
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_037r", "InBlock1", "FID_USER_ID",          0, Form.GetSharedData("..USER_ID", false))	 -- USER ID	
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_037r", "InBlock1", "FID_KIND_CODE",         0, "1")	 -- 통합구분 (0:국내해외통합, 1:해외주식전용)
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_037r", "InBlock1", "FID_CNCN_ISSU_GRP_ID", 0, g_szGroupID)								 -- 관심그룹ID	
+	 -- ----------------------------------------------------------------------
+	 -- 관심 수정 TR : 종목추가, 빈칸추가
+	 -- ----------------------------------------------------------------------
 	elseif szTranID == "ohhts_intr_039r" then
 		DATAMANAGER.ClearInputData(false, "ohhts_intr_039r")
 		DATAMANAGER.ClearOutputData(false, "ohhts_intr_039r")
 		
 		if not isNull(g_szGroupID) then
-			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_USER_ID",     0, Form.GetSharedData("&USER_ID", false))	' FID사용자ID
-			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_KIND_CODE",     0, "1")								' 통합구분 (0:국내해외통합, 1:해외주식전용)
-			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_VRSN_ID",     0, edtvrsnID.caption)						' FID버전ID	
-			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_MOD_YN",      0, "0")									' FID수정여부				
-			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_ISSU_MOD_YN", 0, "0")									' FID종목수정여부
+			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_USER_ID",     0, Form.GetSharedData("..USER_ID", false))	 -- FID사용자ID
+			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_KIND_CODE",     0, "1")								 -- 통합구분 (0:국내해외통합, 1:해외주식전용)
+			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_VRSN_ID",     0, edtvrsnID.caption)						 -- FID버전ID	
+			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_MOD_YN",      0, "0")									 -- FID수정여부				
+			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock1", "FID_ISSU_MOD_YN", 0, "0")									 -- FID종목수정여부
 			
-			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock2", "FID_CNCN_ISSU_GRP_ID", 0, g_szGroupID)						' FID관심종목그룹ID
-			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock2", "FID_CNCN_GRP_NAME",    0, g_szGroupName)						' FID관심그룹명	
+			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock2", "FID_CNCN_ISSU_GRP_ID", 0, g_szGroupID)						 -- FID관심종목그룹ID
+			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock2", "FID_CNCN_GRP_NAME",    0, g_szGroupName)						 -- FID관심그룹명	
 			DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock2", "FID_ISSU_MOD_YN",      0, "1")
 	
-			For j = 0 to grdList.rowcount - 1
-				' FID관심종목그룹			
+			for j = 0, grdList.rowcount - 1 do
+				 -- FID관심종목그룹			
 				DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_CNCN_ISSU_GRP_ID",    j, g_szGroupID)
-				' FID관심종목
+				 -- FID관심종목
 				DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_CNCN_ISSU_ID2",       j, Change_Len(j))
-				' FID코드구분코드
-				if Trim( grdList.GetCellData("bd_mk", j)) == "" then													
-					if Trim(grdList.GetCellData("bd_name", j)) == "" then
-						DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_CODE_CLS_CODE", j, "2")	' 빈칸
+				 -- FID코드구분코드
+				if gf_Trim(grdList.GetCellData("bd_mk", j)) == "" then
+					if gf_Trim(grdList.GetCellData("bd_name", j)) == "" then
+						DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_CODE_CLS_CODE", j, "2")	 -- 빈칸
 					else
-						DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_CODE_CLS_CODE", j, "3")	' 메모
-					end if
+						DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_CODE_CLS_CODE", j, "3")	 -- 메모
+					end
 				else
-					DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_CODE_CLS_CODE", j, "1")		' 종목
-				end if
+					DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_CODE_CLS_CODE", j, "1")		 -- 종목
+				end
 	
-				' FID입력시장구분코드
+				 -- FID입력시장구분코드
 				DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_INPUT_MRKT_CLS_CODE", j, "OV")	
-				DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_COND_MRKT_CLS_CODE", j, grdList.GetCellData("bd_mk", j) )' FID입력시장구분코드	
+				DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_COND_MRKT_CLS_CODE", j, grdList.GetCellData("bd_mk", j) ) -- FID입력시장구분코드	
 	
-				' FID관심종목코드 / FID메모내용
-				if Trim(grdList.GetCellData("bd_code", j)) == "빈칸" or Trim(grdList.GetCellData("bd_code", j)) == "EMPTY" then
+				 -- FID관심종목코드 / FID메모내용
+				if gf_Trim(grdList.GetCellData("bd_code", j)) == "빈칸" or gf_Trim(grdList.GetCellData("bd_code", j)) == "EMPTY" then
 					DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_OVDV_ISCD", j, "EMPTY")
 					DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_MEMO_CNTT", j, grdList.GetCellData("bd_memo", j))	
 				else
 					DATAMANAGER.SetDataValue(0, "ohhts_intr_039r", "InBlock3", "FID_OVDV_ISCD", j, grdList.GetCellData("bd_code", j))
-				end if
-			Next
-		end if
-	' ----------------------------------------------------------------------
-	' 관심 수정 TR :그룹추가
-	' ----------------------------------------------------------------------
+				end
+			end
+		end
+	 -- ----------------------------------------------------------------------
+	 -- 관심 수정 TR :그룹추가
+	 -- ----------------------------------------------------------------------
 	elseif szTranID == "ohhts_intr_038r" then
 		DATAMANAGER.ClearInputData(false, "ohhts_intr_038r")
 		DATAMANAGER.ClearOutputData(false, "ohhts_intr_038r")
-		' ////////////// 종목추가, 빈칸적용시 ////////////////
-		' FID사용자ID
-		DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock1", "FID_USER_ID",     0, Form.GetSharedData("&USER_ID", false))
+		 -- ////////////// 종목추가, 빈칸적용시 ////////////////
+		 -- FID사용자ID
+		DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock1", "FID_USER_ID",     0, Form.GetSharedData("..USER_ID", false))
 
-		' 통합구분 (0:국내해외통합, 1:해외주식전용)
+		 -- 통합구분 (0:국내해외통합, 1:해외주식전용)
 		DATAMANAGER.SetDataValue(0,"ohhts_intr_038r", "InBlock1", "FID_KIND_CODE" ,     0, "1")	
-		' FID버전ID
+		 -- FID버전ID
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock1", "FID_VRSN_ID",     0, edtvrsnID.caption)	
-		' FID수정여부
+		 -- FID수정여부
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock1", "FID_MOD_YN",      0, "0")				
-		' FID종목수정여부
+		 -- FID종목수정여부
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock1", "FID_ISSU_MOD_YN", 0, "0")					
 		
-		'///// 그룹이 없을경우만 등록하므로 그룹ID, 그룹명 고정
-		' FID관심종목그룹ID
+		 --///// 그룹이 없을경우만 등록하므로 그룹ID, 그룹명 고정
+		 -- FID관심종목그룹ID
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock2", "FID_CNCN_ISSU_GRP_ID", i, "00")
-		' FID관심그룹명
+		 -- FID관심그룹명
 		DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock2", "FID_CNCN_GRP_NAME",    i, "관심종목00")	
 
-		' FID종목수정여부
-		'if cmbGroup.cbkeydata == grdGroup.GetCellData("bd_code", i) then	
-		'if g_szCode == grdGroup.GetCellData("bd_code", i) then	
+		 -- FID종목수정여부
+		 --if cmbGroup.cbkeydata == grdGroup.GetCellData("bd_code", i) then	
+		 --if g_szCode == grdGroup.GetCellData("bd_code", i) then	
 		
-		'	DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock2", "FID_ISSU_MOD_YN", i, "1")			' 수정
-		'else
-			DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock2", "FID_ISSU_MOD_YN", i, "0")			' 수정안함
-		'end if
-	end if
-End Sub
+		 --	DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock2", "FID_ISSU_MOD_YN", i, "1")			' 수정
+		 --else
+			DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock2", "FID_ISSU_MOD_YN", i, "0")			 -- 수정안함
+		 --end if
+	end
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	' 관심그룹 조회
-	If szTranID = "ohhts_intr_036r" Then
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	 -- 관심그룹 조회
+	if szTranID == "ohhts_intr_036r" then
 		grdGroup.selectrow = 0		
 		grdGroup_OnClickUp(0, "bd_name")
-	' 관심 종목 조회
-	ElseIf szTranID = "ohhts_intr_037r" Then
+	 -- 관심 종목 조회
+	elseif szTranID == "ohhts_intr_037r" then
 		Insert_GrdList()
-	' 관심그룹추가
-	ElseIf szTranID = "ohhts_intr_038r" Then
+	 -- 관심그룹추가
+	elseif szTranID == "ohhts_intr_038r" then
 		grdGroup.rowcount = 0
 		grdList.rowcount = 0
 		DATAMANAGER.RequestTranData("ohhts_intr_036r")
-	End If
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 
-End Sub
+end
 
-'============================================================================
-' null 체크
-'============================================================================
-Sub isNull(str)
-	if null == str or "" == str or Len(Trim(str)) <= 0 then
+ --============================================================================
+ -- null 체크
+ --============================================================================
+function isNull(str)
+	if nil == str or "" == str or string.len(gf_Trim(str)) <= 0 then
 		return true
-	end if
+	end
 	
 	return false
-end Sub
+end
 
-'============================================================================
-Sub btnCancel_OnClick()
+ --============================================================================
+function btnCancel_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub btnSave_OnClick()
-	Dim nRowCount
-	nRowCount = CInt(grdList.rowcount)
+ --============================================================================
+function btnSave_OnClick()
+	local nRowCount
+	nRowCount = gf_Tonumber(grdList.rowcount)
 	
 	if grdGroup.rowcount == 0 or grdGroup.rowcount == "0" then
 		Form.MsgBox("알림", "등록된 관심그룹이 없습니다.\n 관심그룹을 새로 등록하시겠습니까?", "ADD_GROUP", 1)
@@ -441,37 +443,38 @@ Sub btnSave_OnClick()
 	else
 		Check_LocalOrServer()
 		Form.CloseForm()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub imgClose_OnClick()
+ --============================================================================
+function imgClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub grdGroup_OnClickUp(lRow, szCellID)
+ --============================================================================
+function grdGroup_OnClickUp(lRow, szCellID)
 	g_szRow = lRow
 	g_szGroupID   = grdGroup.GetCellData( "bd_code", lRow )
 	g_szGroupName = grdGroup.GetCellData( "bd_name", lRow )
 
 	grdList.rowcount = 0
 	
-	' 관심종목 종목 조회
+	 -- 관심종목 종목 조회
 	DATAMANAGER.RequestTranData("ohhts_intr_037r")	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnMsgBoxClose(sKeyName, sRet)
-	' 그룹추가
+ --============================================================================
+function Form_OnMsgBoxClose(sKeyName, sRet)
+	 -- 그룹추가
 	if sKeyName == "ADD_GROUP" then
 		if sRet == "ok" then
 			DATAMANAGER.RequestTranData("ohhts_intr_038r")
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_intr_036r" trcode="ohhts_intr_036r" compress="1" encryption="1" inputcheck="1" useattr="0" />

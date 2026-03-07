@@ -215,7 +215,7 @@ dofile("scr/script.lua")
 dofile("scr/json.lua")
  ---------------------------------------------------------------------------------------------------
  --20241216 LES START - 미국장 장운영 정보 조회
- --20241216_2 LES START - 미국&주간장or애프터장 백그라운드 => 포그라운드 전환 시 시세 조회 개선
+ --20241216_2 LES START - 미국..주간장or애프터장 백그라운드 => 포그라운드 전환 시 시세 조회 개선
  -- 20250924 : HWG : v20250924_02 : 물타기 계산기 신규개발
  -- 20251114 : YSH : v20251114_01 : 주간장, 애프터장에서 HOGA_COMPLETE 노티 발생 오류 수정
  ---------------------------------------------------------------------------------------------------
@@ -363,7 +363,7 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	 -- 타 화면 연동
 	 -------------------------------------------------------------------------------
-	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수
+	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end
 	
 		FormTab0.currenttabpageid = "page0"
 	
@@ -388,7 +388,7 @@ function Form_OnFormInit()
 			
 			szLinkCode = arrLinkCode[0+1]
 			
-			if szLinkCode ~= "기타" then -- 20251114 KSJ APPLINK 예외처리
+			if szLinkCode ~= "기타" then -- 20251114 KSJ APPLINK 예외처리 end
 	
 				if CheckMasterFile(szLinkCode) then
 					
@@ -428,7 +428,7 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	ItemCode0.code = Form.GetSharedData("..ITEM_CODE", false)
 	
-	if string.len(ItemCode0.code) > 0 then
+	if string.string.len(ItemCode0.code) > 0 then
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "InitCode", ItemCode0.code )
 		Form.TriggerEvent( "LinkFormTop", "RequestData", ItemCode0.code)
 	end
@@ -460,7 +460,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 	 --------------------------------------------------------------------------
 	elseif sEventName == "SCREEN_MENU" then -- 연결정보(상단 ...)
 		
-		if sParam == "REG_INTR" then -- 관심종목등록
+		if sParam == "REG_INTR" then -- 관심종목등록 end
 			Form.OpenPopup( "mhtro16010_p5" , ItemCode0.code , "" )
 
 		elseif sParam == "SET_SCREEN" then -- 화면설정
@@ -652,7 +652,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 	elseif sEventName == "CHANGE_MKTOP" then
 	
 		 --20250707 YSH TEST
-		 --Form.ShowAlert("mhtro16100_해외주식 주문", sEventName & gMkClsCode)
+		 --Form.ShowAlert("mhtro16100_해외주식 주문", sEventName .. gMkClsCode)
 		gMkClsCode = sParam
 		
 		 --20250704 YSH START : 해외주식 장운영 정보 조회방식 변경
@@ -726,11 +726,11 @@ function Form_OnCommonDialogReturn(sDlgName, sReturn1, sReturn2)
 	 --20240617 LES START - 해외/국내 종목선택창 통합
 	 --sReturn1 = 거래소코드★종목코드
 	 --name = 종목명 
-	 --if sReturn1 <> "" then
+	 --if sReturn1 ~= "" then
 	 --	
 	 --	name = Form.GetItemCodeInfo(sReturn1, "name")
 	 --	
-	 --	Form.setOverStockItemCode(sReturn1.."★"..name)
+	 --	Form.SetOverStockItemCode(sReturn1.."★"..name)
 	 --	ItemCode0_OnEditComplete(sReturn1.."★"..name)
 	 --end if
 	 --20240617 LES END
@@ -741,7 +741,7 @@ end
 function Form_OnLinkData(sKey, sValue)
 	 --20240617 LES START - 해외/국내 종목선택창 통합
 	if "&ITEM_CODE" == sKey then
-		if CheckMasterFile(sValue) then --20240621 
+		if CheckMasterFile(sValue) then --20240621 end
 			edtOrgNo.caption = ""
 			ItemCode0_OnEditComplete(sValue)
 		end
@@ -751,7 +751,7 @@ function Form_OnLinkData(sKey, sValue)
 	 --해외주식 장운영 정보 조회방식 변경
 	elseif sKey == "OVRS_MARKET_OPERATION_TRAN" then
 		 --20250707 YSH TEST
-		 --Form.ShowAlert("mhtro16100_해외주식 주문", "조회 성공 - " & sValue)
+		 --Form.ShowAlert("mhtro16100_해외주식 주문", "조회 성공 - " .. sValue)
 		if sValue == "SUCCESS" then
 			gMkClsCode = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 		end
@@ -800,7 +800,7 @@ function FormTab0_OnTabChanged(nCurrentTab)
 	 --======================================================================
 	 --종목연동 및 주문설정값 연동
 	 --======================================================================
-	if string.len(ItemCode0.code) > 0 then
+	if string.string.len(ItemCode0.code) > 0 then
 		
 		if nCurrentTab == 2 or nCurrentTab == "2" then
 			
@@ -888,7 +888,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	
 	elseif szTranID == "ohhts_6000_001r" then
 		
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -900,7 +900,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		
 	elseif szTranID == "ohhts_6000_002r" then
 	
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -912,7 +912,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	
 	elseif szTranID == "ohhts_6000_003r" then
 		
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -927,7 +927,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	 ------------------------------------------------------------
 	elseif szTranID == "ohhts_6000_017r" or szTranID == "ohhts_6000_017r_1" then
 	
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -943,7 +943,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	 ------------------------------------------------------------
 	elseif szTranID == "ohhts_6000_020r" or szTranID == "ohhts_6000_020r_1" then
 	
-		 --sCodeData[1] 마켓, sCodeData[2] 코드
+		 --sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = {}	
 		sCodeData = gf_Split(g_sCode, "@")
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -962,7 +962,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	 ---------------------------------------------------------------------------
 	 --elseif szTranID == "obtro_acnt_900r" then
 	 --
-	 --	szCustNum = Form.GetSharedData("&CUST_NUM", false)
+	 --	szCustNum = Form.GetSharedData("..CUST_NUM", false)
 	 --
 	 --	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "BSWR_CLCD" 			, 0 , "08")
 	 --	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "CSNO" 				, 0 , szCustNum)
@@ -1026,9 +1026,9 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			 ---------------------------------------------------------------------------
 			 -- 액면분할/권리선반영 시 사용하는 로직 
 			 ---------------------------------------------------------------------------
-			 --szToday = Form.GetSharedData("&HOST_DATE", false )
+			 --szToday = Form.GetSharedData("..HOST_DATE", false )
 			 --
-			 --if tonumber(szToday) >= 20240311 and tonumber(szToday) <= 20240318 then
+			 --if gf_Tonumber(szToday) >= 20240311 and gf_Tonumber(szToday) <= 20240318 then
 			 --	DATAMANAGER.RequestTranData("obtro_acnt_900r")
 			 --end if
 			 ---------------------------------------------------------------------------
@@ -1050,7 +1050,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		
 		 ---------------------------------------------------------------------------------------------
 		 -- [호가] 상/하한가 데이터 존재 여부에 따라 호가테이블 위치/높이 조정
-		 -- 단, 현재 탭이 매수/매도 일 경우에만 동작. 정정/취소 & 주문/체결 & 잔고일때는 스킵
+		 -- 단, 현재 탭이 매수/매도 일 경우에만 동작. 정정/취소 .. 주문/체결 .. 잔고일때는 스킵
 		 ---------------------------------------------------------------------------------------------
 		nMaxPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_MXPR" , 0))
 		nMinPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_LLAM" , 0))
@@ -1079,7 +1079,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		sDnLimit		=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_LLAM" 		, 0 )))	 -- 하한가
 		sDecimalLen 	=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_DCPN_CNT" 	, 0 )))	 -- 가격소수점
 		
-		if g_NoSendItemInfo ~= true and g_NoSendItemInfoExceptCase ~= true then --20240725
+		if g_NoSendItemInfo ~= true and g_NoSendItemInfoExceptCase ~= true then --20240725 end
 			SendItemInfo(sCurPrice,sUpLimit,sDnLimit,sOrdSize,sCurrency,sDecimalLen,sKorName,sTickType,sOrdSizeMaedo)
 		end
 		
@@ -1125,7 +1125,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			 --do nothing
 		 --20251114 YSH END
 		else
-			if g_NoSendHogaData ~= true and g_NoSendHogaDataExceptCase ~= true then --20240725
+			if g_NoSendHogaData ~= true and g_NoSendHogaDataExceptCase ~= true then --20240725 end
 				Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "HOGA_COMPLETE", "")
 			end
 			
@@ -1231,7 +1231,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	 ---------------------------------------------------------------------------
 	 --elseif szTranID == "obtro_acnt_900r" then
 	 --
-	 --	'애플/테슬라 잔고보유 고객한테만 유의사항 팝업 띄어줌.
+	 --	 --애플/테슬라 잔고보유 고객한테만 유의사항 팝업 띄어줌.
 	 --	agreeYn = DATAMANAGER.GetDataValue(0, "obtro_acnt_900r", "OutBlock1", "AGRM_YN" 		, 0)
 	 --	jangoYn = DATAMANAGER.GetDataValue(0, "obtro_acnt_900r", "OutBlock1", "RMND_EXST_YN" 	, 0)
 	 --	
@@ -1439,11 +1439,11 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		if #arrRetData > 2 then
 			sItemCd = arrRetData[0+1]
 			
-			if CheckMasterFile(sItemCd) then --20240621 
+			if CheckMasterFile(sItemCd) then --20240621 end
 				sItemName = Form.GetItemCodeInfo(sItemCd, "name")
 				
 				 --종목선택창에서 종목을 선택한 경우, 아래 호출함수는 메인에서 호출
-				 --Form.setOverStockItemCode(sItemCd.."★"..sItemName)
+				 --Form.SetOverStockItemCode(sItemCd.."★"..sItemName)
 				
 				ItemCode0_OnEditComplete(sItemCd)
 			end
@@ -1574,7 +1574,7 @@ function Request_Hoga(sCode)
 	sDayYN = Form.GetSharedData( "..OVRS_DAYMARKET", false )
 	sAfterYN = Form.GetSharedData("OVRS_AFTER_MARKET_ORDER", false )
 	
-	if sDayYN == "Y" and g_NoSendHogaData == false and g_NoSendHogaDataExceptCase == false then --20240725
+	if sDayYN == "Y" and g_NoSendHogaData == false and g_NoSendHogaDataExceptCase == false then --20240725 end
 		
 		if g_sCode ~= "" then
 			arrCode = gf_Split(g_sCode,"@")
@@ -1611,7 +1611,7 @@ function Request_Hoga(sCode)
 	 --------------------------------------------------------------------------
 	 -- 20241216_2 LES START
 	 --------------------------------------------------------------------------
-	 -- 미국종목 & 주간장or애프터장 & 휴일or휴장이 아닐때 포그라운드 전환 시
+	 -- 미국종목 .. 주간장or애프터장 .. 휴일or휴장이 아닐때 포그라운드 전환 시
 	 -- lblHyun(주문가격자동입력 시 사용되는 현재가를 담고있는 라벨)에
 	 -- 정규장 시세가 조회되는 현상 방지
 	 --------------------------------------------------------------------------

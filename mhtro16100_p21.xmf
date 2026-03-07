@@ -118,14 +118,14 @@ function SetCheckFilter(iPos)
 	for i = 0, 10 do
 		 --비활성화
 		Form.SetCtlProp("contMain.img" .. gf_Tostring(i), "imgpath", "btn_line2_n.9.png")
- --		Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "146")
- --		Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "00")
+ --		Form.SetCtlProp("contMain.lbl" .. gf_Tostring(i), "fgcolor", "146")
+ --		Form.SetCtlProp("contMain.lbl" .. gf_Tostring(i), "fontstyle", "00")
 	
 		if i == iPos then
 			 --활성화
 			Form.SetCtlProp("contMain.img" .. gf_Tostring(i), "imgpath", "btn_line2_o.9.png")
- --			Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "334")
- --			Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "01")			
+ --			Form.SetCtlProp("contMain.lbl" .. gf_Tostring(i), "fgcolor", "334")
+ --			Form.SetCtlProp("contMain.lbl" .. gf_Tostring(i), "fontstyle", "01")			
 		end
 	end
 	

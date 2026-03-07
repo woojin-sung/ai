@@ -288,7 +288,7 @@ function Process_Tran_ohhts_6230_002r()
 			end
 		end
 		
-		 --현재가 & 수익률
+		 --현재가 .. 수익률
 		
 		
 		szPrcRateAttr2 = ""
@@ -357,9 +357,9 @@ end
 function DisplaySetting_Pannel(nIdx, szItemCd, szMktCd, szItemNm, szPrcRate,szPrcRate2, szPrcRateAttr,szPrcRateAttr2, szImgNm)
 	 --상단 라인표시
  --	if nIdx = 0 then
- --		Pannel0.setPropCardCell("bgcolor","lblLine2", nIdx , g_szTxtColor_White)
+ --		Pannel0.SetPropCardCell("bgcolor","lblLine2", nIdx , g_szTxtColor_White)
  --	else
- --		Pannel0.setPropCardCell("bgcolor","lblLine2", nIdx , g_szLineColor)
+ --		Pannel0.SetPropCardCell("bgcolor","lblLine2", nIdx , g_szLineColor)
  --	end if
 	
 	Pannel0.SetPropCardCell("bgcolor","lblLine2", nIdx , g_szLineColor2)
@@ -425,7 +425,7 @@ function DisplaySetting_Pannel(nIdx, szItemCd, szMktCd, szItemNm, szPrcRate,szPr
 		Pannel0.SetPropCardCell("left","lblItemPrc0",nIdx, "400")
 	end
 
- --	'(숨김)종목코드
+ --	 --(숨김)종목코드
 	Pannel0.SetPropCardCell("caption","lblHideData0",nIdx, szMktCd)
 	Pannel0.SetPropCardCell("caption","lblHideData1",nIdx, szItemCd)
 	Pannel0.SetPropCardCell("caption","lblHideData2",nIdx, szItemNm)
@@ -491,12 +491,12 @@ function MovePopup(nidx, nGbn)
 			Form.SetSharedData( "..ITEM_OVERSTOCK", szItemCd.."★"..szItemNm.."★".."", "" )					
 			Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", szItemCd.."★"..szItemNm.."★".."", "" )
 			
-			if nGbn == 0 then -- 현재가
+			if nGbn == 0 then -- 현재가 end
 				Form.SendReturnToParent( "RETURN_LAYOUT" , "호가")			
 			elseif nGbn == 1 then -- 차트
 				Form.OpenScreen("16020", "")
 			elseif nGbn == 2 then
-				 --Form.triggerEvent("#", "RETURN_LAYOUT", "종목정보")
+				 --Form.TriggerEvent("#", "RETURN_LAYOUT", "종목정보")
 			elseif nGbn == 3 then -- 매수
 				Form.OpenScreen("16060", "0")
 			elseif nGbn == 4 then -- 매도
@@ -514,7 +514,7 @@ end
  -- Form_OnFormInitBefore
  --===============================================
 function Form_OnFormInitBefore()
-	 --contMain.contCont.lblContent.sizeAutoFit()
+	 --contMain.contCont.lblContent.SizeAutoFit()
 end
 
  --===============================================

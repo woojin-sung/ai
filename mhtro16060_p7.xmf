@@ -34,100 +34,102 @@
 		<BUTTON name="btnOrder" caption="매수" ly_vert="147,592,230,55,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="8103" _ulen="7297" >
-'-------------------------------------------------------------------------------------------
-' 01. 화 면 명 : 예약주문
-' 02. 화면설명 : 예약주문 경고안내
-' 03. 작    성 : 2016.04.30 LJS
-'-------------------------------------------------------------------------------------------
-'250722 HSZ: 주식모으기 추가 및 UI 변경(btnOrder 이미지 16100_p8에 맞춤)
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ ---------------------------------------------------------------------------------------------
+ -- 01. 화 면 명 : 예약주문
+ -- 02. 화면설명 : 예약주문 경고안내
+ -- 03. 작    성 : 2016.04.30 LJS
+ ---------------------------------------------------------------------------------------------
+ --250722 HSZ: 주식모으기 추가 및 UI 변경(btnOrder 이미지 16100_p8에 맞춤)
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
 
-Dim g_nCount
+local g_nCount
 	g_nCount = 0
 
-Dim g_nIndex				' 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
-Dim 	g_szOrder_Acc			' 계좌번호
-Dim 	g_szOrder_AccName		' 고객명
-Dim 	g_szOrd_ItmCode		' 종목코드
-Dim 	g_szOrd_ItmName		' 종목명
-Dim 	g_szOrd_OrdType		' 주문구분
-Dim 	g_szOrd_Security		' 현금/신용
-Dim 	g_nOrd_Qty			' 주문수량
-Dim 	g_nOrd_Price			' 주문가격
-Dim 	g_nOrd_OrdNo			' 원주문번호
-Dim 	g_nOrd_ChkAll			' 잔량전부	
-Dim	g_nOrd_Decimal		' 가격자릿수
-Dim 	g_szErrMsg			' 경고메세지
+local g_nIndex -- 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
+local g_szOrder_Acc -- 계좌번호
+local g_szOrder_AccName -- 고객명
+local g_szOrd_ItmCode -- 종목코드
+local g_szOrd_ItmName -- 종목명
+local g_szOrd_OrdType -- 주문구분
+local g_szOrd_Security -- 현금/신용
+local g_nOrd_Qty -- 주문수량
+local g_nOrd_Price -- 주문가격
+local g_nOrd_OrdNo -- 원주문번호
+local g_nOrd_ChkAll -- 잔량전부	
+local g_nOrd_Decimal -- 가격자릿수
+local g_szErrMsg -- 경고메세지
 
-'20201020 SWJ START : 해외주식 고유 주문착오 방지
-Dim g_MediaType			' 채널매체변수
+ --20201020 SWJ START : 해외주식 고유 주문착오 방지
+local g_MediaType -- 채널매체변수
 	g_MediaType = ""
-'20201020 SWJ END
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
-'****************************************************************************
+ --20201020 SWJ END
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
+ --****************************************************************************
 
-'============================================================================
-'주문화면 데이터
-'============================================================================
-Function Set_Data(nIndex)
+ --============================================================================
+ --주문화면 데이터
+ --============================================================================
+function Set_Data(nIndex)
 
-	If g_nOrd_ChkAll = "1" Then
-		If g_nIndex = 2 Then
+	if g_nOrd_ChkAll == "1" then
+		if g_nIndex == 2 then
 			g_nOrd_Qty = "잔량"
-		ElseIf g_nIndex = 3 Then
+		elseif g_nIndex == 3 then
 			g_nOrd_Qty = "전부"
-		End If
-	End If
+		end
+	end
 	
-'	If g_szOrder_MarketType = "W" Then	'ELW
-'		If g_nIndex = "0" Then
-'			lblTitle.caption = "ELW매수주문"
-'		ElseIf g_nIndex = "1" Then
-'			lblTitle.caption = "ELW매도주문"
-'		ElseIf g_nIndex = "2" Then
-'			lblTitle.caption = "ELW정정주문"
-'		ElseIf g_nIndex = "11" Then
-'			lblTitle.caption = "(예약)ELW매수주문"
-'		ElseIf g_nIndex = "12" Then
-'			lblTitle.caption = "(예약)ELW매도주문"
-'		End If
-'	End If
+ --	If g_szOrder_MarketType = "W" Then	'ELW
+ --		If g_nIndex = "0" Then
+ --			lblTitle.caption = "ELW매수주문"
+ --		ElseIf g_nIndex = "1" Then
+ --			lblTitle.caption = "ELW매도주문"
+ --		ElseIf g_nIndex = "2" Then
+ --			lblTitle.caption = "ELW정정주문"
+ --		ElseIf g_nIndex = "11" Then
+ --			lblTitle.caption = "(예약)ELW매수주문"
+ --		ElseIf g_nIndex = "12" Then
+ --			lblTitle.caption = "(예약)ELW매도주문"
+ --		End If
+ --	End If
 			
-'	If g_szOrd_Security = "1" Then
-'		If g_nIndex = "0" Then
-'			lblTitle.caption = "신용매수주문"
-'		ElseIf g_nIndex = "1" Then
-'			lblTitle.caption = "신용매도주문"
-'		ElseIf g_nIndex = "2" Then
-'			lblTitle.caption = "신용정정주문"
-'		ElseIf g_nIndex = "11" Then
-'			lblTitle.caption = "(예약)신용매수주문"
-'		ElseIf g_nIndex = "12" Then
-'			lblTitle.caption = "(예약)신용매도주문"
-'		End If
-'	End If
+ --	If g_szOrd_Security = "1" Then
+ --		If g_nIndex = "0" Then
+ --			lblTitle.caption = "신용매수주문"
+ --		ElseIf g_nIndex = "1" Then
+ --			lblTitle.caption = "신용매도주문"
+ --		ElseIf g_nIndex = "2" Then
+ --			lblTitle.caption = "신용정정주문"
+ --		ElseIf g_nIndex = "11" Then
+ --			lblTitle.caption = "(예약)신용매수주문"
+ --		ElseIf g_nIndex = "12" Then
+ --			lblTitle.caption = "(예약)신용매도주문"
+ --		End If
+ --	End If
 	
 	lblMsg.caption = g_szErrMsg	
 	
-	'20201020 SWJ START : 해외주식 고유 주문 착오방지
-	g_MediaType = Form.GetSharedData("&MEDIA_CODE" , false)
+	 --20201020 SWJ START : 해외주식 고유 주문 착오방지
+	g_MediaType = Form.GetSharedData("..MEDIA_CODE" , false)
 	
-	if trim(g_MediaType) = "158" or trim(g_MediaType) = "159" then 
+	if gf_Trim(g_MediaType) == "158" or gf_Trim(g_MediaType) == "159" then
 		tbl0.SetCellString( 0, 0, "펀드코드")
-	end if
-	'20201020 SWJ END
+	end
+	 --20201020 SWJ END
 	
-	'20220623 HSZ START: 해외소수점 마스킹 추가 / 수량, 소수점 6자리수까지
-	szScrno = Form.GetSharedData( "&SCREEN_NO" , false ) 
-	if szScrno = "16092" or g_nIndex = "20" then	'250722 HSZ: 주식 모으기 추가
+	 --20220623 HSZ START: 해외소수점 마스킹 추가 / 수량, 소수점 6자리수까지
+	szScrno = Form.GetSharedData( "..SCREEN_NO" , false ) 
+	if szScrno == "16092" or g_nIndex == "20" then --250722 HSZ: 주식 모으기 추가
 		tbl0.SetCellMaskInfo( 3, 1,  "0,0,,,0,,".."6"..",1,1,2,0")
-		tbl0.SetCellString( 4, 0, "금      액")	'250722 HSZ
-	end if
-	'20220623 HSZ END
+		tbl0.SetCellString( 4, 0, "금      액")	 --250722 HSZ
+	end
+	 --20220623 HSZ END
 	
 	tbl0.SetCellString( 0, 1, g_szOrder_Acc 		)
 	tbl0.SetCellString( 0, 2, g_szOrder_AccName	)
@@ -140,115 +142,115 @@ Function Set_Data(nIndex)
 	tbl0.SetCellMaskInfo( 4, 1, sMask )
 	tbl0.SetCellString( 4, 1, g_nOrd_Price )	
 
-End Function
+end
 
-'============================================================================
-Function SendOrder()
-    If g_nCount = 0 Then
+ --============================================================================
+function SendOrder()
+    if g_nCount == 0 then
 	    Form.SendReturnToParent( "주문경고" , "1")
 	    
 	    g_nCount = 1
 	    Form.CloseForm( )
-    End If
+    end
     
-End Function
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+end
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'============================================================================
-Sub Form_OnFormInit()
-	Dim szData, arrData, szItemName
+ --============================================================================
+function Form_OnFormInit()
+	local szData, arrData, szItemName
 
 	szData = Form.GetOpenLinkData()
 	
-	'250722 보안로직 추가
-	if Instr(szData, "|") < 1 then
+	 --250722 보안로직 추가
+	if string.find(szData, "|") < 1 then
 		Form.CloseForm()
-	end if
+	end
 	
-	arrData = Split(szData,"|")
+	arrData = gf_Split(szData,"|")
 	
-	if UBOUND(arrData) < 1 then
-	    Exit sub
-	End if	
+	if #arrData < 1 then
+	    return
+	end
 
-	g_nIndex				= arrData( 0) ' 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소, 10:예약매수, 11:예약매도, 12:예약취소, 20:모으기 신청)
-	g_szOrder_Acc			= arrData( 1)	' 계좌번호
-	g_szOrder_AccName		= arrData( 2)	' 고객명
-	g_szOrd_ItmCode 		= arrData( 3)	' 종목코드
-	g_szOrd_ItmName 		= arrData( 4)	' 종목명
-	g_szOrd_OrdType  		= arrData( 5)	' 주문구분
-	g_szOrd_Security 		= arrData( 6)	' 현금
-	g_nOrd_Qty   			= arrData( 7)	' 주문수량
-	g_nOrd_Price 			= arrData( 8)	' 주문가격
-	g_nOrd_OrdNo 			= arrData( 9)	' 원주문번호
-	g_nOrd_ChkAll 		= arrData(10)	' 잔량전부
-	g_nOrd_Decimal		= arrData(11)	' 가격자릿수
-	g_szErrMsg	 		= arrData(12)	' 경고메세지
+	g_nIndex				= arrData[0+1]  -- 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소, 10:예약매수, 11:예약매도, 12:예약취소, 20:모으기 신청)
+	g_szOrder_Acc			= arrData[1+1]	 -- 계좌번호
+	g_szOrder_AccName		= arrData[2+1]	 -- 고객명
+	g_szOrd_ItmCode 		= arrData[3+1]	 -- 종목코드
+	g_szOrd_ItmName 		= arrData[4+1]	 -- 종목명
+	g_szOrd_OrdType  		= arrData[5+1]	 -- 주문구분
+	g_szOrd_Security 		= arrData[6+1]	 -- 현금
+	g_nOrd_Qty   			= arrData[7+1]	 -- 주문수량
+	g_nOrd_Price 			= arrData[8+1]	 -- 주문가격
+	g_nOrd_OrdNo 			= arrData[9+1]	 -- 원주문번호
+	g_nOrd_ChkAll 		= arrData[10+1]	 -- 잔량전부
+	g_nOrd_Decimal		= arrData[11+1]	 -- 가격자릿수
+	g_szErrMsg	 		= arrData[12+1]	 -- 경고메세지
 	
-	'20220623 HSZ START
-	if g_nOrd_Decimal = null or g_nOrd_Decimal = "" then
+	 --20220623 HSZ START
+	if g_nOrd_Decimal == nil or g_nOrd_Decimal == "" then
 		g_nOrd_Decimal = "0"
-	end if
-	'20220623 HSZ END
+	end
+	 --20220623 HSZ END
 	
-	If g_nIndex = "0" Then
+	if g_nIndex == "0" then
 		lblTitle.caption = "현금매수주문"
 		lblTitle.bgcolor = "92"
 		tbl0.SetCellFgColor( 4, 0, "6" )
 		tbl0.SetCellFgColor( 4, 1, "6" )
-'		btnOrder.btnimage = "btn_05.9"
+ --		btnOrder.btnimage = "btn_05.9"
 		btnOrder.btnimage = "btn_etc10.9"
 		btnOrder.caption="매수"
 		
-	ElseIf g_nIndex = "1" Then
+	elseif g_nIndex == "1" then
 		lblTitle.caption = "현금매도주문"
 		lblTitle.bgcolor = "91"
 		tbl0.SetCellFgColor( 4, 0, "7" )
 		tbl0.SetCellFgColor( 4, 1, "7" )
-'		btnOrder.btnimage = "btn_06.9"
+ --		btnOrder.btnimage = "btn_06.9"
 		btnOrder.btnimage = "btn_etc11.9"
 		btnOrder.caption="매도"
 	
-	ElseIf g_nIndex = "2" Then
+	elseif g_nIndex == "2" then
 		lblTitle.caption = "현금정정주문"
 		lblTitle.bgcolor = "93"
 		tbl0.SetCellFgColor( 4, 0, "8" )
 		tbl0.SetCellFgColor( 4, 1, "8" )
-'		btnOrder.btnimage = "btn_07.9"
+ --		btnOrder.btnimage = "btn_07.9"
 		btnOrder.btnimage = "btn_etc17.9"
 		btnOrder.caption="정정"
 		
-	ElseIf g_nIndex = "10" Then
+	elseif g_nIndex == "10" then
 		lblTitle.caption = "(예약)현금매수주문"
 		lblTitle.bgcolor = "92"
 		tbl0.SetCellFgColor( 4, 0, "6" )
 		tbl0.SetCellFgColor( 4, 1, "6" )
-'		btnOrder.btnimage = "btn_05.9"
+ --		btnOrder.btnimage = "btn_05.9"
 		btnOrder.btnimage = "btn_etc10.9"
 		btnOrder.caption="매수"
 		
-	ElseIf g_nIndex = "11" Then
+	elseif g_nIndex == "11" then
 		lblTitle.caption = "(예약)현금매도주문"
 		lblTitle.bgcolor = "91"
 		tbl0.SetCellFgColor( 4, 0, "7" )
 		tbl0.SetCellFgColor( 4, 1, "7" )
-'		btnOrder.btnimage = "btn_06.9"
+ --		btnOrder.btnimage = "btn_06.9"
 		btnOrder.btnimage = "btn_etc11.9"
 		btnOrder.caption="매도"
 	
-	ElseIf g_nIndex = "13" Then
+	elseif g_nIndex == "13" then
 		lblTitle.caption = "(예약)현금취소주문"
 		lblTitle.bgcolor = "93"
 		tbl0.SetCellFgColor( 4, 0, "9" )
 		tbl0.SetCellFgColor( 4, 1, "9" )
-'		btnOrder.btnimage = "btn_07.9"
+ --		btnOrder.btnimage = "btn_07.9"
 		btnOrder.btnimage = "btn_etc18.9"
 		btnOrder.caption="취소"
 		
-	'250722 HSZ START: 주식 모으기 추가
-	ElseIf g_nIndex = "20" Then
+	 --250722 HSZ START: 주식 모으기 추가
+	elseif g_nIndex == "20" then
 		lblTitle.caption = "해외주식 모으기 신청"
 		lblTitle.bgcolor = "92"
 		tbl0.SetCellFgColor( 4, 0, "6" )
@@ -256,35 +258,36 @@ Sub Form_OnFormInit()
 		btnOrder.btnimage = "btn_etc10.9"
 		btnOrder.caption	="신청하기"
 		Label21.caption	= "모으기 신청하시겠습니까?"
-	'250722 HSZ END
-	End If	
+	 --250722 HSZ END
+	end
 
     Set_Data(g_nIndex)
     
-End Sub
+end
 
-'============================================================================
-Sub btnClose_OnClick()
+ --============================================================================
+function btnClose_OnClick()
 	Form.CloseForm( )	
-End Sub
+end
 
 
-'============================================================================
-Sub btnOrder_OnClick()
+ --============================================================================
+function btnOrder_OnClick()
 	SendOrder()
-End Sub
+end
 
 
-'============================================================================
-Sub imgClose1_OnClick()
+ --============================================================================
+function imgClose1_OnClick()
 	Form.CloseForm( )
-End Sub
+end
 
 
-'============================================================================
-Sub imgClose_OnClick()
+ --============================================================================
+function imgClose_OnClick()
 	Form.CloseForm( )
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

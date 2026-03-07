@@ -234,7 +234,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 -----------------------------------------------------------------------------------
 		 --sPrice = Form.GetSharedData("PRICE", true)
 		 --
-		 --if sPrice <> "" and sPrice <> null	then
+		 --if sPrice ~= "" and sPrice ~= nil	then
 		 --	edtPrc.caption = sPrice
 		 --	
 		 --else
@@ -299,7 +299,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 				 -----------------------------------------------------------------------------------
 				 --sPrice = Form.GetSharedData("PRICE", true)
 				 --
-				 --if sPrice <> "" and sPrice <> null	then
+				 --if sPrice ~= "" and sPrice ~= nil	then
 				 --	edtPrc.caption = sPrice
 				 --	
 				 --else
@@ -344,7 +344,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 				 -----------------------------------------------------------------------------------
 				 --sPrice = Form.GetSharedData("PRICE", true)
 				 --
-				 --if sPrice <> "" and sPrice <> null	then
+				 --if sPrice ~= "" and sPrice ~= nil	then
 				 --	edtPrc.caption = sPrice
 					
 				 --else
@@ -384,21 +384,21 @@ function Form_OnTriggerEvent(sEventName, sParam)
 	 -- 매수가격 자동입력
 	 --============================================================================
 	elseif sEventName == "ReturnAutoPrice" then
- --		'v20250924_02 >>
+ --		 --v20250924_02 >>
  --		sLinkData = Form.GetSharedData("16060_WATER", true)
- --		arrLinkData = split(sLinkData, "`")
+ --		arrLinkData = gf_Split(sLinkData, "`")
  --		
  --		if #arrLinkData > 1 then
- --			sParam = arrLinkData(0)
- --			sQty = arrLinkData(1)
+ --			sParam = arrLinkData[0+1]
+ --			sQty = arrLinkData[1+1]
  --		end if
- --		'v20250924_02 <<
+ --		 --v20250924_02 <<
 		 ----------------------------------------------------------
 		 -- 종목/탭 변경 시 초기화가 꺼져있어도, 
 		 -- 주문가격 자동입력이 미사용으로 되어있으면 빈값이 넘어옴.
 		 -- 빈값으로 넘어온 경우에는 세팅해주지 않는다
 		 ----------------------------------------------------------
-		if g_szChangeInit ~= "1" and sParam ~= "" and gSettingSelectPriceForAutoPrice ~= true then --20240729
+		if g_szChangeInit ~= "1" and sParam ~= "" and gSettingSelectPriceForAutoPrice ~= true then --20240729 end
 			edtPrc.caption = sParam
 			Calc_OrderPrice()
 		end
@@ -414,14 +414,14 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 --    가격이 0이면 조회안함. => 0으로 올리면 어차피 서비스에서 0주로 주니 걍 호출함
 		 ----------------------------------------------------------
 		if g_TotalReqComplete == true then
-			 --if CDbl(sParam) > 0 then
+			 --if gf_Tonumber(sParam) > 0 then
 				Request_Able()
 			 --end if
 		end
 		
- --		'v20250924_02 >>
+ --		 --v20250924_02 >>
  --		edtQty.caption = sQty
- --		'v20250924_02 <<
+ --		 --v20250924_02 <<
 	 --============================================================================
 	 -- 계좌변경(통합증거금 약정여부 조회 및 입력창 초기화)
 	 --============================================================================	
@@ -471,15 +471,15 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 --v20250924_02 >>
 		Form.SetDelayEvent(1, 0.2)
  --		sLinkData = Form.GetSharedData("16060_WATER", true)
- --		arrLinkData = split(sLinkData, "`")
+ --		arrLinkData = gf_Split(sLinkData, "`")
  --
  --		if #arrLinkData > 1 then
- --			sParam = arrLinkData(0)
- --			sQty = arrLinkData(1)
+ --			sParam = arrLinkData[0+1]
+ --			sQty = arrLinkData[1+1]
  --			
  --			gSettingSelectPrice = true
  --			
- --			if gAlReadyCallAutoPrice <> true then
+ --			if gAlReadyCallAutoPrice ~= true then
  --				gSettingSelectPriceForAutoPrice = true 
  --			end if
  --			
@@ -488,7 +488,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
  --		end if
 		 --v20250924_02 <<
 	 --============================================================================
-	 -- 주간장 현재가 세팅(가격자동입력 활성화 & 현재가 세팅으로 되어있을때)
+	 -- 주간장 현재가 세팅(가격자동입력 활성화 .. 현재가 세팅으로 되어있을때)
 	 --============================================================================
 	elseif sEventName == "SEND_DAYMARKET_PRC" or sEventName == "SEND_AFTERMARKET_PRC" then
 		
@@ -579,7 +579,7 @@ end
  --============================================================================
 function RequestAutoQty()
 	
-	if g_szBuyQty == "1" then -- 현금가능수량
+	if g_szBuyQty == "1" then -- 현금가능수량 end
 		
 		if g_TotalReqComplete == true then
 			Request_Able()
@@ -598,7 +598,7 @@ function RequestAutoQty()
 		
 	end
 
-	 --Form.triggerEvent("#", "RequestAutoQty", "BUY")
+	 --Form.TriggerEvent("#", "RequestAutoQty", "BUY")
 
 end
 
@@ -668,10 +668,10 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	 -------------------------------------------------------------------------
 	 -- 중국(상해/심천) 호가단위 설정
 	 -------------------------------------------------------------------------
-	if szMk == "0215" then --상해
+	if szMk == "0215" then --상해 end
 	
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -681,7 +681,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	elseif szMk == "0214" then --심천
 		
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -1279,7 +1279,7 @@ function Calc_Price(nGbn)
 		 -- + 버튼 클릭
 		 --------------------------------------------------
 		if nGbn == 0 then
-			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1299,7 +1299,7 @@ function Calc_Price(nGbn)
 		 -- - 버튼 클릭 
 		 --------------------------------------------------
 		elseif nGbn == 1 then
-			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1324,8 +1324,8 @@ function Calc_Price(nGbn)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 체크
 	 -----------------------------------------------------------
-	 --if Len(szPrc) > gMaxLen then	
-	 --	Exit Function
+	 --if string.len(szPrc) > gMaxLen then	
+	 --	return
 	 --end if
 	
 	edtPrc.caption = szPrc
@@ -1390,10 +1390,10 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- (기존요건) 최대입력 가능 수량 99000000
 	 -----------------------------------------------------------
-	 --if Trim(szQty) <> "" then
-	 --	if CDbl(szQty) >= 99000000 then
+	 --if gf_Trim(szQty) ~= "" then
+	 --	if gf_Tonumber(szQty) >= 99000000 then
 	 --		if nGbn == 0 then
-	 --			Exit Function
+	 --			return
 	 --		end if
 	 --	end if
 	 --end if
@@ -1449,7 +1449,7 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 체크
 	 -----------------------------------------------------------
-	if string.len(szQty) <= gMaxLen then
+	if string.string.len(szQty) <= gMaxLen then
 		if gf_Tostring(szQty) == "0" or gf_Tostring(szQty) == "" then
 			edtQty.caption = ""
 		else
@@ -1707,7 +1707,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		elseif szWarnCd == "3" then
 			
 			szData = "0" .. "|" .. szWarnMsg	 -- 매매구분|메시지
-			 --Form.OpenPopup("mhtro16100_p15", szData , "")	'OnPopupReturn -> "PTP주문경고"
+			 --Form.OpenPopup("mhtro16100_p15", szData , "")	 --OnPopupReturn -> "PTP주문경고"
 			Form.OpenPopupAnimation("mhtro16100_p15", szData, "", "2")
 			
 		 ----------------------------------
@@ -1818,7 +1818,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		sOrdAbleTotalQty 	= DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock1", "INTG_MARG_ODER_ABLE_QTY" , 0)
 		
 		 -----------------------------------------------------------
-		 -- 마스킹처리 & 주문가능수량 세팅
+		 -- 마스킹처리 .. 주문가능수량 세팅
 		 -- 통합증거금 약정 시 해당통화 라벨만 앞에 통화기호 넣어줘야되서 스크립트로 마스킹 처리
 		 -----------------------------------------------------------
 		LabelMaskData = "0,0,"..g_szCurrency.."가능 ".. "," .. "주".. ",0,,0,1,1,2,0"
@@ -1963,11 +1963,11 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	end
 	
 	 --20241230 HSZ 비활성화 해제 위치 변경
- --	'---------------------------------------------------------------------
- --	' 주문서비스 수신 시, 주문버튼 비활성화 해제
- --	'---------------------------------------------------------------------
+ --	 -----------------------------------------------------------------------
+ --	 -- 주문서비스 수신 시, 주문버튼 비활성화 해제
+ --	 -----------------------------------------------------------------------
  --	if szTranID == "obtro_oder_101a" then
- --		btnBuy.enable = true '20240814
+ --		btnBuy.enable = true  --20240814
  --	end if
 	
 	 --------------------------------------------------------------------
@@ -2059,7 +2059,7 @@ function Check_InputData(sGubun)
 		
 		 --계좌번호
 		szAcnt = Form.GetTopCtlProp("acnt", "caption")
-		if string.len(szAcnt) < 10 then
+		if string.string.len(szAcnt) < 10 then
 			Form.ShowAlert(g_szTitle, "계좌번호를 확인후 다시 입력하십시오.")
 			return False
 		end
@@ -2306,9 +2306,9 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	elseif sKeyName == "주문전송" then
 		if sRet == "1" then
 			 --20250102 HSZ START
-			if gf_Tonumber(cmbType.currentindex) == 0 and g_szOdrPop == "1" then --지정가&주문확인창 사용 CASE
+			if gf_Tonumber(cmbType.currentindex) == 0 and g_szOdrPop == "1" then --지정가..주문확인창 사용 CASE end
 				if gf_Trim(gConfirmPrice) ~= "" then
-					if gf_Tonumber(edtPrc.caption) ~= gf_Tonumber(gConfirmPrice) then --입력된 주문 가격이 다른 경우에만
+					if gf_Tonumber(edtPrc.caption) ~= gf_Tonumber(gConfirmPrice) then --입력된 주문 가격이 다른 경우에만 end
 						edtPrc.caption = gConfirmPrice
 						
 						gNoSettingQty = true
@@ -2439,7 +2439,7 @@ function btnQty_OnClick()
 	
 	szData = GetLinkData(1)
 	
-	 --20241014 LES START - 애니메이션 제거'
+	 --20241014 LES START - 애니메이션 제거 --
 	 --Form.OpenPopupAnimation("mhtro16100_p1", szData, "", "2")
 	Form.OpenPopup("mhtro16100_p1", szData, "")
 	

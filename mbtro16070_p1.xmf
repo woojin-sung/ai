@@ -56,10 +56,10 @@ g_szCode = ""
 local g_szCodeName --거래국가코드한글명
 g_szCodeName = ""
 
- --Dim g_tCrCd	'거래국가코드 인덱스
+ --Dim g_tCrCd	 --거래국가코드 인덱스
  --g_tCrCd = Array("000", "840", "156", "344", "392", "704", "124", "702", "036", "276", "246", "250", "056", "528", "620", "300", "372", "380", "724", "040", "756")
  --
- --Dim g_tCrCdNm	'거래국가코드명 인덱스
+ --Dim g_tCrCdNm	 --거래국가코드명 인덱스
  --g_tCrCdNm = Array("전체", "미국", "중국", "홍콩", "일본", "베트남", "캐나다", "싱가포르", "호주", "독일", "핀란드", "프랑스", "벨기에", "네덜란드", "포르투갈", "그리스", "아일랜드", "이탈리아", "스페인", "오스트리아", "스위스")
  --
  --Dim g_tCheck
@@ -152,18 +152,18 @@ end
 
  --============================================================================
 function SetCheckFilter(iPos)
- --	'체크된 버튼 라인 색 변경하고
+ --	 --체크된 버튼 라인 색 변경하고
  --	for i = 0 to 20
- --		'비활성화
- --		Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_n.9.png")
- --'		Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "146")
- --'		Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "00")
+ --		 --비활성화
+ --		Form.SetCtlProp("contMain.img" .. gf_Tostring(i), "imgpath", "btn_line2_n.9.png")
+ -- --		Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "146")
+ -- --		Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "00")
  --	
  --		if i = iPos then
- --			'활성화
- --			Form.SetCtlProp("contMain.img" & CStr(i), "imgpath", "btn_line2_o.9.png")
- --'			Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "334")
- --'			Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "01")			
+ --			 --활성화
+ --			Form.SetCtlProp("contMain.img" .. gf_Tostring(i), "imgpath", "btn_line2_o.9.png")
+ -- --			Form.SetCtlProp("contMain.lbl" & CStr(i), "fgcolor", "334")
+ -- --			Form.SetCtlProp("contMain.lbl" & CStr(i), "fontstyle", "01")			
  --		end if
  --	next	
 
@@ -251,8 +251,8 @@ function SetCheckFilter(iPos)
 	end
 	
 	
- --	g_szCode = g_tCrCd[iPos]		'거래국가코드
- --	g_szCodeName = g_tCrCdNm[iPos]	'거래국가명
+ --	g_szCode = g_tCrCd[iPos]		 --거래국가코드
+ --	g_szCodeName = g_tCrCdNm[iPos]	 --거래국가명
  --	Form.CloseForm()
 end
 

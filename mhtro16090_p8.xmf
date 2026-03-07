@@ -29,51 +29,52 @@
 		<BUTTON name="btnList" caption="주문내역보기" fgcolor="100:102102102" fontsize="1" fontstyle="01" btnimage="btn_25.9.png" ly_vert="44,374,144,50,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="1369" _ulen="1273" >
-Dim g_Flag
-'============================================================================
-Sub Image0_OnClick()
+local g_Flag
+ --============================================================================
+function Image0_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
 
-'============================================================================
-Sub btnList_OnClick()
+ --============================================================================
+function btnList_OnClick()
 	Form.OpenScreen("16093" , "")
-End Sub
+end
 
-'============================================================================
-Sub btnOK_OnClick()
+ --============================================================================
+function btnOK_OnClick()
 	g_Flag = "ok"
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub Image2_OnClick()
+ --============================================================================
+function Image2_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormClose()
-	If g_Flag == "ok" Then
+ --============================================================================
+function Form_OnFormClose()
+	if g_Flag == "ok" then
 		Form.SendReturnToParent("CANCEL_p7_end" , g_Flag)
-	End If 
-End Sub
+	end
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 	szData = Form.GetOpenLinkData()
-	Select Case szData
-		Case "NONE_CANCEL"
+	-- SELECT CASE 변환 (수동 보정 필요)
+		if szData == "NONE_CANCEL" then
 			Table0.SetCellString(1, 1, "취소가 불가합니다.")
-		Case "PART_CANCEL"
+		elseif szData == "PART_CANCEL" then
 			Table0.SetCellString(1, 1, "소수점 주문이")
 			Table0.SetCellString(2, 1, "일부만 취소되었습니다.")	
 			Table0.SetCellString(3, 1, "주문내역을 확인해주세요.")	
-		Case "ALL_CANCEL"
+		elseif szData == "ALL_CANCEL" then
 			Table0.SetCellString(1, 1, "소수점 주문이")
 			Table0.SetCellString(2, 1, "취소 되었습니다.")
-	End Select 
-End Sub
+	end
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

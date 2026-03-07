@@ -26,26 +26,28 @@
 		<BUTTON name="btnReceive" caption="조회" fgcolor="128:188030030" btnimage="btn_pop2.9.png" ly_vert="155,250,154,45,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="3983" _ulen="3817" >
-'============================================================================
-' 화 면 명 : 해외주식주문_정산금팝업
-' 화면설명 : 해외주식주문 정산금팝업
-' 작    성 : 2017.12
-'============================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 화 면 명 : 해외주식주문_정산금팝업
+ -- 화면설명 : 해외주식주문 정산금팝업
+ -- 작    성 : 2017.12
+ --============================================================================
 
-'****************************************************************************
-'               G  R  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
+ --****************************************************************************
+ --               G  R  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
-Dim g_tData
+local g_tData
 
-'****************************************************************************
-'			P  E  R  S  O  N  A  L     F  U  N  C  T  I  O  N
-'****************************************************************************
+ --****************************************************************************
+ --			P  E  R  S  O  N  A  L     F  U  N  C  T  I  O  N
+ --****************************************************************************
 
-'============================================================================
-' RequestData
-'============================================================================
-Function RequestData()
+ --============================================================================
+ -- RequestData
+ --============================================================================
+function RequestData()
 	tblData.SetCellString(0, 1, "")
 	tblData.SetCellString(1, 1, "")
 	tblData.SetCellString(2, 1, "")
@@ -59,76 +61,77 @@ Function RequestData()
 	tblData.SetCellMaskInfo(2, 1, sMask)
 	tblData.SetCellMaskInfo(3, 1, sMask)
 	
-	sCodeData = Split(g_tData(2), "@")
+	sCodeData = gf_Split(g_tData(2), "@")
 	
-	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "ACNO"             	, 0,	g_tData(0))	' 계좌번호
-	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "ASNO"             	, 0,	g_tData(1))	' 계좌일련번호
-	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "OVRS_STCK_SYMB_ISCD"   , 0, sCodeData[1])' 조회구분코드
-	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "OVRS_EXCH_VNDR_IDNO"	, 0,	g_tData(3))	' 수수료매체그룹코드
-	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "SELN_BYOV_CLCD"   	, 0,	g_tData(4))	' 매매시장구분코드
-	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "ODQT" 				, 0,	g_tData(5))	' 매매구분코드
-	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "OVRS_STCK_ODER_PRC"    , 0,	g_tData(6))	' 주문수량
+	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "ACNO"             	, 0,	g_tData(0))	 -- 계좌번호
+	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "ASNO"             	, 0,	g_tData(1))	 -- 계좌일련번호
+	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "OVRS_STCK_SYMB_ISCD"   , 0, sCodeData[1+1]) -- 조회구분코드
+	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "OVRS_EXCH_VNDR_IDNO"	, 0,	g_tData(3))	 -- 수수료매체그룹코드
+	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "SELN_BYOV_CLCD"   	, 0,	g_tData(4))	 -- 매매시장구분코드
+	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "ODQT" 				, 0,	g_tData(5))	 -- 매매구분코드
+	DATAMANAGER.SetDataValue(0,	"obtro_oder_236r", "InBlock1", "OVRS_STCK_ODER_PRC"    , 0,	g_tData(6))	 -- 주문수량
 			
 	DATAMANAGER.RequestTranData("obtro_oder_236r")
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'============================================================================
-' Form_OnFormInit
-'============================================================================
-Sub Form_OnFormInit()
-	Dim tData
-	Dim szData
+ --============================================================================
+ -- Form_OnFormInit
+ --============================================================================
+function Form_OnFormInit()
+	local tData
+	local szData
 	
 	szData = Form.GetOpenLinkData()
 	
-	tData = Split(szData, "★")
+	tData = gf_Split(szData, "★")
 	
-	if UBound(tData) > 0 then
+	if #tData > 0 then
 		g_tData = tData
 		
 		RequestData()
-	end if
-End Sub
+	end
+end
 
 
-'============================================================================
-' imgClose_OnClick : 닫기
-'============================================================================
-Sub imgClose_OnClick()
+ --============================================================================
+ -- imgClose_OnClick : 닫기
+ --============================================================================
+function imgClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-' btnClose_OnClick : 닫기
-'============================================================================
-Sub btnClose_OnClick()
+ --============================================================================
+ -- btnClose_OnClick : 닫기
+ --============================================================================
+function btnClose_OnClick()
 	Form.CloseForm()	
-End Sub
+end
 
-'============================================================================
-' btnClose2_OnClick : 닫기
-'============================================================================
-Sub btnClose2_OnClick()
+ --============================================================================
+ -- btnClose2_OnClick : 닫기
+ --============================================================================
+function btnClose2_OnClick()
 	Form.CloseForm()	
-End Sub
+end
 
-'============================================================================
-' btnReceive_OnClick : 조회
-'============================================================================
-Sub btnReceive_OnClick()
+ --============================================================================
+ -- btnReceive_OnClick : 조회
+ --============================================================================
+function btnReceive_OnClick()
 	RequestData()	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	Form.ShowAlert(szTranID, szErrMsg)
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_236r" trcode="obtro_oder_236r" compress="1" encryption="1" inputcheck="1" useattr="0" />

@@ -124,7 +124,7 @@ function Form_OnFormInit( )
 	 -- 관심 동기화 //////////////////////////////////////////////////////////
 	g_szCloud = Form.GetEnvData("common.interest_cloud")
 	
-	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용)
+	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용) end
 		g_szCloud = "1"
 	end
 	 -- //////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ function Form_OnFormInit( )
 			g_szGCode = tData[1+1]
 			edtBlank.hintcaption = "관심그룹명을 입력하세요"
 			
-			if g_szCloud == "1" then -- Server 저장시
+			if g_szCloud == "1" then -- Server 저장시 end
 				 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 				DATAMANAGER.RequestTranData("ohhts_intr_026r")
 			else -- Local 저장시
@@ -171,7 +171,7 @@ function Form_OnFormInit( )
 			g_szGCode = tData[1+1]
 			edtBlank.caption = tData[2+1]
 			
-			if g_szCloud == "1" then -- Server 저장시
+			if g_szCloud == "1" then -- Server 저장시 end
 				 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 				DATAMANAGER.RequestTranData("ohhts_intr_026r")
 			else -- Local 저장시

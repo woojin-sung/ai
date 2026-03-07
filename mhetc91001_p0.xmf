@@ -76,7 +76,7 @@ g_sFocusEditClear = false
  --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
  --****************************************************************************
  --===============================================
- -- NULL 체크 
+ -- nil 체크 
  --===============================================
 function isEmpty(sData)
 	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
@@ -97,7 +97,7 @@ function truncateToDecimalPlaces(nVal, nDeimalPlaces)
 	
 	nTotalData = 0
 	if gf_Tonumber(nDecimalIdx) > 0 then
-		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, Cint(nDecimalIdx)-1))
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, gf_Tonumber(nDecimalIdx)-1))
 	else
 		nTotalData = gf_Tonumber(szNumStr)
 	end
@@ -292,7 +292,7 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
 		 --------------------------------
 		 --소수점영역 길이
 		 --------------------------------
-		sCha = gf_Tonumber(string.len(nPrc) - sChk)
+		sCha = gf_Tonumber(string.string.len(nPrc) - sChk)
 		
 		 ---------------------------------------------------------
 		 --소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
@@ -397,7 +397,7 @@ function InputKeypad(sType, sKeypad)
 			
 			 -----------------------------------------------------
 			 --[키패드로 최초 입력이 아닐시]
-			 --'최초 클리어 이후에는 입력값 이어붙임
+			 -- --최초 클리어 이후에는 입력값 이어붙임
 			 -----------------------------------------------------
 			else
 				if string.find(gf_Tostring(sData), ".") == 0 and gf_Tonumber(sData) == 0 then
@@ -419,37 +419,37 @@ function InputKeypad(sType, sKeypad)
 				
 			end
 			
- --		'---------------------------------------------------
- --		'[수량 입력창] 에 포커스가 되어있는 경우
- --		'---------------------------------------------------
+ --		 -----------------------------------------------------
+ --		 --[수량 입력창] 에 포커스가 되어있는 경우
+ --		 -----------------------------------------------------
  --		elseif g_sProcGbn == "1" then
  --		
  --			sData = g_sInputData
  --			
- --			if g_sFocusEditClear <> true then
+ --			if g_sFocusEditClear ~= true then
  --				
  --				g_sFocusEditClear = true
  --				sData = sKeypad
  --				g_sInputData = sData
- --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --				Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
  --				
  --			else
- --				if Cdbl(sData) == 0 then
+ --				if gf_Tonumber(sData) == 0 then
  --					sData = sKeypad
  --				else
- --					sData = sData & sKeypad
+ --					sData = sData .. sKeypad
  --				end if
  --				
  --				if Check_NumDigits("I", sData) == false then
- --					Exit Function
+ --					return
  --				end if
  --				
  --				if Check_NumDigits("D", sData) == false then
- --					Exit Function
+ --					return
  --				end if
  --				
  --				g_sInputData = sData
- --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --				Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
  --			
  --			end if
  --		
@@ -499,34 +499,34 @@ function InputKeypad(sType, sKeypad)
 			
 			end
 		
- --		'---------------------------------------------------
- --		'[수량 입력창] 에 포커스가 되어있는 경우
- --		'---------------------------------------------------
+ --		 -----------------------------------------------------
+ --		 --[수량 입력창] 에 포커스가 되어있는 경우
+ --		 -----------------------------------------------------
  --		elseif g_sProcGbn == "1" then
  --		
  --			sData = g_sInputData
  --		
- --			if g_sFocusEditClear <> true then
+ --			if g_sFocusEditClear ~= true then
  --				
  --				g_sFocusEditClear = true
  --				sData = sKeypad
  --				g_sInputData = sData
- --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --				Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
  --				
  --			else
- --				if Check_NumDigits("I", sData & sKeypad) == false then
- --					Exit Function
+ --				if Check_NumDigits("I", sData .. sKeypad) == false then
+ --					return
  --				end if
  --				
- --				if Check_NumDigits("D", sData & sKeypad) == false then
- --					Exit Function
+ --				if Check_NumDigits("D", sData .. sKeypad) == false then
+ --					return
  --				end if
  --			
- --				'0이 입력되있는 경우에는 무시
- --				if sData <> "0" then
- --					sData = sData & sKeypad
+ --				 --0이 입력되있는 경우에는 무시
+ --				if sData ~= "0" then
+ --					sData = sData .. sKeypad
  --					g_sInputData = sData
- --					Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --					Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
  --				end if
  --			
  --			end if
@@ -564,14 +564,14 @@ function InputKeypad(sType, sKeypad)
 		end
 		
 	
- --	'======================================================================
- --	' 퀵입력 버튼 
- --	'======================================================================
+ --	 --======================================================================
+ --	 -- 퀵입력 버튼 
+ --	 --======================================================================
  --	elseif sType == "QUICK" then
  --	
  --		if sKeypad == "QTY1" or sKeyPad == "QTY2" or sKeyPad == "QTY3" then
  --			
- --			if g_sFocusEditClear <> true then
+ --			if g_sFocusEditClear ~= true then
  --				g_sFocusEditClear = true
  --			end if
  --			
@@ -589,7 +589,7 @@ function InputKeypad(sType, sKeypad)
  --				nAdd = g_nQty3_Size
  --			end if
  --			
- --			nTotQty = Cdbl(sData) + nAdd
+ --			nTotQty = gf_Tonumber(sData) + nAdd
  --			
  --			if nTotQty < 1000 then
  --				nTotQty = 1000
@@ -599,7 +599,7 @@ function InputKeypad(sType, sKeypad)
  --			
  --		elseif sKeypad == "PRC_MAEDO1" or sKeypad == "PRC_MAESU1" or sKeypad == "PRC_CUR" then
  --		
- --			if g_sFocusEditClear <> true then
+ --			if g_sFocusEditClear ~= true then
  --				g_sFocusEditClear = true
  --			end if
  --			
@@ -611,7 +611,7 @@ function InputKeypad(sType, sKeypad)
  --				sData = tblData1.GetCellString(1, 2)
  --			end if
  --			
- --			SetPrice("AUTO", round(Cdbl(sData),2),g_sDecimal,g_sPostFix)
+ --			SetPrice("AUTO", gf_Round(gf_Tonumber(sData),2),g_sDecimal,g_sPostFix)
  --				
  --		end if
 	
@@ -648,7 +648,7 @@ function InputKeypad(sType, sKeypad)
  --		
  --			sData = g_sInputData
  --		
- --			if g_sFocusEditClear <> true then
+ --			if g_sFocusEditClear ~= true then
  --				g_sFocusEditClear = true
  --			end if
  --			
@@ -675,7 +675,7 @@ function InputKeypad(sType, sKeypad)
 			else
 				
 				sData = g_sInputData
-				nLen = string.len(sData)
+				nLen = string.string.len(sData)
 				sData = string.sub(sData, 1, nLen - 1)
 				g_sInputData = sData
 				
@@ -686,7 +686,7 @@ function InputKeypad(sType, sKeypad)
 		
  --		elseif g_sProcGbn == "1" then
  --		
- --			if g_sFocusEditClear <> true then
+ --			if g_sFocusEditClear ~= true then
  --			
  --				g_sFocusEditClear = true
  --				g_sInputData = ""
@@ -694,10 +694,10 @@ function InputKeypad(sType, sKeypad)
  --				
  --			else
  --				sData = g_sInputData
- --				nLen = Len(sData)
- --				sData = left(sData ,nLen - 1)
+ --				nLen = string.len(sData)
+ --				sData = string.sub(sData, 1, nLen - 1)
  --				g_sInputData = sData
- --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+ --				Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
  --				
  --			end if
  --		end if

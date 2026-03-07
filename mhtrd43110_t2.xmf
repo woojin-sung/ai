@@ -287,7 +287,7 @@ function Save_GWGroup()
 end
 
  --============================================================================
- -- Load_GWList :  ' 로컬 저장된 관심종목 가져오기
+ -- Load_GWList :   -- 로컬 저장된 관심종목 가져오기
  --============================================================================
 function Load_GWList()
 	local tGroup, tList
@@ -303,7 +303,7 @@ function Load_GWList()
 			grdList.insertrow = i
 	
 			 --20180905_01 NOHES : 로컬 저장된 빈칸메모 처리
-			 --if Trim(tList(0)) == "" then
+			 --if gf_Trim(tList[0+1]) == "" then
 			if gf_Trim(tList[0+1]) == "" or gf_Trim(tList[0+1]) == "빈칸" or gf_Trim(tList[0+1]) == "EMPTY" then
 				grdList.SetCellFgColor("bd_code", i, "6")
 				grdList.SetCellFgColor("bd_name", i, "6")
@@ -316,7 +316,7 @@ function Load_GWList()
 			else
 				grdList.SetCellData("bd_code", i, tList[0+1])
 				grdList.SetCellData("bd_mk",   i, tList[1+1])
-				 --szName = Form.GetItemCodeInfo(tList(0), "name")	' 종목명은 저장 안하므로 메인에서 가져온다.
+				 --szName = Form.GetItemCodeInfo(tList[0+1], "name")	 -- 종목명은 저장 안하므로 메인에서 가져온다.
 				 --grdList.SetCellData("bd_name", i, szName)
 				grdList.SetCellData("bd_name", i, tList[3+1])	 -- 20160325 위젯위해 종목명 추가
 				grdList.SetCellData("bd_memo", i, "")
@@ -375,7 +375,7 @@ end
  -- Change_Len
  --============================================================================
 function Change_Len(szData)
-	if string.len(szData) == 1 then
+	if string.string.len(szData) == 1 then
 		return "0" .. gf_Tostring(szData)
 	else
 		return gf_Tostring(szData)
@@ -412,7 +412,7 @@ function Add_Item(nGbn)
 	
 	g_szCd = ""
 	
-	if nGbn == 0 then -- 20160407
+	if nGbn == 0 then -- 20160407 end
 		Check_LocalOrServer()
 	end
 end
@@ -442,7 +442,7 @@ function Form_OnFormInit()
 	 -- 관심 동기화 //////////////////////////////////////////////////////////
 	g_szCloud = Form.GetEnvData("common.interest_cloud")
 	
-	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용)
+	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용) end
 		g_szCloud = "1"
 	end
 	 -- //////////////////////////////////////////////////////////////////////
@@ -451,7 +451,7 @@ function Form_OnFormInit()
 	grdList.rowmove = "1"
 	
 	 -- 설정에서 구분자를 받아온다.
-	if g_szCloud == "1" then -- Server 저장시
+	if g_szCloud == "1" then -- Server 저장시 end
 		 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 		DATAMANAGER.RequestTranData("ohhts_intr_026r")
 	else -- Local 저장시
@@ -660,9 +660,9 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 			DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_INPUT_MRKT_CLS_CODE", j, szExch)	 -- FID입력시장구분코드
 			
 			
- --Form.Log("\n[_DEBUG]", "\n:j:" & j &":\n:szCode:"& szCode &":\n:szExch:"& szExch &":\n:"&
- --"szMemo:"& szMemo &":\n:szName:"& szName &":\n:"&
- --"FID_CODE_CLS_CODE:"& DATAMANAGER.GetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j) &":")
+ --Form.Log("\n[_DEBUG]", "\n:j:" .. j ..":\n:szCode:".. szCode ..":\n:szExch:".. szExch ..":\n:"..
+ --"szMemo:".. szMemo ..":\n:szName:".. szName ..":\n:"..
+ --"FID_CODE_CLS_CODE:".. DATAMANAGER.GetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j) ..":")
 		end
 	end
 end
@@ -756,7 +756,7 @@ function cmbGroup_OnEditComplete(iIndex)
 	Form.SetEnvData("1", "GLOBAL_INTR_GROUP_SELECT" , cmbGroup.cbkeydata)
 	 --20160906 NOHES END
 	
-	if g_szCloud == "0" then -- 로컬
+	if g_szCloud == "0" then -- 로컬 end
 		Load_GWList()
 	else -- 서버
 		 -- 관심종목 종목 조회

@@ -133,7 +133,7 @@ g_szTitle = "알림"
 function Form_OnFormInit( )
 	g_szCloud = Form.GetEnvData("common.interest_cloud")
 	
-	if gf_Trim(g_szCloud) == "" then --초기값 : 1(동기화 사용)
+	if gf_Trim(g_szCloud) == "" then --초기값 : 1(동기화 사용) end
 		g_szCloud = "1"
 	end
 	 -- //////////////////////////////////////////////////////////////////////
@@ -145,11 +145,11 @@ function Form_OnFormInit( )
 	Get_GWGroup( )
 	 -- ITGEN ORGSRC
  --	grdGroup.rowcount = 0
- --	if g_szCloud == "1" then		' Server 저장시
- --		' 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
+ --	if g_szCloud == "1" then		 -- Server 저장시
+ --		 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
  --		DATAMANAGER.RequestTranData("ohhts_intr_026r")
- --	else							' Local 저장시
- --		' 로컬 저장된 관심그룹 가져오기	
+ --	else							 -- Local 저장시
+ --		 -- 로컬 저장된 관심그룹 가져오기	
  --		Load_GWGroup( )
  --	end if
 	 --ITGEN END
@@ -174,7 +174,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		grdGroup.SetCellData("bd_code", g_szRow, tData[0+1])
 		grdGroup.SetCellData("bd_name", g_szRow, tData[1+1])
 			
-		if g_szCloud == "1" then -- Server 저장시
+		if g_szCloud == "1" then -- Server 저장시 end
 			 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 			DATAMANAGER.RequestTranData("ohhts_intr_028r")
 			Save_GWGroup( )
@@ -233,7 +233,7 @@ function btnAdd_OnClick( )
 		 --20180905_01 NOHES START : 관심그룹 생성 시, 순차적으로 확인해서 코드 빠졌을 때 채워넣으면서 만든다.
 		 --                          그룹이 10개 이상인 경우에 szCd == szCode 처리 못해서 CStr 처리함.
 		for i = 0, 99 do
-			if string.len(i) == 1 then
+			if string.string.len(i) == 1 then
 				szCode = "0" .. i
 			else
 				szCode = gf_Tostring(i)
@@ -334,7 +334,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 			 --if cmbGroup.cbkeydata == grdGroup.GetCellData("bd_code", i) then	
 			 --if g_szCode == grdGroup.GetCellData("bd_code", i) then	
 			
-			 --	DATAMANAGER.SetDataValue(0, "ohhts_intr_028r", "InBlock2", "FID_ISSU_MOD_YN", i, "1")			' 수정
+			 --	DATAMANAGER.SetDataValue(0, "ohhts_intr_028r", "InBlock2", "FID_ISSU_MOD_YN", i, "1")			 -- 수정
 			 --else
 				DATAMANAGER.SetDataValue(0, "ohhts_intr_028r", "InBlock2", "FID_ISSU_MOD_YN", i, "0")			 -- 수정안함
 			 --end if
@@ -363,7 +363,7 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	 -- 관심 수정 TR
 	 -- ----------------------------------------------------------------------
  --	if szTranID == "ohhts_intr_028r" then
- --		Form.Toast(1, "[" & szErrCode & "]" & szErrMsg, true)
+ --		Form.Toast(1, "[" .. szErrCode .. "]" .. szErrMsg, true)
  --	end if		
 end
 
@@ -428,7 +428,7 @@ end
 function Get_GWGroup( )
 	grdGroup.rowcount = 0
 	
-	if g_szCloud == "1" then -- Server 저장시
+	if g_szCloud == "1" then -- Server 저장시 end
 		 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 		DATAMANAGER.RequestTranData("ohhts_intr_026r")
 	else -- Local 저장시

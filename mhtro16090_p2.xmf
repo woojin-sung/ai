@@ -62,141 +62,144 @@
 		<BUTTON name="btnClose" caption="닫기" fgcolor="100:102102102" fontsize="3" fontstyle="01" btnimage="btn_etc9.9.png" ly_vert="0,596,187,51,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="4577" _ulen="4195" >
-'-------------------------------------------------------------------------------------------
-' 01. 화 면 명 : 예약주문
-' 02. 화면설명 : 예약주문 주문확인창
-' 03. 작    성 : 2016.04.30 LJS
-'-------------------------------------------------------------------------------------------
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ ---------------------------------------------------------------------------------------------
+ -- 01. 화 면 명 : 예약주문
+ -- 02. 화면설명 : 예약주문 주문확인창
+ -- 03. 작    성 : 2016.04.30 LJS
+ ---------------------------------------------------------------------------------------------
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
 
-Dim g_nCount
+local g_nCount
 	g_nCount = 0
 
-Dim g_nIndex				' 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
-Dim 	g_szOrder_Acc			' 계좌번호
-Dim 	g_szOrder_AccName		' 고객명
-Dim 	g_szOrd_ItmCode		' 종목코드
-Dim 	g_szOrd_ItmName		' 종목명
-Dim 	g_szOrd_OrdType		' 주문구분
-Dim 	g_szOrd_Security		' 현금/신용
-Dim 	g_nOrd_Qty			' 주문수량
-Dim 	g_nOrd_Price			' 주문가격
-Dim 	g_nOrd_OrdNo			' 원주문번호
-Dim 	g_nOrd_ChkAll			' 잔량전부	
-Dim	g_nOrd_Decimal		' 가격자릿수
-'20191029 YGH 예약주문 문구추가 Start
-Dim g_nOrd_res_Type 		' 예약주문유형
-Dim g_nOrd_res_time		' 주문시간유형
-'20191029 YGH 예약주문 문구추가 End
+local g_nIndex -- 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
+local g_szOrder_Acc -- 계좌번호
+local g_szOrder_AccName -- 고객명
+local g_szOrd_ItmCode -- 종목코드
+local g_szOrd_ItmName -- 종목명
+local g_szOrd_OrdType -- 주문구분
+local g_szOrd_Security -- 현금/신용
+local g_nOrd_Qty -- 주문수량
+local g_nOrd_Price -- 주문가격
+local g_nOrd_OrdNo -- 원주문번호
+local g_nOrd_ChkAll -- 잔량전부	
+local g_nOrd_Decimal -- 가격자릿수
+ --20191029 YGH 예약주문 문구추가 Start
+local g_nOrd_res_Type -- 예약주문유형
+local g_nOrd_res_time -- 주문시간유형
+ --20191029 YGH 예약주문 문구추가 End
 
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
+ --****************************************************************************
 
-'============================================================================
-'주문화면 데이터
-'============================================================================
-Function Set_Data(nIndex)
-	If g_nIndex = "0" then
+ --============================================================================
+ --주문화면 데이터
+ --============================================================================
+function Set_Data(nIndex)
+	if g_nIndex == "0" then
 		cont0.lblMaemae.caption = "매수"
 		cont0.lblMaemae.fgcolor = "290"
 		btnOrder.btnimage = "btn_etc10.9.png"
 		btnOrder.caption = "매수"
-	ElseIf g_nIndex = "1" then
+	elseif g_nIndex == "1" then
 		cont0.lblMaemae.caption = "매도"
 		cont0.lblMaemae.fgcolor = "291"
 		btnOrder.caption = "매도"
 		btnOrder.btnimage = "btn_etc11.9.png"
-	ElseIf g_nIndex = "3" then
+	elseif g_nIndex == "3" then
 		cont0.lblMaemae.caption = "취소"
 		cont0.lblMaemae.fgcolor = "293"
 		btnOrder.caption = "취소"
 		btnOrder.btnimage = "btn_etc18.9.png"
-	End if
+	end
 
-	'250729 HSZ START: 매수/매도 문구 추가
+	 --250729 HSZ START: 매수/매도 문구 추가
 	if g_nIndex == "0" or g_nIndex == "1" then
 		imgBG.top		= 327
 		imgBG.height		= 330
 		cont0.top		= 327
 		tblInfo.visible	= true
-	end if
-	'250729 HSZ END
+	end
+	 --250729 HSZ END
 	
 	cont0.tblMaemae.SetCellString( 0, 1, g_szOrder_Acc	 )
-	cont0.tblMaemae.SetCellString( 1, 1, g_szOrd_ItmCode&" | " & g_szOrd_ItmName )
+	cont0.tblMaemae.SetCellString( 1, 1, g_szOrd_ItmCode.." | " .. g_szOrd_ItmName )
 	cont0.tblMaemae.SetCellString( 2, 1, g_nOrd_Price )
 	cont0.tblMaemae.SetCellString( 3, 1, g_nOrd_Qty )
 
-End Function
+end
 
-'============================================================================
-Function SendOrder()
-    If g_nCount = 0 Then
+ --============================================================================
+function SendOrder()
+    if g_nCount == 0 then
 	    Form.SendReturnToParent( "주문전송" , "1")
 	    
-	elseif g_nCount = 1 then
+	elseif g_nCount == 1 then
 	    Form.CloseForm( )
-    End If
+    end
     
-End Function
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'============================================================================
-Sub Form_OnFormInitBefore()
-	Dim szData, arrData, szItemName
+end
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --============================================================================
+function Form_OnFormInitBefore()
+	local szData, arrData, szItemName
 
 	szData = Form.GetOpenLinkData()
 	
-	arrData = Split(szData,"|")
+	arrData = gf_Split(szData,"|")
 	
-	if UBOUND(arrData) < 1 then
-	    Exit sub
-	End if	
-'	Form.ShowAlert("szData", szData)
-	g_nIndex				= arrData( 0) ' 매도수구분 (0:매수, 1:매도, 3:취소)
-	g_szOrder_Acc			= arrData( 1)	' 계좌번호
-	g_szOrder_AccName		= arrData( 2)	' 고객명
-	g_szOrd_ItmCode 		= arrData( 3)	' 종목코드
-	g_szOrd_ItmName 		= arrData( 4)	' 종목명
-	g_szOrd_OrdType  		= arrData( 5)	' 주문구분
-	g_szOrd_Security 		= arrData( 6)	' 현금
-	g_nOrd_Qty   			= arrData( 7)	' 주문수량
-	g_nOrd_Price 			= arrData( 8)	' 주문가격
-	g_nOrd_OrdNo 			= arrData( 9)	' 원주문번호
-	g_nOrd_ChkAll 		= arrData(10)	' 잔량전부
-	g_nOrd_Decimal		= arrData(11)	' 가격자릿수
+	if #arrData < 1 then
+	    return
+	end
+ --	Form.ShowAlert("szData", szData)
+	g_nIndex				= arrData[0+1]  -- 매도수구분 (0:매수, 1:매도, 3:취소)
+	g_szOrder_Acc			= arrData[1+1]	 -- 계좌번호
+	g_szOrder_AccName		= arrData[2+1]	 -- 고객명
+	g_szOrd_ItmCode 		= arrData[3+1]	 -- 종목코드
+	g_szOrd_ItmName 		= arrData[4+1]	 -- 종목명
+	g_szOrd_OrdType  		= arrData[5+1]	 -- 주문구분
+	g_szOrd_Security 		= arrData[6+1]	 -- 현금
+	g_nOrd_Qty   			= arrData[7+1]	 -- 주문수량
+	g_nOrd_Price 			= arrData[8+1]	 -- 주문가격
+	g_nOrd_OrdNo 			= arrData[9+1]	 -- 원주문번호
+	g_nOrd_ChkAll 		= arrData[10+1]	 -- 잔량전부
+	g_nOrd_Decimal		= arrData[11+1]	 -- 가격자릿수
 
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 
     Set_Data(g_nIndex)
     
-End Sub
+end
 
-'============================================================================
-Sub btnClose_OnClick()
+ --============================================================================
+function btnClose_OnClick()
 	Form.CloseForm( )	
-End Sub
+end
 
-'============================================================================
-Sub btnOrder_OnClick()
+ --============================================================================
+function btnOrder_OnClick()
 	SendOrder()
 	Form.CloseForm( )	
-End Sub
+end
 
-'============================================================================
-Sub BtnClose_OnClick()
+ --============================================================================
+function BtnClose_OnClick()
 	Form.CloseForm( )
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

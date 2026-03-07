@@ -579,12 +579,12 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 -----------------------------------------------------------------------------------
 		 --sPrice = Form.GetSharedData("PRICE", true)
 		 --
-		 --if sPrice <> "" and sPrice <> null	then
+		 --if sPrice ~= "" and sPrice ~= nil	then
 		 --	edtPrc.caption = sPrice
 		 --	
 		 --else
 		 --	
-		 --	if g_szChangeInit <> "1" then
+		 --	if g_szChangeInit ~= "1" then
 		 --		RequestAutoPrice()
 		 --	end if
 		 --
@@ -593,7 +593,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 -----------------------------------------------------------------------------------
 		 -- [수량 자동입력]
 		 -----------------------------------------------------------------------------------
-		 --if g_szChangeInit <> "1" then
+		 --if g_szChangeInit ~= "1" then
 		 --	RequestAutoQty()
 		 --end if
 		
@@ -635,12 +635,12 @@ function Form_OnTriggerEvent(sEventName, sParam)
 				 -----------------------------------------------------------------------------------
 				 --sPrice = Form.GetSharedData("PRICE", true)
 				 --
-				 --if sPrice <> "" and sPrice <> null	then
+				 --if sPrice ~= "" and sPrice ~= nil	then
 				 --	edtPrc.caption = sPrice
 				 --	
 				 --else
 				 --	
-				 --	if g_szChangeInit <> "1" then
+				 --	if g_szChangeInit ~= "1" then
 				 --		RequestAutoPrice()
 				 --	end if
 				 --
@@ -789,13 +789,13 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 --20240716 [종목변경 안되었을때] 호출됨.
 		 --정정주문가격 자동입력 설정여부에 따라 가격 자동입력
 		 --------------------------------------------------------------------------
-		 --if g_szChangeInit <> "1" and g_szModAutoPrc <> "" then
+		 --if g_szChangeInit ~= "1" and g_szModAutoPrc ~= "" then
 		 --	RequestAutoPrice()
 		 --end if
 		 --------------------------------------------------------------------------
 		
 	 --============================================================================
-	 -- 20240716 주간장 현재가 세팅(가격자동입력 활성화 & 현재가 세팅으로 되어있을때)
+	 -- 20240716 주간장 현재가 세팅(가격자동입력 활성화 .. 현재가 세팅으로 되어있을때)
 	 --============================================================================
 	elseif sEventName == "SEND_DAYMARKET_PRC" or sEventName == "SEND_AFTERMARKET_PRC" then
 	
@@ -897,10 +897,10 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	 -------------------------------------------------------------------------
 	 -- 중국(상해/심천) 호가단위 설정
 	 -------------------------------------------------------------------------
-	if szMk == "0215" then --상해
+	if szMk == "0215" then --상해 end
 		
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -910,7 +910,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	elseif szMk == "0214" then --심천
 		
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -1511,7 +1511,7 @@ function Calc_Price(nGbn)
 		 -- + 버튼 클릭
 		 --------------------------------------------------
 		if nGbn == 0 then
-			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1531,7 +1531,7 @@ function Calc_Price(nGbn)
 		 -- - 버튼 클릭 
 		 --------------------------------------------------
 		elseif nGbn == 1 then
-			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1556,8 +1556,8 @@ function Calc_Price(nGbn)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 체크
 	 -----------------------------------------------------------
-	 --if Len(szPrc) > gMaxLen then	
-	 --	Exit Function
+	 --if string.len(szPrc) > gMaxLen then	
+	 --	return
 	 --end if
 	
 	edtPrc.caption = szPrc
@@ -1611,10 +1611,10 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- (기존요건) 최대입력 가능 수량 99000000
 	 -----------------------------------------------------------
-	 --if Trim(szQty) <> "" then
-	 --	if CDbl(szQty) >= 99000000 then
+	 --if gf_Trim(szQty) ~= "" then
+	 --	if gf_Tonumber(szQty) >= 99000000 then
 	 --		if nGbn == 0 then
-	 --			Exit Function
+	 --			return
 	 --		end if
 	 --	end if
 	 --end if
@@ -1664,7 +1664,7 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 체크
 	 -----------------------------------------------------------
-	if string.len(szQty) <= gMaxLen then
+	if string.string.len(szQty) <= gMaxLen then
 		if gf_Tostring(szQty) == "0" or gf_Tostring(szQty) == "" then
 			edtQty.caption = ""
 		else
@@ -1740,7 +1740,7 @@ function SetOrderTypeList(sNation)
 	 --	sList = "00`지정가\r\n"
 	 --end if
 	
-	 --cmbType.setCurIndexSilent("0")
+	 --cmbType.SetCurIndexSilent("0")
 	cmbType.clear = true
 	cmbType.cbinputdatatext = sList
 	
@@ -2377,7 +2377,7 @@ function Check_InputData(sGubun)
 		 --계좌번호
 		 -------------------------------------------------------------------
 		szAcnt = Form.GetTopCtlProp("acnt", "caption")
-		if string.len(szAcnt) < 10 then
+		if string.string.len(szAcnt) < 10 then
 			Form.ShowAlert(g_szTitle, "계좌번호를 확인후 다시 입력하십시오.")
 			return False
 		end
@@ -2465,7 +2465,7 @@ function Check_InputData(sGubun)
 		 --계좌번호
 		 -------------------------------------------------------------------
 		szAcnt = Form.GetTopCtlProp("acnt", "caption")
-		if string.len(szAcnt) < 10 then
+		if string.string.len(szAcnt) < 10 then
 			Form.ShowAlert(g_szTitle, "계좌번호를 확인후 다시 입력하십시오.")
 			return False
 		end
@@ -2892,9 +2892,9 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	elseif sKeyName == "주문전송" then
 		if sRet == "1" then
 			 --20250102 HSZ START
-			if gf_Tonumber(cmbType.currentindex) == 0 and g_szOdrPop == "1" then --지정가&주문확인창 사용 CASE
+			if gf_Tonumber(cmbType.currentindex) == 0 and g_szOdrPop == "1" then --지정가..주문확인창 사용 CASE end
 				if gf_Trim(gConfirmPrice) ~= "" then
-					if gf_Tonumber(edtPrc.caption) ~= gf_Tonumber(gConfirmPrice) then --입력된 주문 가격이 다른 경우에만
+					if gf_Tonumber(edtPrc.caption) ~= gf_Tonumber(gConfirmPrice) then --입력된 주문 가격이 다른 경우에만 end
 						edtPrc.caption = gConfirmPrice
 					end
 				end
@@ -2954,8 +2954,8 @@ end
  --미구현 함수
  --============================================================================
  --Function Request_Able()	
- --	g_szWarnFlag = "N"							 '20181022 HWG : 해외주식 주문착오 방지
- --	DATAMANAGER.RequestTranData("obtro_oder_234r")	 '주문가능금액 조회	
+ --	g_szWarnFlag = "N"							  --20181022 HWG : 해외주식 주문착오 방지
+ --	DATAMANAGER.RequestTranData("obtro_oder_234r")	  --주문가능금액 조회	
  --End Function
 
  --============================================================================
@@ -3007,7 +3007,7 @@ function GetLinkData(sGubun)
 	 -- 15 : g_szOrdSize		= 매매단위
 	 -- 16 : gMarketCode		= 거래소코드(4자리)
 	 -- 17 : gTickType			= 틱타입
-	 -- 18 : gMaeMaeGubun		= 매수(BUY), 매도(SELL), 정정/취소(MOD)
+	 -- 18 : gMaeMaeGubun		= 매수(BUY), 매도(SELL), 정정/취소(%)
 	 -- 19 : gAcno				= 계좌번호(8자리) - 정정/취소일때는 미사용 빈값으로 넘김
 	 -- 20 : gAsno				= 계좌번호(2자리) - 정정/취소일때는 미사용 빈값으로 넘김
 	 -- 21 : gTotalYN			= 통합증거금여부(Y/N) - 정정/취소일때는 미사용 빈값으로 넘김
@@ -3032,7 +3032,7 @@ function GetLinkData(sGubun)
 	szData = szData .. "|" .. g_szOrdSize								 -- [15]매매단위
 	szData = szData .. "|" .. g_szMk									 -- [16]거래소코드(4자리)
 	szData = szData .. "|" .. g_szTickType								 -- [17]틱타입
-	szData = szData .. "|" .. "%"									 -- [18]매매구분 : 매수(BUY), 매도(SELL), 정정/취소(MOD)
+	szData = szData .. "|" .. "%"									 -- [18]매매구분 : 매수(BUY), 매도(SELL), 정정/취소(%)
 	szData = szData .. "|" .. ""										 -- [19]계좌번호(8자리) - 정정/취소일때는 미사용 빈값으로 넘김
 	szData = szData .. "|" .. ""										 -- [20]계좌번호(2자리) - 정정/취소일때는 미사용 빈값으로 넘김
 	szData = szData .. "|" .. ""										 -- [21]통합증거금여부(Y/N) - 정정/취소일때는 미사용 빈값으로 넘김
@@ -3047,9 +3047,9 @@ function cmbType_OnEditComplete(iIndex)
 	 -------------------------------------------------------
 	 -- 주간거래일시, 지정가 주문여부 확인
 	 -------------------------------------------------------
-	 --sDayYN = Form.GetSharedData( "&OVRS_DAYMARKET", false )
+	 --sDayYN = Form.GetSharedData( "..OVRS_DAYMARKET", false )
 	 --
-	 --if sDayYN == "Y" and Check_OrdType() <> "01" then
+	 --if sDayYN == "Y" and Check_OrdType() ~= "01" then
 	 --	if g_szMk == "0537" or g_szMk == "0321" or g_szMk == "0066" then
 	 --		Form.MsgBox("안내", "주간거래는 지정가 주문만 가능합니다.", "DAYMARKET", 6)
 	 --	end if
@@ -3060,7 +3060,7 @@ function cmbType_OnEditComplete(iIndex)
 	 -------------------------------------------------------
 
 	 -------------------------------------------------------
-	 --지정가/LOO/LOC/Limit VWAP/'Limit TWAP
+	 --지정가/LOO/LOC/Limit VWAP/ --Limit TWAP
 	 -------------------------------------------------------
 	if Check_OrdType() = "01" or Check_OrdType() == "31" or Check_OrdType() == "32" 
 		or Check_OrdType() == "35" or Check_OrdType() == "36" then
@@ -3126,7 +3126,7 @@ end
  -- 거래소코드(4자리) <- 거래명(2자리)
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
@@ -3189,7 +3189,7 @@ function ChangeGridType(sType)
 end
 
  --============================================================================
- -- 미체결내역 & 미체결건수 조회
+ -- 미체결내역 .. 미체결건수 조회
  --============================================================================
 function RequestData()
 
@@ -3221,7 +3221,7 @@ function RequestData()
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_103r", "InBlock1", "ACNO"			, 0 , szAcno )
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_103r", "InBlock1", "ASNO"			, 0 , szAsno )
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_103r", "InBlock1", "ACNT_PWD"		, 0 , "" )
-	DATAMANAGER.SetDataValue( 0, "obtro_oder_103r", "InBlock1", "CNTG_CLS_CODE"	, 0 , "3")			 -- 체결구분코드(0:전체, 1:체결, 2:미체결, 3:미체결&온라인주문)
+	DATAMANAGER.SetDataValue( 0, "obtro_oder_103r", "InBlock1", "CNTG_CLS_CODE"	, 0 , "3")			 -- 체결구분코드(0:전체, 1:체결, 2:미체결, 3:미체결..온라인주문)
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_103r", "InBlock1", "SELN_BYOV_CLCD"	, 0 , sType)			 -- 매매구분코드(0:전체, 1:매도, 2:매수)
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_103r", "InBlock1", "IQRY_CLS_CODE"	, 0 , "4" )			 -- 조회구분코드(미사용)
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_103r", "InBlock1", "PROS_CLS"		, 0 , "2" )			 -- 처리구분코드(1:오름차순 2:내림차순)
@@ -3236,7 +3236,7 @@ function RequestData()
 	
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_115r", "InBlock1", "ACNO"			, 0 , szAcno )
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_115r", "InBlock1", "ASNO"			, 0 , szAsno )
-	DATAMANAGER.SetDataValue( 0, "obtro_oder_115r", "InBlock1", "CNTG_CLS_CODE"	, 0 , "3")			 -- 체결구분코드(0:전체, 1:체결, 2:미체결, 3:미체결&온라인주문)
+	DATAMANAGER.SetDataValue( 0, "obtro_oder_115r", "InBlock1", "CNTG_CLS_CODE"	, 0 , "3")			 -- 체결구분코드(0:전체, 1:체결, 2:미체결, 3:미체결..온라인주문)
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_115r", "InBlock1", "SELN_BYOV_CLCD"	, 0 , "0")			 -- 매매구분코드(0:전체, 1:매도, 2:매수)
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_115r", "InBlock1", "PROS_CLS"		, 0 , "2" )			 -- 정렬구분코드(1:오름차순, 2:내림차순)
 	DATAMANAGER.SetDataValue( 0, "obtro_oder_115r", "InBlock1", "DATA_CLS"		, 0 , "2" )			 -- 상품위탁구분코드(1:상품, 2:위탁)
@@ -3754,7 +3754,7 @@ function SearchMiCheLinkItemIndex(sLinkVndrCode,sLinkItemCode,sLinkOrdNo)
 		sRowVndrCode = Grid0.GetCellData("bd_vndrcode", i)
 		sRowItemCode = Grid0.GetCellData("bd_code", i)
 		sRowOrdNo = Grid0.GetCellData("bd_orderno", i)
-		 --Form.showAlert(sLinkVndrCode.."//"..sLinkItemCode.."//"..sLinkOrdNo,sRowVndrCode.."//"..sRowItemCode.."//"..sRowOrdNo)
+		 --Form.ShowAlert(sLinkVndrCode.."//"..sLinkItemCode.."//"..sLinkOrdNo,sRowVndrCode.."//"..sRowItemCode.."//"..sRowOrdNo)
 		if sRowVndrCode == sLinkVndrCode and sRowItemCode == sLinkItemCode and sRowOrdNo == sLinkOrdNo then
 			return i
 		end
@@ -3910,16 +3910,16 @@ function CheckSelectItemAndCurrentItem()
  --			
  --			if gbLinkMiCheItem == true then
  --				
- --				'------------------------------------------------------------------------
- --				'20240716 [종목변경되었을때] CheckSelectItemAndCurrentItem가 호출 됨.
- --				'주문/체결탭에서 미체결종목이 연동되었을때, nSelectIndex값이 아직 설정되기 전임.
- --				'gbLinkMiCheItem값으로 미체결종목 연동 시
- --				'정정주문가격 자동입력 설정여부에 따라 가격 자동입력
- --				'------------------------------------------------------------------------
- --				if g_szChangeInit <> "1" and g_szModAutoPrc <> "0" then
+ --				 --------------------------------------------------------------------------
+ --				 --20240716 [종목변경되었을때] CheckSelectItemAndCurrentItem가 호출 됨.
+ --				 --주문/체결탭에서 미체결종목이 연동되었을때, nSelectIndex값이 아직 설정되기 전임.
+ --				 --gbLinkMiCheItem값으로 미체결종목 연동 시
+ --				 --정정주문가격 자동입력 설정여부에 따라 가격 자동입력
+ --				 --------------------------------------------------------------------------
+ --				if g_szChangeInit ~= "1" and g_szModAutoPrc ~= "0" then
  --					RequestAutoPrice()
  --				end if
- --				'------------------------------------------------------------------------
+ --				 --------------------------------------------------------------------------
  --				
  --			end if
 			

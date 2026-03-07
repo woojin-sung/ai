@@ -120,7 +120,7 @@ end
  -- Init_Control : 설정 초기화(0: 화면오픈, 1:초기화버튽클릭)
  --============================================================================
 function Init_Control(nIdx)
-	if nIdx == 1 then -- 초기화 버튼 클릭시
+	if nIdx == 1 then -- 초기화 버튼 클릭시 end
 		Set_TableData(1, "사용")
 		Set_TableData(2, "사용")
 		Set_TableData(6, "사용")
@@ -168,7 +168,7 @@ function Init_Control(nIdx)
 			cmbStyle.currentindex = 0			
 		end
 		
-		if Form.GetEnvData("GLOBAL_INTR_SWIPE") == "" then -- 20160325 초기화 사용으로 변경
+		if Form.GetEnvData("GLOBAL_INTR_SWIPE") == "" then -- 20160325 초기화 사용으로 변경 end
 			g_tSetTable.swipe= 1
 			Set_TableData(6, "사용")
 		else
@@ -309,7 +309,7 @@ end
  --============================================================================
 function tblSet_OnClick(lRow , lColumn)
 	if lColumn == 1 or lColumn == 2 then
-		if lRow == 1 then -- 최근조회 종목
+		if lRow == 1 then -- 최근조회 종목 end
 			imgRecent_OnClick()
 		elseif lRow == 2 then -- 보유종목
 			imgHolding_OnClick()

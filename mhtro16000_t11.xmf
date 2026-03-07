@@ -165,7 +165,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		Init_Control()
 		
 		Form.SetTimerEvent2(1,1,0.3)
- --		Form.triggerEvent("lnkfm0", "INIT_CODE", g_szItemCd)
+ --		Form.TriggerEvent("lnkfm0", "INIT_CODE", g_szItemCd)
 
 	elseif sEventName == "ETF_SUB_TAB" then
 		nParam = gf_Tonumber(sParam)
@@ -180,7 +180,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		end
 		
 	elseif sEventName == "CHANGE_LAYOUT_S11" then
-		 --g_nLinkFm0_Height = Cint(sParam)
+		 --g_nLinkFm0_Height = gf_Tonumber(sParam)
 		g_nLinkFm1_Top = g_nLinkFm0_Top + g_nLinkFm0_Height
 		g_nLinkFm2_Top = g_nLinkFm1_Top + g_nLinkFm1_Height
 		g_nLinkFm3_Top = g_nLinkFm2_Top + g_nLinkFm2_Height

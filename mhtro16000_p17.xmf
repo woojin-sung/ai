@@ -350,7 +350,7 @@ function Request_MktOp(szMkOpClsCd)
 	
 	-- SELECT CASE 변환 (수동 보정 필요)
 			
-		if szMkOpClsCd == "001" then --주간장 개시
+		if szMkOpClsCd == "001" then --주간장 개시 end
 			Request_Tran_ohhts_6000_017r()
 	
 		elseif szMkOpClsCd == "002" then --주간장 종료
@@ -503,7 +503,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			else
 				Form.MsgBox("알림", "종목 메모가 등록되었습니다.", "MEMO_ADD", 6)
 			end
-			 --Form.closeForm()
+			 --Form.CloseForm()
 		else
 			szMemo = DATAMANAGER.GetDataValue(0, "ohhts_memo_013r", "OutBlock1", "FID_ISSU_MEMO_CNTT" , 0)
 			Edit0.caption = szMemo
@@ -539,7 +539,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			else
 				Form.MsgBox("알림", "종목 메모가 등록되었습니다.", "MEMO_ADD", 6)
 			end
-			 --Form.closeForm()
+			 --Form.CloseForm()
 		else
 			szMemo = DATAMANAGER.GetDataValue(0, "ohhts_memo_013r_1", "OutBlock1", "FID_ISSU_MEMO_CNTT" , 0)
 			Edit0.caption = szMemo
@@ -669,7 +669,7 @@ function Edit0_OnEditChar(CharCode)
 		if szByte ~= "" then
 			if gf_Tonumber(szByte) > 4000 then
 				 --Edit0.caption = g_szPrevText
-				 --szByte = Form.getLenByte(g_szPrevText)
+				 --szByte = Form.GetLenByte(g_szPrevText)
 				
 				nTotalLen = Form.GetLen(CharCode)
 				nCnt = nTotalLen
@@ -747,7 +747,7 @@ function Request_Tran_ohhts_memo_013r_1()
 	szToday		= Form.GetSharedData("..HOST_DATE", 0 )
 	szName		= Form.GetItemCodeInfo(g_szItemCd, "name")
 	
-	 --MsgBox g_szItemCd & ".." & g_szItemMarket & ".." & szName
+	 --MsgBox g_szItemCd .. ".." .. g_szItemMarket .. ".." .. szName
 	
 	if g_saveFg == false then
 		DATAMANAGER.SetDataValue( 0, "ohhts_memo_013r_1", "InBlock1", "FID_USER_ID" 				, 0 ,  szUserID)

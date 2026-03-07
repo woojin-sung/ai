@@ -43,9 +43,9 @@
 	<SCRIPT_INFO _len="14280" _ulen="13758" >
 dofile("scr/script.lua")
 dofile("scr/json.lua")
- --'****************************************************************************
- --'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
- --'****************************************************************************
+ -- --****************************************************************************
+ -- --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ -- --****************************************************************************
 local g_szToolTipImg
 g_szToolTipImg = "icon_question"
 
@@ -182,7 +182,7 @@ function Init_Control()
 	contMain.imgTooltip0.left = 20 + nTextWidth + 5
 	
  --	contMain.lblRate.maxlinecnt = "1"
-	 --contMain.lblSubTitle1.setNeighborCtlPos("imgTooltip0", "right", 5, "기간 수익률")
+	 --contMain.lblSubTitle1.SetNeighborCtlPos("imgTooltip0", "right", 5, "기간 수익률")
 	
 	contMain.lblSubTitle1.ChangeTextAttr(0,13,334,0,true)
 	contMain.lblSubTitle1.ChangeTextAttr(13,9,333,-6,true)
@@ -378,7 +378,7 @@ function Init_ChartEx0()
 	 -- 종목명1,종목명2,차트유형,스케일유형
 	 ------------------------------------------
 	contMain.ChartEx0.SetAccrueName(szItemNm..",ETF_Compare_FundFlow,L")
- --	contMain.ChartEx0.SetAccrueName(szData3_Nm&","&szData4_Nm&",ETF_Compare2,L")
+ --	contMain.ChartEx0.SetAccrueName(szData3_Nm..","..szData4_Nm..",ETF_Compare2,L")
 	
 	 ------------------------------------------
 	 -- 데이터 자리 초기화
@@ -401,7 +401,7 @@ function Init_ChartEx0()
 	 -- 차트 그리기
 	 ------------------------------------------
 	contMain.ChartEx0.SetLineColor(szItemNm..";117;147;226")
- --	contMain.ChartEx0.SetLineColor(szData4_Nm&";219;161;12")
+ --	contMain.ChartEx0.SetLineColor(szData4_Nm..";219;161;12")
 
 	contMain.ChartEx0.SetAccrueData("repaintall")
 	

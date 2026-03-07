@@ -35,83 +35,86 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="2107" _ulen="1983" >
-'============================================================================
-' v0001 강경완 : 조회 조건 추가 [T2502130001]
-'============================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- v0001 강경완 : 조회 조건 추가 [T2502130001]
+ --============================================================================
 
-'v0001
-Dim g_rsltCls			' 결과구분 			%:전체 1:정상 2:거부
-Dim g_selnByovClcd	' 매도매수구분코드	0:전체 1:매도 2:매수
+ --v0001
+local g_rsltCls -- 결과구분 			%:전체 1:정상 2:거부
+local g_selnByovClcd -- 매도매수구분코드	0:전체 1:매도 2:매수
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 	
 	cont0.RadioRsltCls.currentindex = "0"
 	cont1.OrdGubun.currentindex = "0"
 
 	szLinkData = Form.GetOpenLinkData()
 	
-	if szLinkData <> "" then
+	if szLinkData ~= "" then
 	
-		arrData = Split(szLinkData,"★")
+		arrData = gf_Split(szLinkData,"★")
 		
-		g_rsltCls = arrData[0]
-		g_selnByovClcd = arrData[1]
+		g_rsltCls = arrData[0+1]
+		g_selnByovClcd = arrData[1+1]
 		
 		if g_rsltCls == "%" then
 			cont0.RadioRsltCls.currentindex = "0"
 		else
 			cont0.RadioRsltCls.currentindex = g_rsltCls
-		end if
+		end
 		
 		cont1.OrdGubun.currentindex = g_selnByovClcd
 	
 	else
 		g_rsltCls = "%"
 		g_selnByovClcd = "0"
-	end if
+	end
 
-End Sub
+end
 
-'============================================================================
-Sub BtnBackGround_OnClick()
+ --============================================================================
+function BtnBackGround_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-' 초기화 버튼 클릭이벤트
-'============================================================================
-Sub btnReset_OnClick()
+ --============================================================================
+ -- 초기화 버튼 클릭이벤트
+ --============================================================================
+function btnReset_OnClick()
 
 	cont0.RadioRsltCls.currentindex = "0"
 	cont1.OrdGubun.currentindex = "0"
 	
 	g_rsltCls = "%"
 	g_selnByovClcd = "0"
-End Sub
+end
 
-'============================================================================
-' 검색버튼 클릭이벤트(조회조건 설정 리턴)
-'============================================================================
-Sub btnOk_OnClick()
+ --============================================================================
+ -- 검색버튼 클릭이벤트(조회조건 설정 리턴)
+ --============================================================================
+function btnOk_OnClick()
 
-	Form.SendReturnToParent("mhtro16061_p9" , g_rsltCls  & "★" & g_selnByovClcd)
+	Form.SendReturnToParent("mhtro16061_p9" , g_rsltCls  .. "★" .. g_selnByovClcd)
 	Form.CloseForm()
 	
-End Sub
+end
 
-'============================================================================
-Sub cont0_RadioRsltCls_OnClick(nIndex)
+ --============================================================================
+function cont0_RadioRsltCls_OnClick(nIndex)
 	g_rsltCls = nIndex
 	if nIndex == 0 then
 		g_rsltCls = "%"
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub cont1_OrdGubun_OnClick(nIndex)
+ --============================================================================
+function cont1_OrdGubun_OnClick(nIndex)
 	g_selnByovClcd = nIndex
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

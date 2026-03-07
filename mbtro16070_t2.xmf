@@ -332,16 +332,16 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			frcr_amt = grd0.GetCellData("bd_cell2", i)
 			vltn_amt	= grd0.GetCellData("bd_cell3", i)
 
-			 --grd0.SetCellData("bd_cell2", i, FormatNumber(frcr_amt,2))
-			 --grd0.SetCellData("bd_cell3", i, FormatNumber(vltn_amt,2))
+			 --grd0.SetCellData("bd_cell2", i, gf_CommaValue(frcr_amt,2))
+			 --grd0.SetCellData("bd_cell3", i, gf_CommaValue(vltn_amt,2))
 			
 			
  --			if crcd = "USD" then
- --				grd0.SetCellData("bd_cell2", i, FormatNumber(frcr_amt,4))
- --				grd0.SetCellData("bd_cell3", i, FormatNumber(vltn_amt,4))
+ --				grd0.SetCellData("bd_cell2", i, gf_CommaValue(frcr_amt,4))
+ --				grd0.SetCellData("bd_cell3", i, gf_CommaValue(vltn_amt,4))
  --			else
- --				grd0.SetCellData("bd_cell2", i, FormatNumber(frcr_amt,3))
- --				grd0.SetCellData("bd_cell3", i, FormatNumber(vltn_amt,3))
+ --				grd0.SetCellData("bd_cell2", i, gf_CommaValue(frcr_amt,3))
+ --				grd0.SetCellData("bd_cell3", i, gf_CommaValue(vltn_amt,3))
  --			end if
 		end
 		g_NextCnt = g_NextCnt + DATAMANAGER.GetDataCount(0, "obtro_oder_208r", "OutBlock1")

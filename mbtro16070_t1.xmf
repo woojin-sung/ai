@@ -520,29 +520,29 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			 --v003 END
 			
 			grd0.SetCellData("bd_cell14", i, gf_CommaValue(stnd_exrt,2))
-			 --grd0.SetCellData("bd_cell15", i, FormatNumber(stnd_exrt,2))
+			 --grd0.SetCellData("bd_cell15", i, gf_CommaValue(stnd_exrt,2))
 			
 			 --금액 -> 2자리
-			 --grd0.SetCellData("bd_cell6",  i, FormatNumber(vltn_prls_amt,2))
-			 --grd0.SetCellData("bd_cell9",  i, FormatNumber(byov_amt,2)     )
-			 --grd0.SetCellData("bd_cell8",  i, FormatNumber(vltn_amt,2)     )
+			 --grd0.SetCellData("bd_cell6",  i, gf_CommaValue(vltn_prls_amt,2))
+			 --grd0.SetCellData("bd_cell9",  i, gf_CommaValue(byov_amt,2)     )
+			 --grd0.SetCellData("bd_cell8",  i, gf_CommaValue(vltn_amt,2)     )
 			
 			 --가격 -> 4자리
-			 --grd0.SetCellData("bd_cell11", i, FormatNumber(byov_prc,4)     )			
-			 --grd0.SetCellData("bd_cell10", i, FormatNumber(psnt_prc,4)     )			
+			 --grd0.SetCellData("bd_cell11", i, gf_CommaValue(byov_prc,4)     )			
+			 --grd0.SetCellData("bd_cell10", i, gf_CommaValue(psnt_prc,4)     )			
 			
  --			if crcd = "USD" then
- --				grd0.SetCellData("bd_cell6",  i, FormatNumber(vltn_prls_amt,4))
- --				grd0.SetCellData("bd_cell8",  i, FormatNumber(byov_amt,4)     )
- --				grd0.SetCellData("bd_cell10", i, FormatNumber(psnt_prc,4)     )
- --				grd0.SetCellData("bd_cell9",  i, FormatNumber(vltn_amt,4)     )
- --				grd0.SetCellData("bd_cell11", i, FormatNumber(byov_prc,4)     )
+ --				grd0.SetCellData("bd_cell6",  i, gf_CommaValue(vltn_prls_amt,4))
+ --				grd0.SetCellData("bd_cell8",  i, gf_CommaValue(byov_amt,4)     )
+ --				grd0.SetCellData("bd_cell10", i, gf_CommaValue(psnt_prc,4)     )
+ --				grd0.SetCellData("bd_cell9",  i, gf_CommaValue(vltn_amt,4)     )
+ --				grd0.SetCellData("bd_cell11", i, gf_CommaValue(byov_prc,4)     )
  --			else
- --				grd0.SetCellData("bd_cell6",  i, FormatNumber(vltn_prls_amt,3))
- --				grd0.SetCellData("bd_cell8",  i, FormatNumber(byov_amt,3)     )
- --				grd0.SetCellData("bd_cell10", i, FormatNumber(psnt_prc,3)     )
- --				grd0.SetCellData("bd_cell9",  i, FormatNumber(vltn_amt,3)     )
- --				grd0.SetCellData("bd_cell11", i, FormatNumber(byov_prc,3)     )
+ --				grd0.SetCellData("bd_cell6",  i, gf_CommaValue(vltn_prls_amt,3))
+ --				grd0.SetCellData("bd_cell8",  i, gf_CommaValue(byov_amt,3)     )
+ --				grd0.SetCellData("bd_cell10", i, gf_CommaValue(psnt_prc,3)     )
+ --				grd0.SetCellData("bd_cell9",  i, gf_CommaValue(vltn_amt,3)     )
+ --				grd0.SetCellData("bd_cell11", i, gf_CommaValue(byov_prc,3)     )
  --			end if
 			
 			if gf_Tonumber(vltn_prls_amt) > 0 then
@@ -631,7 +631,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
  --			elseif exch = "HK" then
  --				grd0.SetCellData("bd_cell12", i, "홍콩")
  --			else
- --				Form.ShowAlert("TEST", "해당하는 시장 없음 : " & exch & " , " &  i)
+ --				Form.ShowAlert("TEST", "해당하는 시장 없음 : " .. exch .. " , " ..  i)
  --				
  --			end if
 			
@@ -644,7 +644,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
  --			elseif nation = "후강통" then
  --				grd0.SetCellData("bd_cell13", i, "중국")
  --			else
- --				Form.ShowAlert("TEST", "해당하는 국가 없음: " & nation & " , " &  i)
+ --				Form.ShowAlert("TEST", "해당하는 국가 없음: " .. nation .. " , " ..  i)
  --			end if
 		end
 		
@@ -699,7 +699,7 @@ function grd0_OnClickUp(lRow, szCellID)
 	g_szSelectType = grd0.GetCellData("bd_cell28", lRow)  --1:일반,2:소수점 
 	nAbleQty = gf_Tonumber(grd0.GetCellData("bd_cell31", lRow))
 	
-	if sType == "1" then --일반
+	if sType == "1" then --일반 end
 		nAbleQty = gf_Tonumber(nAbleQty)
 	elseif sType == "2" then --소수점
 		nAbleQty = gf_CommaValue(nAbleQty, 6)
@@ -711,13 +711,13 @@ function grd0_OnClickUp(lRow, szCellID)
  --	szQty      = grd0.GetCellData("bd_cell5" , lRow)
 	szQty      = nAbleQty  --v003
 	
-	 --CutData = Split(szItemCode, ".")
+	 --CutData = gf_Split(szItemCode, ".")
 	
-	 --뒤에서 2자리 & '.' 을 제외한 나머지를 종목코드로 수정
-	 --szCutIscd	= CutData(0)
+	 --뒤에서 2자리 ..  --.' 을 제외한 나머지를 종목코드로 수정
+	 --szCutIscd	= CutData[0+1]
 	 --뒤에서 2자리 자르는 것으로 수정
-	 --szTranExch	= Transform_Exid2(CutData(1))
-	szCutIscd  = Mid(szItemCode, 1, string.len(szItemCode)-3)	
+	 --szTranExch	= Transform_Exid2(CutData[1+1])
+	szCutIscd  = Mid(szItemCode, 1, string.string.len(szItemCode)-3)	
 	szTranExch = Transform_Exid2(string.sub(szItemCode, -2))
 	
 	 -- 온라인 거래소가 아닌경우
@@ -728,12 +728,12 @@ function grd0_OnClickUp(lRow, szCellID)
 	
 	 --msgbox szTranExch
 		
- --	if ubound(CutData) < 1 then
- --		msgbox "잘못된 데이터형식입니다." & "ubound(CutData) : " & ubound(CutData)
- --		exit sub
+ --	if #CutData < 1 then
+ --		msgbox "잘못된 데이터형식입니다." .. "#CutData : " .. #CutData
+ --		return
  --	end if
 	
-	if string.len(szCutIscd) < 0 or string.len(szTranExch) < 0 then
+	if string.string.len(szCutIscd) < 0 or string.string.len(szTranExch) < 0 then
 		msgbox "필수 데이터 값이 존재하지 않습니다." .. "@" .. szCutIscd .. "@" .. szTranExch
 		
 	end
@@ -769,14 +769,14 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		szListItems	=	gf_Split(sRet,"★")
 		
 		 --v003 START
-		if g_szSelectType == "1" then --일반
+		if g_szSelectType == "1" then --일반 end
 			szScreenNo = "16060"
 		elseif g_szSelectType == "2" then --소수점
 			szScreenNo = "16092"
 		end
 		 --v003 END
 		
-		if szListItems[1+1]	==	"0" then --현재가
+		if szListItems[1+1]	==	"0" then --현재가 end
 			Form.OpenScreen("16000" , g_szNewData)
 		elseif szListItems[1+1]	==	"1" then
  --			Form.OpenScreen("16060" , g_szNewBuyData)
@@ -811,39 +811,39 @@ end
 
  --============================================================================
  --Function Transform_Exid2(sValue)
- -- if sValue == "0104" then ' 홍콩
+ -- if sValue == "0104" then  -- 홍콩
  --  return "HKS"
- -- elseif sValue == "0529" then ' 항셍 지수
+ -- elseif sValue == "0529" then  -- 항셍 지수
  --  return "HSI"
- -- elseif sValue == "0211115" then ' 상해
+ -- elseif sValue == "0211115" then  -- 상해
  --  return "SHS"
- -- elseif sValue == "0214" then ' 심천거래소 종목
+ -- elseif sValue == "0214" then  -- 심천거래소 종목
  --  return "SZS"
- -- elseif sValue == "0321" then ' 뉴욕
+ -- elseif sValue == "0321" then  -- 뉴욕
  --  return "NYS"
- -- elseif sValue == "0066" then ' 아멕스
+ -- elseif sValue == "0066" then  -- 아멕스
  --  return "AMX"
- -- elseif sValue == "0537" then ' 나스닥
+ -- elseif sValue == "0537" then  -- 나스닥
  --  return "NAS"
- -- elseif sValue == "0130" then ' 미국 OTCBB
+ -- elseif sValue == "0130" then  -- 미국 OTCBB
  --  return "NAO"
- -- elseif sValue == "0625" then ' S&P 지수
+ -- elseif sValue == "0625" then  -- S&P 지수
  --  return "SPI"
- -- elseif sValue == "0310" then ' 다우존스 지수
+ -- elseif sValue == "0310" then  -- 다우존스 지수
  --  return "DJI"
- -- elseif sValue == "0106" then ' 도쿄
+ -- elseif sValue == "0106" then  -- 도쿄
  --  return "TSE"
- --elseif sValue == "0107" then ' 오사카거래소 종목
+ --elseif sValue == "0107" then  -- 오사카거래소 종목
  --  return "OSE"
- -- elseif sValue == "0112" then ' 자스닥거래소 종목
+ -- elseif sValue == "0112" then  -- 자스닥거래소 종목
  --  return "JSD"
- -- elseif sValue == "0889" then ' 니케이 지수
+ -- elseif sValue == "0889" then  -- 니케이 지수
  --  return "NII"
- -- elseif sValue == "0538" then ' 미국 나스닥 지수
+ -- elseif sValue == "0538" then  -- 미국 나스닥 지수
  --  return "NAI"
- -- elseif sValue == "0770" then ' 베트남 호치민
+ -- elseif sValue == "0770" then  -- 베트남 호치민
  --  return "HSX"
- -- elseif sValue == "0771" then ' 베트남 하노이
+ -- elseif sValue == "0771" then  -- 베트남 하노이
  --  return "HNX"
  -- end if
  --end Function

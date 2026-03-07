@@ -442,127 +442,128 @@
 		<CHKBUTTON name="ChkDaySise" fontsize="-2" chkcaption="주간거래시세 적용" unchkcaption="주간거래시세 적용" ly_vert="231,49,131,28,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="26046" _ulen="24134" >
-
-'============================================================================
-' 화 면 명 : 주식주문_잔고팝업
-' 화면설명 : 주식주문 매도에서 잔고버튼 클릭시 오픈
-' 작    성 : 2016.01.26 ~ 2016. 02. 05      ssang
-' 수    정 : 2023.02.28 장시방 grdList 사이즈변경
-' 2024.03.20 : 장시방 : v002 : 알림문구 수정
-'============================================================================
-'v001 20220523: 아이티젠 김성수 : 소수점 종목 추가
-'****************************************************************************
-'               G  R  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim g_szAcnt, g_szAcntCd, g_szGbn, g_szChk, g_szTab, g_szSelect
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 화 면 명 : 주식주문_잔고팝업
+ -- 화면설명 : 주식주문 매도에서 잔고버튼 클릭시 오픈
+ -- 작    성 : 2016.01.26 ~ 2016. 02. 05      ssang
+ -- 수    정 : 2023.02.28 장시방 grdList 사이즈변경
+ -- 2024.03.20 : 장시방 : v002 : 알림문구 수정
+ --============================================================================
+ --v001 20220523: 아이티젠 김성수 : 소수점 종목 추가
+ --****************************************************************************
+ --               G  R  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+local g_szAcnt, g_szAcntCd, g_szGbn, g_szChk, g_szTab, g_szSelect
 g_szAcnt, g_szAcntCd, g_szGbn, g_szChk, g_szTab, g_szSelect = "", "", "", "", "", ""
 
-Dim g_szAcntPwd
+local g_szAcntPwd
 g_szAcntPwd = ""
 
-'20200511 LES START
-Dim sCodeList
+ --20200511 LES START
+local sCodeList
 sCodeList = ""
 
-Dim g_tItemList
+local g_tItemList
 
-Dim g_szNewData
-Dim g_szNewBuyData
-Dim g_szNewSelData
+local g_szNewData
+local g_szNewBuyData
+local g_szNewSelData
 
-'20200511 LES END
+ --20200511 LES END
 
-Dim g_szCustID
+local g_szCustID
 g_szCustID = ""
 
-Dim g_szType, g_szSelectType'v001
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
-'****************************************************************************
-'============================================================================
-' Set_Unit
-'============================================================================
-Function Set_Unit(szData, sDecimal)
+local g_szType, g_szSelectType --v001
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
+ --****************************************************************************
+ --============================================================================
+ -- Set_Unit
+ --============================================================================
+function Set_Unit(szData, sDecimal)
 	
-	sztemp = CStr(szData)
-	szChk = InStr(sztemp, ".")
-	sDecimal = CStr(CInt(sDecimal))
+	sztemp = gf_Tostring(szData)
+	szChk = string.find(sztemp, ".")
+	sDecimal = gf_Tostring(gf_Tonumber(sDecimal))
 	
-	if CStr(szChk) == "0" then
-		if sDecimal = "1" then
-			sztemp = sztemp & ".0"	
-		elseif sDecimal = "2" then
-			sztemp = sztemp & ".00"	
-		elseif sDecimal = "3" then
-			sztemp = sztemp & ".000"	
-		elseif sDecimal = "4" then
-			sztemp = sztemp & ".0000"	
-		end if 
+	if gf_Tostring(szChk) == "0" then
+		if sDecimal == "1" then
+			sztemp = sztemp .. ".0"	
+		elseif sDecimal == "2" then
+			sztemp = sztemp .. ".00"	
+		elseif sDecimal == "3" then
+			sztemp = sztemp .. ".000"	
+		elseif sDecimal == "4" then
+			sztemp = sztemp .. ".0000"	
+		end
 	else
-		szCha = CInt(Len(sztemp) - szChk)
+		szCha = gf_Tonumber(string.len(sztemp) - szChk)
 
-		if szCha > CInt(sDecimal) then
-			sztemp = Round(sztemp, CInt(sDecimal))
-		end if
+		if szCha > gf_Tonumber(sDecimal) then
+			sztemp = gf_Round(sztemp, gf_Tonumber(sDecimal))
+		end
 		
-		szCha = CInt(Len(sztemp) - szChk)
+		szCha = gf_Tonumber(string.len(sztemp) - szChk)
 		
-		if CStr(szCha) == "1" then 
+		if gf_Tostring(szCha) == "1" then
 			if sDecimal == "2" then
-				sztemp = sztemp & "0"	
+				sztemp = sztemp .. "0"	
 			elseif sDecimal == "3" then
-				sztemp = sztemp & "00"	
+				sztemp = sztemp .. "00"	
 			elseif sDecimal == "4" then
-				sztemp = sztemp & "000"
-			else 
-				sztemp = sztemp
-			end if 	
-		elseif CStr(szCha) == "2" then 
-			if sDecimal == "3" then
-				sztemp = sztemp & "0"	
-			elseif sDecimal == "4" then
-				sztemp = sztemp & "00"
+				sztemp = sztemp .. "000"
 			else
 				sztemp = sztemp
-			end if	
-		elseif CStr(szCha) == "3" then 
-			if sDecimal == "4" then
-				sztemp = sztemp & "0"
-			else 
+			end
+		elseif gf_Tostring(szCha) == "2" then
+			if sDecimal == "3" then
+				sztemp = sztemp .. "0"	
+			elseif sDecimal == "4" then
+				sztemp = sztemp .. "00"
+			else
 				sztemp = sztemp
-			end if	
+			end
+		elseif gf_Tostring(szCha) == "3" then
+			if sDecimal == "4" then
+				sztemp = sztemp .. "0"
+			else
+				sztemp = sztemp
+			end
 		else
 			sztemp = sztemp
-		end if
-	end if
+		end
+	end
 	
 	return sztemp
-End Function
-'============================================================================
-' SetGridData
-'============================================================================
-Function SetGridData()
+end
+ --============================================================================
+ -- SetGridData
+ --============================================================================
+function SetGridData()
 
 	sCodeList = ""
 	g_tItemList = {}
 	
-	For iCnt = grdList.rowcount - 1 To 0 Step -1
+	for iCnt = grdList.rowcount - 1, 0, -1 do
 		szType 	= grdList.GetCellData("bd_cell7" , iCnt)
 		szVndr 	= grdList.GetCellData("bd_cell17" , iCnt)
 		
-		' 시장구분
+		 -- 시장구분
 		if szType == "01" then
 			grdList.SetCellData("bd_cell16", iCnt, "미국")
 		elseif szType == "02" then
 			grdList.SetCellData("bd_cell16", iCnt, "홍콩")
 		elseif szType == "03" then
-			'grdList.SetCellData("bd_cell16", iCnt, "상해")
+			 --grdList.SetCellData("bd_cell16", iCnt, "상해")
 			grdList.SetCellData("bd_cell16", iCnt, "중국")
 		elseif szType == "04" then
-			'grdList.SetCellData("bd_cell16", iCnt, "심천")
+			 --grdList.SetCellData("bd_cell16", iCnt, "심천")
 			grdList.SetCellData("bd_cell16", iCnt, "중국")
 			
-		'20200511 LES START
+		 --20200511 LES START
 		elseif szType == "05" then
 			grdList.SetCellData("bd_cell16", iCnt, "일본")
 			
@@ -578,9 +579,9 @@ Function SetGridData()
 			grdList.SetCellData("bd_cell16", iCnt, "인도네시아")
 		elseif szType == "24" then
 			grdList.SetCellData("bd_cell16", iCnt, "베트남")
-		'20200511 LES END
+		 --20200511 LES END
 		
-		end if
+		end
 		
 		szVndrStr = Transform_Exid(szVndr)
 		grdList.SetCellData("bd_cell6", iCnt, szVndrStr)
@@ -588,150 +589,150 @@ Function SetGridData()
 		
 		
 		
-		'20200511 LES START 
-		'링크폼(연합인포제공 : 16060_p8) 화면에 종목코드 던져서 해당종목 현재가 얻어오기
+		 --20200511 LES START 
+		 --링크폼(연합인포제공 : 16060_p8) 화면에 종목코드 던져서 해당종목 현재가 얻어오기
 				
 		szVndrcode = grdList.GetCellData("bd_cell17", iCnt)
 		szVndrID = Transform_codeToid(szVndrcode)
 		szCode = grdList.GetCellData("bd_cell1", iCnt)
 		
-		szData = szVndrID & "@" & szCode
+		szData = szVndrID .. "@" .. szCode
 		
 		grdList.SetCellData("bd_cell21", iCnt, szVndrID)
 	
-		Dim tItemData
+		local tItemData
 		tItemData = {}
 		tItemData.code = szData
-		table.insert( g_tItemList, tItemData )
+		table.Insert( g_tItemList, tItemData )
 		
-		sCodeList = sCodeList & szData
+		sCodeList = sCodeList .. szData
 		
 		
 				
 		if iCnt ~= 0 then
-			sCodeList = sCodeList & "`"
-		end if
-		'20200511 LES END
+			sCodeList = sCodeList .. "`"
+		end
+		 --20200511 LES END
 
-	Next
+	end
 	
 
 	
-	'20200511 LES START
-	'Form.ShowAlert("sCodeList_잔고팝업", sCodeList)
-'	Form.triggerEvent("linkform", "CodeList", sCodeList)
-	'20200511 LES END
+	 --20200511 LES START
+	 --Form.ShowAlert("sCodeList_잔고팝업", sCodeList)
+ --	Form.triggerEvent("linkform", "CodeList", sCodeList)
+	 --20200511 LES END
 	
 	
-End Function
+end
 
-'============================================================================
-' Request_Data() 105r Call
-'============================================================================
-Function Request_Data()
+ --============================================================================
+ -- Request_Data() 105r Call
+ --============================================================================
+function Request_Data()
 	grdList.rowcount = 0
 	DATAMANAGER.RequestTranData("obtro_oder_105r")
-End Function
+end
 
-'============================================================================
-' Request_Data() 108r Call
-'============================================================================
-Function Request_Data_108r()
+ --============================================================================
+ -- Request_Data() 108r Call
+ --============================================================================
+function Request_Data_108r()
 	DATAMANAGER.RequestTranData("obtro_oder_108r")
-End Function
+end
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
 
-'============================================================================
-' Form_OnFormInit
-'============================================================================
-Sub Form_OnFormInit()
-	g_szCustID = Form.GetSharedData("&USER_ID", false )
+ --============================================================================
+ -- Form_OnFormInit
+ --============================================================================
+function Form_OnFormInit()
+	g_szCustID = Form.GetSharedData("..USER_ID", false )
 
-	Dim szChkVal
+	local szChkVal
 	
 	Form.SetScreenName("해외주식잔고")
 
-	szChkVal = Form.LoadConfigData( "mhtro16060", "balance" )		'수수료비용반영
+	szChkVal = Form.LoadConfigData( "mhtro16060", "balance" )		 --수수료비용반영
 
-	If szChkVal <> "" Then
+	if szChkVal ~= "" then
 		chk1.checkstate = szChkVal
-	End If
+	end
 	
 	
-	'20200504 LES START
-	szScreenNo = Form.GetSharedData( "&SCREEN_NO" , false )
+	 --20200504 LES START
+	szScreenNo = Form.GetSharedData( "..SCREEN_NO" , false )
 	if szScreenNo == "16075" then
 		
-		'20200629 LES START
-		grdList.height = 486	'509
+		 --20200629 LES START
+		grdList.height = 486	 --509
 		acnt1.enable  = true
 		
 		szFullAcnt = acnt1.caption
-		g_szAcnt = Left(szFullAcnt,8)
-		g_szAcntCd = Right(szFullAcnt,2)
-		g_szType = "0"'v001
+		g_szAcnt = string.sub(szFullAcnt, 1, 8)
+		g_szAcntCd = string.sub(szFullAcnt, -2)
+		g_szType = "0" --v001
 		Request_Data()
 	elseif szScreenNo == "16092" then
 		Form.SetScreenName("해외소수점잔고")
-		g_szType = "2"'v001
-		grdList.SetVisibleCol(6, 0) '대출일자/만기일자 열 숨김처리
+		g_szType = "2" --v001
+		grdList.SetVisibleCol(6, 0)  --대출일자/만기일자 열 숨김처리
 		szOpen = Form.GetOpenLinkData()
 	
-		if Trim(szOpen) == "" then
-			Exit Sub
-		end if
+		if gf_Trim(szOpen) == "" then
+			return
+		end
 
-		tData = Split(szOpen, "★")
+		tData = gf_Split(szOpen, "★")
 	
-		if UBound(tData) > 0 then
-			g_szAcnt   	= tData(0)
-			g_szAcntCd 	= tData(1)
-			g_szAcntPwd	= tData(2)
+		if #tData > 0 then
+			g_szAcnt   	= tData[0+1]
+			g_szAcntCd 	= tData[1+1]
+			g_szAcntPwd	= tData[2+1]
 			
 			Request_Data()
-		end if
+		end
 	else
-		g_szType = "1"'v001
+		g_szType = "1" --v001
 		szOpen = Form.GetOpenLinkData()
 	
-		if Trim(szOpen) == "" then
-			Exit Sub
-		end if
+		if gf_Trim(szOpen) == "" then
+			return
+		end
 
-		tData = Split(szOpen, "★")
+		tData = gf_Split(szOpen, "★")
 	
-		if UBound(tData) > 0 then
-			g_szAcnt   	= tData(0)
-			g_szAcntCd 	= tData(1)
-			g_szAcntPwd	= tData(2)
+		if #tData > 0 then
+			g_szAcnt   	= tData[0+1]
+			g_szAcntCd 	= tData[1+1]
+			g_szAcntPwd	= tData[2+1]
 			
 			Request_Data()
-		end if
+		end
 	
 	
-	end if
-	'20200504 LES END
-	'20220704 ITGEN START
-	'매도화면에서 팝업창으로 실행시 하단문구 표시
-	if szScreenNo = "16060" or szScreenNo = "16092" then
-		grdList.height = 478	'494
+	end
+	 --20200504 LES END
+	 --20220704 ITGEN START
+	 --매도화면에서 팝업창으로 실행시 하단문구 표시
+	if szScreenNo == "16060" or szScreenNo == "16092" then
+		grdList.height = 478	 --494
 		tblInfo.visible = true
-	end if
-	'20220704 ITGEN END
+	end
+	 --20220704 ITGEN END
 	
-	grdList.setSortCellID("th_cell14","bd_cell10")
-	grdList.setSortCellID("th_cell31","bd_cell11")
-	grdList.setSortCellID("th_cell0" ,"bd_cell1" )
-End Sub
+	grdList.SetSortCellID("th_cell14","bd_cell10")
+	grdList.SetSortCellID("th_cell31","bd_cell11")
+	grdList.SetSortCellID("th_cell0" ,"bd_cell1" )
+end
 
-'============================================================================
-' DATAMANAGER_OnSendTranBefore
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)	
-	If szTranID = "obtro_oder_105r" Then
+ --============================================================================
+ -- DATAMANAGER_OnSendTranBefore
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	if szTranID == "obtro_oder_105r" then
 		DATAMANAGER.ClearInputData(0, "obtro_oder_105r")
 		
 		DATAMANAGER.SetDataValue(0, "obtro_oder_105r", "InBlock1", "ACNO" 				, 0, g_szAcnt)		
@@ -740,24 +741,24 @@ Sub DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_105r", "InBlock1", "IQRY_CLS_CODE"		, 0, "1")
 		DATAMANAGER.SetDataValue(0, "obtro_oder_105r", "InBlock1", "PROD_PSTN_CLS_CODE"	, 0, "1")
 		DATAMANAGER.SetDataValue(0, "obtro_oder_105r", "InBlock1", "ELFN_ID"				, 0, g_szCustID)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_105r", "InBlock1", "RMND_CLCD"			, 0, g_szType) 'v001
+		DATAMANAGER.SetDataValue(0, "obtro_oder_105r", "InBlock1", "RMND_CLCD"			, 0, g_szType)  --v001
 		
-		'20221213_01 KBC START 해외주식주간거래
-		if ChkDaySise.checkstate = "0" then
+		 --20221213_01 KBC START 해외주식주간거래
+		if ChkDaySise.checkstate == "0" then
 			DATAMANAGER.SetDataValue(0, "obtro_oder_105r", "InBlock1", "DYTM_TR_CLPR_APLY_YN"	, 0, "N")
 		else
 			DATAMANAGER.SetDataValue(0, "obtro_oder_105r", "InBlock1", "DYTM_TR_CLPR_APLY_YN"	, 0, "Y")
-		end if
-		'20221213_01 KBC END
+		end
+		 --20221213_01 KBC END
 	
-	'20200604 LES START 
-	elseif szTranID = "obtro_oder_108r" then
+	 --20200604 LES START 
+	elseif szTranID == "obtro_oder_108r" then
 		
-		'20201222 LES START
+		 --20201222 LES START
 		DATAMANAGER.ClearInputData(0, "obtro_oder_108r")
-		'LES END
+		 --LES END
 		
-		For i = 0 to grdList.rowcount -1
+		for i = 0, grdList.rowcount -1 do
 			
 			szCode 	= grdList.GetCellData("bd_cell20" , i)
 			szPrice 	= grdList.GetCellData("bd_cell5" , i)
@@ -773,49 +774,49 @@ Sub DATAMANAGER_OnSendTranBefore(szTranID)
 			DATAMANAGER.SetDataValue(0, "obtro_oder_108r", "InBlock1", "HLDN_QTY" 					, i , szQty)
 			DATAMANAGER.SetDataValue(0, "obtro_oder_108r", "InBlock1", "BYOV_CAMT" 					, i , szCamt)
 			
-			szData = g_szAcnt & "★" & g_szAcntCd & "★" & szCls& "★" & szCode & "★" & szPrice & "★" & szQty & "★" & szCamt
+			szData = g_szAcnt .. "★" .. g_szAcntCd .. "★" .. szCls.. "★" .. szCode .. "★" .. szPrice .. "★" .. szQty .. "★" .. szCamt
 		
-			'Form.ShowAlert("szData", szData)
+			 --Form.ShowAlert("szData", szData)
 		
-		Next
+		end
 
 
 	
-	End If
+	end
 	
-End Sub
+end
 
-'============================================================================
-' DATAMANAGER_OnReceiveTranComplete
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	If szTranID = "obtro_oder_105r" Then
+ --============================================================================
+ -- DATAMANAGER_OnReceiveTranComplete
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	if szTranID == "obtro_oder_105r" then
 		
 		
 		
-'20201209 SWJ START : 해외주식 주문잔고 그리드 오류 수정
+ --20201209 SWJ START : 해외주식 주문잔고 그리드 오류 수정
 		if DATAMANAGER.IsMoreNextData("obtro_oder_105r") == true then
 		   DATAMANAGER.RequestNextData( "obtro_oder_105r" )
 		else
 		   
-			'연합인포 데이터..
+			 --연합인포 데이터..
 			SetGridData()
 		
-			'20201021 LES START 해외주식 매도상환
+			 --20201021 LES START 해외주식 매도상환
 			SetItemGubun()
 			
-		   	for i = 0 to grdList.rowcount -1
-				nDiff = CDbl(grdList.GetCellData("bd_cell10", i))
+		   	for i = 0, grdList.rowcount -1 do
+				nDiff = gf_Tonumber(grdList.GetCellData("bd_cell10", i))
 				swapItemColor(i, nDiff)
-			next
+			end
 		   
-		   'Call Request_Data_108r()
-		end if
+		    --Call Request_Data_108r()
+		end
 	
-	elseif szTranID = "obtro_oder_108r" then
+	elseif szTranID == "obtro_oder_108r" then
 		szCnt = DATAMANAGER.GetDataCount(0, szTranID , "OutBlock1")
   
-		for i = 0 to szCnt -1
+		for i = 0, szCnt -1 do
 		   szData1 = DATAMANAGER.GetDataValue(0, "obtro_oder_108r", "OutBlock1", "VLTN_PRLS_CAMT" , i)
 		   szData2 = DATAMANAGER.GetDataValue(0, "obtro_oder_108r", "OutBlock1", "FRCR_VLTN_AMT" , i)
 		   szData3 = DATAMANAGER.GetDataValue(0, "obtro_oder_108r", "OutBlock1", "ONLN_YN" , i)
@@ -825,106 +826,106 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 		   grdList.SetCellData("bd_cell4", i, szData2)
 		   grdList.SetCellData("bd_cell19", i, szData3)
 		   grdList.SetCellData("bd_cell13", i, szData4)
-		next
-'20201209 SWJ END
+		end
+ --20201209 SWJ END
 
-'		szCnt = DATAMANAGER.GetDataCount(0, szTranID , "OutBlock1")
-'		Form.ShowAlert("szCnt", szCnt)
-'		for i = 0 to szCnt -1
-'			szData = DATAMANAGER.GetDataValue(0, "obtro_oder_108r", "OutBlock1", "VLTN_PRLS_CAMT" , i)
-'			Form.ShowAlert("평가손익", szData)
-'		next
+ --		szCnt = DATAMANAGER.GetDataCount(0, szTranID , "OutBlock1")
+ --		Form.ShowAlert("szCnt", szCnt)
+ --		for i = 0 to szCnt -1
+ --			szData = DATAMANAGER.GetDataValue(0, "obtro_oder_108r", "OutBlock1", "VLTN_PRLS_CAMT" , i)
+ --			Form.ShowAlert("평가손익", szData)
+ --		next
 	
-	End If
+	end
 	
-End Sub
+end
 
-'============================================================================
-' chk_OnChange
-'============================================================================
-Sub chk_OnChange(sCheckState)
-	If Trim(g_szAcnt) == "" Then
-		Exit Sub
-	End If
+ --============================================================================
+ -- chk_OnChange
+ --============================================================================
+function chk_OnChange(sCheckState)
+	if gf_Trim(g_szAcnt) == "" then
+		return
+	end
 	
 	g_szChk = "1"
 	Request_Data()
-End Sub
+end
 
-'============================================================================
-' grdList_OnClickUp
-'============================================================================
-Sub grdList_OnClickUp(lRow, szCellID)
-	Dim szCd, szQty, szLoanDate, szLoanCd, szLoanSr, szData
-	Dim errmsg
+ --============================================================================
+ -- grdList_OnClickUp
+ --============================================================================
+function grdList_OnClickUp(lRow, szCellID)
+	local szCd, szQty, szLoanDate, szLoanCd, szLoanSr, szData
+	local errmsg
 	
-	szScreenNo = Form.GetSharedData( "&SCREEN_NO" , false )
+	szScreenNo = Form.GetSharedData( "..SCREEN_NO" , false )
 	
 	if szScreenNo == "16075" then
 	
-		'20200519 LES START 오프라인종목 예외처리
+		 --20200519 LES START 오프라인종목 예외처리
 		szOnline 	= grdList.GetCellData("bd_cell19"	,	lRow)
 		if szOnline == "N" then
-    		     Form.ShowAlert("알림", "MTS에서 거래가 불가한 종목입니다.\n(영업점 또는 해외주식 데스크 문의)") 'v002
-			Exit Sub
-		end if
-		'LES END
+    		     Form.ShowAlert("알림", "MTS에서 거래가 불가한 종목입니다.\n(영업점 또는 해외주식 데스크 문의)")  --v002
+			return
+		end
+		 --LES END
 		
 		
-		'20211216 LES START 오프라인종목 예외처리 추가
+		 --20211216 LES START 오프라인종목 예외처리 추가
 		szFullcode = grdList.GetCellData("bd_cell20", lRow)
-		szMarketCode = right(szFullcode,2)
+		szMarketCode = string.sub(szFullcode, -2)
 		
 		if szMarketCode == "OT" then
-			Form.ShowAlert("알림", "MTS에서 거래가 불가한 종목입니다.\n(영업점 또는 해외주식 데스크 문의)") 'v002
-			Exit Sub
-		end if
-		'20211216 LES END
+			Form.ShowAlert("알림", "MTS에서 거래가 불가한 종목입니다.\n(영업점 또는 해외주식 데스크 문의)")  --v002
+			return
+		end
+		 --20211216 LES END
 		
 		
-		listLocation =  Split(grdList.location,":")
-		nYPos = Int(listLocation[1])
-		height = listLocation[3]
+		listLocation =  gf_Split(grdList.location,":")
+		nYPos = Int(listLocation[1+1])
+		height = listLocation[3+1]
 		
-		'v001 START
-		g_szSelectType = grdList.GetCellData("bd_cell29", lRow) 'v001
-		nMadoQty = CDbl(grdList.GetCellData("bd_cell32", lRow)) '매도가능수량
+		 --v001 START
+		g_szSelectType = grdList.GetCellData("bd_cell29", lRow)  --v001
+		nMadoQty = gf_Tonumber(grdList.GetCellData("bd_cell32", lRow))  --매도가능수량
 		if g_szSelectType == "1" then
-			nMadoQty = CInt(nMadoQty)
+			nMadoQty = gf_Tonumber(nMadoQty)
 		elseif g_szSelectType == "2" then
-			nMadoQty = FormatNumber(nMadoQty, 6)
-		end if
-		'v001 END
+			nMadoQty = gf_CommaValue(nMadoQty, 6)
+		end
+		 --v001 END
 		
 		szTranExch = grdList.GetCellData("bd_cell21" , lRow)
 		szCutIscd  = grdList.GetCellData("bd_cell1"  , lRow)
 		szItemName = grdList.GetCellData("bd_cell11" , lRow)
-'		szQty 	  = grdList.GetCellData("bd_cell12" , lRow)
-		szQty 	  = nMadoQty 'v001
+ --		szQty 	  = grdList.GetCellData("bd_cell12" , lRow)
+		szQty 	  = nMadoQty  --v001
 		sPopupType = "2"
 		
-		'20201021 LES START 해외주식 매도상환
+		 --20201021 LES START 해외주식 매도상환
 		szLoanDate = grdList.GetCellData("bd_cell23", lRow)
 		szLoanCd   = grdList.GetCellData("bd_cell27", lRow)
 		szLoanSr   = grdList.GetCellData("bd_cell28", lRow)
-		'20201021 LES END
+		 --20201021 LES END
 				
 		
 		
-		if len(szCutIscd) < 0 or len(szTranExch) < 0 then
-			msgbox "필수 데이터 값이 존재하지 않습니다." & "@" & szCutIscd & "@" & szTranExch
-		end if
+		if string.len(szCutIscd) < 0 or string.len(szTranExch) < 0 then
+			msgbox "필수 데이터 값이 존재하지 않습니다." .. "@" .. szCutIscd .. "@" .. szTranExch
+		end
 		
 		
-		g_szNewData 		= szTranExch & "@" & szCutIscd & "★" & szItemName
-		g_szNewBuyData 	= szTranExch & "@" & szCutIscd & "★" & szItemName & "♥" & "0" & "♥"& szQty & "♥" & szLoanDate & "♥" & szLoanCd & "♥" & "0" & "♥" & szLoanSr '0은 신용합산
-		g_szNewSelData 	= szTranExch & "@" & szCutIscd & "★" & szItemName & "♥" & "1" & "♥"& szQty & "♥" & szLoanDate & "♥" & szLoanCd & "♥" & "0" & "♥" & szLoanSr '0은 신용합산
+		g_szNewData 		= szTranExch .. "@" .. szCutIscd .. "★" .. szItemName
+		g_szNewBuyData 	= szTranExch .. "@" .. szCutIscd .. "★" .. szItemName .. "♥" .. "0" .. "♥".. szQty .. "♥" .. szLoanDate .. "♥" .. szLoanCd .. "♥" .. "0" .. "♥" .. szLoanSr  --0은 신용합산
+		g_szNewSelData 	= szTranExch .. "@" .. szCutIscd .. "★" .. szItemName .. "♥" .. "1" .. "♥".. szQty .. "♥" .. szLoanDate .. "♥" .. szLoanCd .. "♥" .. "0" .. "♥" .. szLoanSr  --0은 신용합산
 		
-		Form.OpenPopup("movepopup" , nYPos & "★" & height & "★" & sPopupType & "★" &  "J"  & "★" & "현재가" & "★" & "매수" & "★" & "매도" & "★" & "" & "★" & "")
+		Form.OpenPopup("movepopup" , nYPos .. "★" .. height .. "★" .. sPopupType .. "★" ..  "J"  .. "★" .. "현재가" .. "★" .. "매수" .. "★" .. "매도" .. "★" .. "" .. "★" .. "")
 				
-		'Form.ShowAlert("g_szNewData", g_szNewData)
-		'Form.ShowAlert("g_szNewBuyData", g_szNewBuyData)
-		'Form.ShowAlert("g_szNewSelData", g_szNewSelData)
+		 --Form.ShowAlert("g_szNewData", g_szNewData)
+		 --Form.ShowAlert("g_szNewBuyData", g_szNewBuyData)
+		 --Form.ShowAlert("g_szNewSelData", g_szNewSelData)
 		
 	else
 		errmsg = "종목마스터의 오류로 주문 및 시세 조회가 불가능합니다. 동일 증상 반복 시 확인 버튼을 눌러 주시기 바랍니다.\n\n ※기타문의사항은 고객지원센터 (1588-3400)로 문의하여 주시기 바랍니다."
@@ -935,339 +936,340 @@ Sub grdList_OnClickUp(lRow, szCellID)
 			szVndrCd		= grdList.GetCellData("bd_cell17"	,    lRow)
 			szQty		= grdList.GetCellData("bd_cell12"	,    lRow)
 		
-			'20201021 LES START 해외주식 매도상환
+			 --20201021 LES START 해외주식 매도상환
 			szLoanDate 	= grdList.GetCellData("bd_cell23", lRow)
 			szLoanCd   	= grdList.GetCellData("bd_cell27", lRow)
 			szLoanSr   	= grdList.GetCellData("bd_cell28", lRow)
-			'20201021 LES END
+			 --20201021 LES END
 			
 			
-			'20200519 LES START 오프라인종목 예외처리
+			 --20200519 LES START 오프라인종목 예외처리
 			szOnline 	= grdList.GetCellData("bd_cell19"	,	lRow)
 			if szOnline == "N" then
-				Form.ShowAlert("알림", "MTS에서 거래가 불가한 종목입니다.\n(영업점 또는 해외주식 데스크 문의)") 'v002
-				Exit Sub
-			end if
-			'LES END
+				Form.ShowAlert("알림", "MTS에서 거래가 불가한 종목입니다.\n(영업점 또는 해외주식 데스크 문의)")  --v002
+				return
+			end
+			 --LES END
 			
-			'20211216 LES START 오프라인종목 예외처리 추가
+			 --20211216 LES START 오프라인종목 예외처리 추가
 			szFullcode = grdList.GetCellData("bd_cell20", lRow)
-			szMarketCode = right(szFullcode,2)
+			szMarketCode = string.sub(szFullcode, -2)
 		
 			if szMarketCode == "OT" then
-				Form.ShowAlert("알림", "MTS에서 거래가 불가한 종목입니다.\n(영업점 또는 해외주식 데스크 문의)") 'v002
-				Exit Sub
-			end if
-			'20211216 LES END
+				Form.ShowAlert("알림", "MTS에서 거래가 불가한 종목입니다.\n(영업점 또는 해외주식 데스크 문의)")  --v002
+				return
+			end
+			 --20211216 LES END
 			
 			
 		
 		
-			szData = "잔고" & "★" & szCdName & "★" & szCd & "★" & szVndrCd & "★" & szQty & "★" & szLoanDate & "★" & szLoanCd & "★" & szLoanSr
-			if szScreenNo == "16092" then 'v001
+			szData = "잔고" .. "★" .. szCdName .. "★" .. szCd .. "★" .. szVndrCd .. "★" .. szQty .. "★" .. szLoanDate .. "★" .. szLoanCd .. "★" .. szLoanSr
+			if szScreenNo == "16092" then --v001
 				Form.SendReturnToParent("BALANCE", szData)
 			else
 				Form.SendReturnToParent("16060_BALANCE", szData)
-			end if
+			end
 			Form.CloseForm()
 			
 		else
 			Form.MsgBox("알림", errmsg, "REUPDATE", 1)		
-		end if
-	end if
+		end
+	end
 
-End Sub
+end
 
-'============================================================================
-' Form_OnFormClose
-'============================================================================
-Sub Form_OnFormClose()
-	Form.SaveConfigData("mhtro16060", "balance", chk.checkstate ) '비용반영
-End Sub
+ --============================================================================
+ -- Form_OnFormClose
+ --============================================================================
+function Form_OnFormClose()
+	Form.SaveConfigData("mhtro16060", "balance", chk.checkstate )  --비용반영
+end
 
-'============================================================================
-'20201209 SWJ START : 해외주식 잔고 그리드 오류 수정
-'Sub grdList_OnScrollEnd()
-'	'DATAMANAGER.RequestNextData( "obtro_oder_105r" )
-'End Sub
-'20201209 SWJ END
-'============================================================================
-Sub Form_OnMsgBoxClose(sKeyName, sRet)
+ --============================================================================
+ --20201209 SWJ START : 해외주식 잔고 그리드 오류 수정
+ --Sub grdList_OnScrollEnd()
+ --	'DATAMANAGER.RequestNextData( "obtro_oder_105r" )
+ --End Sub
+ --20201209 SWJ END
+ --============================================================================
+function Form_OnMsgBoxClose(sKeyName, sRet)
 	if sKeyName == "REUPDATE" then
 		if sRet == "ok" then
-			Form.reUpdateFile("mts_master.crc")
+			Form.ReUpdateFile("mts_master.crc")
 		else
-			exit sub
-		end if
-	end if
-End Sub
+			return
+		end
+	end
+end
 
-'============================================================================
-'20200519 LES START
-'거래소벤더식별번호(OVRS_EXCH_VNDR_IDNO) -> 거래소ID
-'============================================================================
-Function Transform_codeToid(sValue)
+ --============================================================================
+ --20200519 LES START
+ --거래소벤더식별번호(OVRS_EXCH_VNDR_IDNO) -> 거래소ID
+ --============================================================================
+function Transform_codeToid(sValue)
 
-	if sValue == "0104" then	  ' 홍콩
+	if sValue == "0104" then -- 홍콩
 		return "HKS"
-	elseif sValue == "0529" then ' 항셍 지수
+	elseif sValue == "0529" then -- 항셍 지수
 		return "HSI"
-	elseif sValue == "0215" then ' 상해
+	elseif sValue == "0215" then -- 상해
 		return "SHS"
-	elseif sValue == "0214" then ' 심천거래소 종목
+	elseif sValue == "0214" then -- 심천거래소 종목
 		return "SZS"
-	elseif sValue == "0321" then ' 뉴욕
+	elseif sValue == "0321" then -- 뉴욕
 		return "NY"
-	elseif sValue == "0066" then ' 아멕스
+	elseif sValue == "0066" then -- 아멕스
 		return "AX"
-	elseif sValue == "0537" then ' 나스닥
+	elseif sValue == "0537" then -- 나스닥
 		return "OQ"
-	elseif sValue == "0130" then ' 미국 OTCBB
+	elseif sValue == "0130" then -- 미국 OTCBB
 		return "NAO"
-	elseif sValue == "0625" then ' S&P 지수
+	elseif sValue == "0625" then -- S&P 지수
 		return "SPI"
-	elseif sValue == "0310" then ' 다우존스 지수
+	elseif sValue == "0310" then -- 다우존스 지수
 		return "DJI"
-	elseif sValue == "0106" then ' 도쿄
+	elseif sValue == "0106" then -- 도쿄
 		return "TSE"
-	elseif sValue == "0107" then ' 오사카거래소 종목
+	elseif sValue == "0107" then -- 오사카거래소 종목
 		return "OSE"
-	elseif sValue == "0112" then ' 자스닥거래소 종목
+	elseif sValue == "0112" then -- 자스닥거래소 종목
 		return "JSD"
-	elseif sValue == "0889" then ' 니케이 지수
+	elseif sValue == "0889" then -- 니케이 지수
 		return "NII"
-	elseif sValue == "0538" then ' 미국 나스닥 지수
+	elseif sValue == "0538" then -- 미국 나스닥 지수
 		return "NAI"
-	elseif sValue == "0770" then ' 베트남 호치민
+	elseif sValue == "0770" then -- 베트남 호치민
 		return "HSX"
-	elseif sValue == "0771" then ' 베트남 하노이
+	elseif sValue == "0771" then -- 베트남 하노이
 		return "HNX"
 	else
 		return ""			
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-' 거래소코드 -> 거래소벤더코드 변환
-'============================================================================
-Function Transform_Exid(sValue)
-	if sValue == "0104" then	' 홍콩
+ --============================================================================
+ -- 거래소코드 -> 거래소벤더코드 변환
+ --============================================================================
+function Transform_Exid(sValue)
+	if sValue == "0104" then -- 홍콩
 		return "홍콩"
-	elseif sValue == "HS0529I" then ' 항셍 지수
+	elseif sValue == "HS0529I" then -- 항셍 지수
 		return "항셍"
-	elseif sValue == "0215" then ' 상해
-		'return "상해"
+	elseif sValue == "0215" then -- 상해
+		 --return "상해"
 		return "후강통"
-	elseif sValue == "0214" then ' 심천거래소 종목
-		'return "심천"
+	elseif sValue == "0214" then -- 심천거래소 종목
+		 --return "심천"
 		return "선강통"
-	elseif sValue == "0321" then ' 뉴욕
+	elseif sValue == "0321" then -- 뉴욕
 		return "뉴욕"
-	elseif sValue == "0066" then ' 아멕스
+	elseif sValue == "0066" then -- 아멕스
 		return "아멕스"
-	elseif sValue == "0537" then ' 나스닥
+	elseif sValue == "0537" then -- 나스닥
 		return "나스닥"
-	elseif sValue == "0130" then ' 미국 OTCBB
+	elseif sValue == "0130" then -- 미국 OTCBB
 		return "미국 OTCBB"
-	elseif sValue == "0625" then ' S&P 지수
-		return "S&P"
-	elseif sValue == "0310" then ' 다우존스 지수
+	elseif sValue == "0625" then -- S&P 지수
+		return "S..P"
+	elseif sValue == "0310" then -- 다우존스 지수
 		return "다우존스"
-	elseif sValue == "0106" then ' 도쿄
+	elseif sValue == "0106" then -- 도쿄
 		return "도쿄"
-	elseif sValue == "0107" then ' 오사카거래소 종목
+	elseif sValue == "0107" then -- 오사카거래소 종목
 		return "오사카"
-	elseif sValue == "0112" then ' 자스닥거래소 종목
+	elseif sValue == "0112" then -- 자스닥거래소 종목
 		return "자스닥"
-	elseif sValue == "0889" then ' 니케이 지수
+	elseif sValue == "0889" then -- 니케이 지수
 		return "니케이"
-	elseif sValue == "0538" then ' 미국 나스닥 지수
+	elseif sValue == "0538" then -- 미국 나스닥 지수
 		return "미국 나스닥"
-	elseif sValue == "0770" then ' 베트남 호치민
+	elseif sValue == "0770" then -- 베트남 호치민
 		return "호치민"
-	elseif sValue == "0771" then ' 베트남 하노이
+	elseif sValue == "0771" then -- 베트남 하노이
 		return "하노이"
-	end if
-end Function
+	end
+end
 
 
-'============================================================================
-' 20200511 LES START 
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --============================================================================
+ -- 20200511 LES START 
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	if sEventName == "CodeData" then
-		Dim tData
-		Dim tTempData
-		tData = Split(sParam, "`")
+		local tData
+		local tTempData
+		tData = gf_Split(sParam, "`")
 		
-		'연합쪽에서 제공해주는 링크폼(서비스)는 인블럭에 올린 순서대로
-		'아웃블럭을 내려주지않아서.. For문을 돌면서 올린 순서대로 그리드에 셋팅한다..
-		for i = #tData -1 to 0 Step -1
-			tTempData = Split(tData(i), "◆")
-			code = tTempData(1)
+		 --연합쪽에서 제공해주는 링크폼(서비스)는 인블럭에 올린 순서대로
+		 --아웃블럭을 내려주지않아서.. For문을 돌면서 올린 순서대로 그리드에 셋팅한다..
+		for i = #tData -1, 0, -1 do
+			tTempData = gf_Split(tData[i+1], "◆")
+			code = tTempData[1+1]
 			
 			For index, val in ipairs( g_tItemList )
 				nindex = grdList.rowcount - index
-				if Null <> code and code == val.code then
+				if nil ~= code and code == val.code then
 				
-					grdList.SetCellData("bd_cell5", nindex, tTempData(2))		'현재가
-					grdList.SetCellData("bd_cell10", nindex, tTempData(3))		'전일대비
+					grdList.SetCellData("bd_cell5", nindex, tTempData[2+1])		 --현재가
+					grdList.SetCellData("bd_cell10", nindex, tTempData[3+1])		 --전일대비
 					
-					swapItemColor(nindex, CDbl(tTempData(3)))
+					swapItemColor(nindex, gf_Tonumber(tTempData[3+1]))
 										
 					
-				end if
+				end
 				
-			Next
+			end
 		
-		next
+		end
 		
-		'20200616 LES START 
-		'연합쪽에서 받아온 현재가를 넘겨 기간계 서비스에서(oder_108r)
-		'평가손익/수익률/평가금액을 계산하여 받아온다
-'		Call Request_Data_108r()
-		'LES END
+		 --20200616 LES START 
+		 --연합쪽에서 받아온 현재가를 넘겨 기간계 서비스에서(oder_108r)
+		 --평가손익/수익률/평가금액을 계산하여 받아온다
+ --		Call Request_Data_108r()
+		 --LES END
 		
-	'20220704 ITGEN START
-	' 유의팝업 추가	
-	elseif sEventName = "SCREEN_MENU" then
-		if sParam = "Show_NotiPopup" then
+	 --20220704 ITGEN START
+	 -- 유의팝업 추가	
+	elseif sEventName == "SCREEN_MENU" then
+		if sParam == "Show_NotiPopup" then
 			Form.OpenPopup("mhtro16060_p13" , "" , "")
-		end if
-	'20220704 ITGEN END
-	end if
+		end
+	 --20220704 ITGEN END
+	end
 	
-End Sub
-'============================================================================
-' 20200511 LES START 
-'============================================================================
-Function swapItemColor(nIndex, nDiff)
+end
+ --============================================================================
+ -- 20200511 LES START 
+ --============================================================================
+function swapItemColor(nIndex, nDiff)
 	
 	grdlist.SetCellFgColor( "bd_cell10"	, nIndex	, nDiff > 0 and "1" or ( nDiff < 0 and "2" or "3" ) ) 
 	grdlist.SetCellFgColor( "bd_cell5"	, nIndex	, nDiff > 0 and "1" or ( nDiff < 0 and "2" or "3" ) ) 
 	
 	grdlist.SetCellData( "bd_cell0", nIndex, nDiff > 0 and "2" or ( nDiff < 0 and "5" or "0" ) )
 	
-End Function
+end
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	szScreenNo = Form.GetSharedData( "&SCREEN_NO" , false )
+	szScreenNo = Form.GetSharedData( "..SCREEN_NO" , false )
 	
 	if szScreenNo == "16075" then
 		
-'		LinkForm1.top = 537
-'		grdList.height = 509
+ --		LinkForm1.top = 537
+ --		grdList.height = 509
 		acnt1.enable  = true
 		
-	end if
+	end
 	 
-End Sub
+end
 
-'============================================================================
-Sub btnSearch0_OnClick()
+ --============================================================================
+function btnSearch0_OnClick()
 	Request_Data()
-End Sub
-'============================================================================
-Sub acnt1_ChangeAccount()
+end
+ --============================================================================
+function acnt1_ChangeAccount()
 
 	if szScreenNo == "16075" then
 		
 		grdList.SetClear()
 		grdList.rowcount = 0
 		
-		'20200629 LES START
+		 --20200629 LES START
 		sCodeList = ""
 		
 		szFullAcnt = acnt1.caption
-		g_szAcnt = Left(szFullAcnt,8)
-		g_szAcntCd = Right(szFullAcnt,2)
+		g_szAcnt = string.sub(szFullAcnt, 1, 8)
+		g_szAcntCd = string.sub(szFullAcnt, -2)
 		
 		Request_Data()
 		
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnPopupReturn(sKeyName, sRet)
-	if sKeyName = "MOVEPOP_RETURN" then
-		Dim szListItems, szScreenNo
-		szListItems	=	split(sRet,"★")
+ --============================================================================
+function Form_OnPopupReturn(sKeyName, sRet)
+	if sKeyName == "MOVEPOP_RETURN" then
+		local szListItems, szScreenNo
+		szListItems	=	gf_Split(sRet,"★")
 		
-		'v001 START
+		 --v001 START
 		if g_szSelectType == "1" then
 			szScreenNo = "16060"
 		elseif g_szSelectType == "2" then
 			szScreenNo = "16092"
-		end if
-		'v001 END
+		end
+		 --v001 END
 		
-		if	szListItems(1)	=	"0"	then			'현재가
+		if szListItems[1+1]	==	"0" then --현재가
 			Form.OpenScreen("16000" , g_szNewData)
-		elseif szListItems(1)	=	"1"	then
-'			Form.OpenScreen("16060" , g_szNewBuyData)
-			Form.OpenScreen(szScreenNo , g_szNewBuyData) 'v001
-		elseif szListItems(1)	=	"2"	then
-'			Form.OpenScreen("16060" , g_szNewSelData)
-			Form.OpenScreen(szScreenNo , g_szNewSelData) 'v001
-		end if
-	end if
-End Sub
+		elseif szListItems[1+1]	==	"1" then
+ --			Form.OpenScreen("16060" , g_szNewBuyData)
+			Form.OpenScreen(szScreenNo , g_szNewBuyData)  --v001
+		elseif szListItems[1+1]	==	"2" then
+ --			Form.OpenScreen("16060" , g_szNewSelData)
+			Form.OpenScreen(szScreenNo , g_szNewSelData)  --v001
+		end
+	end
+end
 
-'============================================================================
-' 20200511 LES END
-'============================================================================
+ --============================================================================
+ -- 20200511 LES END
+ --============================================================================
 
-'============================================================================
-' 20201021 LES START 해외주식 매도상환
-'============================================================================
+ --============================================================================
+ -- 20201021 LES START 해외주식 매도상환
+ --============================================================================
 
-Sub SetItemGubun()
-	dim nOwnQty, nMadoQty, szDotType, szLoanType 'v001
-	for i = 0 to grdList.rowcount -1 
+function SetItemGubun()
+	local nOwnQty, nMadoQty, szDotType, szLoanType --v001
+	for i = 0, grdList.rowcount -1 do
 		szLoanType = grdList.GetCellData("bd_cell27", i)
 		szDotType = grdList.GetCellData("bd_cell29", i)
-		'v001 START
-		nOwnQty = CDbl(grdList.GetCellData("bd_cell31", i)) '잔고수량
-		nMadoQty = CDbl(grdList.GetCellData("bd_cell32", i)) '매도가능수량
+		 --v001 START
+		nOwnQty = gf_Tonumber(grdList.GetCellData("bd_cell31", i))  --잔고수량
+		nMadoQty = gf_Tonumber(grdList.GetCellData("bd_cell32", i))  --매도가능수량
 		
 		if szDotType == "2" then
 			grdList.SetCellData("bd_cell25", i, "소수점")
-			nOwnQty = FormatNumber(nOwnQty, 6)
-			nMadoQty = FormatNumber(nMadoQty, 6)
+			nOwnQty = gf_CommaValue(nOwnQty, 6)
+			nMadoQty = gf_CommaValue(nMadoQty, 6)
 		else
-			if szLoanType = "0251" then
+			if szLoanType == "0251" then
 				grdList.SetCellData("bd_cell25", i, "담보융자")
 			else
 				grdList.SetCellData("bd_cell25", i, "일반")
-			end if
+			end
 			
-			nOwnQty = FormatNumber(nOwnQty, 0)
-			nMadoQty = FormatNumber(nMadoQty, 0)
-		end if
+			nOwnQty = gf_CommaValue(nOwnQty, 0)
+			nMadoQty = gf_CommaValue(nMadoQty, 0)
+		end
 		
 		grdList.SetCellData("bd_cell2", i, nOwnQty)
 		grdList.SetCellData("bd_cell12", i, nMadoQty)
-		'v001 END
-	next
+		 --v001 END
+	end
 	
 
-End sub
+end
 
-'============================================================================
-'20221213_01 KBC 해외주식주간거래
-Sub ChkDaySise_OnChange(sCheckState)
-	If Trim(g_szAcnt) == "" Then
-		Exit Sub
-	End If
+ --============================================================================
+ --20221213_01 KBC 해외주식주간거래
+function ChkDaySise_OnChange(sCheckState)
+	if gf_Trim(g_szAcnt) == "" then
+		return
+	end
 	
 	Request_Data()	
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_105r" trcode="obtro_oder_105r" compress="1" encryption="1" inputcheck="1" useattr="0" />

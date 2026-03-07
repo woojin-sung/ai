@@ -73,14 +73,14 @@ g_bFirst = false
 function Init_SetTable()
 	g_tSetTable.dispdiff= "1"
 	g_tSetTable.jangraph= "1"
-	 --g_tSetTable.Diplayrest 	= "0"
+	 --g_tSetTable.diplayrest= "0"
 	g_tSetTable.priceoutline= "1"
 	g_tSetTable.boldhoga= "0"
 	g_tSetTable.boldjan= "0"
 	
 	Form.SaveConfigData("mhtro16000", "Dispdiff"		, g_tSetTable.Dispdiff		)	 --호가등락률
 	Form.SaveConfigData("mhtro16000", "Jangraph"		, g_tSetTable.Jangraph		)	 --호가잔량그래프
-	 --Form.SaveConfigData("mhtro16000", "Diplayrest"	, g_tSetTable.Diplayrest	)	'호가직전수량표시
+	 --Form.SaveConfigData("mhtro16000", "Diplayrest"	, g_tSetTable.Diplayrest	)	 --호가직전수량표시
 	Form.SaveConfigData("mhtro16000", "Priceoutline"	, g_tSetTable.Priceoutline	)	 --현재가 외곽선 표시
 	Form.SaveConfigData("mhtro16000", "BoldHoga"		, g_tSetTable.BoldHoga		)	 --텍스트굵기 호가
 	Form.SaveConfigData("mhtro16000", "BoldJan"		, g_tSetTable.BoldJan		)	 --텍스트굵기 호가잔량
@@ -104,7 +104,7 @@ end
  -- Init_Control : 설정 초기화(0: 화면오픈, 1:초기화버튽클릭)
  --======================================
 function Init_Control(nIdx)
-	if nIdx == 1 then -- 초기화 버튼 클릭시
+	if nIdx == 1 then -- 초기화 버튼 클릭시 end
 		Set_TableData(0, "선택")
 		Set_TableData(1, "선택")
 		Set_TableData(2, "선택")
@@ -122,7 +122,7 @@ function Init_Control(nIdx)
 	else -- Form_init
 		g_tSetTable.dispdiff= Form.LoadConfigData("mhtro16000", "Dispdiff"	)	 --호가등락률
 		g_tSetTable.jangraph= Form.LoadConfigData("mhtro16000", "Jangraph"	)	 --호가잔량그래프
-		 --g_tSetTable.Diplayrest		= Form.LoadConfigData("mhtro16000", "Diplayrest"	)	'호가직전수량표시
+		 --g_tSetTable.diplayrest= Form.LoadConfigData("mhtro16000", "Diplayrest"	)	 --호가직전수량표시
 		g_tSetTable.priceoutline= Form.LoadConfigData("mhtro16000", "Priceoutline")	 --현재가 외곽선 표시
 		g_tSetTable.boldhoga= Form.LoadConfigData("mhtro16000", "BoldHoga"	)	 --텍스트굵기 호가
 		g_tSetTable.boldjan= Form.LoadConfigData("mhtro16000", "BoldJan"		)	 --텍스트굵기 호가잔량
@@ -142,7 +142,7 @@ function Init_Control(nIdx)
 		end
 		
 		 --호가직전수량표시
-		 --If g_tSetTable.Diplayrest = "1" Then
+		 --If g_tSetTable.diplayrest= "1" Then
 		 --	Set_TableData(2, "선택")
 		 --Else
 		 --	Set_TableData(2, "미선택")
@@ -283,15 +283,15 @@ end
 function contSet_tblSet_OnClick(lRow , lColumn)
 
 	if lColumn == 1 or lColumn == 2 then
-		if lRow == 0 then -- 호가등락률
+		if lRow == 0 then -- 호가등락률 end
 			contSet_imgDispdiff_OnClick()
 		elseif lRow == 1 then -- 호가잔량그래프
 			contSet_imgjangraph_OnClick()
-		 --elseif lRow = 2 then					' 호가직전수량표시
+		 --elseif lRow = 2 then					 -- 호가직전수량표시
 		 --	contSet_imgDiplayrest_OnClick()
 		elseif lRow == 2 then -- 현재가 외곽선 표시
 			contSet_imgPriceoutline_OnClick()
- --		elseif lRow = 3 then					' 탭표시
+ --		elseif lRow = 3 then					 -- 탭표시
  --			contSet_imgTab_OnClick()
 		elseif lRow == 4 then -- 텍스트굵기 호가
 			contSet_imgBoldHoga_OnClick()

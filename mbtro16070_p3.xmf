@@ -42,7 +42,7 @@ g_szTxtColor_Red = "326"
 
  --============================================================================
 function Form_OnFormInit()
- --	btnSwitch.setApplySwitch("OFF", "ON", 269, 261, 286, 289)
+ --	btnSwitch.SetApplySwitch("OFF", "ON", 269, 261, 286, 289)
 	btnSwitch.SetApplySwitch("OFF", "ON", "294", "200", "270", "289")
 	szRealJango = Form.GetEnvData("OVRS_REAL_JANGO")
 

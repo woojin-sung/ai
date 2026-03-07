@@ -348,7 +348,7 @@ end
 function SetPrice(sType,nPrc,nDecimalLen,sCurrency)
 	
 	szChk = string.find(gf_Tostring(nPrc), ".")
-	 --lblTitle.caption = szChk .. "//" .. nDecimalLen .. "//" .. nPrc '.. "//".. sResult
+	 --lblTitle.caption = szChk .. "//" .. nDecimalLen .. "//" .. nPrc  --.. "//".. sResult
 	 --================================================================
 	 --소수점(dot)이 있는 경우
 	 --================================================================
@@ -357,7 +357,7 @@ function SetPrice(sType,nPrc,nDecimalLen,sCurrency)
 		 --------------------------------
 		 --소수점영역 길이
 		 --------------------------------
-		szCha = gf_Tonumber(string.len(nPrc) - szChk)
+		szCha = gf_Tonumber(string.string.len(nPrc) - szChk)
 		
 		 ---------------------------------------------------------
 		 --소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
@@ -624,7 +624,7 @@ function SetInitOrdPriceLabel()
 	 ----------------------------
 	 -- 마스킹 처리
 	 ----------------------------
-	 --if g_szCurrency <> "" then
+	 --if g_szCurrency ~= "" then
 	 --	sMask = "0,0,,".. " " .. g_szCurrency .. ",0,,"..g_szDecimal..",1,1,2,0"
 	 --else
 	 --	sMask = "0,0,,,0,,"..g_szDecimal..",1,1,2,0"
@@ -673,10 +673,10 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	 -------------------------------------------------------------------------
 	 -- 중국(상해/심천) 호가단위 설정
 	 -------------------------------------------------------------------------
-	if szMk == "0215" then --상해
+	if szMk == "0215" then --상해 end
 		
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -686,7 +686,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	elseif szMk == "0214" then --심천
 		
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -1288,7 +1288,7 @@ function Calc_Price(nGbn)
 		 -- + 버튼 클릭
 		 --------------------------------------------------
 		if nGbn == 0 then
-			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1308,7 +1308,7 @@ function Calc_Price(nGbn)
 		 -- - 버튼 클릭 
 		 --------------------------------------------------
 		elseif nGbn == 1 then
-			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1332,7 +1332,7 @@ function Calc_Price(nGbn)
 	
 	
 	 --입력값 자리수 체크
-	if string.len(szPrc) > gMaxLen then
+	if string.string.len(szPrc) > gMaxLen then
 		return
 	end
 	
@@ -1439,7 +1439,7 @@ function Calc_Qty(nGbn,nUnit)
 	 -- (기존요건) 최대입력 가능 수량
 	 -----------------------------------------------------------
 	if gf_Trim(szQty) ~= "" then
-		if string.len(szQty) > gMaxLen then
+		if string.string.len(szQty) > gMaxLen then
 			if nGbn == 0 then
 				return
 			end
@@ -1497,7 +1497,7 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 확인
 	 -----------------------------------------------------------
-	if string.len(szQty) <= gMaxLen then
+	if string.string.len(szQty) <= gMaxLen then
 		if gf_Tostring(szQty) == "" then
 			edtQty.caption = ""
 		else
@@ -1546,7 +1546,7 @@ function btnOk_OnClick()
 	
 	 --Dim szData
 	 --
-	 --if g_bNowMkPrc == true then'시장가 클릭한 상태로 나가면 1, 아니면 0
+	 --if g_bNowMkPrc == true then --시장가 클릭한 상태로 나가면 1, 아니면 0
 	 --	szData = g_szPrc .."★".. edtQty.caption.."★1".."★"..g_szMk.."★"..g_szInner.."★"..g_szType
 	 --else
 	 --	szData = g_szPrc .."★".. edtQty.caption.."★0".."★"..g_szMk.."★"..g_szInner.."★"..g_szType
@@ -1669,14 +1669,14 @@ function InputKeypad(sType, sKeypad)
 			
 			 -----------------------------------------------------
 			 --[키패드로 최초 입력이 아닐시]
-			 --'최초 클리어 이후에는 입력값 이어붙임
+			 -- --최초 클리어 이후에는 입력값 이어붙임
 			 -----------------------------------------------------
 			else
 				
 				sData = sData .. sKeypad
 				
 				 --입력값 자리수 체크
-				if string.len(sData) > gMaxLen then
+				if string.string.len(sData) > gMaxLen then
 					return
 				end
 			
@@ -1702,7 +1702,7 @@ function InputKeypad(sType, sKeypad)
 				sData = sData .. sKeypad
 			
 				 --입력값 자리수 체크
-				if string.len(sData) > gMaxLen then
+				if string.string.len(sData) > gMaxLen then
 					return
 				end
 				
@@ -1736,7 +1736,7 @@ function InputKeypad(sType, sKeypad)
 				sData = sData .. sKeypad
 			
 				 --입력값 자리수 체크
-				if string.len(sData) > gMaxLen then
+				if string.string.len(sData) > gMaxLen then
 					return
 				end
 				
@@ -1761,7 +1761,7 @@ function InputKeypad(sType, sKeypad)
 			else
 			
 				 --입력값 자리수 체크
-				if string.len(sData & sKeypad) > gMaxLen then
+				if string.string.len(sData & sKeypad) > gMaxLen then
 					return
 				end
 				
@@ -1908,7 +1908,7 @@ function InputKeypad(sType, sKeypad)
 			else
 				
 				sData = GetPrice()
-				nLen = string.len(sData)
+				nLen = string.string.len(sData)
 				sData = string.sub(sData, 1, nLen - 1)
 				SetPrice("MANAUAL",sData,g_szDecimal,g_szCurrency)
 			
@@ -1925,7 +1925,7 @@ function InputKeypad(sType, sKeypad)
 			else
 				
 				sData = edtQty.caption
-				nLen = string.len(sData)
+				nLen = string.string.len(sData)
 				sData = string.sub(sData, 1, nLen - 1)
 				edtQty.caption = sData
 				
@@ -2202,7 +2202,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		 -- [주간장일 경우] 
 		 -- 미국종목인 경우에는 주간장 시세조회 서비스 호출 
 		 --======================================================================
-		if sDayYN == "Y" and (gMarket == "OQ" or gMarket == "NY" or gMarket == "AX") and (sMarketClsCode ~= "000" and sMarketClsCode ~= "013" ) then --20241216 LES START - 휴장(000)/휴일(013) 조건추가
+		if sDayYN == "Y" and (gMarket == "OQ" or gMarket == "NY" or gMarket == "AX") and (sMarketClsCode ~= "000" and sMarketClsCode ~= "013" ) then --20241216 LES START - 휴장(000)/휴일(013) 조건추가 end
 			
 			RequestDayMarketSiseData(gMarket,gCode)
 			
@@ -2286,7 +2286,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		if sPrc > 0 then
 			
 			 -----------------------------------------------------------
-			 -- 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
+			 -- 입력가격이 없는 경우 .. 소수점자리수/통화코드가 있는 경우
 			 -----------------------------------------------------------
 			if gPrc == "" or gf_Tonumber(gPrc) == 0 then
 				if g_szDecimal ~= "" and g_szCurrency ~= "" then
@@ -2334,7 +2334,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			if sPrc > 0 then
 				
 				 -----------------------------------------------------------
-				 -- 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
+				 -- 입력가격이 없는 경우 .. 소수점자리수/통화코드가 있는 경우
 				 -----------------------------------------------------------
 				if gPrc == "" or gf_Tonumber(gPrc) == 0 then
 				
@@ -2374,7 +2374,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		if sPrc > 0 then
 			
 			 -----------------------------------------------------------
-			 -- 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
+			 -- 입력가격이 없는 경우 .. 소수점자리수/통화코드가 있는 경우
 			 -----------------------------------------------------------
 			if gPrc == "" or gf_Tonumber(gPrc) == 0 then
 				if g_szDecimal ~= "" and g_szCurrency ~= "" then
@@ -2422,7 +2422,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			if sPrc > 0 then
 				
 				 -----------------------------------------------------------
-				 -- 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
+				 -- 입력가격이 없는 경우 .. 소수점자리수/통화코드가 있는 경우
 				 -----------------------------------------------------------
 				if gPrc == "" or gf_Tonumber(gPrc) == 0 then
 				

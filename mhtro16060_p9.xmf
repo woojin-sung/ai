@@ -17,95 +17,96 @@
 		<BUTTON name="Button0" btnimage="alpha" ly_vert="0,473,375,45,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="3405" _ulen="3193" >
-'============================================================================
-'20201111 SWJ START : 엔비디아 주식 분할 안내
-'============================================================================
-Sub Image5_OnClick()
+ --============================================================================
+ --20201111 SWJ START : 엔비디아 주식 분할 안내
+ --============================================================================
+function Image5_OnClick()
 	
-	'20240710 SWJ START
+	 --20240710 SWJ START
 	if ChkButton0.checkstate == "1" then
 		Form.ShowAlert("안내", "동의 확인 버튼을 눌러주세요.")
 	else
 		Form.ShowAlert("안내", "권리 선반영 안내 확인 및 동의 후 거래 가능합니다.")
-	end if
-	'20240710 SWJ END
+	end
+	 --20240710 SWJ END
 	
-End Sub
-'============================================================================
-Sub Button0_OnClick()
-	'Form.OpenPopup("notice_p4","","")
-	'Form.openExternalBrowser("https://home.imeritz.com/bbs/BbsRead.go?bbsGrpId=bascGrp&bbsId=fstock&bbsCnttTurnNo=387&listCnt=10&pageNum=1&searchDiv=&searchText=")
-	Form.openExternalBrowser("https://home.imeritz.com/bbs/BbsRead.go?bbsGrpId=bascGrp&bbsId=fstock_vm_mts&bbsCnttTurnNo=413&listCnt=10&pageNum=1&searchDiv=&searchText=")
-End Sub
-'============================================================================
-Sub btnOk_OnClick()
+end
+ --============================================================================
+function Button0_OnClick()
+	 --Form.OpenPopup("notice_p4","","")
+	 --Form.openExternalBrowser("https://home.imeritz.com/bbs/BbsRead.go?bbsGrpId=bascGrp&bbsId=fstock&bbsCnttTurnNo=387&listCnt=10&pageNum=1&searchDiv=&searchText=")
+	Form.OpenExternalBrowser("https://home.imeritz.com/bbs/BbsRead.go?bbsGrpId=bascGrp..bbsId=fstock_vm_mts..bbsCnttTurnNo=413..listCnt=10..pageNum=1..searchDiv=..searchText=")
+end
+ --============================================================================
+function btnOk_OnClick()
 	
 	if ChkButton0.checkstate == "1" then
 	
-		szCustNum = Form.GetSharedData("&CUST_NUM", false)
+		szCustNum = Form.GetSharedData("..CUST_NUM", false)
 		
-		'20240710 SWJ START
+		 --20240710 SWJ START
 		sBswrClcd = Form.LoadConfigData("NoticeSetting", "AbroadAgreement_BswrClcd")
-		'20240710 SWJ END
+		 --20240710 SWJ END
 		
 		DATAMANAGER.SetDataValue(0, "obtro_acnt_901a", "InBlock1", "PROS_CLS_CODE"	, 0 , "I")
-		DATAMANAGER.SetDataValue(0, "obtro_acnt_901a", "InBlock1", "BSWR_CLCD" 		, 0 , sBswrClcd) '20240710 SWJ START
+		DATAMANAGER.SetDataValue(0, "obtro_acnt_901a", "InBlock1", "BSWR_CLCD" 		, 0 , sBswrClcd)  --20240710 SWJ START
 		DATAMANAGER.SetDataValue(0, "obtro_acnt_901a", "InBlock1", "CSNO" 			, 0 , szCustNum)
 		DATAMANAGER.SetDataValue(0, "obtro_acnt_901a", "InBlock1", "AGRM_YN" 		, 0 , "Y")
 		DATAMANAGER.RequestTranData("obtro_acnt_901a")
 	
 	else
 		Form.ShowAlert("안내", "유의사항 동의여부를 확인해주시기 바랍니다.")
-	end if
+	end
 	
 	
-End Sub
-'============================================================================
-Sub btnCancel_OnClick()
+end
+ --============================================================================
+function btnCancel_OnClick()
 	
-	'20240710 SWJ START
+	 --20240710 SWJ START
 	if ChkButton0.checkstate == "1" then
 		Form.ShowAlert("안내", "동의 확인 버튼을 눌러주세요.")
 	else
 		Form.ShowAlert("안내", "권리 선반영 안내 확인 및 동의 후 거래 가능합니다.")
-	end if
-	'20240710 SWJ END
+	end
+	 --20240710 SWJ END
 	
-End Sub
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+end
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if szTranID =="obtro_acnt_901a" then
 		Form.CloseForm()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub ChkButton0_OnChange(sCheckState)
-	if sCheckState = "1" then
-		ServerMode = Form.GetSharedData("&SERVER_MODE", false)
+ --============================================================================
+function ChkButton0_OnChange(sCheckState)
+	if sCheckState == "1" then
+		ServerMode = Form.GetSharedData("..SERVER_MODE", false)
 	
-		If ServerMode == "1" Then	'개발기
-			Form.openExternalBrowser("https://testhome.imeritz.com/include/resource/comm/ctcn/notice/mts_meritz_avgo.pdf")
-		Else
-			Form.openExternalBrowser("https://home.imeritz.com/include/resource/comm/ctcn/notice/mts_meritz_avgo.pdf")
-		End If
-	end if
-End Sub
+		if ServerMode == "1" then --개발기
+			Form.OpenExternalBrowser("https://testhome.imeritz.com/include/resource/comm/ctcn/notice/mts_meritz_avgo.pdf")
+		else
+			Form.OpenExternalBrowser("https://home.imeritz.com/include/resource/comm/ctcn/notice/mts_meritz_avgo.pdf")
+		end
+	end
+end
 
-'============================================================================
-'20240710 SWJ START
-'============================================================================
-Sub Form_OnFormClose()
-	Form.SetSharedData("&BACK_PRESS_ENABLE" , "Y")
+ --============================================================================
+ --20240710 SWJ START
+ --============================================================================
+function Form_OnFormClose()
+	Form.SetSharedData("..BACK_PRESS_ENABLE" , "Y")
 	Form.SendReturnToParent( "16060_p9" , "")
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
-	Form.SetSharedData("&BACK_PRESS_ENABLE" , "N")
-End Sub
+ --============================================================================
+function Form_OnFormInit()
+	Form.SetSharedData("..BACK_PRESS_ENABLE" , "N")
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_acnt_901a" trcode="obtro_acnt_901a" compress="1" encryption="1" inputcheck="1" useattr="0" />

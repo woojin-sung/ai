@@ -183,7 +183,7 @@ function Form_OnFormInitBefore()
 	else
 		
 		 --20241128 LES START - 매수시장가는 주문착오방지(경고주문)체크 대상
-		 --g_szWarnMsg	= arrData(13)			'경고메시지
+		 --g_szWarnMsg	= arrData[13+1]			 --경고메시지
 		g_szOrd_PrcName 	= arrData[13+1]		 --시장가or지정가
 		g_szWarnMsg		= arrData[14+1]		 --경고메시지
 		
@@ -193,14 +193,14 @@ function Form_OnFormInitBefore()
 	 -------------------------------------------------------------
 	 -- 예약주문(주문유형,주문시간 문구추가)
 	 -------------------------------------------------------------
-	if g_nIndex == "10" then --예약매수
+	if g_nIndex == "10" then --예약매수 end
 		
 		g_nOrd_res_Type 	= arrData[13+1] 	 --예약주문유형
 		g_nOrd_res_Period	= arrData[14+1] 	 --예약주문기간
 		g_nOrd_res_Time 	= arrData[15+1] 	 --예약주문시간
 		
 		 --20241128 LES START - 매수시장가는 주문착오방지(경고주문)체크 대상
-		 --g_szWarnMsg		= arrData(16)		'경고메시지
+		 --g_szWarnMsg		= arrData[16+1]		 --경고메시지
 		g_szOrd_PrcName 	= arrData[16+1]		 --시장가or지정가
 		g_szWarnMsg		= arrData[17+1]		 --경고메시지
 		
@@ -306,9 +306,9 @@ function Set_Data(nIndex)
 	 -------------------------------------------------------------
 	 -- 큰글씨 모드에 따른 컨트롤 위치이동
 	 -------------------------------------------------------------
-    if gf_Tonumber(g_nTextSize) > 0 then --큰글씨
+    if gf_Tonumber(g_nTextSize) > 0 then --큰글씨 end
 	    imgInfo.left = 105
-		if nIndex == "10" then --예약매수
+		if nIndex == "10" then --예약매수 end
 			if g_OsType == "1" then
 				imgInfo.top = 542
 			else
@@ -321,7 +321,7 @@ function Set_Data(nIndex)
 		end
 		    
 	else --큰글씨 아님
-		if nIndex == "10" then --예약매수
+		if nIndex == "10" then --예약매수 end
 			if g_OsType == "1" then
 				imgInfo.top = 543
 			else

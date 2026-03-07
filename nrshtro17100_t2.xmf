@@ -179,7 +179,7 @@ g_isClickable = true
  --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
  --****************************************************************************
  --===============================================
- -- NULL 체크 
+ -- nil 체크 
  --===============================================
 function isEmpty(sData)
 	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
@@ -200,7 +200,7 @@ function truncateToDecimalPlaces(nVal, nDeimalPlaces)
 	
 	nTotalData = 0
 	if gf_Tonumber(nDecimalIdx) > 0 then
-		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, Cint(nDecimalIdx)-1))
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, gf_Tonumber(nDecimalIdx)-1))
 	else
 		nTotalData = gf_Tonumber(szNumStr)
 	end
@@ -309,8 +309,8 @@ end
 function AutoRule_SelectCount()
 	g_sStep = "SELECT_COUNT"
 	
-	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 	
 	Form.ReleaseRequestData()
 	
@@ -321,7 +321,7 @@ function AutoRule_SelectCount()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -343,8 +343,8 @@ function AutoRule_SelectByAccount()
 	cont0.pnl0.rowcount = 0
 	cont0.lblInfo.caption = ""
 	
-	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 	
 	Form.ReleaseRequestData()
 	
@@ -356,7 +356,7 @@ function AutoRule_SelectByAccount()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -371,8 +371,8 @@ end
 function AutoRule_SelectByAccount_Next()
 	g_sStep = "SELECT_BY_ACCOUNT"
 	
-	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 	
 	Form.ReleaseRequestData()
 	
@@ -388,7 +388,7 @@ function AutoRule_SelectByAccount_Next()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -412,7 +412,7 @@ function AutoRule_Delete(nIdx)
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -427,8 +427,8 @@ end
 function AutoRule_AllDelete()
 	g_sStep = "ALL_DELETE"
 	
-	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 	
 	Form.ReleaseRequestData()
 	
@@ -439,7 +439,7 @@ function AutoRule_AllDelete()
 		
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -472,7 +472,7 @@ function AutoRule_UpdateStatus(nIdx)
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -487,8 +487,8 @@ end
 function AutoRule_AllUpdateStatus()
 	g_sStep = "ALL_UPDATE_STATUS"
 	
-	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 	
 	Form.ReleaseRequestData()
 	
@@ -499,7 +499,7 @@ function AutoRule_AllUpdateStatus()
 	
 		sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -511,8 +511,8 @@ end
 function AutoRule_AllUpdateStatus_Stop()
 	g_sStep = "ALL_UPDATE_STATUS_STOP"
 	
-	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 	
 	Form.ReleaseRequestData()
 	
@@ -523,7 +523,7 @@ function AutoRule_AllUpdateStatus_Stop()
 	
 		sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -552,7 +552,7 @@ function IssueToken()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -707,7 +707,7 @@ Function DisplaySet_Pannel(nIdx, stockExchangeCode, stockKoreaName, stockCode,
 	
 
 	
-	 --cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,orderPrice)
+	 --cont0.pnl0.SetPropCardCell("caption"		,"lblData2"	,nIdx	,orderPrice)
 	cont0.pnl0.SetPropCardCell("caption"		,"lblData3"	,nIdx	,orderQty)
 	cont0.pnl0.SetPropCardCell("caption"		,"lblData5"	,nIdx	,orderClsTypeNm)
 	
@@ -783,7 +783,7 @@ function Form_OnFormInit()
 	cont0.pnl0.SetDataNormal(true)
 	cont0.pnl0.SetNotUseRecycleView(true)
 	
- --	sAcno 	= Form.getTopCtlProp("act0","total")
+ --	sAcno 	= Form.GetTopCtlProp("act0","total")
  --	
  --	if isEmpty(sAcno) == true then
  --		btnReg.enable = false
@@ -950,7 +950,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParma2)
 			end
 		end
 		
- --		Form.setDelayEvent(1, 0.2)
+ --		Form.SetDelayEvent(1, 0.2)
 		AutoRule_SelectByAccount() 
 	end
 	
@@ -975,7 +975,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParma2)
 			end
 		end
 		
- --		Form.setDelayEvent(1, 0.2)
+ --		Form.SetDelayEvent(1, 0.2)
 		AutoRule_SelectByAccount() 
 	end
 	
@@ -1000,7 +1000,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParma2)
 			end
 		end
 		
- --		Form.setDelayEvent(1, 0.2)
+ --		Form.SetDelayEvent(1, 0.2)
 		AutoRule_SelectByAccount() 
 	end
 	
@@ -1025,7 +1025,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParma2)
 			end
 		end
 		
- --		Form.setDelayEvent(1, 0.2)
+ --		Form.SetDelayEvent(1, 0.2)
 		AutoRule_SelectByAccount() 
 	end
 	
@@ -1037,16 +1037,16 @@ function Form_OnTriggerEvent(sEventName, sParam, sParma2)
 		sStep = string.gsub(sEventName, string.gsub("RESTAPI_RETURN_BUY_", "([%p])", "%%%1"), "")  --g_sStep
 		g_sStep = ""
 		
- --		if sParam <> "SUCCESS" then
- --			oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParma2)
+ --		if sParam ~= "SUCCESS" then
+ --			oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", sParma2)
  --			
  --			if isEmpty(oError) == false then
- --				errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+ --				errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
  --
  --				if errorCode == "INVALID_TOKEN" then
  --					g_sStep_Prev = sStep
  --					IssueToken() 
- --					Exit Sub 
+ --					return 
  --				end if
  --			end if
  --		end if
@@ -1215,15 +1215,15 @@ function Form_OnTriggerEvent(sEventName, sParam, sParma2)
 			 -- 실패(ERROR or EXCEPTION)
 			 ------------------------------------------
 			else
- --				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+ --				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
  --			
  --				if isEmpty(oError) == false then
- --					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
- --					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+ --					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+ --					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
  --					
  --					if isEmpty(errorMessage) == false then
  --						Form.ShowAlert("알림", errorMessage)
- --						Exit Sub 
+ --						return 
  --					end if
  --				end if
 				
@@ -1613,15 +1613,15 @@ function Form_OnTriggerEvent(sEventName, sParam, sParma2)
 			 -- 실패(ERROR or EXCEPTION)
 			 ------------------------------------------
 			else
- --				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+ --				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
  --			
  --				if isEmpty(oError) == false then
- --					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
- --					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+ --					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+ --					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
  --					
  --					if errorCode == "UNMODIFIABLE_STATUS" then
  --						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
- --						Exit Sub 
+ --						return 
  --					end if
  --				end if
 
@@ -1647,12 +1647,12 @@ function Form_OnTriggerEvent(sEventName, sParam, sParma2)
 		end
 		
 		if sRet == "SUCCESS" then
-			sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-			sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+			sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+			sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 			
-			sAcntNm 	= g_sAccName  --Form.getTopCtlProp("act0","accountname")
+			sAcntNm 	= g_sAccName  --Form.GetTopCtlProp("act0","accountname")
 			
-			sPwd 	= g_sPwd	 --Form.getTopCtlProp("edtPwd","caption")
+			sPwd 	= g_sPwd	 --Form.GetTopCtlProp("edtPwd","caption")
 			
 			sLinkData = "1"
 			sLinkData = sLinkData .. "`" .. sAcno
@@ -1690,28 +1690,28 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	 ------------------------------------	
 	if sKeyName == "COMPLETE_ORDER" then
 		g_nClickIdx = 0
- --		Form.setDelayEvent(1, 0.5)
+ --		Form.SetDelayEvent(1, 0.5)
 		AutoRule_SelectByAccount() 
 		
 	 ------------------------------------
 	 -- 조건 변경 성공 -> 전체 재조회
 	 ------------------------------------	
 	elseif sKeyName == "COMPLETE_MODIFY" then
- --		Form.setDelayEvent(1, 0.5)
+ --		Form.SetDelayEvent(1, 0.5)
 		AutoRule_SelectByAccount() 
 		
 	 ------------------------------------
 	 -- 조건 삭제 -> 전체 재조회
 	 ------------------------------------	
 	elseif sKeyName == "INFO_DELETE" then
- --		Form.setDelayEvent(1, 0.5)
+ --		Form.SetDelayEvent(1, 0.5)
 		AutoRule_SelectByAccount() 
 		
 	 ------------------------------------
 	 -- 조건 삭제 -> 전체 재조회
 	 ------------------------------------	
 	elseif sKeyName == "DELETE_ITEM" then
- --		Form.setDelayEvent(2, 0.5)
+ --		Form.SetDelayEvent(2, 0.5)
 		AutoRule_Delete(g_nClickIdx)
 		
 	 ------------------------------------
@@ -1727,13 +1727,13 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	 -- 조건 변경 -> 전체 재조회
 	 ------------------------------------
 	elseif sKeyName == "INFO_CHANGE" then
- --		Form.setDelayEvent(1, 0.5)
+ --		Form.SetDelayEvent(1, 0.5)
 		AutoRule_SelectByAccount() 
 		
 	elseif sKeyName == "CHECK_AGREE" then
 		if sRet == "ok" then
 		
-			 --Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+			 --Form.TriggerEvent("#", "CHECK_ACCT_PWD", "")
 			DATAMANAGER.RequestTranData("obtro_oder_135a")
 		end
 	end
@@ -1776,7 +1776,7 @@ function Form_OnMsgBoxClose(sKeyName, sRet)
 		
 	elseif sKeyName == "REG" then
 		if sRet == "ok" then
-			sAcnt 	= g_sAcno..g_sAsno  --Form.getTopCtlProp("act0","caption")
+			sAcnt 	= g_sAcno..g_sAsno  --Form.GetTopCtlProp("act0","caption")
 			Form.OpenScreen("87051" , sAcnt)
 		end
 	end
@@ -1786,8 +1786,8 @@ end
  --============================================================================
 function DATAMANAGER_OnSendTranBefore(szTranID)
 	if szTranID == "obpds_srvc_323r" then
-		sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-		sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+		sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+		sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 	
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "ACNO" 				, 0 	, sAcno )
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "ASNO"				, 0 	, sAsno )
@@ -1798,8 +1798,8 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		sDate = Form.GetSharedData("..HOST_DATE", false)
 		sMediaCode = Form.GetSharedData("..MEDIA_CODE", false)
 		
-		sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-		sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+		sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+		sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 		
 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "BSWR_CLCD" , 0 , "U1")
 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "CSNO" , 0 , sCsno)
@@ -1831,7 +1831,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		else
 			DATAMANAGER.RequestTranData("obtro_oder_133r")
  --			Form.OpenPopup("nrshtro17100_p11" , "" , "")
-			 --Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+			 --Form.TriggerEvent("#", "CHECK_ACCT_PWD", "")
 		end
 	elseif szTranID == "obtro_oder_135a" then
 		Form.TriggerEvent("#", "CHECK_ACCT_PWD", "")
@@ -1857,14 +1857,14 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 
 		else
 			Form.OpenPopup("nrshtro17100_p11" , "" , "")
-			 --Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+			 --Form.TriggerEvent("#", "CHECK_ACCT_PWD", "")
 		end
 		return
 	end
 	
 	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
 	
-	if string.len(gf_Trim(szSubMsg))	>	0 then
+	if string.string.len(gf_Trim(szSubMsg))	>	0 then
 		Form.ShowAlert("알림", szErrMsg .. "(" .. szSubMsg .. ")")
 	else
 		Form.ShowAlert("알림", szErrMsg )

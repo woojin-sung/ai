@@ -495,7 +495,7 @@ g_isClick = false
  --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
  --****************************************************************************
  --===============================================
- -- NULL 체크 
+ -- nil 체크 
  --===============================================
 function isEmpty(sData)
 	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
@@ -516,7 +516,7 @@ function truncateToDecimalPlaces(nVal, nDeimalPlaces)
 	
 	nTotalData = 0
 	if gf_Tonumber(nDecimalIdx) > 0 then
-		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, Cint(nDecimalIdx)-1))
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, gf_Tonumber(nDecimalIdx)-1))
 	else
 		nTotalData = gf_Tonumber(szNumStr)
 	end
@@ -558,8 +558,8 @@ end
 function AutoRule_SelectOrderHistory()
 	g_sStep = "SELECT_ORDER_HISTORY"
 	
-	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 	
 	Form.ReleaseRequestData()
 	
@@ -602,7 +602,7 @@ function AutoRule_SelectOrderHistory()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -614,8 +614,8 @@ end
 function AutoRule_SelectOrderHistory_Next()
 	g_sStep = "SELECT_ORDER_HISTORY_NEXT"
 	
-	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 	
 	Form.ReleaseRequestData()
 	
@@ -652,7 +652,7 @@ function AutoRule_SelectOrderHistory_Next()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -681,7 +681,7 @@ function IssueToken()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -740,7 +740,7 @@ Function DisplaySet_Pannel(nIdx, orderConditionId, registrationDate, accountNumb
 	Grid0.SetCellData("bd_cell15", nIdx, stockKoreaName)
 	Grid0.SetCellData("bd_cell16", nIdx, stockCode)
 	Grid0.SetCellData("bd_cell17", nIdx, watchCondition)
-	 --Grid0.SetCellData("bd_cell18", nIdx, )	'빈칸
+	 --Grid0.SetCellData("bd_cell18", nIdx, )	 --빈칸
 	Grid0.SetCellData("bd_cell19", nIdx, orderPriceDesc)
 	Grid0.SetCellData("bd_cell20", nIdx, orderPrice)
 	Grid0.SetCellData("bd_cell21", nIdx, cntgCamt)
@@ -892,7 +892,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		end
 		
 		
- --		Form.setDelayEvent(1, 0.2)
+ --		Form.SetDelayEvent(1, 0.2)
  --		AutoRule_SelectOrderHistory() 
 	end
 	
@@ -938,16 +938,16 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		sStep = string.gsub(sEventName, string.gsub("RESTAPI_RETURN_ORDER_LIST_", "([%p])", "%%%1"), "")  --g_sStep
 		g_sStep = ""
 		
- --		if sParam <> "SUCCESS" then
- --			oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParam2)
+ --		if sParam ~= "SUCCESS" then
+ --			oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", sParam2)
  --			
  --			if isEmpty(oError) == false then
- --				errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+ --				errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
  --
  --				if errorCode == "INVALID_TOKEN" then
  --					g_sStep_Prev = sStep
  --					IssueToken() 
- --					Exit Sub 
+ --					return 
  --				end if
  --			end if
  --		end if
@@ -1080,15 +1080,15 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			 -- 실패(ERROR or EXCEPTION)
 			 ------------------------------------------
 			else
- --				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+ --				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
  --			
  --				if isEmpty(oError) == false then
- --					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
- --					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+ --					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+ --					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
  --					
  --					if isEmpty(errorMessage) == false then
  --						Form.ShowAlert("알림", errorMessage)
- --						Exit Sub 
+ --						return 
  --					end if
  --				end if
 				
@@ -1123,12 +1123,12 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		end
 		
 		if sRet == "SUCCESS" then
-			sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
-			sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
+			sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
+			sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
 			
-			sAcntNm 	= g_sAccName  --Form.getTopCtlProp("act0","accountname")
+			sAcntNm 	= g_sAccName  --Form.GetTopCtlProp("act0","accountname")
 			
-			sPwd 	= g_sPwd	 --Form.getTopCtlProp("edtPwd","caption")
+			sPwd 	= g_sPwd	 --Form.GetTopCtlProp("edtPwd","caption")
 			
 			sLinkData = "1"
 			sLinkData = sLinkData .. "`" .. sAcno
@@ -1466,7 +1466,7 @@ function CalcDate(sType,nDiff)
 
 end
 
- --'============================================================================
+ -- --============================================================================
  --Sub btn0_OnClick()
  --	sCal = CalcDate("d",0)
  --	Calendar0.caption = sCal
@@ -1741,49 +1741,49 @@ function MoveScreen(sGubun,sIndex)
 			Form.OpenScreen("16074", "")
 		end
 		
- --	'------------------------------------
- --	' [매도] : 종목연동 / 매도가능수량 연동
- --	'------------------------------------
+ --	 --------------------------------------
+ --	 -- [매도] : 종목연동 / 매도가능수량 연동
+ --	 --------------------------------------
  --	elseif sGubun == "MOVE_MAEDO" then
- --		'---------------------------------------------------------------------------------------
- --		' 연동수량(주문가능수량) 천단위부호(,) 제거
- --		' 그리드에 있는 주문가능수량 데이터는 일반잔고/소수점 잔고의 수량을 
- --		' 표시하기 위해 문자형으로 세팅되어있음. 그대로 값을 가져오면 천단위 부호도 같이 넘어옴.
- --		' 넘어온 데이터를 그대로 천단위 부호까지 같이 넘기면
- --		' 안드로이드에서 천단위 부호 중복해서 보이는 현상 발생.
- --		'---------------------------------------------------------------------------------------
- --		sOrdAbleQty = replace(sOrdAbleQty,",","")
+ --		 -----------------------------------------------------------------------------------------
+ --		 -- 연동수량(주문가능수량) 천단위부호(,) 제거
+ --		 -- 그리드에 있는 주문가능수량 데이터는 일반잔고/소수점 잔고의 수량을 
+ --		 -- 표시하기 위해 문자형으로 세팅되어있음. 그대로 값을 가져오면 천단위 부호도 같이 넘어옴.
+ --		 -- 넘어온 데이터를 그대로 천단위 부호까지 같이 넘기면
+ --		 -- 안드로이드에서 천단위 부호 중복해서 보이는 현상 발생.
+ --		 -----------------------------------------------------------------------------------------
+ --		sOrdAbleQty = string.gsub(sOrdAbleQty, string.gsub(", "([%p])", "%%%1"), ","")
  --		
- --		'--------------------------------------------
- --		'소수점 잔고일 경우 소수점 주문화면으로 연동
- --		'--------------------------------------------
+ --		 ----------------------------------------------
+ --		 --소수점 잔고일 경우 소수점 주문화면으로 연동
+ --		 ----------------------------------------------
  --		if sJangoGubun == "03" then
  --		
- --			if szItemCode <> "" then
- --				szData = szItemCode & "★" & szName & "♥" & "1" & "♥" & "" & "♥" & "" & "♥" & "0000" & "♥" & "0" & "♥" & "00000000000"
+ --			if szItemCode ~= "" then
+ --				szData = szItemCode .. "★" .. szName .. "♥" .. "1" .. "♥" .. "" .. "♥" .. "" .. "♥" .. "0000" .. "♥" .. "0" .. "♥" .. "00000000000"
  --				Form.OpenScreen("16092" , szData)
  --			end if
  --		
- --		'--------------------------------------------
- --		' 일반/대출 잔고일 경우 매도탭으로 연동
- --		'--------------------------------------------
+ --		 ----------------------------------------------
+ --		 -- 일반/대출 잔고일 경우 매도탭으로 연동
+ --		 ----------------------------------------------
  --		else
  --			
- --			if szItemCode <> "" then
- --				szData = szItemCode & "★" & szName & "♥" & "1" & "♥" & sOrdAbleQty & "♥" & sLoanDate & "♥" & sLoanType & "♥" & "0" & "♥" & sLoanSrno
+ --			if szItemCode ~= "" then
+ --				szData = szItemCode .. "★" .. szName .. "♥" .. "1" .. "♥" .. sOrdAbleQty .. "♥" .. sLoanDate .. "♥" .. sLoanType .. "♥" .. "0" .. "♥" .. sLoanSrno
  --				
- --				'--------------------------------------------
- --				' 현재 해외주식 신용합산 주문이 불가하므로,
- --				' 대출일 경우 대출합산 체크 여부 확인하여
- --				' 체크되어있으면 주문불가 안내팝업 발생
- --				'--------------------------------------------
+ --				 ----------------------------------------------
+ --				 -- 현재 해외주식 신용합산 주문이 불가하므로,
+ --				 -- 대출일 경우 대출합산 체크 여부 확인하여
+ --				 -- 체크되어있으면 주문불가 안내팝업 발생
+ --				 ----------------------------------------------
  --				if sJangoGubun == "02" then
  --				
- --					nCheckHabsan = Cint(contBody.chk1.checkstate)
+ --					nCheckHabsan = gf_Tonumber(contBody.chk1.checkstate)
  --					
  --					if nCheckHabsan == 1 then
  --						Form.MsgBox("안내", "합산 주문이 불가합니다.\n대출합산 해지 후 매도를 진행해주세요.", "MOVEPOPUP_CHECK_HABSAN", 6)
- --						Exit Function
+ --						return
  --					end if
  --					
  --				end if
@@ -1812,7 +1812,7 @@ function Form_OnFormInit()
 	
 	contToast.LabelText.caption = "00:00 ~ After 시간에 당일 버튼 클릭 시 미국 현지일 기준으로 조회되어 정규장에 실행된 전체 내역을 확인 할 수 있어요."
 	
- --	Form.setDelayEvent(2, 0.2)
+ --	Form.SetDelayEvent(2, 0.2)
 end
 
  --============================================================================

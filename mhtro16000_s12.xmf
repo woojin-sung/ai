@@ -275,7 +275,7 @@ function Process_Tran_ohhts_6000_001r()
 	
 	 --상장주수(천)
 	if szData1 ~= "" then
-		szResult = gf_CommaValue(gf_Round(gf_Tonumber(Cdbl(szData1) / 1000),0), 0)
+		szResult = gf_CommaValue(gf_Round(gf_Tonumber(gf_Tonumber(szData1) / 1000),0), 0)
 		contMain.lblData1.caption = szResult
 	else
 		contMain.lblData1.caption = "-"
@@ -300,10 +300,10 @@ function Process_Tran_ohhts_6000_001r()
 	if szData4 ~= "" then
 		contMain.lblData4.caption = szData4
 		
- --		contMain.lblMainTitle0.caption = "기본정보 (단위 : "&trim(szData4)&")"
+ --		contMain.lblMainTitle0.caption = "기본정보 (단위 : "..Gf_Trim(szData4)..")"
  --		
- --		contMain.lblMainTitle0.changeTextAttr(0,5,334,0,true)
- --		contMain.lblMainTitle0.changeTextAttr(5,10,333,-6,true)
+ --		contMain.lblMainTitle0.ChangeTextAttr(0,5,334,0,true)
+ --		contMain.lblMainTitle0.ChangeTextAttr(5,10,333,-6,true)
 	else
 		contMain.lblData4.caption = "-"
 	end
@@ -355,7 +355,7 @@ function Process_Tran_obsim_oscm_331r()
 	sMrktCls    = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock2", "HLDY_YN", 0) 		 -- 휴일여부
 	
 	sWeekDate = WeekDay( CDate( string.sub(sWeekDate, 1, 4) .. "-" .. string.sub(sWeekDate, 5, 5 + 2 - 1) .. "-" .. string.sub(sWeekDate, -2) ) )
-	if gf_Trim(sMrktCls) == "Y" and sWeekDate ~= "1" and sWeekDate ~= "7" then --일요일, 토요일 제외
+	if gf_Trim(sMrktCls) == "Y" and sWeekDate ~= "1" and sWeekDate ~= "7" then --일요일, 토요일 제외 end
 		contMain.lblData8.caption = "휴장"
 	else
 		if g_sClsCd == "Y" then

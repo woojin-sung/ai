@@ -486,22 +486,22 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 -------------------------------------------------------------------------
 		 --현재가★상한가★하한가★매매단위★통화★소수점자리수★한글종목명★틱타입
 		 -------------------------------------------------------------------------
-		 --arrItemInfo = Split(sParam, "★")
+		 --arrItemInfo = gf_Split(sParam, "★")
 		 --
-		 --g_szCurPrice 	= arrItemInfo(0)
-		 --g_szUpLimit	= arrItemInfo(1)
-		 --g_szDnLimit	= arrItemInfo(2)
-		 --g_szOrdSize 	= arrItemInfo(3)
-		 --g_szCurrency	= arrItemInfo(4)
-		 --g_szDecimal	= arrItemInfo(5)
-		 --g_szKorName	= arrItemInfo(6)
-		 --g_szTickType	= arrItemInfo(7)
+		 --g_szCurPrice 	= arrItemInfo[0+1]
+		 --g_szUpLimit	= arrItemInfo[1+1]
+		 --g_szDnLimit	= arrItemInfo[2+1]
+		 --g_szOrdSize 	= arrItemInfo[3+1]
+		 --g_szCurrency	= arrItemInfo[4+1]
+		 --g_szDecimal	= arrItemInfo[5+1]
+		 --g_szKorName	= arrItemInfo[6+1]
+		 --g_szTickType	= arrItemInfo[7+1]
 		 --g_szUnit		= GetHogaUnit(g_szMk, g_szCurPrice, 0)
 	
 		 -------------------------------------------------------------------------
 		 --가격입력창 소수점 자리수 세팅 / 통화기호 세팅
 		 -------------------------------------------------------------------------
-		 --if g_szCurrency <> "" then
+		 --if g_szCurrency ~= "" then
 		 --	sMask = "0,0,,".. " " .. g_szCurrency .. ",0,,"..g_szDecimal..",1,1,2,0"
 		 --else
 		 --	sMask = "0,0,,,0,,"..g_szDecimal..",1,1,2,0"
@@ -512,8 +512,8 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 -------------------------------------------------------------------------
 		 --수량입력창 매매단위 세팅
 		 -------------------------------------------------------------------------
-		 --if g_szOrdSize <> "" then
-		 --	edtQty.hintcaption = Cint(g_szOrdSize).."주 단위"
+		 --if g_szOrdSize ~= "" then
+		 --	edtQty.hintcaption = gf_Tonumber(g_szOrdSize).."주 단위"
 		 --end if
 		
 		 -------------------------------------------------------------------------
@@ -705,7 +705,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			
 			 --------------------------------------------------------------
 			 --[전체 취소하기] 버튼 활성화 조건 체크
-			 --[미체결] & 조회조건이 모두 [전체] & 미체결내역이 모두 [오프라인주문]이 아닌 경우에만 활성화
+			 --[미체결] .. 조회조건이 모두 [전체] .. 미체결내역이 모두 [오프라인주문]이 아닌 경우에만 활성화
 			 --------------------------------------------------------------
 			sNationInputData = GetNationInputData()
 			sAllOffLineOrder = CheckAllOffLineOrder()
@@ -859,7 +859,7 @@ end
  -- 거래소코드(4자리) <- 거래명(2자리)
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
@@ -1065,9 +1065,9 @@ end
 function Grid0_OnClickUp(lRow, szCellID)
 
 
- --	'-----------------------------------------------
- --	'메인화면에 선택한 종목정보 던지기
- --	'-----------------------------------------------
+ --	 -------------------------------------------------
+ --	 --메인화면에 선택한 종목정보 던지기
+ --	 -------------------------------------------------
  --	sVndrCode = Grid0.GetCellData("bd_vndrcode", lRow)
  --	
  --	sMarektCode = Transform_Exid(sVndrCode)
@@ -1075,7 +1075,7 @@ function Grid0_OnClickUp(lRow, szCellID)
  --	sName = Grid0.GetCellData("bd_name", lRow)
  --	
  --	szData = sMarektCode .. "@" .. sCode .. "★" .. sName
- --	Form.triggerEvent("#", "SendChegyulItem", szData)
+ --	Form.TriggerEvent("#", "SendChegyulItem", szData)
 	
 	 ----------------------------------------------------
 	 --선택행에 미체결수량이 있으면 정정/취소탭으로 연동
@@ -1373,7 +1373,7 @@ function GetNationCode(nIndex)
 	
 	 --필터팝업의 조회국가 순서대로
 	
-	if nIndex == 0 then --전체
+	if nIndex == 0 then --전체 end
 		return "000"
 	elseif nIndex == 1 then --미국
 		return "840"

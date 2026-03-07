@@ -488,7 +488,7 @@ function Form_OnFormInit()
 		 -------------------------------------------------------------------------------
 		 --초기탭 이동 후 서비스 인풋값에 올라가는 값으로 변경
 		 -------------------------------------------------------------------------------
-		if g_szType == "0" then --현금
+		if g_szType == "0" then --현금 end
 			g_szType = "1"
 		elseif g_szType == "1" then --대출
 			g_szType = "2"
@@ -501,11 +501,11 @@ function Form_OnFormInit()
 	 --------------------------------------------------------------
 	 --정렬(소팅)헤더 설정
 	 --------------------------------------------------------------
-	 --grdList.setSortCellID("th_cell24","bd_cell25") '종목명
-	 --grdList.setSortCellID("th_cell31","bd_cell11") '종목코드
-	 --grdList.setSortCellID("th_cell1","bd_cell26")  '구분
-	 --grdList.setSortCellID("th_cell2","bd_cell3")   '평가손익
-	 --grdList.setSortCellID("th_cell3","bd_cell13")  '수익률
+	 --grdList.SetSortCellID("th_cell24","bd_cell25")  --종목명
+	 --grdList.SetSortCellID("th_cell31","bd_cell11")  --종목코드
+	 --grdList.SetSortCellID("th_cell1","bd_cell26")   --구분
+	 --grdList.SetSortCellID("th_cell2","bd_cell3")    --평가손익
+	 --grdList.SetSortCellID("th_cell3","bd_cell13")   --수익률
 	
 	
 end
@@ -730,7 +730,7 @@ end
  -- 거래소벤더코드 => 거래소명 세팅
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "홍콩"
 	elseif sValue == "HS0529I" then -- 항셍 지수
 		return "항셍"
@@ -748,7 +748,7 @@ function Transform_Exid(sValue)
 		return "나스닥"
 	elseif sValue == "0130" then -- 미국 OTCBB
 		return "미국 OTCBB"
-	elseif sValue == "0625" then -- S&P 지수
+	elseif sValue == "0625" then -- S..P 지수
 		return "S..P"
 	elseif sValue == "0310" then -- 다우존스 지수
 		return "다우존스"

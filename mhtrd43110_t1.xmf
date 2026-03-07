@@ -326,7 +326,7 @@ local g_szTitle
 g_szTitle = "알림"
 
  -- 20160407 종목다중선택을 위해 필요한 변수
-local g_tCode( )
+local g_tCode[ +1]
 g_tCode = {}
 
 
@@ -399,7 +399,7 @@ function Load_RecentList(szData)
 end
 
  --============================================================================
- -- Load_GWGroup :  ' 로컬 저장된 관심종목 가져오기
+ -- Load_GWGroup :   -- 로컬 저장된 관심종목 가져오기
  --============================================================================
 function Load_GWList( )
 	local tGroup, tList
@@ -521,7 +521,7 @@ end
  -- Change_Len
  --============================================================================
 function Change_Len(szData)
-	if string.len(szData) == 1 then
+	if string.string.len(szData) == 1 then
 		return "0" .. gf_Tostring(szData)
 	else
 		return gf_Tostring(szData)
@@ -555,7 +555,7 @@ end
  --============================================================================	
 function Screen_No(szScreen0, szScreen1, szScreen2, szScreen3)
 	-- SELECT CASE 변환 (수동 보정 필요)
-		if g_szMove == "0" then -- 연결팝업(메인에서 제공하는 팝업 오픈
+		if g_szMove == "0" then -- 연결팝업(메인에서 제공하는 팝업 오픈 end
 			Form.OpenPopup("movepopup" , szScreen0, "")
 		elseif g_szMove == "1" then -- 현재가
 			Form.OpenScreen(szScreen1, g_szSltCd)
@@ -586,7 +586,7 @@ function Add_Item(nGbn)
 	
 	g_szCd = ""
 	
-	if nGbn == 0 then -- 20160407	
+	if nGbn == 0 then -- 20160407 end
 		Check_LocalOrServer( )
 	end
 end
@@ -629,7 +629,7 @@ function Form_OnFormInit( )
 	 -- 관심 동기화 //////////////////////////////////////////////////////////
 	g_szCloud = Form.GetEnvData("common.interest_cloud")
 	
-	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용)
+	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용) end
 		g_szCloud = "1"
 	end
 	 -- //////////////////////////////////////////////////////////////////////v
@@ -662,7 +662,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		szChk = tChk[0+1]
 		
 		if szChk ~= "" then
-			if tChk[1+1] == "0" then -- 현재가
+			if tChk[1+1] == "0" then -- 현재가 end
 				Form.OpenScreen("43100", g_szSltCd)
 			elseif tChk[1+1] == "1" then -- 차트
 				Form.OpenScreen("43300", g_szSltCd)
@@ -727,7 +727,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 				g_szMove = "0"
 			end
 			
-			if g_szGSID == "BB" then -- 최근조회 종목
+			if g_szGSID == "BB" then -- 최근조회 종목 end
 				szRecent = Form.GetRecentHistory("34")
 				
 				Load_RecentList(szRecent)
@@ -908,9 +908,9 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 			DATAMANAGER.SetDataValue(0, szTranID, "InBlock3", "FID_INPUT_MRKT_CLS_CODE", j, szExch)	 -- FID입력시장구분코드
 			
 			
- --Form.Log("\n[_DEBUG]", "\n:j:" & j &":\n:szCode:"& szCode &":\n:szExch:"& szExch &":\n:"&
- --"szMemo:"& szMemo &":\n:szName:"& szName &":\n:"&
- --"FID_CODE_CLS_CODE:"& DATAMANAGER.GetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j) &":")
+ --Form.Log("\n[_DEBUG]", "\n:j:" .. j ..":\n:szCode:".. szCode ..":\n:szExch:".. szExch ..":\n:"..
+ --"szMemo:".. szMemo ..":\n:szName:".. szName ..":\n:"..
+ --"FID_CODE_CLS_CODE:".. DATAMANAGER.GetDataValue(0, szTranID, "InBlock3", "FID_CODE_CLS_CODE", j) ..":")
 		end
 	end
 end
@@ -921,7 +921,7 @@ end
 function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	local szCode , szExch , szMemo
 	local szCode2 , nCnt , nRow
-	 -- 종목의 시장구분은 조회데이터가 잘못된 값이 내려올수 있으므로 메인에서 받아와야한다.	''''''''''''''''''	
+	 -- 종목의 시장구분은 조회데이터가 잘못된 값이 내려올수 있으므로 메인에서 받아와야한다.	 --'''''''''''''''''	
 	 -- ----------------------------------------------------------------------
 	 -- 보유종목/관심종목 종목
 	 -- ----------------------------------------------------------------------	

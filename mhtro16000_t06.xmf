@@ -177,7 +177,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 	end
 end
 
- --'============================================================================
+ -- --============================================================================
  --Sub Form_OnLinkData(sKey, sValue)
  --	if sKey = "ITEMCODE" then
  --		f_FormStart(sValue)

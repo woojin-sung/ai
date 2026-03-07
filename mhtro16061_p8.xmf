@@ -50,33 +50,35 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="4691" _ulen="4397" >
-'============================================================================
-' v0001 강경완 : 조회 조건 추가 [T2502130001]
-'============================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- v0001 강경완 : 조회 조건 추가 [T2502130001]
+ --============================================================================
 
-Dim g_orderClsCode	'검색 예약유형 0:전체 1:일반예약 2:기간잔량 3:기간예약 4:특정일 (기본값 0)
-Dim g_idntClcd		'검색 처리구분 0:전체 1:전체(취소제외) 2:예약 (기본값 2)
-Dim g_selnByovClcd	'검색 매매구분 0:전체 1:매도 2:매수 (기본값 0)
+local g_orderClsCode --검색 예약유형 0:전체 1:일반예약 2:기간잔량 3:기간예약 4:특정일 (기본값 0)
+local g_idntClcd --검색 처리구분 0:전체 1:전체(취소제외) 2:예약 (기본값 2)
+local g_selnByovClcd --검색 매매구분 0:전체 1:매도 2:매수 (기본값 0)
 
-Dim g_osType
+local g_osType
 
-'============================================================================
-Sub Form_OnFormInit()
-	g_osType = Form.GetSharedData("&OS_TYPE", false)
+ --============================================================================
+function Form_OnFormInit()
+	g_osType = Form.GetSharedData("..OS_TYPE", false)
 	
 	cont0.RadioOrderClsCode.currentindex = "0"
 	cont2.OrdGubun.currentindex = "0"
-	Call initIdntClcd()
+	initIdntClcd()
 
 	szLinkData = Form.GetOpenLinkData()
 	
-	if szLinkData <> "" then
+	if szLinkData ~= "" then
 	
-		arrData = Split(szLinkData,"★")
+		arrData = gf_Split(szLinkData,"★")
 		
-		g_orderClsCode = arrData[0]
-		g_idntClcd = arrData[1]
-		g_selnByovClcd = arrData[2]
+		g_orderClsCode = arrData[0+1]
+		g_idntClcd = arrData[1+1]
+		g_selnByovClcd = arrData[2+1]
 		
 		cont0.RadioOrderClsCode.currentindex = g_orderClsCode
 		
@@ -84,9 +86,9 @@ Sub Form_OnFormInit()
 			Form.SetCtlProp("cont1.imgAll", "imgpath", "btn_line2_o.9")
 			Form.SetCtlProp("cont1.LabelAll", "fgcolor", 4)
 		else
-			Form.SetCtlProp("cont1.img" & g_idntClcd, "imgpath", "btn_line2_o.9")
-			Form.SetCtlProp("cont1.Label" & g_idntClcd, "fgcolor", 4)
-		end if
+			Form.SetCtlProp("cont1.img" .. g_idntClcd, "imgpath", "btn_line2_o.9")
+			Form.SetCtlProp("cont1.Label" .. g_idntClcd, "fgcolor", 4)
+		end
 		
 		cont2.OrdGubun.currentindex = g_selnByovClcd
 	
@@ -97,24 +99,24 @@ Sub Form_OnFormInit()
 		g_orderClsCode = "0"
 		g_idntClcd = "2"
 		g_selnByovClcd = "0"
-	end if
+	end
 	
-	call setInfoCaption()
+	setInfoCaption()
 
-End Sub
-'============================================================================
-Sub BtnBackGround_OnClick()
+end
+ --============================================================================
+function BtnBackGround_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-' 초기화 버튼 클릭이벤트
-'============================================================================
-Sub btnReset_OnClick()
+ --============================================================================
+ -- 초기화 버튼 클릭이벤트
+ --============================================================================
+function btnReset_OnClick()
 
 	cont0.RadioOrderClsCode.currentindex = "0"
 	cont2.OrdGubun.currentindex = "0"
-	Call initIdntClcd()
+	initIdntClcd()
 	
 	Form.SetCtlProp("cont1.img2", "imgpath", "btn_line2_o.9")
 	Form.SetCtlProp("cont1.Label2", "fgcolor", 4)
@@ -123,19 +125,19 @@ Sub btnReset_OnClick()
 	g_idntClcd = "2"
 	g_selnByovClcd = "0"
 	
-	call setInfoCaption()
-End Sub
+	setInfoCaption()
+end
 
-'============================================================================
-' 검색버튼 클릭이벤트(조회조건 설정 리턴)
-'============================================================================
-Sub btnOk_OnClick()
-	Form.SendReturnToParent("mhtro16061_p8" , g_orderClsCode  & "★" &  g_idntClcd & "★" & g_selnByovClcd)
+ --============================================================================
+ -- 검색버튼 클릭이벤트(조회조건 설정 리턴)
+ --============================================================================
+function btnOk_OnClick()
+	Form.SendReturnToParent("mhtro16061_p8" , g_orderClsCode  .. "★" ..  g_idntClcd .. "★" .. g_selnByovClcd)
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Function initIdntClcd()
+ --============================================================================
+function initIdntClcd()
 	Form.SetCtlProp("cont1.imgAll", "imgpath", "btn_line2_n.9")
 	Form.SetCtlProp("cont1.img1", "imgpath", "btn_line2_n.9")
 	Form.SetCtlProp("cont1.img2", "imgpath", "btn_line2_n.9")
@@ -144,62 +146,63 @@ Function initIdntClcd()
 		Form.SetCtlProp("cont1.LabelAll", "fgcolor", 146)
 		Form.SetCtlProp("cont1.Label1", "fgcolor", 146)
 		Form.SetCtlProp("cont1.Label2", "fgcolor", 146)
-	end if
-End Function
+	end
+end
 
-'============================================================================
-Sub cont0_RadioOrderClsCode_OnClick(nIndex)
+ --============================================================================
+function cont0_RadioOrderClsCode_OnClick(nIndex)
 	g_orderClsCode = nIndex
-End Sub
+end
 
-'============================================================================
-Sub cont1_LabelAll_OnClick()
+ --============================================================================
+function cont1_LabelAll_OnClick()
 	initIdntClcd()
 	Form.SetCtlProp("cont1.imgAll", "imgpath", "btn_line2_o.9")
 	Form.SetCtlProp("cont1.LabelAll", "fgcolor", 4)
 	g_idntClcd = "0"
 	
-	call setInfoCaption()
-End Sub
+	setInfoCaption()
+end
 
-'============================================================================
-Sub cont1_Label1_OnClick()
+ --============================================================================
+function cont1_Label1_OnClick()
 	initIdntClcd()
 	Form.SetCtlProp("cont1.img1", "imgpath", "btn_line2_o.9")
 	Form.SetCtlProp("cont1.Label1", "fgcolor", 4)
 	g_idntClcd = "1"
 	
-	call setInfoCaption()
-End Sub
+	setInfoCaption()
+end
 
-'============================================================================
-Sub cont1_Label2_OnClick()
+ --============================================================================
+function cont1_Label2_OnClick()
 	initIdntClcd()
 	Form.SetCtlProp("cont1.img2", "imgpath", "btn_line2_o.9")
 	Form.SetCtlProp("cont1.Label2", "fgcolor", 4)
 	g_idntClcd = "2"
 	
-	call setInfoCaption()
-End Sub
+	setInfoCaption()
+end
 
-'============================================================================
-Sub cont2_OrdGubun_OnClick(nIndex)
+ --============================================================================
+function cont2_OrdGubun_OnClick(nIndex)
 	g_selnByovClcd = nIndex
-End Sub
+end
 
 
-'============================================================================
-Function setInfoCaption()
-	select case g_idntClcd
-		case "0"
+ --============================================================================
+function setInfoCaption()
+	-- SELECT CASE 변환 (수동 보정 필요)
+		if g_idntClcd == "0" then
 			cont1.Label3.caption = "예약(미발주), 발주 완료, 취소 내역이 모두 조회돼요."
-		case "1"
+		elseif g_idntClcd == "1" then
 			cont1.Label3.caption = "취소를 제외한 모든 내역이 조회돼요."
-		case "2"
+		elseif g_idntClcd == "2" then
 			cont1.Label3.caption = "진행 중인 예약 내역만 조회돼요."
-	end select
+	end
 	
-End Function
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

@@ -65,7 +65,7 @@ dofile("scr/json.lua")
  --****************************************************************************
 local g_isFst ; g_isFst = true
 local gMaxLen ; gMaxLen = 12
-local g_sOsType ; g_sOsType = Form.GetSharedData("&OS_TYPE", false)
+local g_sOsType ; g_sOsType = Form.GetSharedData("..OS_TYPE", false)
 
  --------------------------
  -- 링크데이터
@@ -104,7 +104,7 @@ local sExchRate		; sExchRate = ""
  --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
  --****************************************************************************
  --===============================================
- -- NULL 체크 
+ -- nil 체크 
  --===============================================
 function isEmpty(sData)
 	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
@@ -125,7 +125,7 @@ function truncateToDecimalPlaces(nVal, nDeimalPlaces)
 	
 	nTotalData = 0
 	if gf_Tonumber(nDecimalIdx) > 0 then
-		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, Cint(nDecimalIdx)-1))
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, gf_Tonumber(nDecimalIdx)-1))
 	else
 		nTotalData = gf_Tonumber(szNumStr)
 	end
@@ -169,22 +169,22 @@ end
  --==============================================
 function Init_Control()
 	
- --	'컨테이너 스크롤 이벤트 발생 유무
+ --	 --컨테이너 스크롤 이벤트 발생 유무
  --	contMain.SetUseScrollingEvent(true)
  --	
- --	'컨테이너 안보임 컨트롤 무시 유무(스크롤 위치)
- --	contMain.setExceptInvisibleCtl(true)
+ --	 --컨테이너 안보임 컨트롤 무시 유무(스크롤 위치)
+ --	contMain.SetExceptInvisibleCtl(true)
  --	
- --	'컨테이너 스크롤 안보임 처리
- --	contMain.setScrollBarVisible("0")
+ --	 --컨테이너 스크롤 안보임 처리
+ --	contMain.SetScrollBarVisible("0")
  --	
- --	'컨테이너 제스터 이벤트 사용유무
+ --	 --컨테이너 제스터 이벤트 사용유무
  --	contMain.gesture = true
  --	
- --	'컨테이너 헤더 여백조정(탭순서변경 버튼 추가)
- --	contMain.FormTab.setHorzMargin(0, 30) 
- --	contMain.FormTabEtf.setHorzMargin(0, 30) 
- --	contMain.FormTabJPN.setHorzMargin(0, 30) 
+ --	 --컨테이너 헤더 여백조정(탭순서변경 버튼 추가)
+ --	contMain.FormTab.SetHorzMargin(0, 30) 
+ --	contMain.FormTabEtf.SetHorzMargin(0, 30) 
+ --	contMain.FormTabJPN.SetHorzMargin(0, 30) 
 	
 	 ----------------------
 	 -- 컨테이너(상단) 설정 START
@@ -200,22 +200,22 @@ function Init_Control()
 	 --현재가 설정
 	contHideTop.lblTopPrc.paddinginfo = "0,0,0,0"
 	contHideTop.lblTopPrc.maxlinecnt = "1"
- --	contHideTop.lblTopPrc.setAttributeEnable(false)
+ --	contHideTop.lblTopPrc.SetAttributeEnable(false)
 	
 	 --전일대비 설정
 	contHideTop.lblTopDiff.paddinginfo = "0,0,0,0"
 	contHideTop.lblTopDiff.maxlinecnt = "1"
- --	contHideTop.lblTopDiff.setAttributeEnable(false)
+ --	contHideTop.lblTopDiff.SetAttributeEnable(false)
 	
 	 --등락률 설정
 	contHideTop.lblTopRate.paddinginfo = "0,0,0,0"
 	contHideTop.lblTopRate.maxlinecnt = "1"
- --	contHideTop.lblTopRate.setAttributeEnable(false)
+ --	contHideTop.lblTopRate.SetAttributeEnable(false)
 	
 	 --전일대비부호 설정
 	contHideTop.lblTopSign.paddinginfo = "0,0,0,0"
 	contHideTop.lblTopSign.maxlinecnt = "1"
- --	contHideTop.lblTopSign.setAttributeEnable(false)
+ --	contHideTop.lblTopSign.SetAttributeEnable(false)
 	 ----------------------
 	 -- 컨테이너(상단) 설정 END
 	 ----------------------
@@ -254,7 +254,7 @@ function Init_DataSet()
 		sResult2 = Form.GetLen(gf_CommaValue(g_nAvgPrc, sDecimalLen) .. " ")
 		
 		contMain.lblCur1.caption = gf_CommaValue(g_nAvgPrc, sDecimalLen) .. " " .. sCurrency
- --		contMain.lblCur1.changeTextAttr(sResult2, sResult-sResult2, 4,-4, false)
+ --		contMain.lblCur1.ChangeTextAttr(sResult2, sResult-sResult2, 4,-4, false)
 		
 		contMain.lblCur2.caption = g_nRate
 		contMain.lblCur3.caption = g_nQty
@@ -315,7 +315,7 @@ function RequestOvrs()
 	DATAMANAGER.RequestTranData("ohhts_6000_001r_1")
 	
  --	if g_sExid == "OQ" or g_sExid == "NY" or g_sExid == "AX" then
- --		sMkOp = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+ --		sMkOp = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
  --		
  --		if sMkOp == "001" then
  --			DATAMANAGER.RequestTranData("ohhts_6000_017r")
@@ -365,7 +365,7 @@ function Calc_Price_Ovrs(nGbn)
 		 -- + 버튼 클릭
 		 --------------------------------------------------
 		if nGbn == 0 then
-			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -385,7 +385,7 @@ function Calc_Price_Ovrs(nGbn)
 		 -- - 버튼 클릭 
 		 --------------------------------------------------
 		elseif nGbn == 1 then
-			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -630,10 +630,10 @@ function GetHogaUnit(sType, szPrc, nGbn)
 		 -------------------------------------------------------------------------
 		 -- 중국(상해/심천) 호가단위 설정
 		 -------------------------------------------------------------------------
-		if szMk == "0215" then --상해
+		if szMk == "0215" then --상해 end
 		
 			 --20240613 LES START 틱단위 수정
-			if szTtype == 2 then --ETF
+			if szTtype == 2 then --ETF end
 				szUnit = "0.001"
 			else
 				szUnit = "0.010"
@@ -643,7 +643,7 @@ function GetHogaUnit(sType, szPrc, nGbn)
 		elseif szMk == "0214" then --심천
 			
 			 --20240613 LES START 틱단위 수정
-			if szTtype == 2 then --ETF
+			if szTtype == 2 then --ETF end
 				szUnit = "0.001"
 			else
 				szUnit = "0.010"
@@ -1228,10 +1228,10 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- (기존요건) 최대입력 가능 수량 99000000
 	 -----------------------------------------------------------
-	 --if Trim(szQty) <> "" then
-	 --	if CDbl(szQty) >= 99000000 then
+	 --if gf_Trim(szQty) ~= "" then
+	 --	if gf_Tonumber(szQty) >= 99000000 then
 	 --		if nGbn == 0 then
-	 --			Exit Function
+	 --			return
 	 --		end if
 	 --	end if
 	 --end if
@@ -1292,7 +1292,7 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 체크
 	 -----------------------------------------------------------
-	if string.len(szQty) <= gMaxLen then
+	if string.string.len(szQty) <= gMaxLen then
 		if gf_Tostring(szQty) == "0" or gf_Tostring(szQty) == "" then
 			contMain.lblHideQty.caption = "1"
 			sQty = "1 주"
@@ -1332,7 +1332,7 @@ function Calc_OrderPrice()
 		sResult2 = Form.GetLen(gf_CommaValue(truncateToDecimalPlaces(nTotalPrice / nTotalQty, sDecimalLen), sDecimalLen).." " )
 	
 		contMain.lblEst1.caption = gf_CommaValue(truncateToDecimalPlaces(nTotalPrice / nTotalQty, sDecimalLen), sDecimalLen).." " .. sCurrency
- --		contMain.lblEst1.changeTextAttr(sResult2, sResult-sResult2, 4,-4, false)
+ --		contMain.lblEst1.ChangeTextAttr(sResult2, sResult-sResult2, 4,-4, false)
 		
 		contMain.lblEst2.caption = gf_Round((nCurPrc-(nTotalPrice / nTotalQty))/(nTotalPrice / nTotalQty) * 100, 2)
 		contMain.lblEst3.caption = nTotalQty
@@ -1353,7 +1353,7 @@ function Check_HogaUnit(sValue)
 	sDiv = gf_CommaValue(nDiv,4,1,0,0,1)
 	nDecimalIdx = string.find(sDiv, ".")
 	nTotalLen = Form.GetLen(sDiv)
-	nMod = gf_Tonumber(string.sub(sDiv, -Cint(nTotalLen) - gf_Tonumber(nDecimalIdx)))
+	nMod = gf_Tonumber(string.sub(sDiv, -gf_Tonumber(nTotalLen) - gf_Tonumber(nDecimalIdx)))
 
 	if gf_Tonumber(sValue) >= 1 and nMod > 0 then
 		Form.ShowAlert("알림", "호가 단위를 확인해주세요.\n(호가 단위 : " .. gf_CommaValue(szUnit, gf_Tonumber(sDecimalLen)) .. " " .. sCurrency..")")
@@ -1418,7 +1418,7 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
 		 --------------------------------
 		 --소수점영역 길이
 		 --------------------------------
-		sCha = gf_Tonumber(string.len(nPrc) - sChk)
+		sCha = gf_Tonumber(string.string.len(nPrc) - sChk)
 		
 		 ---------------------------------------------------------
 		 --소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
@@ -1484,7 +1484,7 @@ end
 function Form_OnFormInit()
 	 --------------------------------------------------
 	 -- 링크데이터 구조
-	 -- 국내/해외구분`종목코드`보유수량'평균단가'수익률
+	 -- 국내/해외구분`종목코드`보유수량 --평균단가'수익률
 	 --------------------------------------------------
 	
 	sLinkData = Form.GetOpenLinkData()
@@ -1811,7 +1811,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 				 -----------------------------------------------------------
 				 -- 입력값 자리수 체크
 				 -----------------------------------------------------------
-				if string.len(sValue) <= gMaxLen then
+				if string.string.len(sValue) <= gMaxLen then
 					nMod = gf_Tonumber(sValue) % gf_Tonumber(sOrdSize)
 					
 					if nMod > 0 then

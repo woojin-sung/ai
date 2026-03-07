@@ -274,10 +274,10 @@ function reqIntrGroupUpdate( )
 end
 
  --============================================================================
- -- null 체크
+ -- nil 체크
  --============================================================================
 function isNull(str)
-	if nil == str or "" == str or string.len(gf_Trim(str)) <= 0 then
+	if nil == str or "" == str or string.string.len(gf_Trim(str)) <= 0 then
 		return true
 	end
 	
@@ -293,7 +293,7 @@ end
  -- Change_Len
  --============================================================================
 function Change_Len(szData)
-	if string.len(szData) == 1 then
+	if string.string.len(szData) == 1 then
 		return "0" .. gf_Tostring(szData)
 	else
 		return gf_Tostring(szData)

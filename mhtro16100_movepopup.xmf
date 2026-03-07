@@ -147,7 +147,7 @@ function Form_OnFormInit()
 		 -- 실시간 시세 적용여부(해외종합잔고에서 호출시에만 시세 조회/실시간 호출)
 		 -------------------------------------------
 		sParentScrNo = Form.GetSharedData("..SCREEN_NO", false)
-		if sParentScrNo == "16070" or sParentScrNo == "16037" then --20250522 JSH - PTP종목조회(16037)
+		if sParentScrNo == "16070" or sParentScrNo == "16037" then --20250522 JSH - PTP종목조회(16037) end
 			gApplyRealSise = "Y"
 			
 			 -------------------------------------------------------------
@@ -358,7 +358,7 @@ function RequestData()
 	
 	
 	 ------------------------------------------------------
-	 --주간장 & 미국종목일 경우에만 주간현재가 조회 서비스 호출
+	 --주간장 .. 미국종목일 경우에만 주간현재가 조회 서비스 호출
 	 ------------------------------------------------------
 	if gDayMarket == "Y" and gUSItem == "Y" then
 	
@@ -491,7 +491,7 @@ end
  --============================================================================
 function GetMarketCode(sValue)
 
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
@@ -651,7 +651,7 @@ end
  --============================================================================
 function Form_OnLinkData(sKey, sValue)
 	 --20250707 YSH TEST
-	 --showAlert(sKey & sValue)
+	 --showAlert(sKey .. sValue)
 	 --20250704 YSH START : 해외주식 장운영 정보 조회방식 변경
 	if sKey == "OVRS_MARKET_OPERATION_TRAN" then
 		if gApplyRealSise == "Y" and gUSItem == "Y" then

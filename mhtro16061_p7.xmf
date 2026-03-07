@@ -28,104 +28,107 @@
 		<LABEL name="Label3" fgcolor="334:034034034" fontsize="-2" fontstyle="01" caption="주문정보" valign="0" ly_vert="20,419,74,20,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="3056" _ulen="2904" >
-'-------------------------------------------------------------------------------------------
-' 01. 화 면 명 : 예약주문
-' 02. 화면설명 : 예약주문 주문확인창
-' 03. 작    성 : 2016.04.30 LJS
-'-------------------------------------------------------------------------------------------
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ ---------------------------------------------------------------------------------------------
+ -- 01. 화 면 명 : 예약주문
+ -- 02. 화면설명 : 예약주문 주문확인창
+ -- 03. 작    성 : 2016.04.30 LJS
+ ---------------------------------------------------------------------------------------------
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
 
-Dim g_nCount
+local g_nCount
 	g_nCount = 0
 
-Dim 	g_szOrder_Acc			' 계좌번호
-Dim 	g_szOrder_AccName		' 고객명
-Dim 	g_szCnt				' 건수
-Dim	g_szText				' 전종목 or 선택종목
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
-'****************************************************************************
+local g_szOrder_Acc -- 계좌번호
+local g_szOrder_AccName -- 고객명
+local g_szCnt -- 건수
+local g_szText -- 전종목 or 선택종목
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
+ --****************************************************************************
 
-'============================================================================
-'주문화면 데이터
-'============================================================================
-Function Set_Data(nIndex)
+ --============================================================================
+ --주문화면 데이터
+ --============================================================================
+function Set_Data(nIndex)
 
 
-	Dim szStr1,szStr2,szStr3
-	szStr1 = left(g_szOrder_Acc,4)
-	szStr2 = mid(g_szOrder_Acc,5,4)
-	szStr3 = right(g_szOrder_Acc,2)
+	local szStr1,szStr2,szStr3
+	szStr1 = string.sub(g_szOrder_Acc, 1, 4)
+	szStr2 = string.sub(g_szOrder_Acc, 5, 5 + 4 - 1)
+	szStr3 = string.sub(g_szOrder_Acc, -2)
 
 	tblCancle.SetCellString( 0, 1, szStr1.."-".. szStr2 .."-".. szStr3.." "..g_szOrder_AccName)
 
 	tblCancle.SetCellString( 1, 1, g_szCnt)
 	tblCancle.SetCellString( 2, 1, g_szText)
 	
-End Function
+end
 
-'============================================================================
-Function SendOrder()
-    If g_nCount = 0 Then
+ --============================================================================
+function SendOrder()
+    if g_nCount == 0 then
 	    Form.SendReturnToParent( "전체취소주문전송" , "1")
 	    
 	    g_nCount = 1
 	    Form.CloseForm( )
-    End If
+    end
     
-End Function
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'============================================================================
-Sub Form_OnFormInitBefore()
-	Dim szData, arrData, szItemName
+end
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --============================================================================
+function Form_OnFormInitBefore()
+	local szData, arrData, szItemName
 
 	szData = Form.GetOpenLinkData()
 	
-	arrData = Split(szData,"|")
+	arrData = gf_Split(szData,"|")
 	
-	if UBOUND(arrData) < 1 then
-	    Exit sub
-	End if	
+	if #arrData < 1 then
+	    return
+	end
 	
-	g_szOrder_Acc			= arrData( 0)	' 계좌번호
-	g_szOrder_AccName		= arrData( 1)	' 고객명
-	g_szCnt				= arrData( 2)	' 건수
-	g_szText				= arrData( 3)	' 전종목 or 선택종목
-	if g_szText = "Y" then
+	g_szOrder_Acc			= arrData[0+1]	 -- 계좌번호
+	g_szOrder_AccName		= arrData[1+1]	 -- 고객명
+	g_szCnt				= arrData[2+1]	 -- 건수
+	g_szText				= arrData[3+1]	 -- 전종목 or 선택종목
+	if g_szText == "Y" then
 		g_szText = "전종목"
 	else
 		g_szText = "선택종목"
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
     Set_Data(g_nIndex)
     
-End Sub
+end
 
 
-'============================================================================
-Sub btnCancle_OnClick()
+ --============================================================================
+function btnCancle_OnClick()
 	SendOrder()
-End Sub
+end
 
 
-'============================================================================
-Sub imgBg_OnClick()
+ --============================================================================
+function imgBg_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub btnCancleClose_OnClick()
+ --============================================================================
+function btnCancleClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

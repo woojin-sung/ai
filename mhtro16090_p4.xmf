@@ -82,92 +82,95 @@
 		<IMAGE name="Image4" imgpath="icon_dot" ly_vert="30,555,15,18,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="3273" _ulen="2939" >
-'============================================================================
-' 화 면 명 : 주식주문_가격입력창
-' 화면설명 : 주식주문 가격입력시
-' 작    성 : 2016.02.15 ~ 2016.  .       ssang
-'============================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 화 면 명 : 주식주문_가격입력창
+ -- 화면설명 : 주식주문 가격입력시
+ -- 작    성 : 2016.02.15 ~ 2016.  .       ssang
+ --============================================================================
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
 
 
-Dim g_nCount
+local g_nCount
 	g_nCount = 0
 
-Dim g_nIndex				' 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
-Dim 	g_szOrder_Acc			' 계좌번호
-Dim 	g_szOrder_AccName		' 고객명
-Dim 	g_szOrd_ItmCode		' 종목코드
-Dim 	g_szOrd_ItmName		' 종목명
-Dim 	g_szOrd_OrdType		' 주문구분
-Dim 	g_szOrd_Security		' 현금/신용
-Dim 	g_nOrd_Qty			' 주문수량
-Dim 	g_nOrd_Price			' 주문가격
-Dim 	g_nOrd_OrdNo			' 원주문번호
-Dim 	g_nOrd_ChkAll			' 잔량전부	
-Dim	g_nOrd_Decimal		' 가격자릿수
-'20191029 YGH 예약주문 문구추가 Start
-Dim g_nOrd_res_Type 		' 예약주문유형
-Dim g_nOrd_res_time		' 주문시간유형
-'20191029 YGH 예약주문 문구추가 End
+local g_nIndex -- 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
+local g_szOrder_Acc -- 계좌번호
+local g_szOrder_AccName -- 고객명
+local g_szOrd_ItmCode -- 종목코드
+local g_szOrd_ItmName -- 종목명
+local g_szOrd_OrdType -- 주문구분
+local g_szOrd_Security -- 현금/신용
+local g_nOrd_Qty -- 주문수량
+local g_nOrd_Price -- 주문가격
+local g_nOrd_OrdNo -- 원주문번호
+local g_nOrd_ChkAll -- 잔량전부	
+local g_nOrd_Decimal -- 가격자릿수
+ --20191029 YGH 예약주문 문구추가 Start
+local g_nOrd_res_Type -- 예약주문유형
+local g_nOrd_res_time -- 주문시간유형
+ --20191029 YGH 예약주문 문구추가 End
 
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'============================================================================
-Sub Form_OnFormInitBefore()
-	Dim szData, arrData, szItemName
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --============================================================================
+function Form_OnFormInitBefore()
+	local szData, arrData, szItemName
 	
 	Imgicon.SetMaintainingRatio("1")
 	Image0.SetMaintainingRatio("1")
 	
 	szData = Form.GetOpenLinkData()
 	
-	arrData = Split(szData,"|")
+	arrData = gf_Split(szData,"|")
 	
-	if UBOUND(arrData) < 1 then
-	    Exit Sub 
-	End if	
-'	Form.ShowAlert("szData", szData)
-	g_nIndex				= arrData( 0) ' 매도수구분 (0:매수, 1:매도, 3:취소)
-	g_szOrder_Acc			= arrData( 1)	' 계좌번호
-	g_szOrder_AccName		= arrData( 2)	' 고객명
-	g_szOrd_ItmCode 		= arrData( 3)	' 종목코드
-	g_szOrd_ItmName 		= arrData( 4)	' 종목명
-	g_szOrd_OrdType  		= arrData( 5)	' 주문구분
-	g_szOrd_Security 		= arrData( 6)	' 현금
-	g_nOrd_Qty   			= arrData( 7)	' 주문수량
-	g_nOrd_Price 			= arrData( 8)	' 주문가격
-	g_nOrd_OrdNo 			= arrData( 9)	' 원주문번호
-	g_nOrd_ChkAll 		= arrData(10)	' 잔량전부
-	g_nOrd_Decimal		= arrData(11)	' 가격자릿수
+	if #arrData < 1 then
+	    return 
+	end
+ --	Form.ShowAlert("szData", szData)
+	g_nIndex				= arrData[0+1]  -- 매도수구분 (0:매수, 1:매도, 3:취소)
+	g_szOrder_Acc			= arrData[1+1]	 -- 계좌번호
+	g_szOrder_AccName		= arrData[2+1]	 -- 고객명
+	g_szOrd_ItmCode 		= arrData[3+1]	 -- 종목코드
+	g_szOrd_ItmName 		= arrData[4+1]	 -- 종목명
+	g_szOrd_OrdType  		= arrData[5+1]	 -- 주문구분
+	g_szOrd_Security 		= arrData[6+1]	 -- 현금
+	g_nOrd_Qty   			= arrData[7+1]	 -- 주문수량
+	g_nOrd_Price 			= arrData[8+1]	 -- 주문가격
+	g_nOrd_OrdNo 			= arrData[9+1]	 -- 원주문번호
+	g_nOrd_ChkAll 		= arrData[10+1]	 -- 잔량전부
+	g_nOrd_Decimal		= arrData[11+1]	 -- 가격자릿수
 
-End Sub
+end
 
-'============================================================================
-' Form_OnFormInit
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+ -- Form_OnFormInit
+ --============================================================================
+function Form_OnFormInit()
 	Form.SetCtlProp("Form", "bgcolor", "28")	
 
 	TblCode.SetCellString(1, 0, g_szOrd_ItmCode)
-	TblCode.SetCellString(1, 1, "| "&g_szOrd_ItmName)
+	TblCode.SetCellString(1, 1, "| "..g_szOrd_ItmName)
 	TblOrdinfo.SetCellString(0, 0, g_szOrder_Acc)
 	TblOrdinfo.SetCellString(1, 1, g_nOrd_Price)
 	TblOrdinfo.SetCellString(2, 1, g_nOrd_Qty)
-End Sub
-'============================================================================
-' btnClose_OnClick : 닫기
-'============================================================================
-Sub btnClose_OnClick()
+end
+ --============================================================================
+ -- btnClose_OnClick : 닫기
+ --============================================================================
+function btnClose_OnClick()
 	Form.CloseForm()
-End Sub
-'============================================================================
-Sub btnList_OnClick()
+end
+ --============================================================================
+function btnList_OnClick()
 	Form.OpenScreen("16093" , "")
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

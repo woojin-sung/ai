@@ -507,7 +507,7 @@ dofile("scr/json.lua")
  --============================================================================
  -- 수정내역
  --============================================================================
- -- '20241125_01 HWG : 국가별 해당 통화 기준 외화자산 조회기능 추가
+ --  --20241125_01 HWG : 국가별 해당 통화 기준 외화자산 조회기능 추가
  -- 20250627 HWG : v0001 : 미국주식 애프터장 실시간 시세 추가 
  -- 20250703 YSH : v0002 : 해외주식 장운영 정보 조회방식 변경
  -- 20250901 YSH : v0003 : 휴장일 체크 오류 수정
@@ -685,9 +685,9 @@ function Form_OnFormInit()
 	 --주간장 여부 확인(주간장일때만 정규종가 체크박스 보임처리)
 	 --=> 이 값은 시간으로만 판단해서 내려줌. 휴일 구분이 안되서
 	 --장운영정보 조회 서비스 조회로 판단(comn_010r)
-	 --=> sharedData 로 값 적용 (&OVRS_MARKET_OPERATION_US)
+	 --=> sharedData 로 값 적용 (..OVRS_MARKET_OPERATION_US)
 	 ------------------------------------------------------------
-	 --sDayYN = Form.GetSharedData( "&OVRS_DAYMARKET", false )
+	 --sDayYN = Form.GetSharedData( "..OVRS_DAYMARKET", false )
 	 --
 	 --if sDayYN == "Y"  then
 	 --	contBody.contStock.checkJonga.visible = true
@@ -817,7 +817,7 @@ end
  --v0001 >>
 function Form_OnDelayEvent(nID)
 	if gf_Tonumber(nID) == 2 then
-		 --Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", "onDelayEvent START: RequestStockData or RequestCashData " & gStockCashGubun)
+		 --Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", "onDelayEvent START: RequestStockData or RequestCashData " .. gStockCashGubun)
 		if gStockCashGubun == "STOCK" then
 			RequestStockData()
 		else
@@ -834,7 +834,7 @@ function RequestMarketInfo()
 	szMktOpClsCd = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 	
 	if szMktOpClsCd ~= "" and gMktOpClsCd ~= szMktOpClsCd then
-		if CheckValidMktOp(szMkOpClsCd) == false then --v0003
+		if CheckValidMktOp(szMkOpClsCd) == false then --v0003 end
 			szMkOpClsCd = "004"
 		end
 		
@@ -881,7 +881,7 @@ function SetSelectBtn(nIndex)
 		gStockCashGubun = "STOCK"
 		
 		 --주식잔고/외화잔고 버튼으로 했을때 (현재는 라디오버튼 변경)
-		 --contBody.btnStock.bringFront("1")
+		 --contBody.btnStock.BringFront("1")
 		 --contBody.btnStock.singleimage = "btn_radio_select_o.9"
 		 --contBody.btnStock.fgcolor = 273
 		
@@ -928,7 +928,7 @@ function SetSelectBtn(nIndex)
 		gStockCashGubun = "CASH"
 		
 		 --주식잔고/외화잔고 버튼으로 했을때 (현재는 라디오버튼 변경)
-		 --contBody.btnCash.bringFront("1")
+		 --contBody.btnCash.BringFront("1")
 		 --contBody.btnCash.singleimage = "btn_radio_select_o.9"
 		 --contBody.btnCash.fgcolor = 273
 		
@@ -1220,7 +1220,7 @@ function ChangeControlSize(sType)
 end
 
  --================================================================================================
- -- [외화]잔고 판넬 스크롤 속도 제어 & 판넬 접기 가능여부 설정
+ -- [외화]잔고 판넬 스크롤 속도 제어 .. 판넬 접기 가능여부 설정
  --================================================================================================
 function contBody_contCash_Pannel0_OnScrollNoTop()
 	
@@ -1978,7 +1978,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 	 --============================================================================
 	elseif sEventName == "RefreshData" then
 		
- --		if gListClick <> true then
+ --		if gListClick ~= true then
  --			if gStockCashGubun == "STOCK" then
  --				RequestStockData()
  --			else
@@ -2192,8 +2192,8 @@ function MoveScreen(sGubun,sIndex)
 		 --소수점 잔고일 경우 소수점 주문화면으로 연동
 		 ----------------------------------------------
 		if sJangoGubun == "03" then
- --			if szItemCode <> "" then
- --				szData = szItemCode & "★" & szName & "♥" & "0" & "♥" & "" & "♥" & "" & "♥" & "0000" & "♥" & "0" & "♥" & "00000000000"
+ --			if szItemCode ~= "" then
+ --				szData = szItemCode .. "★" .. szName .. "♥" .. "0" .. "♥" .. "" .. "♥" .. "" .. "♥" .. "0000" .. "♥" .. "0" .. "♥" .. "00000000000"
  --				Form.OpenScreen("16092" , szData)
  --			end if
 			 --none
@@ -2205,10 +2205,10 @@ function MoveScreen(sGubun,sIndex)
 			if szItemCode ~= "" then
 				 --------------------------------------------------
 				 -- 링크데이터 구조
-				 -- 국내/해외구분`종목코드`보유수량'평균단가'수익률
+				 -- 국내/해외구분`종목코드`보유수량 --평균단가'수익률
 				 --------------------------------------------------
 				sLinkData = "1"														
- --				sLinkData = sLinkData & "`" & szMK & "@" & szItemCode & "`" & sOrdQty & "`" & sAvgPrc & "`" & sRate
+ --				sLinkData = sLinkData .. "`" .. szMK .. "@" .. szItemCode .. "`" .. sOrdQty .. "`" .. sAvgPrc .. "`" .. sRate
 				
 				g_sLinkData_Water = sLinkData .. "`" .. szMK .. "@" .. szItemCode .. "`" .. "수량교체" .. "`" .. "가격교체".. "`" .. sRate
 				
@@ -2311,7 +2311,7 @@ end
  --============================================================================
 function GetMarketCode(sValue)
 
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
@@ -2480,7 +2480,7 @@ end
  -- 거래소코드(4자리) <- 거래명(2자리)
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
@@ -2604,7 +2604,7 @@ end
  -- Form_OnLinkData
  --============================================================================
 function Form_OnLinkData(sKey, sValue)
-	 --Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", sKey & sValue)
+	 --Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", sKey .. sValue)
 	
      --20250703 YSH START
      --해외주식 장운영 정보 조회방식 변경

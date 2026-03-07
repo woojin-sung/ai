@@ -197,18 +197,18 @@ function Form_OnFormInitBefore()
 	 -------------------------------------------------------------
 	if g_nIndex == "11" then
 		
- --		'대출일경우
+ --		 --대출일경우
  --		if g_szOrd_Security == "1" then
 	
 			g_nOrd_res_Type 	= arrData[17+1]  --예약주문유형
 			g_nOrd_res_Period	= arrData[18+1]  --예약주문기간
 			g_nOrd_res_Time 	= arrData[19+1]  --예약주문시간
 		
- --		'현금일경우
+ --		 --현금일경우
  --		else
- --			g_nOrd_res_Type 	= arrData(14) '예약주문유형
- --			g_nOrd_res_Period	= arrData(15) '예약주문기간
- --			g_nOrd_res_Time 	= arrData(16) '예약주문시간
+ --			g_nOrd_res_Type 	= arrData[14+1]  --예약주문유형
+ --			g_nOrd_res_Period	= arrData[15+1]  --예약주문기간
+ --			g_nOrd_res_Time 	= arrData[16+1]  --예약주문시간
  --		end if
 		
 	end

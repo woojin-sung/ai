@@ -5,87 +5,88 @@
 	<FORM_INFO name="Form" ly_vert="0,0,332,408,1" />
 	<CONTROL_INFO/>
 	<SCRIPT_INFO _len="4193" _ulen="4129" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --===========================================================================
+ -- 01. 업무구분 :
+ -- 02. 화면 : 
+ -- 03. 화면설명 : 
+ -- 04. 작성자 : 김철중
+ -- 05. 작성일 : 2020.04.29
+ -- 06. 수정이력 : 
+ --===========================================================================
 
-'===========================================================================
-' 01. 업무구분 :
-' 02. 화면 : 
-' 03. 화면설명 : 
-' 04. 작성자 : 김철중
-' 05. 작성일 : 2020.04.29
-' 06. 수정이력 : 
-'===========================================================================
+local g_tCodeList()
+local g_nCnt
+local g_nCnt2
+local g_sData
+local g_nTotal
 
-Dim g_tCodeList()
-Dim g_nCnt
-Dim g_nCnt2
-Dim g_sData
-Dim g_nTotal
-
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	
 	if sEventName == "CodeList" then
 		
-		g_tCodeList = Split(sParam, "`")
+		g_tCodeList = gf_Split(sParam, "`")
 
 		if #g_tCodeList > 0 and sParam ~= "" then
 			if #g_tCodeList > 100 then
-				g_nCnt = Cint(#g_tCodeList) / 100
-				temp = Cint(#g_tCodeList) % 100
+				g_nCnt = gf_Tonumber(#g_tCodeList) / 100
+				temp = gf_Tonumber(#g_tCodeList) % 100
 				if temp > 0 then
-					g_nCnt = Cint(g_nCnt) + 1
-				end if
+					g_nCnt = gf_Tonumber(g_nCnt) + 1
+				end
 			else
 				g_nCnt = 1
-			end if
+			end
 			
 			DATAMANAGER.ClearInputData( false, "ohhts_6000_010r" )
 			DATAMANAGER.RequestTranData( "ohhts_6000_010r" )
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
 	if szTranID == "ohhts_6000_010r" then
-		for i=0 to #g_tCodeList-1
+		for i = 0, #g_tCodeList-1 do
 			if i >= 99 then
-				exit for
-			end if 
+				break
+			end
 			
 			if g_nCnt2 >= #g_tCodeList then
-				exit for
-			end if
+				break
+			end
 			
-			tData = Split(g_tCodeList(g_nCnt2),"@")
+			tData = gf_Split(g_tCodeList[g_nCnt2+1],"@")
 			
-			szCode = tData[1]
-			szMarket = ConvertExchCode(tData[0])
+			szCode = tData[1+1]
+			szMarket = ConvertExchCode(tData[0+1])
 		    
 			szDelay = ""
-			if szMarket <> "" then
+			if szMarket ~= "" then
 				szDelay = Form.GetSharedData("REALTIME_"..szMarket, 0 )
-			end if
+			end
 			
 			DATAMANAGER.SetDataValue(0, "ohhts_6000_010r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE", i, "OV")
 			DATAMANAGER.SetDataValue(0, "ohhts_6000_010r", "InBlock1", "FID_INPUT_OVRS_ISCD", i, szCode)
 			DATAMANAGER.SetDataValue(0, "ohhts_6000_010r", "InBlock1", "FID_COND_MRKT_CLS_CODE", i, szMarket)
 			DATAMANAGER.SetDataValue(0, "ohhts_6000_010r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE", i, szDelay)
 			
-			g_nCnt2 = Cint(g_nCnt2) + 1
-		next
-	end if
-End Sub
+			g_nCnt2 = gf_Tonumber(g_nCnt2) + 1
+		end
+	end
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if szTranID == "ohhts_6000_010r" then
-		Dim nCount, sData
+		local nCount, sData
 		nCount = DATAMANAGER.GetDataCount( 0, "ohhts_6000_010r" , "OutBlock1" )
-		'sData = ""
+		 --sData = ""
 		
-		for i=0 to nCount-1
-			Dim sKormark, sCode , sClose, sDiff, sDecimal
+		for i = 0, nCount-1 do
+			local sKormark, sCode , sClose, sDiff, sDecimal
 
 			sKormark	= DATAMANAGER.GetDataValue( 0, "ohhts_6000_010r" , "OutBlock1", "FID_COND_MRKT_CLS_CODE" , i )
 			sCode	= DATAMANAGER.GetDataValue( 0, "ohhts_6000_010r" , "OutBlock1", "FIDX_ISCD" , i )
@@ -93,44 +94,44 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			sDiff	= DATAMANAGER.GetDataValue( 0, "ohhts_6000_010r" , "OutBlock1", "FIDX_PRDY_VRSS" , i )
 			sDecimal	= DATAMANAGER.GetDataValue( 0, "ohhts_6000_010r" , "OutBlock1", "FIDX_DCPN_CNT" , i )
 			
-			sKormark = Form.GetItemCodeInfo( sKormark & "@" & sCode , "exchcode3") '다시 3자리로
+			sKormark = Form.GetItemCodeInfo( sKormark .. "@" .. sCode , "exchcode3")  --다시 3자리로
 			
-			g_sData = g_sData & sKormark & "◆" & sKormark & "@" & sCode & "◆" & sClose & "◆" & sDiff & "◆" & sDecimal
+			g_sData = g_sData .. sKormark .. "◆" .. sKormark .. "@" .. sCode .. "◆" .. sClose .. "◆" .. sDiff .. "◆" .. sDecimal
 		
 			if i ~= nCount-1 then
-				g_sData = g_sData & "`"
-			end if
-		next
+				g_sData = g_sData .. "`"
+			end
+		end
 		
-		g_nCnt = Cint(g_nCnt) - 1
-		if Cint(g_nCnt) > 0 then
+		g_nCnt = gf_Tonumber(g_nCnt) - 1
+		if gf_Tonumber(g_nCnt) > 0 then
 			DATAMANAGER.ClearInputData( false, "ohhts_6000_010r" )
 			DATAMANAGER.RequestTranData( "ohhts_6000_010r" )
-		else 
-			if g_sData ~= null and g_sData ~= "" then
-				Form.triggerEvent("#", "CodeData", g_sData)
+		else
+			if g_sData ~= nil and g_sData ~= "" then
+				Form.TriggerEvent("#", "CodeData", g_sData)
 				
-				'20210119 LES START 
+				 --20210119 LES START 
 				g_sData = ""
 				g_nCnt2 = 0
 				g_nTotal = Cint()
-				'20210119 LES END
+				 --20210119 LES END
 				
-			end if
-		end if
-	end if
-End Sub
+			end
+		end
+	end
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 	g_sData = ""
     g_nCnt2 = 0
     g_nTotal = Cint()
-End Sub
+end
 
-'============================================================================
-Function ConvertExchCode(sCode)
-	Dim exCode
+ --============================================================================
+function ConvertExchCode(sCode)
+	local exCode
 	exCode = ""
     if sCode == "NAS" then
 	    exCode = "OQ"
@@ -146,12 +147,13 @@ Function ConvertExchCode(sCode)
 	    exCode = "HK"
     elseif sCode == "TSE" then
 	    exCode = "JP"
-    end if
+    end
     
     return exCode
-End Function
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="getGtsInterest" trcode="getGtsInterest" inputcheck="1" useattr="0" />

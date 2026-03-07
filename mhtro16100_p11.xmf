@@ -637,7 +637,7 @@ function Calc_Price(nGbn)
 		 -- + 버튼 클릭
 		 --------------------------------------------------
 		if nGbn == 0 then
-			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -657,7 +657,7 @@ function Calc_Price(nGbn)
 		 -- - 버튼 클릭 
 		 --------------------------------------------------
 		elseif nGbn == 1 then
-			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -741,10 +741,10 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	 -------------------------------------------------------------------------
 	 -- 중국(상해/심천) 호가단위 설정
 	 -------------------------------------------------------------------------
-	if szMk == "0215" then --상해
+	if szMk == "0215" then --상해 end
 		
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -754,7 +754,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	elseif szMk == "0214" then --심천
 		
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"

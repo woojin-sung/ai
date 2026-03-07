@@ -42,12 +42,12 @@ function Form_OnFormInit()
 	if gf_Trim(g_szItemCode) == "" then
 		return
 	end
-	if string.len(g_szExid) < 1 then
+	if string.string.len(g_szExid) < 1 then
 		szExid = ""
 	else
 		szExid = "."..g_szExid
 	end
- --	Form.ShowAlert("g_szItemCode & szExid", g_szItemCode & szExid)
+ --	Form.ShowAlert("g_szItemCode .. szExid", g_szItemCode .. szExid)
 	szUrl = "http://m.stock.naver.com/worldstock/stock/" .. g_szItemCode .. szExid .. "/discuss"
 	webNews.urlpath = szUrl
 

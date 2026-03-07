@@ -426,16 +426,16 @@ function DisplaySetting_PannelBtn(nRowIdx, szCtlName)
  --			Clear_Content("0")
  --			
  --		else
- --			if g_arrContent_Check(0) = "1" then
- --				g_arrContent_Check(0) = "0"
+ --			if g_arrContent_Check[0+1] = "1" then
+ --				g_arrContent_Check[0+1] = "0"
  --				contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl0", 0, g_szBtnImg_Normal)
  --			end if
  --			
- --			if g_arrContent_Check(nCnt) = "0" then
- --				g_arrContent_Check(nCnt) = "1"
+ --			if g_arrContent_Check[nCnt+1] = "0" then
+ --				g_arrContent_Check[nCnt+1] = "1"
  --				contBg.Pannel0.SetPropCardCell("imagefilepth", szCtlName, nRowIdx, g_szBtnImg_Select)
  --			else 
- --				g_arrContent_Check(nCnt) = "0"
+ --				g_arrContent_Check[nCnt+1] = "0"
  --				contBg.Pannel0.SetPropCardCell("imagefilepth", szCtlName, nRowIdx, g_szBtnImg_Normal)
  --			end if
  --			
@@ -456,11 +456,11 @@ function DisplaySetting_PannelBtn(nRowIdx, szCtlName)
  --		end if
  --
  --	else
- --		if g_arrContent_Check(nCnt) = "0" then
- --			g_arrContent_Check(nCnt) = "1"
+ --		if g_arrContent_Check[nCnt+1] = "0" then
+ --			g_arrContent_Check[nCnt+1] = "1"
  --			contBg.Pannel0.SetPropCardCell("imagefilepth", szCtlName, nRowIdx, g_szBtnImg_Select)
  --		else 
- --			g_arrContent_Check(nCnt) = "0"
+ --			g_arrContent_Check[nCnt+1] = "0"
  --			contBg.Pannel0.SetPropCardCell("imagefilepth", szCtlName, nRowIdx, g_szBtnImg_Normal)
  --		end if
  --	end if
