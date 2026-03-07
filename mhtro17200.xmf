@@ -1,0 +1,2338 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="99999" scrname="물타기" version="2" writer="함원규" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,647,1" />
+	<CONTROL_INFO>
+		<CONTAINER name="contHideTop" ly_vert="0,0,375,50,1" scroll_ly_vert="0,0,375,50,1" >
+			<CONTROL_INFO>
+				<LABEL name="lblItemName" fontsize="4" multiline="1" click="1" ly_vert="40,9,195,32,1" />
+				<IMAGE name="imgTopBack" autosize="1" ly_vert="9,15,35,20,1" />
+				<LABEL name="lblTopPrc" mask="0,0,,,0,,-1,1,1,0,0" halign="2" multiline="1" autofontsize="1" ly_vert="240,7,120,20,1" import="0,1,1;1,1,1;2,1,1;3,1,11" realrec="0,1,10;1,1,10;2,1,10;3,1,4;4,1,4" />
+				<LABEL name="lblTopRate" fontsize="-4" mask="0,0,,%,0,,2,1,1,0,0" halign="2" multiline="1" autofontsize="1" ly_vert="315,25,45,18,1" import="0,1,17;1,1,4;2,1,4;3,1,14" realrec="0,1,13;1,1,13;2,1,13;3,1,7;4,1,7" />
+				<LABEL name="lblTopDiff" fontsize="-4" mask="0,0,,,0,,-1,1,0,0,0" multiline="1" autofontsize="1" ly_vert="260,25,50,18,1" import="0,1,16;1,1,3;2,1,3;3,1,12" realrec="0,1,12;1,1,12;2,1,12;3,1,6;4,1,6" />
+				<LABEL name="lblTopSign" fontsize="-6" halign="2" multiline="1" usesign="1" autofontsize="1" ly_vert="238,26,20,18,1" import="0,1,3;1,1,2;2,1,2;3,1,13" realrec="0,1,11;1,1,11;2,1,11;3,1,5;4,1,5" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<CONTAINER name="contMain" ly_vert="0,50,375,550,1" scroll_ly_vert="0,50,375,550,1" >
+			<CONTROL_INFO>
+				<LABEL name="lblBg" transmode="0" ly_vert="0,0,375,305,1" />
+				<IMAGE name="imgBg" imgpath="bg_listbox.9" ly_vert="10,10,355,290,1" />
+				<IMAGE name="imgGIF" ly_vert="10,20,355,80,1" />
+				<LABEL name="lblM0" fontsize="8" caption="-" halign="1" click="1" ly_vert="57,106,30,35,1" />
+				<LABEL name="lblP0" fontsize="8" caption="+" halign="1" click="1" ly_vert="287,106,30,35,1" />
+				<LABEL name="lblPrc" fontsize="2" halign="1" autofontsize="1" click="1" ly_vert="87,106,200,35,1" />
+				<LABEL name="lblUnderLine0" bgcolor="012:000000000" transmode="0" ly_vert="57,141,260,1,1" />
+				<LABEL name="lblUnderLine1" bgcolor="012:000000000" transmode="0" ly_vert="57,187,260,1,1" />
+				<LABEL name="lblM1" fontsize="8" caption="-" halign="1" click="1" ly_vert="57,152,30,35,1" />
+				<LABEL name="lblQty" fontsize="2" halign="1" autofontsize="1" click="1" ly_vert="87,152,200,35,1" />
+				<LABEL name="lblP1" fontsize="8" caption="+" halign="1" click="1" ly_vert="287,152,30,35,1" />
+				<LABEL name="lblSubTitle" fontstyle="01" ly_vert="10,320,243,32,1" />
+				<IMAGE name="imgBgResult" imgpath="img_bgbox_line2.9" ly_vert="20,360,335,110,1" />
+				<LABEL name="lblSep" bgcolor="320:246247248" transmode="0" ly_vert="187,370,1,90,1" />
+				<LABEL name="lblCur0" fgcolor="333:115118124" fontsize="-2" caption="현재 평균단가" halign="1" autofontsize="1" ly_vert="30,365,147,32,1" />
+				<LABEL name="lblEst0" fgcolor="333:115118124" fontsize="-2" caption="예상 평균단가" halign="1" autofontsize="1" ly_vert="200,365,147,32,1" />
+				<LABEL name="lblCur1" fontstyle="01" halign="1" valign="2" autofontsize="1" ly_vert="35,388,137,27,1" />
+				<LABEL name="lblCur2" fontsize="-4" plusminuscolor="1" mask="0,0,,%,0,,2,1,1,0,0" halign="1" autofontsize="1" ly_vert="30,415,147,16,1" />
+				<LABEL name="lblCur3" fgcolor="333:115118124" fontsize="-4" mask="0,0,,주,0,,0,1,1,0,0" halign="1" ly_vert="30,432,147,32,1" />
+				<LABEL name="lblEst3" fgcolor="333:115118124" fontsize="-4" mask="0,0,,주,0,,0,1,1,0,0" halign="1" ly_vert="200,432,147,32,1" />
+				<LABEL name="lblEst2" fontsize="-4" plusminuscolor="1" mask="0,0,,%,0,,2,1,1,0,0" halign="1" autofontsize="1" ly_vert="200,416,147,15,1" />
+				<LABEL name="lblEst1" fontstyle="01" halign="1" valign="2" autofontsize="1" ly_vert="205,388,137,27,1" />
+				<LABEL name="lblSubTitle0" fontsize="2" caption="추가 매수하면?" halign="1" ly_vert="30,193,315,40,1" />
+				<IMAGE name="imgBgEst" imgpath="img_bgbox_line2.9" ly_vert="30,240,315,35,1" />
+				<LABEL name="lblPreEst0" fgcolor="333:115118124" fontsize="-2" caption="예상 매수 금액" autofontsize="1" ly_vert="30,240,100,35,1" />
+				<LABEL name="lblPreEst1" fgcolor="333:115118124" fontsize="-2" halign="2" autofontsize="1" ly_vert="140,240,205,35,1" />
+				<LABEL name="lblHidePrc" visible="0" ly_vert="260,20,100,32,0" />
+				<LABEL name="lblHideQty" visible="0" ly_vert="260,50,100,32,0" />
+				<IMAGE name="imgArrow" autosize="1" imgpath="wc_icon_arrow" ly_vert="167,399,40,32,1" />
+				<IMAGE name="imgInfo0" autosize="1" imgpath="icon_question" ly_vert="163,329,15,15,1" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<BUTTON name="btnCancel" caption="취소" fgcolor="334:034034034" btnimage="btn_21.9" ly_vert="0,599,187,48,1" />
+		<BUTTON name="btnBuy" caption="매수하러 가기" btnimage="btn_etc10.9" ly_vert="187,599,188,48,1" />
+		<BUTTON name="btnTopBack" btnimage="alpha" ly_vert="9,15,35,20,1" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="56258" _ulen="53594" >
+'****************************************************************************
+' 수정사항
+' 최초개발 : HWG : v20250924_02 : 물타기 계산기 신규개발
+'****************************************************************************
+
+'****************************************************************************
+'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+'****************************************************************************
+Dim g_isFst ; g_isFst = true
+Dim gMaxLen ; gMaxLen = 12
+Dim g_sOsType ; g_sOsType = Form.GetSharedData("&OS_TYPE", false) 
+
+'------------------------
+' 링크데이터
+'------------------------
+Dim g_sType ; g_sType = ""		'국내/해외 구분(0:국내, 1:해외)
+Dim g_sItemCode ; g_sItemCode = ""
+Dim g_nQty ; g_nQty = 0
+Dim g_nAvgPrc ; g_nAvgPrc = 0
+Dim g_nRate ; g_nRate = 0
+Dim g_sSor ; g_sSor = "Y"
+
+'------------------------
+' 해외주식 전용
+'------------------------
+Dim g_sExid ; g_sExid = ""
+Dim g_sCode ; g_sCode = ""
+
+'------------------------
+' 계산용 기준 데이터
+'------------------------
+Dim sOrdSize 		; sOrdSize = ""
+Dim sOrdSizeMaedo	; sOrdSizeMaedo = ""
+Dim sCurrency		; sCurrency = ""
+Dim sKorName		; sKorName = ""
+Dim sTickType		; sTickType = ""
+
+Dim sUpLimit		; sUpLimit = ""
+Dim sDnLimit		; sDnLimit = ""
+Dim sDecimalLen 	; sDecimalLen = ""
+
+Dim sUnit		; sUnit = ""
+
+Dim sExchRate		; sExchRate = ""
+
+'****************************************************************************
+'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+'****************************************************************************
+'===============================================
+' NULL 체크 
+'===============================================
+Function isEmpty(sData)
+	if trim(sData) == "" or sData == null or trim(sData) == "null" then
+		return true
+	else
+		return false
+	end if
+End Function
+
+'===============================================
+' 숫자 소수점 절사 함수
+'===============================================
+Function truncateToDecimalPlaces(nVal, nDeimalPlaces)
+	nVal = Cdbl(nVal)
+	nFactor = 10 ^ nDeimalPlaces
+	szNumStr = FormatNumber(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = instr(szNumStr, ".")
+	
+	nTotalData = 0
+	if Cint(nDecimalIdx) > 0 then
+		nTotalData = Cdbl(left(szNumStr, Cint(nDecimalIdx)-1))
+	else
+		nTotalData = Cdbl(szNumStr)
+	end if
+
+	return nTotalData / nFactor
+End Function
+
+'===============================================
+' (NonNull) 문자열 -> 배열 변환함수
+'===============================================
+Function Convert_StrToArr(szData, szSeperator)
+
+	Dim arrData
+	
+	'--------------------------------------------
+	' 링크데이터 값 체크
+	'--------------------------------------------
+	if isEmpty(szData) then
+		arrData = {}
+		return arrData
+	end if
+	
+	'--------------------------------------------
+	' 구분자 값 체크
+	'--------------------------------------------
+	if isEmpty(szSeperator) then
+		' 단일변수
+		arrData = {}
+		Table.insert(arrData, szData)
+	else
+		' 다중변수
+		arrData = split(szData, szSeperator)
+	end if
+	
+	return arrData
+
+End Function
+
+'==============================================
+' 컨트롤 초기설정
+'==============================================
+Function Init_Control()
+	
+'	'컨테이너 스크롤 이벤트 발생 유무
+'	contMain.SetUseScrollingEvent(true)
+'	
+'	'컨테이너 안보임 컨트롤 무시 유무(스크롤 위치)
+'	contMain.setExceptInvisibleCtl(true)
+'	
+'	'컨테이너 스크롤 안보임 처리
+'	contMain.setScrollBarVisible("0")
+'	
+'	'컨테이너 제스터 이벤트 사용유무
+'	contMain.gesture = true
+'	
+'	'컨테이너 헤더 여백조정(탭순서변경 버튼 추가)
+'	contMain.FormTab.setHorzMargin(0, 30) 
+'	contMain.FormTabEtf.setHorzMargin(0, 30) 
+'	contMain.FormTabJPN.setHorzMargin(0, 30) 
+	
+	'--------------------
+	' 컨테이너(상단) 설정 START
+	'--------------------
+	'뒤로가기 버튼 설정
+	contHideTop.imgTopBack.maintainratio = "2"
+	contHideTop.imgTopBack.imgpath = "icon_main_01"
+	
+	'종목명 텍스트 롤링 처리
+	contHideTop.lblItemName.paddinginfo = "0,0,0,0"
+	contHideTop.lblItemName.setUseAutoScroll(True, 30, True)
+	
+	'현재가 설정
+	contHideTop.lblTopPrc.paddinginfo = "0,0,0,0"
+	contHideTop.lblTopPrc.maxlinecnt = "1"
+'	contHideTop.lblTopPrc.setAttributeEnable(false)
+	
+	'전일대비 설정
+	contHideTop.lblTopDiff.paddinginfo = "0,0,0,0"
+	contHideTop.lblTopDiff.maxlinecnt = "1"
+'	contHideTop.lblTopDiff.setAttributeEnable(false)
+	
+	'등락률 설정
+	contHideTop.lblTopRate.paddinginfo = "0,0,0,0"
+	contHideTop.lblTopRate.maxlinecnt = "1"
+'	contHideTop.lblTopRate.setAttributeEnable(false)
+	
+	'전일대비부호 설정
+	contHideTop.lblTopSign.paddinginfo = "0,0,0,0"
+	contHideTop.lblTopSign.maxlinecnt = "1"
+'	contHideTop.lblTopSign.setAttributeEnable(false)
+	'--------------------
+	' 컨테이너(상단) 설정 END
+	'--------------------
+End Function
+
+'==============================================
+' 초기데이터 세팅
+'==============================================
+Function Init_DataSet()
+
+	if g_isFst == true then
+		g_isFst = false
+		
+		'---------------------------------
+		' 가격 초기화 : 진입시점 현재가
+		'---------------------------------
+		nCurPrc = Cdbl(contHideTop.lblTopPrc.caption)
+
+		contMain.lblHidePrc.caption = nCurPrc
+		
+		sCurPrc = FormatNumber(nCurPrc, sDecimalLen) .. " " .. sCurrency
+		contMain.lblPrc.caption = sCurPrc
+		
+		'---------------------------------
+		' 수량 초기화 : 기본 단위 수량
+		'---------------------------------
+		contMain.lblHideQty.caption = CDbl(sOrdSize)
+		sQty = FormatNumber(sOrdSize, 0) .. " 주"
+		
+		contMain.lblQty.caption = sQty
+		
+		'---------------------------------
+		' 현재 잔고데이터 
+		'---------------------------------
+		sResult = Form.getLen(FormatNumber(g_nAvgPrc, sDecimalLen) .. " " .. sCurrency)
+		sResult2 = Form.getLen(FormatNumber(g_nAvgPrc, sDecimalLen) .. " ")
+		
+		contMain.lblCur1.caption = FormatNumber(g_nAvgPrc, sDecimalLen) .. " " .. sCurrency
+'		contMain.lblCur1.changeTextAttr(sResult2, sResult-sResult2, 4,-4, false)
+		
+		contMain.lblCur2.caption = g_nRate
+		contMain.lblCur3.caption = g_nQty
+		
+		'---------------------------------
+		' 예상 데이터 계산
+		'---------------------------------
+		Calc_OrderPrice()
+	end if
+End Function
+
+'==============================================
+' 상단 시세 색상지정
+'==============================================
+Function Change_ContBgColor()
+	szTheme = Form.GetEnvData("common.theme")
+	
+	if Cdbl(g_nRate) > 0 then
+		contMain.imgGIF.animation = "icon_fire.gif"
+		contMain.lblSubTitle.caption = "불타기 결과"
+	else
+		contMain.imgGIF.animation = "icon_water.gif"
+		contMain.lblSubTitle.caption = "물타기 결과"
+	end if
+		
+			
+	if szTheme == "black" then
+		contMain.lblBg.bgcolor = "006006006"
+	else
+		if Cdbl(g_nRate) > 0 then
+			contMain.lblBg.bgcolor = "252243242"
+		else
+			contMain.lblBg.bgcolor = "238242251"
+		end if
+	end if
+End Function
+
+'==============================================
+' 해외주식 시세데이터 조회
+'==============================================
+Function RequestOvrs()
+	DATAMANAGER.CancelRealData("ohhts_exst_ictg")
+	DATAMANAGER.CancelRealData("ohhts_exst_cnta")
+	DATAMANAGER.CancelRealData("ohhts_exst_cntd")
+	DATAMANAGER.CancelRealData("ohhts_stck_incg")
+	DATAMANAGER.CancelRealData("ohhts_unt_incg")
+	
+	arrItemCode = Convert_StrToArr(g_sItemCode, "@")
+	
+	nCnt = #arrItemCode
+	if nCnt < 2 then
+		Exit Function
+	end if
+	
+	g_sExid = arrItemCode(0)
+	g_sCode = arrItemCode(1)
+	
+	DATAMANAGER.RequestTranData("ohhts_6000_001r_1")
+	
+'	if g_sExid == "OQ" or g_sExid == "NY" or g_sExid == "AX" then
+'		sMkOp = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+'		
+'		if sMkOp == "001" then
+'			DATAMANAGER.RequestTranData("ohhts_6000_017r")
+'		elseif sMkOp == "005" then
+'			DATAMANAGER.RequestTranData("ohhts_6000_023r")
+'		else
+'			DATAMANAGER.RequestTranData("ohhts_6000_001r")
+'		end if
+'	else
+'		DATAMANAGER.RequestTranData("ohhts_6000_001r")
+'	end if
+'
+End Function
+
+'==============================================
+' 국내주식 시세데이터 조회
+'==============================================
+Function RequestDmtc()
+	DATAMANAGER.CancelRealData("ohhts_exst_ictg")
+	DATAMANAGER.CancelRealData("ohhts_exst_cnta")
+	DATAMANAGER.CancelRealData("ohhts_exst_cntd")
+	DATAMANAGER.CancelRealData("ohhts_stck_incg")
+	DATAMANAGER.CancelRealData("ohhts_unt_incg")
+
+	DATAMANAGER.RequestTranData("ohhts_1001_001r")
+End Function 
+
+'==============================================
+' 해외주식 호가단위 가격계산
+'==============================================
+Function Calc_Price_Ovrs(nGbn)
+
+	sUnit = GetHogaUnit(g_sType, contMain.lblHidePrc.caption, nGbn) 
+	
+	szPrc  = ReSet_Prc(contMain.lblHidePrc.caption, nGbn)
+	
+	szHigh = sUpLimit
+	szLow  = sDnLimit
+
+'	Form.ShowAlert("TEST", szPrc.."|"..szHigh.."|"..szLow.."|"..sUnit)
+
+	if Trim(szPrc) == "" or CDbl(szPrc) == 0 then
+		szPrc = Cdbl(contHideTop.lblTopPrc.caption)
+	else
+		
+		'------------------------------------------------
+		' + 버튼 클릭
+		'------------------------------------------------
+		if nGbn == 0 then							
+			if CDbl(szPrc) >= CDbl(szHigh) then		' 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+				if szHigh <> "0" then
+					szPrc = CDbl(szHigh)
+				else
+					szPrc = CDbl(szPrc) + CDbl(szUnit)
+				end if 
+			elseif CDbl(szPrc) < CDbl(szLow) then	' 하한가보다 낮은가격에서 +버튼 클릭시 하한가로 복귀
+				if szLow <> "0" then
+					szPrc = CDbl(szLow)
+				else
+					szPrc = CDbl(szPrc) + CDbl(szUnit)
+				end if 
+			else
+				szPrc = CDbl(szPrc) + CDbl(szUnit)
+			end if
+		
+		'------------------------------------------------
+		' - 버튼 클릭 
+		'------------------------------------------------
+		elseif nGbn == 1 then						
+			if CDbl(szPrc) > CDbl(szHigh) then		' 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+				if szHigh <> "0" then
+					szPrc = CDbl(szHigh)
+				else
+					szPrc = CDbl(szPrc) - CDbl(szUnit)
+				end if 		
+			elseif CDbl(szPrc) <= CDbl(szLow) then	' 하한가와 같거나 낮은가격에서 -버튼 클릭시 하한가로 복귀
+				if szLow <> "0" then
+					szPrc = CDbl(szLow)
+				else
+					szPrc = CDbl(szPrc) - CDbl(szUnit)
+				end if 
+			else
+				szPrc = CDbl(szPrc) - CDbl(szUnit)
+			end if
+		end if
+	end if
+	
+	if CDbl(szPrc) < 0 then
+		szPrc = 0
+	end if
+		
+	contMain.lblHidePrc.caption = szPrc
+	
+	sCurPrc = FormatNumber(szPrc, sDecimalLen) .. " " .. sCurrency
+	contMain.lblPrc.caption = sCurPrc
+		
+	Calc_OrderPrice()
+	
+End Function
+
+'==============================================
+' 국내주식 호가단위 가격계산
+'==============================================
+Function Calc_Price_Dmtc(nGbn)
+	sUnit = GetHogaUnit(g_sType, contMain.lblHidePrc.caption, nGbn) 
+	szPrc  = ReSet_Prc(contMain.lblHidePrc.caption, nGbn)
+
+	'=======================================================================
+	' +,- 버튼 클릭시 동작 
+	'=======================================================================		
+	
+	'----------------------------------------------------------------------
+	' ELW
+	'----------------------------------------------------------------------
+	if szMk = "W" then
+	
+		if nGbn == 0 then							
+			szPrc = CDbl(szPrc) + CDbl(sUnit)
+	
+		elseif nGbn == 1 then		
+			szPrc = CDbl(szPrc) - CDbl(sUnit)
+			
+			if CDbl(szPrc) <= 0 then
+				szPrc = Cdbl(contHideTop.lblTopPrc.caption)
+			end if
+		end if
+
+	' ----------------------------------------------------------------------
+	' 그외 (코스피, 코스닥, KOTC, ETF, ETN ..)
+	' ----------------------------------------------------------------------		
+	else	
+		if nGbn == 0 or nGbn == 2 then							
+		
+			if Left(g_sItemCode,1) == "J" then
+				
+				szPrc = CDbl(szPrc) + CDbl(sUnit)
+				
+				if szPrc <= 0 then
+					szPrc = Cdbl(contHideTop.lblTopPrc.caption)
+				end if
+			else
+				szPrc = CDbl(szPrc) + CDbl(sUnit)
+				
+				if CDbl(szPrc) <= 0 then
+					szPrc = Cdbl(contHideTop.lblTopPrc.caption)
+					
+				elseif CDbl(szPrc) >= CDbl(sUpLimit) then		' 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+					szPrc = sUpLimit
+					
+				elseif CDbl(szPrc) < CDbl(sDnLimit) then	' 하한가보다 낮은가격에서 +버튼 클릭시 하한가로 복귀	
+					szPrc = sDnLimit
+					
+				end if
+			end if
+		
+		elseif nGbn == 1 or nGbn == 3 then
+		
+			if Left(g_sItemCode,1) == "J" then
+				
+				szPrc = CDbl(szPrc) - CDbl(sUnit)
+				
+				if szPrc <= 0 then
+					szPrc = Cdbl(contHideTop.lblTopPrc.caption)
+				end if
+			else
+				szPrc = CDbl(szPrc) - CDbl(sUnit)
+				
+				if CDbl(szPrc) <= 0 then
+					szPrc = Cdbl(contHideTop.lblTopPrc.caption)
+				
+				elseif CDbl(szPrc) > CDbl(sUpLimit) then		' 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+					szPrc = sUpLimit		
+					
+				elseif CDbl(szPrc) <= CDbl(sDnLimit) then	' 하한가와 같거나 낮은가격에서 -버튼 클릭시 하한가로 복귀
+					szPrc = sDnLimit
+		
+				end if
+			end if
+		
+		end if
+	end if
+	
+
+	contMain.lblHidePrc.caption = szPrc
+	
+	sCurPrc = FormatNumber(szPrc, sDecimalLen) .. " " .. sCurrency
+	contMain.lblPrc.caption = sCurPrc
+		
+	Calc_OrderPrice()
+
+End Function
+
+'============================================================================
+' 가격 호가단위 맞추기 
+'============================================================================
+Function ReSet_Prc(szData, nGbn)	
+	if nGbn == 0 then
+		nResult = Round(CDbl(szData) Mod CDbl(sUnit), CInt(sDecimalLen))
+
+		if nResult <> 0 and nResult <> CDbl(sUnit) then
+			return CDbl(szData) - nResult
+		else
+			return szData
+		end if
+	else
+		nResult = Round(CDbl(szData) Mod CDbl(sUnit), CInt(sDecimalLen))
+		
+		if nResult <> 0 then
+			return CDbl(szData) + (CDbl(sUnit) - nResult)
+		else
+			return szData
+		end if
+	end if
+End Function
+
+'============================================================================
+' 호가단위 설정
+'============================================================================
+Function GetHogaUnit(sType, szPrc, nGbn) 
+
+	if sType == "0" then
+		szMk = Form.GetItemCodeInfo(g_sItemCode, "market")
+		szInnerMk = Form.GetItemCodeInfo(g_sItemCode, "innermarket")
+		
+		szUnit = 1
+		
+		'=======================================================================
+		' ETN or ETF
+		'=======================================================================
+		if szMk == "Q" or szInnerMk = "013" then
+			if CDbl(szPrc) < 2000 then
+				szUnit = 1
+			elseif CDbl(szPrc) >= 2000 then
+				szUnit = 5
+			end if
+			
+		'=======================================================================
+		' ELW
+		'=======================================================================	
+		elseif szMk == "W" then
+			szUnit = 5
+			
+		'=======================================================================
+		' KOSPI/KOSDAQ/KONEX/신주인수권/수익증권 등
+		'=======================================================================
+		else
+			if CDbl(szPrc) < 2000 then
+				szUnit = 1
+			elseif (CDbl(szPrc) >= 2000 and CDbl(szPrc) < 5000) then
+				szUnit = 5 
+			elseif (CDbl(szPrc) >= 5000 and CDbl(szPrc) < 20000) then
+				szUnit = 10
+			elseif (CDbl(szPrc) >= 20000 and CDbl(szPrc) < 50000) then
+				szUnit = 50
+			elseif (CDbl(szPrc) >= 50000 and CDbl(szPrc) < 200000) then
+				szUnit = 100
+			elseif (CDbl(szPrc) >= 200000 and CDbl(szPrc) < 500000) then
+				szUnit = 500
+			elseif CDbl(szPrc) >= 500000 then
+				szUnit = 1000
+			end if
+			
+			'--------------------------------------------------
+			'20241212 LES START - 스톱가격(-) 추가 / nGbn = 3
+			'--------------------------------------------------
+			if nGbn == 1 or nGbn == 3 then
+				if CDbl(szPrc) = 2000 then
+					szUnit = 1
+				elseif CDbl(szPrc) = 5000 then
+					szUnit = 5 
+				elseif CDbl(szPrc) = 20000 then
+					szUnit = 10
+				elseif CDbl(szPrc) = 50000 then
+					szUnit = 50
+				elseif CDbl(szPrc) = 200000 then
+					szUnit = 100
+				elseif CDbl(szPrc) = 500000 then
+					szUnit = 500
+				end if
+			end if
+		end if
+		
+		return szUnit
+
+	elseif sType == "1" then
+		szMk = Form.GetItemCodeInfo(g_sItemCode, "exchid")
+		
+		'-----------------------------------------------------------------------
+		' 호가단위 초기화
+		'-----------------------------------------------------------------------
+		szOrdPrc = CDbl(szPrc)
+		
+		if szOrdPrc == "" then
+			if g_szCurPrice = "" or CDbl(g_szCurPrice) == 0 then
+				szOrdPrc = 0		
+			else
+				szOrdPrc = CDbl(g_szCurPrice)
+			end if	
+		end if
+		
+		szUnit = "1.000"
+		
+		'-----------------------------------------------------------------------
+		' 틱타입 확인
+		'-----------------------------------------------------------------------
+		szTtype = Cint(sTickType)
+	
+		if szTtype == 0 or szTtype == "" then
+			szTtype = "0"
+		end if
+		
+		'-----------------------------------------------------------------------
+		' 중국(상해/심천) 호가단위 설정
+		'-----------------------------------------------------------------------
+		if szMk == "0215" then '상해
+		
+			'20240613 LES START 틱단위 수정
+			if szTtype = 2 then 'ETF
+				szUnit = "0.001"
+			else
+				szUnit = "0.010"
+			end if
+			'20240613 LES END
+			
+		elseif szMk == "0214" then '심천
+			
+			'20240613 LES START 틱단위 수정
+			if szTtype = 2 then 'ETF
+				szUnit = "0.001"
+			else
+				szUnit = "0.010"
+			end if
+			'20240613 LES END
+			
+		'-----------------------------------------------------------------------
+		' 미국(뉴욕/나스닥/아멕스) 호가단위 설정
+		'-----------------------------------------------------------------------
+		elseif szMk == "0321" or szMk == "0537" or szMk == "0066" then '뉴욕, 나스닥, 아멕스
+			
+			'20240702 LES START - 1달러미만 종목 0.0001단위
+			if szOrdPrc < 1.00 then
+				szUnit = "0.0001" 
+			else
+				if szTtype == 1 then
+					szUnit = "0.010"
+					
+				elseif szTtype == 2 then
+					szUnit = "0.050"
+					
+				elseif szTtype == 3 then
+					szUnit = "0.050"
+					
+				elseif szTtype == 4 then
+					szUnit = "0.050"
+					
+				else
+					szUnit = "0.010"
+				end if
+			end if
+		
+		'-----------------------------------------------------------------------
+		' 홍콩 호가단위 설정, (홍콩ETF종목 호가단위 변경)
+		'-----------------------------------------------------------------------
+		elseif szMk == "0104" then '홍콩
+			if szTtype == 3 then
+				szUnit = "0.050"
+				
+			'홍콩 ETF종목 호가단위 변경
+			'type = 5 (ETF종목) 추가
+			'20250728 MSH START 홍콩거래소 틱사이즈 변경 및 추가 
+			elseif szTtype == 5 then
+				
+				if nGbn == 0 then
+					if szOrdPrc < 1.00 then
+						szUnit = "0.001"
+					elseif szOrdPrc < 5.00 then
+						szUnit = "0.002"
+					elseif szOrdPrc < 10.00 then
+						szUnit = "0.005"
+					elseif szOrdPrc < 20.00 then
+						szUnit = "0.010"
+					elseif szOrdPrc < 100.00 then
+						szUnit = "0.020"
+					elseif szOrdPrc < 200.00 then
+						szUnit = "0.050"
+					elseif szOrdPrc < 500.00 then
+						szUnit = "0.100"
+					elseif szOrdPrc < 1000.00 then
+						szUnit = "0.200"
+					elseif szOrdPrc < 2000.00 then
+						szUnit = "0.500"
+					else
+						szUnit = "1.000"
+					end if
+				
+				else
+					if szOrdPrc <= 1.00 then
+						szUnit = "0.001"
+					elseif szOrdPrc <= 5.00 then
+						szUnit = "0.002"
+					elseif szOrdPrc <= 10.00 then
+						szUnit = "0.005"
+					elseif szOrdPrc <= 20.00 then
+						szUnit = "0.010"
+					elseif szOrdPrc <= 100.00 then
+						szUnit = "0.020"
+					elseif szOrdPrc <= 200.00 then
+						szUnit = "0.050"
+					elseif szOrdPrc <= 500.00 then
+						szUnit = "0.100"
+					elseif szOrdPrc <= 1000.00 then
+						szUnit = "0.200"
+					elseif szOrdPrc <= 2000.00 then
+						szUnit = "0.500"
+					else
+						szUnit = "1.000"
+					end if
+				
+				end if
+				
+			elseif szTtype == 6 then '20250728 MSH 사이즈 6 추가 
+				
+				if nGbn == 0 then
+					if szOrdPrc < 0.25 then
+						szUnit = "0.001"
+			
+					elseif szOrdPrc < 0.50 then
+						szUnit = "0.005"
+			
+					elseif szOrdPrc < 10.00 then
+						szUnit = "0.010"
+	
+					elseif szOrdPrc < 20.00 then
+						szUnit = "0.020"
+						
+					elseif szOrdPrc < 50.00 then	
+						szUnit = "0.050"					
+			
+					elseif szOrdPrc < 100.00 then
+						szUnit = "0.050"
+						
+					elseif szOrdPrc < 200.00 then
+						szUnit = "0.100"
+			
+					elseif szOrdPrc < 500.00 then
+						szUnit = "0.200"
+			
+					elseif szOrdPrc < 1000.00 then
+						szUnit = "0.500"
+			
+					elseif szOrdPrc < 2000.00 then
+						szUnit = "1.000"
+			
+					elseif szOrdPrc < 5000.00 then
+						szUnit = "2.000"
+			
+					else 
+						szUnit = "5.000"
+			
+					end if
+				else
+					if szOrdPrc <= 0.25 then
+						szUnit = "0.001"
+			
+					elseif szOrdPrc <= 0.50 then
+						szUnit = "0.005"
+			
+					elseif szOrdPrc <= 10.00 then
+						szUnit = "0.010"
+	
+					elseif szOrdPrc <= 20.00 then
+						szUnit = "0.020"
+						
+					elseif szOrdPrc <= 50.00 then	
+						szUnit = "0.050"					
+			
+					elseif szOrdPrc <= 100.00 then
+						szUnit = "0.050"
+						
+					elseif szOrdPrc <= 200.00 then
+						szUnit = "0.100"
+			
+					elseif szOrdPrc <= 500.00 then
+						szUnit = "0.200"
+			
+					elseif szOrdPrc <= 1000.00 then
+						szUnit = "0.500"
+			
+					elseif szOrdPrc <= 2000.00 then
+						szUnit = "1.000"
+			
+					elseif szOrdPrc <= 5000.00 then
+						szUnit = "2.000"
+			
+					else 
+						szUnit = "5.000"
+			
+					end if
+				
+				end if		
+			
+			else ' 사이즈 1 
+				if nGbn == 0 then
+					if szOrdPrc < 0.25 then
+						szUnit = "0.001"
+			
+					elseif szOrdPrc < 0.50 then
+						szUnit = "0.005"
+			
+					elseif szOrdPrc < 20.00 then
+						szUnit = "0.010"
+			
+					elseif szOrdPrc < 50.00 then	
+						szUnit = "0.020"					
+			
+					elseif szOrdPrc < 100.00 then
+						szUnit = "0.050"
+						
+					elseif szOrdPrc < 200.00 then
+						szUnit = "0.100"
+			
+					elseif szOrdPrc < 500.00 then
+						szUnit = "0.200"
+			
+					elseif szOrdPrc < 1000.00 then
+						szUnit = "0.500"
+			
+					elseif szOrdPrc < 2000.00 then
+						szUnit = "1.000"
+			
+					elseif szOrdPrc < 5000.00 then
+						szUnit = "2.000"
+			
+					else 
+						szUnit = "5.000"
+			
+					end if
+				else
+					if szOrdPrc <= 0.25 then
+						szUnit = "0.001"
+			
+					elseif szOrdPrc <= 0.50 then
+						szUnit = "0.005"
+			
+					elseif szOrdPrc <= 20.00 then
+						szUnit = "0.010"
+			
+					elseif szOrdPrc <= 50.00 then	
+						szUnit = "0.020"
+			
+					elseif szOrdPrc <= 100.00 then
+						szUnit = "0.050"
+						
+					elseif szOrdPrc <= 200.00 then
+						szUnit = "0.100"
+			
+					elseif szOrdPrc <= 500.00 then
+						szUnit = "0.200"
+			
+					elseif szOrdPrc <= 1000.00 then
+						szUnit = "0.500"
+			
+					elseif szOrdPrc <= 2000.00 then
+						szUnit = "1.000"
+			
+					elseif szOrdPrc <= 5000.00 then
+						szUnit = "2.000"
+			
+					else
+						szUnit = "5.000"
+			
+					end if
+				
+				end if
+				
+			end if
+		
+		'-----------------------------------------------------------------------
+		' 해외주식 일본시장(도쿄거래소) 추가
+		'-----------------------------------------------------------------------
+		elseif szMk == "0106" then '도쿄
+			if szTtype == 3 then
+				if nGbn == 0 then
+					if szOrdPrc < 1000 then
+						szUnit = "0.1"
+			
+					elseif szOrdPrc < 3000 then
+						szUnit = "0.5"
+			
+					elseif szOrdPrc < 5000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc < 10000 then	
+						szUnit = "1"
+			
+					elseif szOrdPrc < 30000 then
+						szUnit = "5"
+						
+					elseif szOrdPrc < 50000 then
+						szUnit = "10"
+			
+					elseif szOrdPrc < 100000 then
+						szUnit = "10"
+			
+					elseif szOrdPrc < 300000 then
+						szUnit = "50"
+			
+					elseif szOrdPrc < 500000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc < 1000000 then
+						szUnit = "100"
+					
+					elseif szOrdPrc < 3000000 then
+						szUnit = "500"
+						
+					elseif szOrdPrc < 5000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc < 10000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc < 30000000 then
+						szUnit = "5000"
+			
+					else 
+						szUnit = "10000"
+			
+					end if
+				else
+					if szOrdPrc <= 1000 then
+						szUnit = "0.1"
+			
+					elseif szOrdPrc <= 3000 then
+						szUnit = "0.5"
+			
+					elseif szOrdPrc <= 5000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc <= 10000 then	
+						szUnit = "1"
+			
+					elseif szOrdPrc <= 30000 then
+						szUnit = "5"
+						
+					elseif szOrdPrc <= 50000 then
+						szUnit = "10"
+			
+					elseif szOrdPrc <= 100000 then
+						szUnit = "10"
+			
+					elseif szOrdPrc <= 300000 then
+						szUnit = "50"
+			
+					elseif szOrdPrc <= 500000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc <= 1000000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc <= 3000000 then
+						szUnit = "500"
+						
+					elseif szOrdPrc <= 5000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc <= 10000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc <= 30000000 then
+						szUnit = "5000"
+			
+					else 
+						szUnit = "10000"
+			
+					end if
+				
+				end if	
+			
+			'20250425 SWJ START
+			'틱타입 4 추가
+			elseif szTtype == 4 then
+				
+				if nGbn == 0 then
+					if szOrdPrc < 1000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc < 3000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc < 5000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc < 10000 then	
+						szUnit = "1"
+			
+					elseif szOrdPrc < 30000 then
+						szUnit = "5"
+						
+					elseif szOrdPrc < 50000 then
+						szUnit = "10"
+			
+					elseif szOrdPrc < 100000 then
+						szUnit = "10"
+			
+					elseif szOrdPrc < 300000 then
+						szUnit = "50"
+			
+					elseif szOrdPrc < 500000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc < 1000000 then
+						szUnit = "100"
+					
+					elseif szOrdPrc < 3000000 then
+						szUnit = "500"
+						
+					elseif szOrdPrc < 5000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc < 10000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc < 30000000 then
+						szUnit = "5000"
+			
+					else 
+						szUnit = "10000"
+			
+					end if
+				else
+					if szOrdPrc <= 1000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc <= 3000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc <= 5000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc <= 10000 then	
+						szUnit = "1"
+			
+					elseif szOrdPrc <= 30000 then
+						szUnit = "5"
+						
+					elseif szOrdPrc <= 50000 then
+						szUnit = "10"
+			
+					elseif szOrdPrc <= 100000 then
+						szUnit = "10"
+			
+					elseif szOrdPrc <= 300000 then
+						szUnit = "50"
+			
+					elseif szOrdPrc <= 500000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc <= 1000000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc <= 3000000 then
+						szUnit = "500"
+						
+					elseif szOrdPrc <= 5000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc <= 10000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc <= 30000000 then
+						szUnit = "5000"
+			
+					else 
+						szUnit = "10000"
+			
+					end if
+				
+				end if	
+			
+			'20250425 SWJ END
+			
+			else
+				if nGbn == 0 then
+					if szOrdPrc < 1000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc < 3000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc < 5000 then
+						szUnit = "5"
+			
+					elseif szOrdPrc < 10000 then	
+						szUnit = "10"
+			
+					elseif szOrdPrc < 30000 then
+						szUnit = "10"
+						
+					elseif szOrdPrc < 50000 then
+						szUnit = "50"
+			
+					elseif szOrdPrc < 100000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc < 300000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc < 500000 then
+						szUnit = "500"
+			
+					elseif szOrdPrc < 1000000 then
+						szUnit = "1000"
+					
+					elseif szOrdPrc < 3000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc < 5000000 then
+						szUnit = "5000"
+						
+					elseif szOrdPrc < 10000000 then
+						szUnit = "10000"
+						
+					elseif szOrdPrc < 30000000 then
+						szUnit = "10000"
+			
+					'20250425 SWJ START
+					elseif szOrdPrc < 50000000 then 
+						
+						szUnit = "50000"
+					
+					else 
+						szUnit = "100000"
+					
+					'20250425 SWJ END
+			
+					end if
+				else
+					if szOrdPrc <= 1000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc <= 3000 then
+						szUnit = "1"
+			
+					elseif szOrdPrc <= 5000 then
+						szUnit = "5"
+			
+					elseif szOrdPrc <= 10000 then	
+						szUnit = "10"
+			
+					elseif szOrdPrc <= 30000 then
+						szUnit = "10"
+						
+					elseif szOrdPrc <= 50000 then
+						szUnit = "50"
+			
+					elseif szOrdPrc <= 100000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc <= 300000 then
+						szUnit = "100"
+			
+					elseif szOrdPrc <= 500000 then
+						szUnit = "500"
+			
+					elseif szOrdPrc <= 1000000 then
+						szUnit = "1000"
+					
+					elseif szOrdPrc <= 3000000 then
+						szUnit = "1000"
+						
+					elseif szOrdPrc <= 5000000 then
+						szUnit = "5000"
+						
+					elseif szOrdPrc <= 10000000 then
+						szUnit = "10000"
+						
+					elseif szOrdPrc <= 30000000 then
+						szUnit = "10000"
+			
+					'20250425 SWJ START
+					elseif szOrdPrc <= 50000000 then 
+						
+						szUnit = "50000"
+					
+					else 
+						szUnit = "100000"
+					
+					'20250425 SWJ END
+					end if
+				
+				end if
+			
+			end if
+		
+		end if
+		
+		return szUnit
+	end if
+	
+End Function
+
+'==============================================
+' 국내/해외 수량계산
+'==============================================
+Function Calc_Qty(nGbn,nUnit)
+	
+	szQty = contMain.lblHideQty.caption
+	
+	'---------------------------------------------------------
+	' (기존요건) 최대입력 가능 수량 99000000
+	'---------------------------------------------------------
+	'if Trim(szQty) <> "" then
+	'	if CDbl(szQty) >= 99000000 then
+	'		if nGbn == 0 then
+	'			Exit Function
+	'		end if
+	'	end if
+	'end if
+	
+	'---------------------------------------------------------
+	' 수량이 빈값인 경우 매매단위로 초기화
+	'---------------------------------------------------------
+	if Trim(szQty) == "" then
+		if nGbn == 0 then
+			szQty = CDbl(nUnit)
+		else
+			Exit Function
+		end if
+	
+	'---------------------------------------------------------
+	' 수량이 빈값이 아닌 경우
+	'---------------------------------------------------------
+	else
+			
+		'---------------------------------------------------------
+		' [+]버튼 클릭
+		'---------------------------------------------------------
+		if nGbn == 0 then
+			szQty = CDbl(szQty) + CDbl(nUnit)
+			nResult = CDbl(szQty) Mod CDbl(nUnit)
+			
+			if nResult <> 0 then
+				szQty = CDbl(szQty) - nResult
+			end if
+			
+		'---------------------------------------------------------
+		' [-]버튼 클릭
+		'---------------------------------------------------------
+		elseif nGbn == 1 then
+			
+			if CDbl(szQty) == 0 then
+				Exit Function
+			else		
+				szQty = szQty - CDbl(nUnit)
+				nResult = CDbl(szQty) Mod CDbl(nUnit)
+				
+				if nResult <> 0 then
+					szQty = CDbl(szQty) - nResult
+				end if
+			
+				'20240726
+				if Cdbl(szQty) < CDbl(nUnit) then
+					szQty = nUnit
+				end if
+				
+			end if
+			
+		end if
+		
+	end if
+	
+	
+	'---------------------------------------------------------
+	' 입력값 자리수 체크
+	'---------------------------------------------------------
+	if Len(szQty) <= gMaxLen then		
+		if CStr(szQty) == "0" or CStr(szQty) == "" then
+			contMain.lblHideQty.caption = "1"
+			sQty = "1 주"
+		else
+			contMain.lblHideQty.caption = CDbl(szQty)
+			sQty = FormatNumber(szQty, 0) .. " 주"
+		end if
+		
+		contMain.lblQty.caption = sQty
+	end if
+	
+	Calc_OrderPrice()
+	
+	
+End Function
+
+
+'============================================================================
+' 주문금액 가계산
+'============================================================================
+Function Calc_OrderPrice()
+	
+	nPrc = Cdbl(contMain.lblHidePrc.caption)
+	nQty = Cint(contMain.lblHideQty.caption)
+	nCurPrc = Cdbl(contHideTop.lblTopPrc.caption)
+	
+	if nPrc <> "" and nPrc > 0 and nQty <> "" and nQty > 0 then
+		
+		nOrderPrice = nPrc * nQty
+		
+		contMain.lblPreEst1.caption = FormatNumber(truncateToDecimalPlaces(nOrderPrice,sDecimalLen),sDecimalLen) .." " .. sCurrency
+		
+		nTotalPrice = (g_nAvgPrc * g_nQty) + nOrderPrice
+		nTotalQty = g_nQty + nQty
+		
+		sResult = Form.getLen(FormatNumber(truncateToDecimalPlaces(nTotalPrice / nTotalQty, sDecimalLen), sDecimalLen) .." " .. sCurrency)
+		sResult2 = Form.getLen(FormatNumber(truncateToDecimalPlaces(nTotalPrice / nTotalQty, sDecimalLen), sDecimalLen).." " )
+	
+		contMain.lblEst1.caption = FormatNumber(truncateToDecimalPlaces(nTotalPrice / nTotalQty, sDecimalLen), sDecimalLen).." " .. sCurrency
+'		contMain.lblEst1.changeTextAttr(sResult2, sResult-sResult2, 4,-4, false)
+		
+		contMain.lblEst2.caption = Round((nCurPrc-(nTotalPrice / nTotalQty))/(nTotalPrice / nTotalQty) * 100, 2)
+		contMain.lblEst3.caption = nTotalQty
+	else
+		contMain.lblPreEst1.caption = "-"
+		contMain.lblEst1.caption = "-"
+	end if
+	
+End Function
+
+'==============================================
+' 호가단위 체크 
+'==============================================
+Function Check_HogaUnit(sValue)
+	szUnit = GetHogaUnit(g_sType, sValue, 0)
+	
+	nDiv = CDbl(sValue) / CDbl(szUnit)
+	sDiv = FormatNumber(nDiv,4,1,0,0,1)
+	nDecimalIdx = instr(sDiv, ".")
+	nTotalLen = Form.getLen(sDiv)
+	nMod = Cdbl(right(sDiv, Cint(nTotalLen) - Cint(nDecimalIdx)))
+
+	if Cdbl(sValue) >= 1 and nMod > 0 then
+		Form.ShowAlert("알림", "호가 단위를 확인해주세요.\n(호가 단위 : " & FormatNumber(szUnit, Cint(sDecimalLen)) & " " & sCurrency&")")
+		return false
+	else
+		return true
+	end if
+End Function
+
+'===============================================
+' 가격입력 세팅
+'===============================================
+Function DisplaySet_TargetPrc(sValue)
+	if isEmpty(sValue) == true or Cdbl(sValue) == 0 then
+		Exit Function
+	end if
+		
+	if Check_HogaUnit(sValue) == false then
+		Exit Function
+	end if
+	
+	sUnit = GetHogaUnit(g_sType, contMain.lblHidePrc.caption, nGbn) 
+	
+	sTmpPrc = ReSet_Prc(sValue, 1)
+	
+	if Cdbl(sUpLimit) <> 0 then
+		if Cdbl(sUpLimit) < Cdbl(sTmpPrc) then
+			Form.ShowAlert("알림", "최대 단가를 확인해주세요.\n".."(상한가 : " .. FormatNumber(sUpLimit, sDecimalLen) .. "" .. sCurrency..")")
+			sTmpPrc = sUpLimit
+		end if
+	end if
+	
+	if Cdbl(sDnLimit) <> 0 then
+		if Cdbl(sDnLimit) > Cdbl(sTmpPrc) then
+			Form.ShowAlert("알림", "최소 단가를 확인해주세요.\n".."(하한가 : " ..FormatNumber(sDnLimit, sDecimalLen) .. "" .. sCurrency..")")
+			sTmpPrc = sDnLimit
+		end if
+	end if
+	
+	contMain.lblHidePrc.caption = sTmpPrc
+	sPrc = SetPrice("AUTO", sTmpPrc, sDecimalLen, sCurrency)
+	contMain.lblPrc.caption = sPrc
+End Function
+
+'============================================================================
+' 입력가격 세팅
+'============================================================================
+Function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
+
+	
+	if isEmpty(nDecimalLen) == true or isEmpty(nPrc) == true then
+		 return ""
+	end if
+	
+	sChk = Instr(Cstr(nPrc), ".")
+	
+	'================================================================
+	'소수점(dot)이 있는 경우
+	'================================================================
+	if sChk > 0 then
+		
+		'------------------------------
+		'소수점영역 길이
+		'------------------------------
+		sCha = CInt(Len(nPrc) - sChk)
+		
+		'-------------------------------------------------------
+		'소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
+		'-------------------------------------------------------
+		if sCha >= Cint(nDecimalLen) then
+			 
+			 if sCha >= Cint(nDecimalLen) then
+				sResult = FormatNumber(nPrc, nDecimalLen).." " .. sPostFix
+				return sResult
+			 else
+				 return ""
+			 end if
+		
+		'-------------------------------------------------------	 
+		' 소수점영역의 길이를 아직 다 안채운 경우
+		'-------------------------------------------------------
+		else
+			
+			'-------------------------------------------------------------------
+			'자동으로 호가가격이 입력되는 경우(초기값 세팅/ 호가 +,- 버튼 클릭)
+			'국가별 소수점 자리수로 가격을 다시 맞춰준다.
+			'-------------------------------------------------------------------
+			if sType == "AUTO" then
+				
+				sResult = FormatNumber(nPrc,nDecimalLen).." " .. sPostFix
+				return sResult
+				
+			'-------------------------------------------------------------------
+			'가격이 수동으로 입력되는 경우(키패드 입력)에는 입력받은대로 표시
+			'-------------------------------------------------------------------
+			else
+				sResult = nPrc.." " .. sPostFix
+				return sResult
+			end if
+			
+		end if
+	
+	'================================================================
+	' 소수점(dot)이 없는 경우
+	'================================================================
+	else
+		if sType == "AUTO" then
+			sResult = FormatNumber(nPrc,nDecimalLen) .." " .. sPostFix
+			return sResult
+		else
+			sResult = FormatNumber(nPrc,0) .." " .. sPostFix
+			return sResult
+		end if
+	end if
+	
+End Function
+'****************************************************************************
+'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+'****************************************************************************
+'============================================================================
+Sub Form_OnFormInitBefore()
+	contMain.imgArrow.maintainratio = "1"
+	contMain.imgInfo0.maintainratio = "1"
+	contMain.lblSubTitle.sizeAutoFit()
+End Sub
+
+'============================================================================
+Sub Form_OnFormInit()
+	'------------------------------------------------
+	' 링크데이터 구조
+	' 국내/해외구분`종목코드`보유수량'평균단가'수익률
+	'------------------------------------------------
+	
+	sLinkData = Form.GetOpenLinkData()
+'	sLinkData = "0`003340`10`10`10"
+	arrLinkData = Convert_StrToArr(sLinkData, "`")
+	
+	if #arrLinkData >= 5 then
+		g_sType 		= arrLinkData(0)
+		g_sItemCode 	= arrLinkData(1)
+		g_nQty 		= CDbl(replace(arrLinkData(2), ",",""))
+		g_nAvgPrc 	= CDbl(arrLinkData(3))
+		g_nRate 		= CDbl(arrLinkData(4))
+
+		Init_Control()
+		
+		Change_ContBgColor()
+		
+		if g_sType == "0" then
+			g_sSor = arrLinkData(5)
+			Form.setDelayEvent(0, 0.3)
+		elseif g_sType == "1" then
+			Form.setDelayEvent(1, 0.3)
+		end if
+	end if
+End Sub
+
+'============================================================================
+Sub Form_OnDelayEvent(nID)
+
+	if Cint(nID) == 0 then
+		itemName = Form.GetItemCodeInfo(g_sItemCode, "name")
+		contHideTop.lblItemName.setAutoScrollText(itemName)
+
+		RequestDmtc()
+	elseif Cint(nID) == 1 then
+		itemName = Form.GetItemCodeInfo(g_sItemCode, "name")
+		contHideTop.lblItemName.setAutoScrollText(itemName)
+		
+		RequestOvrs()
+	end if
+End Sub 
+
+'============================================================================
+Sub DATAMANAGER_OnSendTranBefore(szTranID)
+	
+	if szTranID == "ohhts_6000_001r" or szTranID == "ohhts_6000_001r_1" then
+		rtChk = Form.GetSharedData( "REALTIME_"..g_sExid, false )
+		
+		DATAMANAGER.ClearInputData(false, szTranID)
+	
+		DATAMANAGER.SetDataValue( 0, szTranID, "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분			
+		DATAMANAGER.SetDataValue( 0, szTranID, "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	'마켓구분
+		DATAMANAGER.SetDataValue( 0, szTranID, "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , g_sCode )	'종목코드
+		DATAMANAGER.SetDataValue( 0, szTranID, "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , rtChk )	'실시간 여부
+		
+	elseif szTranID == "ohhts_6000_017r" then
+		rtChk = Form.GetSharedData( "REALTIME_"..g_sExid, false )
+		
+		DATAMANAGER.ClearInputData(false, "ohhts_6000_017r")
+	
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분			
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	'마켓구분
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_sCode )	'종목코드
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , rtChk )	'실시간 여부
+
+	elseif szTranID == "ohhts_6000_023r" then
+		rtChk = Form.GetSharedData( "REALTIME_"..g_sExid, false )
+		
+		DATAMANAGER.ClearInputData(false, "ohhts_6000_023r")
+	
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분			
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	'마켓구분
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_sCode )	'종목코드
+		DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , rtChk )	'실시간 여부
+	elseif szTranID = "ohhts_1001_001r" then
+		sItemMarket = Form.GetItemCodeInfo( g_sItemCode , "market")
+		
+		if g_sSor == "Y" then
+			sItemMarket = "TJ"
+		end if
+		
+		DATAMANAGER.SetDataValue( 0, "ohhts_1001_001r", "InBlock1", "FID_INPUT_ISCD"				, 0 , g_sItemCode 	)
+		DATAMANAGER.SetDataValue( 0, "ohhts_1001_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE"	, 0 , sItemMarket 	)	
+	end if
+End Sub
+
+'============================================================================
+Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+	if szTranID == "ohhts_6000_001r_1"then
+		'-------------------------------------------------------------------------
+		' [종목정보] 선택종목 정보 탭별로 전달(호가단위는 각 주문화면에서 세팅됨)
+		'-------------------------------------------------------------------------
+		sOrdSize 	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_SHNU_ODER_QTY_UNIT" 		, 0 )		' 매매단위(매수)
+		sOrdSizeMaedo	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_SELN_ODER_QTY_UNIT" 		, 0)			' 매매단위(매도)
+		sCurrency	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_CRNC_CODE" 				, 0 )		' 통화
+		sKorName		=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_KOR_ISNM" 				, 0 )		' 한글종목명
+		sTickType	=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_TICK_CLS" 				, 0 )		' 종목 틱타입
+		
+		sUpLimit		=  tostring(Cdbl(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_MXPR" 		, 0 )))	' 상한가
+		sDnLimit		=  tostring(Cdbl(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_LLAM" 		, 0 )))	' 하한가
+		sDecimalLen 	=  tostring(Cdbl(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_DCPN_CNT" 	, 0 )))	' 가격소수점
+		
+		if g_sExid == "OQ" or g_sExid == "NY" or g_sExid == "AX" then
+			sMkOp = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+			
+			if sMkOp == "001" then
+				DATAMANAGER.RequestTranData("ohhts_6000_017r")
+			elseif sMkOp == "005" then
+				DATAMANAGER.RequestTranData("ohhts_6000_023r")
+			else
+				DATAMANAGER.RequestTranData("ohhts_6000_001r")
+			end if
+		else
+			DATAMANAGER.RequestTranData("ohhts_6000_001r")
+		end if
+	elseif szTranID == "ohhts_6000_001r"then
+'		szAttr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRPR" , 0)
+'		Change_ContBgColor(szAttr)
+
+		Init_DataSet()
+	
+'		DATAMANAGER.RequestRealData("ohhts_exst_ictg")
+	elseif szTranID == "ohhts_6000_017r"then
+'		szAttr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0)
+'		Change_ContBgColor(szAttr)
+
+		Init_DataSet()
+		
+'		DATAMANAGER.RequestRealData("ohhts_exst_cntd")
+	elseif szTranID == "ohhts_6000_023r"then
+'		szAttr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0)
+'		Change_ContBgColor(szAttr)
+
+		Init_DataSet()
+		
+'		DATAMANAGER.RequestRealData("ohhts_exst_cnta")
+	elseif szTranID == "ohhts_1001_001r"then
+'		szAttr = DATAMANAGER.GetDataAttr(0, "ohhts_1001_001r", "OutBlock1", "FID_STCK_PRPR" , 0)
+'		Change_ContBgColor(szAttr)
+
+		'-------------------------------------------------------------------------
+		' [종목정보] 선택종목 정보 탭별로 전달(호가단위는 각 주문화면에서 세팅됨)
+		'-------------------------------------------------------------------------
+		sOrdSize 	=  "1"
+		sOrdSizeMaedo	=  ""
+		sCurrency	=  "원"
+		sKorName		=  ""
+		sTickType	=  ""
+		
+		sUpLimit		=  tostring(Cdbl(DATAMANAGER.GetDataValue( 0, "ohhts_1001_001r", "OutBlock1", "FID_MXPR" 		, 0 )))	' 상한가
+		sDnLimit		=  tostring(Cdbl(DATAMANAGER.GetDataValue( 0, "ohhts_1001_001r", "OutBlock1", "FID_LLAM"		, 0 )))	' 하한가
+		sDecimalLen 	=  "0"	' 가격소수점
+		
+
+		Init_DataSet()
+		
+'		if g_sSor == "Y" then
+'			DATAMANAGER.RequestRealData("ohhts_unt_incg")
+'		else
+'			DATAMANAGER.RequestRealData("ohhts_stck_incg")
+'		end if
+		
+	end if
+End Sub
+
+'============================================================================
+Sub DATAMANAGER_OnReceiveTranData(szTranID)
+	if szTranID == "ohhts_6000_017r"	then
+		szVol = DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_ACML_VOL", 0)
+		if Cdbl(szVol) == 0 then
+			szPrpr = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRPR", 0)
+			szSign = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS_SIGN" , 0)
+			szVrss = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS" , 0)
+			szCtrt = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_CTRT" , 0)
+			szUnch = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_UNCH_PRPR", 0)
+			
+			szPrpr_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRPR", 0)
+			szSign_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS_SIGN" , 0)
+			szVrss_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS" , 0)
+			szCtrt_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_CTRT" , 0)
+			szUnch_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_UNCH_PRPR", 0)
+
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0 , szPrpr)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_VRSS_SIGN" , 0 , szSign)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_VRSS" , 0 , szVrss)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_CTRT", 0 , szCtrt)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_UNCH_PRPR", 0 , szUnch)
+			
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0 , szPrpr_Attr)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_VRSS_SIGN" , 0 , szSign_Attr)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_VRSS" , 0 , szVrss_Attr)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_CTRT", 0 , szCtrt_Attr)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_UNCH_PRPR", 0 , szUnch_Attr)
+		end if
+		
+	elseif szTranID == "ohhts_6000_023r"	then
+		szPrpr = DATAMANAGER.GetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR", 0)
+		if Cdbl(szPrpr) == 0 then
+			szPrpr = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRPR", 0)
+			szSign = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS_SIGN" , 0)
+			szVrss = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS" , 0)
+			szCtrt = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_CTRT" , 0)
+			szUnch = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_UNCH_PRPR", 0)
+			
+			szPrpr_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRPR", 0)
+			szSign_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS_SIGN" , 0)
+			szVrss_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS" , 0)
+			szCtrt_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_CTRT" , 0)
+			szUnch_Attr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_UNCH_PRPR", 0)
+
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0 , szPrpr)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_VRSS_SIGN" , 0 , szSign)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_VRSS" , 0 , szVrss)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_CTRT", 0 , szCtrt)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_UNCH_PRPR", 0 , szUnch)
+			
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0 , szPrpr_Attr)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_VRSS_SIGN" , 0 , szSign_Attr)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_VRSS" , 0 , szVrss_Attr)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_CTRT", 0 , szCtrt_Attr)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_UNCH_PRPR", 0 , szUnch_Attr)
+		end if
+	end if
+End Sub
+
+
+
+'============================================================================
+Sub DATAMANAGER_OnSendRealBefore(szTranID)
+	if szTranID == "ohhts_exst_ictg" then
+		DATAMANAGER.SetDataValue( 1, "ohhts_exst_ictg", "InBlock1", "FIDXR_ISCD" , 0 , g_sItemCode )
+	elseif szTranID == "ohhts_exst_cntd" then
+		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , g_sItemCode )
+	elseif szTranID == "ohhts_exst_cnta" then
+		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , g_sItemCode )
+	elseif szTranID =  "ohhts_stck_incg" then
+		DATAMANAGER.SetDataValue( 1, "ohhts_stck_incg", "InBlock1", "RLTM_SHRN_ISCD"  , 0 , g_szItemCode )
+	elseif szTranID =  "ohhts_unt_incg" then
+		DATAMANAGER.SetDataValue( 1, "ohhts_unt_incg", "InBlock1", "RLTM_SHRN_ISCD"  , 0 , g_szItemCode )
+	end if
+End Sub
+
+'============================================================================
+Sub DATAMANAGER_OnReceiveRealComplete(szTranID)
+'	if szTranID == "ohhts_exst_ictg" or szTranID == "ohhts_exst_cntd" or szTranID == "ohhts_exst_cnta" then
+'		szAttr = DATAMANAGER.GetDataAttr(1, szTranID, "OutBlock1", "FIDXR_PRPR" , 0)
+'		Change_ContBgColor(szAttr)
+'	elseif szTranID == "ohhts_stck_incg" or szTranID == "ohhts_unt_incg" then
+'		szAttr = DATAMANAGER.GetDataAttr(1, szTranID, "OutBlock1", "RLTM_PRPR" , 0)
+'		Change_ContBgColor(szAttr)
+'	end if
+End Sub
+
+'============================================================================
+Sub contMain_lblPrc_OnClick()
+	sLinkData = "0"														'매도/매수 구분 (매도:0, 매수:1)
+	sLinkData = sLinkData & "`" & "0"										'가격/수량 구분 (가격:0, 수량:1)
+	sLinkData = sLinkData & "`" & contMain.lblHidePrc.caption					'가격/수량 값   
+	sLinkData = sLinkData & "`" & "9"										'정수부 자릿수
+	sLinkData = sLinkData & "`" & sDecimalLen								'소숫점 자리
+	sLinkData = sLinkData & "`" & sCurrency									'뒷첨자 
+	sLinkData = sLinkData & "`" & "단가입력"									'리턴받을 키값
+
+	Form.OpenPopup("mhetc91001_p0" , sLinkData, "")
+End Sub
+
+'============================================================================
+Sub contMain_lblQty_OnClick()
+	sLinkData = "0"														'매도/매수 구분 (매도:0, 매수:1)
+	sLinkData = sLinkData & "`" & "1"										'가격/수량 구분 (가격:0, 수량:1)
+	sLinkData = sLinkData & "`" & contMain.lblHideQty.caption					'가격/수량 값   
+	sLinkData = sLinkData & "`" & "9"										'정수부 자릿수
+	sLinkData = sLinkData & "`" & "0"										'소숫점 자리
+	sLinkData = sLinkData & "`" & "주"										'뒷첨자 
+	sLinkData = sLinkData & "`" & "수량입력"									'리턴받을 키값
+
+	Form.OpenPopup("mhetc91001_p0" , sLinkData, "")
+End Sub
+
+'============================================================================
+Sub contMain_lblM0_OnClick()
+	if g_sType == "0" then
+		Calc_Price_Dmtc(1)
+	elseif g_sType == "1" then
+		Calc_Price_Ovrs(1)
+	end if
+End Sub
+
+'============================================================================
+Sub contMain_lblP0_OnClick()
+	if g_sType == "0" then
+		Calc_Price_Dmtc(0)
+	elseif g_sType == "1" then
+		Calc_Price_Ovrs(0)
+	end if
+End Sub
+
+'============================================================================
+Sub contMain_lblM1_OnClick()
+	Calc_Qty(1,sOrdSize)
+End Sub
+
+'============================================================================
+Sub contMain_lblP1_OnClick()
+	Calc_Qty(0,sOrdSize)
+End Sub
+
+'============================================================================
+Sub Form_OnPopupReturn(sKeyName, sRet)
+'	Form.ShowAlert(sKeyName, sRet)
+	
+	if sKeyName == "AUTO_RULE_KEYPAD_END" then
+		arrRet = Convert_StrToArr(sRet, "`")
+		nArrCnt = #arrRet
+		
+		if nArrCnt > 1 then
+			sKey = arrRet(0)
+			sValue = arrRet(1)
+			
+			if sKey == "단가입력" then
+				DisplaySet_TargetPrc(sValue)
+				
+			elseif sKey == "수량입력" then
+				'---------------------------------------------------------
+				' 입력값 자리수 체크
+				'---------------------------------------------------------
+				if Len(sValue) <= gMaxLen then	
+					nMod = CDbl(sValue) Mod CDbl(sOrdSize)
+					
+					if nMod > 0 then
+						Form.ShowAlert("알림", "주문 수량 단위는\n" .. FormatNumber(sOrdSize, 0) .. "주입니다.")
+					end if
+					
+					sValue = Cdbl(sValue) - nMod
+					
+					if CStr(sValue) == "0" or CStr(sValue) == "" then
+						contMain.lblHideQty.caption = sOrdSize
+						sQty = FormatNumber(sOrdSize, 0) .. " 주"
+					else
+						contMain.lblHideQty.caption = CDbl(sValue)
+						sQty = FormatNumber(sValue, 0) .. " 주"
+					end if
+					
+					contMain.lblQty.caption = sQty
+				end if
+				
+			end if
+			
+			Calc_OrderPrice()
+		
+		end if
+	end if
+End Sub
+
+'============================================================================
+Sub contHideTop_imgTopBack_OnClick()
+	Form.CloseForm()
+End Sub
+
+'============================================================================
+Sub btnTopBack_OnClick()
+	Form.CloseForm()
+End Sub
+
+'============================================================================
+Sub btnCancel_OnClick()
+	Form.CloseForm()
+End Sub
+
+'============================================================================
+Sub contMain_lblSubTitle_OnSizeAutoFit()
+	nleft = Cint(contMain.lblSubTitle.left)
+	nWidth = Cint(contMain.lblSubTitle.width)
+	
+	if g_sOsType == "1" then
+		nleft = Form.calcUnResize(nleft, "2")
+		nWidth = Form.calcUnResize(nWidth, "2")
+		
+		contMain.imgInfo0.left = nleft + nWidth + 5
+		
+	elseif g_sOsType == "2" then
+		contMain.imgInfo0.left = nleft + nWidth - 5
+	end if
+	
+	
+End Sub
+
+'============================================================================
+Sub contMain_imgInfo0_OnClick()
+	Form.OpenPopupAnimation("mhtro17200_p0", "", "", 2)
+End Sub
+
+'============================================================================
+Sub btnBuy_OnClick()
+	
+	if g_sType == "0" then
+		sMarketGbn = "KRX"
+		if g_sSor == "Y" then
+			sMarketGbn = "SOR"
+		end if
+		
+		Form.OpenScreen("12000" , "물타기" & "★" & "0" & "★" & g_sItemCode & "★" & sMarketGbn & "★" &contMain.lblHidePrc.caption & "★" & contMain.lblHideQty.caption )	
+	elseif g_sType == "1" then
+		itemName = Form.GetItemCodeInfo(g_sItemCode, "name")
+		Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", g_sItemCode.."★"..itemName.."★".."", "" )
+
+		Form.OpenScreen("16060" ,  g_sItemCode & "★" & itemName & "♥" & "LINK_WATER" & "♥" & contMain.lblHidePrc.caption & "♥" & contMain.lblHideQty.caption  )	
+	end if
+	
+	Form.CloseForm()
+End Sub
+
+'============================================================================
+Sub Form_OnRefresh()
+	if g_sType == "0" then
+		Form.setDelayEvent(0, 0.3)
+	end if
+End Sub
+
+'============================================================================
+Sub Form_OnLinkData(sKey, sValue)
+	if sKey == "OVRS_MARKET_OPERATION_TRAN" then
+		if g_sType == "1" then
+			Form.setDelayEvent(1, 0.3)
+		end if
+	end if
+End Sub
+
+	</SCRIPT_INFO>
+	<DATAIO_INFO>
+		<TRID_INFO>
+			<TRAN tranid="ohhts_exst_cnta" trcode="ohhts_exst_cnta" />
+			<TRAN tranid="ohhts_exst_cntd" trcode="ohhts_exst_cntd" />
+			<TRAN tranid="ohhts_exst_ictg" trcode="ohhts_exst_ictg" />
+			<TRAN tranid="ohhts_stck_incg" trcode="ohhts_stck_incg" />
+			<TRAN tranid="ohhts_unt_incg" trcode="ohhts_unt_incg" />
+			<TRAN tranid="ohhts_6000_001r" trcode="ohhts_6000_001r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="ohhts_6000_017r" trcode="ohhts_6000_017r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="ohhts_6000_023r" trcode="ohhts_6000_023r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="ohhts_1001_001r" trcode="ohhts_1001_001r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="ohhts_6000_001r_1" trcode="ohhts_6000_001r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="obtro_comn_025r" trcode="obtro_comn_025r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+		</TRID_INFO>
+		<TRIO_INFO>
+			<TRAN name="ohhts_exst_cnta" title="해외주식체결 자동갱신(장후체결" realdata="1" dessvr="9" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="51" _ulen="43" >
+
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="1570" _ulen="1290" >
+
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0
+FIDXR_DELY_YN^FIDXR지연여부^1^0^0^0^0^0^0
+FIDXR_ACPL_BSOP_DATE^FIDXR현지영업일자^8^0^0^0^0^0^0
+FIDXR_ACPL_DATE^FIDXR현지일자^8^0^0^0^0^0^0
+FIDXR_ACPL_HOUR^FIDXR현지시간^6^0^0^0^0^0^0
+FIDXR_KOREA_DATE^FIDXR한국일자^8^0^0^0^0^0^0
+FIDXR_KOREA_HOUR^FIDXR한국시간^6^0^0^0^0^0^0
+FIDXR_OPRC^FIDXR시가^18^4^7^0^0^1^0
+FIDXR_HPRC^FIDXR고가^18^4^7^0^0^1^0
+FIDXR_LPRC^FIDXR저가^18^4^7^0^0^1^0
+FIDXR_PRPR^FIDXR현재가^18^4^7^0^0^1^0
+FIDXR_VRSS_SIGN^FIDXR대비부호^1^0^0^0^0^0^0
+FIDXR_PRDY_VRSS^FIDXR전일대비^18^4^7^0^0^1^0
+FIDXR_RSFL_RT^FIDXR등락율^10^2^7^0^0^1^0
+FIDXR_BIDP^FIDXR매수호가^18^4^7^0^0^1^0
+FIDXR_SHNU_ASPR_RSQN^FIDXR매수호가잔량^13^0^7^0^0^0^0
+FIDXR_ASKP^FIDXR매도호가^18^4^7^0^0^1^0
+FIDXR_SELN_ASPR_RSQN^FIDXR매도호가잔량^13^0^7^0^0^0^0
+FIDXR_CNQN^FIDXR체결량^13^0^7^0^0^1^0
+FIDXR_ACML_VOL^FIDXR누적거래량^19^0^7^0^0^0^0
+FIDXR_ACML_TR_PBMN^FIDXR누적거래대금^19^0^7^0^0^0^0
+FIDXR_MKT_CLS^FIDXR장구분^1^0^0^0^0^0^0
+FIDXR_SHNU_ACML_CNQN^FIDXR매수누적체결량^19^0^7^0^0^0^0
+FIDXR_SELN_ACML_CNQN^FIDXR매도누적체결량^19^0^7^0^0^0^0
+FIDXR_RLTV^FIDXR체결강도^10^2^7^0^0^1^0
+FIDXR_PRDY_VRSS_OPRC_RATE^FIDXR전일대비시가비율^10^2^7^0^0^1^0
+FIDXR_PRDY_VRSS_HPRC_RATE^FIDXR전일대비고가비율^10^2^7^0^0^1^0
+FIDXR_PRDY_VRSS_LPRC_RATE^FIDXR전일대비저가비율^10^2^7^0^0^1^0
+FIDXR_WGHN_AVRG_PRC^FIDXR가중평균가격^18^4^7^0^0^0^0
+FIDXR_UNCH_PRPR^FIDXR환산현재가^18^4^7^0^0^1^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_exst_cntd" title="해외주식 주간체결 자동갱신" realdata="1" dessvr="4" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="51" _ulen="43" >
+
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="1570" _ulen="1290" >
+
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0
+FIDXR_DELY_YN^FIDXR지연여부^1^0^0^0^0^0^0
+FIDXR_ACPL_BSOP_DATE^FIDXR현지영업일자^8^0^0^0^0^0^0
+FIDXR_ACPL_DATE^FIDXR현지일자^8^0^0^0^0^0^0
+FIDXR_ACPL_HOUR^FIDXR현지시간^6^0^0^0^0^0^0
+FIDXR_KOREA_DATE^FIDXR한국일자^8^0^0^0^0^0^0
+FIDXR_KOREA_HOUR^FIDXR한국시간^6^0^0^0^0^0^0
+FIDXR_OPRC^FIDXR시가^18^4^7^0^0^1^0
+FIDXR_HPRC^FIDXR고가^18^4^7^0^0^1^0
+FIDXR_LPRC^FIDXR저가^18^4^7^0^0^1^0
+FIDXR_PRPR^FIDXR현재가^18^4^7^0^0^1^0
+FIDXR_VRSS_SIGN^FIDXR대비부호^1^0^0^0^0^0^0
+FIDXR_PRDY_VRSS^FIDXR전일대비^18^4^7^0^0^1^0
+FIDXR_RSFL_RT^FIDXR등락율^10^2^7^0^0^1^0
+FIDXR_BIDP^FIDXR매수호가^18^4^7^0^0^1^0
+FIDXR_SHNU_ASPR_RSQN^FIDXR매수호가잔량^13^0^7^0^0^0^0
+FIDXR_ASKP^FIDXR매도호가^18^4^7^0^0^1^0
+FIDXR_SELN_ASPR_RSQN^FIDXR매도호가잔량^13^0^7^0^0^0^0
+FIDXR_CNQN^FIDXR체결량^13^0^7^0^0^1^0
+FIDXR_ACML_VOL^FIDXR누적거래량^19^0^7^0^0^0^0
+FIDXR_ACML_TR_PBMN^FIDXR누적거래대금^19^0^7^0^0^0^0
+FIDXR_MKT_CLS^FIDXR장구분^1^0^0^0^0^0^0
+FIDXR_SHNU_ACML_CNQN^FIDXR매수누적체결량^19^0^7^0^0^0^0
+FIDXR_SELN_ACML_CNQN^FIDXR매도누적체결량^19^0^7^0^0^0^0
+FIDXR_RLTV^FIDXR체결강도^10^2^7^0^0^1^0
+FIDXR_PRDY_VRSS_OPRC_RATE^FIDXR전일대비시가비율^10^2^7^0^0^1^0
+FIDXR_PRDY_VRSS_HPRC_RATE^FIDXR전일대비고가비율^10^2^7^0^0^1^0
+FIDXR_PRDY_VRSS_LPRC_RATE^FIDXR전일대비저가비율^10^2^7^0^0^1^0
+FIDXR_WGHN_AVRG_PRC^FIDXR가중평균가격^18^4^7^0^0^0^0
+FIDXR_UNCH_PRPR^FIDXR환산현재가^18^4^7^0^0^1^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_exst_ictg" title="해외주식체결 자동갱신" realdata="1" dessvr="4" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="51" _ulen="43" >
+
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="1570" _ulen="1290" >
+
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0
+FIDXR_DELY_YN^FIDXR지연여부^1^0^0^0^0^0^0
+FIDXR_ACPL_BSOP_DATE^FIDXR현지영업일자^8^0^0^0^0^0^0
+FIDXR_ACPL_DATE^FIDXR현지일자^8^0^0^0^0^0^0
+FIDXR_ACPL_HOUR^FIDXR현지시간^6^0^0^0^0^0^0
+FIDXR_KOREA_DATE^FIDXR한국일자^8^0^0^0^0^0^0
+FIDXR_KOREA_HOUR^FIDXR한국시간^6^0^0^0^0^0^0
+FIDXR_OPRC^FIDXR시가^18^4^7^0^0^1^0
+FIDXR_HPRC^FIDXR고가^18^4^7^0^0^1^0
+FIDXR_LPRC^FIDXR저가^18^4^7^0^0^1^0
+FIDXR_PRPR^FIDXR현재가^18^4^7^0^0^1^0
+FIDXR_VRSS_SIGN^FIDXR대비부호^1^0^0^0^0^0^0
+FIDXR_PRDY_VRSS^FIDXR전일대비^18^4^7^0^0^1^0
+FIDXR_RSFL_RT^FIDXR등락율^10^2^7^0^0^1^0
+FIDXR_BIDP^FIDXR매수호가^18^4^7^0^0^1^0
+FIDXR_SHNU_ASPR_RSQN^FIDXR매수호가잔량^13^0^7^0^0^0^0
+FIDXR_ASKP^FIDXR매도호가^18^4^7^0^0^1^0
+FIDXR_SELN_ASPR_RSQN^FIDXR매도호가잔량^13^0^7^0^0^0^0
+FIDXR_CNQN^FIDXR체결량^13^0^7^0^0^1^0
+FIDXR_ACML_VOL^FIDXR누적거래량^19^0^7^0^0^0^0
+FIDXR_ACML_TR_PBMN^FIDXR누적거래대금^19^0^7^0^0^0^0
+FIDXR_MKT_CLS^FIDXR장구분^1^0^0^0^0^0^0
+FIDXR_SHNU_ACML_CNQN^FIDXR매수누적체결량^19^0^7^0^0^0^0
+FIDXR_SELN_ACML_CNQN^FIDXR매도누적체결량^19^0^7^0^0^0^0
+FIDXR_RLTV^FIDXR체결강도^10^2^7^0^0^1^0
+FIDXR_PRDY_VRSS_OPRC_RATE^FIDXR전일대비시가비율^10^2^7^0^0^1^0
+FIDXR_PRDY_VRSS_HPRC_RATE^FIDXR전일대비고가비율^10^2^7^0^0^1^0
+FIDXR_PRDY_VRSS_LPRC_RATE^FIDXR전일대비저가비율^10^2^7^0^0^1^0
+FIDXR_WGHN_AVRG_PRC^FIDXR가중평균가격^18^4^7^0^0^0^0
+FIDXR_UNCH_PRPR^FIDXR환산현재가^18^4^7^0^0^1^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_stck_incg" title="주식체결 자동갱신(관심전용)" realdata="1" dessvr="1" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="64" _ulen="46" >
+
+RLTM_SHRN_ISCD^실시간단축종목코드^9^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="1639" _ulen="1169" >
+
+RLTM_SHRN_ISCD^실시간단축종목코드^9^0^0^0^0^0^0
+RLTM_BSOP_HOUR^실시간영업시간^6^0^0^0^0^0^0
+RLTM_HOUR_CLS_CODE^실시간시간구분코드^1^0^0^0^0^0^0
+RLTM_ANTC_NMIX_CLS_CODE^실시간예상지수구분코드^1^0^0^0^0^0^0
+RLTM_PRPR^실시간현재가^11^0^7^0^0^1^0
+RLTM_PRDY_VRSS_SIGN^실시간전일대비부호^1^0^0^0^0^0^0
+RLTM_PRDY_VRSS^실시간전일대비^11^0^7^0^0^1^0
+RLTM_PRDY_CTRT^실시간전일대비율^9^2^7^0^0^1^0
+RLTM_OPRC^실시간시가^11^0^7^0^0^1^0
+RLTM_HPRC^실시간고가^11^0^7^0^0^1^0
+RLTM_LPRC^실시간저가^11^0^7^0^0^1^0
+RLTM_CNTG_CLS_CODE^실시간체결구분코드^1^0^0^0^0^0^0
+RLTM_CNTG_VOL^실시간체결거래량^11^0^7^0^0^1^0
+RLTM_ACML_VOL^실시간누적거래량^13^0^7^0^0^0^0
+RLTM_ACML_TR_PBMN^실시간누적거래대금^19^0^7^0^0^0^0
+RLTM_WGHN_AVRG_STCK_PRC^실시간가중평균주식가격^11^0^7^0^0^0^0
+RLTM_ASKP1^실시간매도호가1^11^0^7^0^0^1^0
+RLTM_BIDP1^실시간매수호가1^11^0^7^0^0^1^0
+RLTM_ASKP_RSQN1^실시간매도호가잔량1^13^0^7^0^0^0^0
+RLTM_BIDP_RSQN1^실시간매수호가잔량1^13^0^7^0^0^0^0
+RLTM_TOTAL_ASKP_RSQN^실시간총매도호가잔량^13^0^7^0^0^0^0
+RLTM_TOTAL_BIDP_RSQN^실시간총매수호가잔량^13^0^7^0^0^0^0
+RLTM_RLTV^실시간체결강도^9^2^7^0^0^1^0
+RLTM_SHNU_RATE^실시간매수비율^9^2^7^0^0^1^0
+RLTM_TRHT_YN^실시간거래정지여부^1^0^0^0^0^0^0
+RLTM_PRDY_VRSS_VOL_RATE^실시간전일대비거래량비율^9^2^7^0^0^1^0
+RLTM_PRDY_SMNS_HOUR_VOL_RATE^실시간전일동일시간거래량비율^9^2^7^0^0^1^0
+FIDR_NW_MKOP_CLCD^FIDR신장운영구분코드^2^0^0^0^0^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_unt_incg" title="SOR 체결 자동갠신(관심전용)" realdata="1" dessvr="1" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="64" _ulen="46" >
+
+RLTM_SHRN_ISCD^실시간단축종목코드^9^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="1639" _ulen="1169" >
+
+RLTM_SHRN_ISCD^실시간단축종목코드^9^0^0^0^0^0^0
+RLTM_BSOP_HOUR^실시간영업시간^6^0^0^0^0^0^0
+RLTM_HOUR_CLS_CODE^실시간시간구분코드^1^0^0^0^0^0^0
+RLTM_ANTC_NMIX_CLS_CODE^실시간예상지수구분코드^1^0^0^0^0^0^0
+RLTM_PRPR^실시간현재가^11^0^7^0^0^1^0
+RLTM_PRDY_VRSS_SIGN^실시간전일대비부호^1^0^0^0^0^0^0
+RLTM_PRDY_VRSS^실시간전일대비^11^0^7^0^0^1^0
+RLTM_PRDY_CTRT^실시간전일대비율^9^2^7^0^0^1^0
+RLTM_OPRC^실시간시가^11^0^7^0^0^1^0
+RLTM_HPRC^실시간고가^11^0^7^0^0^1^0
+RLTM_LPRC^실시간저가^11^0^7^0^0^1^0
+RLTM_CNTG_CLS_CODE^실시간체결구분코드^1^0^0^0^0^0^0
+RLTM_CNTG_VOL^실시간체결거래량^11^0^7^0^0^1^0
+RLTM_ACML_VOL^실시간누적거래량^13^0^7^0^0^0^0
+RLTM_ACML_TR_PBMN^실시간누적거래대금^19^0^7^0^0^0^0
+RLTM_WGHN_AVRG_STCK_PRC^실시간가중평균주식가격^11^0^7^0^0^0^0
+RLTM_ASKP1^실시간매도호가1^11^0^7^0^0^1^0
+RLTM_BIDP1^실시간매수호가1^11^0^7^0^0^1^0
+RLTM_ASKP_RSQN1^실시간매도호가잔량1^13^0^7^0^0^0^0
+RLTM_BIDP_RSQN1^실시간매수호가잔량1^13^0^7^0^0^0^0
+RLTM_TOTAL_ASKP_RSQN^실시간총매도호가잔량^13^0^7^0^0^0^0
+RLTM_TOTAL_BIDP_RSQN^실시간총매수호가잔량^13^0^7^0^0^0^0
+RLTM_RLTV^실시간체결강도^9^2^7^0^0^1^0
+RLTM_SHNU_RATE^실시간매수비율^9^2^7^0^0^1^0
+RLTM_TRHT_YN^실시간거래정지여부^1^0^0^0^0^0^0
+RLTM_PRDY_VRSS_VOL_RATE^실시간전일대비거래량비율^9^2^7^0^0^1^0
+RLTM_PRDY_SMNS_HOUR_VOL_RATE^실시간전일동일시간거래량비율^9^2^7^0^0^1^0
+FIDR_NW_MKOP_CLCD^FIDR신장운영구분코드^2^0^0^0^0^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_6000_001r" title="해외주식 현재가 조회" realdata="0" attribute="1" dessvr="4" datamode=".SFID" >
+				<TRBLOCK name="InBlock1" inout="in" _len="321" toutblk="OutBlock1" _ulen="247" >
+
+FID_INPUT_COND_MRKT_DIV_CODE^FID입력조건시장분류코드^2^0^0^9100^9999^0^0
+FID_INPUT_OVRS_ISCD^FID입력해외종목코드^16^0^0^9030^9999^0^0
+FID_COND_MRKT_CLS_CODE^FID조건시장구분코드^2^0^0^9103^9999^0^0
+FIDX_INPUT_DELY_RLTM_CLS_CODE^FIDX입력지연실시간구분코드^1^0^0^9152^9999^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="2803" _ulen="2393" >
+
+FIDX_ISCD^FIDX종목코드^16^0^0^1^1000^0^0
+FIDX_PRPR^FIDX현재가^14^4^7^4^1000^0^0
+FIDX_ACML_VOL^FIDX누적거래량^19^0^7^14^1000^0^0
+FIDX_PRDY_VRSS_SIGN^FIDX전일대비부호^1^0^0^6^1000^0^0
+FIDX_PRDY_CLPR^FIDX전일종가^14^4^7^13^1000^0^0
+FIDX_PRDY_VOL^FIDX전일거래량^19^0^7^133^1000^0^0
+FIDX_52_WEEK_HGPR^FIDX52주최고가^14^4^7^32^1000^0^0
+FIDX_52_WEEK_LWPR^FIDX52주최저가^14^4^7^35^1000^0^0
+FIDX_LSTN_STCN^FIDX상장주수^19^0^7^30^1000^0^0
+FIDX_OPRC^FIDX시가^14^4^7^17^1000^0^0
+FIDX_HPRC^FIDX고가^14^4^7^18^1000^0^0
+FIDX_LPRC^FIDX저가^14^4^7^19^1000^0^0
+FIDX_MXPR^FIDX상한가^14^4^7^26^1000^0^0
+FIDX_LLAM^FIDX하한가^14^4^7^27^1000^0^0
+FIDX_AVLS^FIDX시가총액^19^0^7^28^1000^0^0
+FIDX_EPS^FIDXEPS^11^4^7^210^1000^0^0
+FIDX_PRDY_VRSS^FIDX전일대비^14^4^7^5^1000^0^0
+FIDX_PRDY_CTRT^FIDX전일대비율^11^2^7^7^1000^0^0
+FIDX_BSTP_CLS_CODE^FIDX업종구분코드^4^0^0^335^1000^0^0
+FIDX_BSTP_LRDV_NAME^FIDX업종대분류명^80^0^0^5133^1000^0^0
+FIDX_BSTP_MDDV_NAME^FIDX업종중분류명^80^0^0^5134^1000^0^0
+FIDX_BSTP_SMDV_NAME^FIDX업종소분류명^80^0^0^5135^1000^0^0
+FIDX_DCPN_CNT^FIDX소수점수^2^0^7^5132^1000^0^0
+FIDX_SHNU_ASPR_UNIT^FIDX매수호가단위^14^4^7^5125^1000^0^0
+FIDX_SELN_ASPR_UNIT^FIDX매도호가단위^14^4^7^5126^1000^0^0
+FIDX_SHNU_ODER_QTY_UNIT^FIDX매수주문수량단위^9^0^7^5127^1000^0^0
+FIDX_SELN_ODER_QTY_UNIT^FIDX매도주문수량단위^9^0^7^5128^1000^0^0
+FIDX_CRNC_CODE^FIDX통화코드^4^0^0^5114^1000^0^0
+FIDX_KOR_ISNM^FIDX한글종목명^65^0^0^2^1000^0^0
+FIDX_TICK_CLS^FIDX틱구분^4^0^0^5136^1000^0^0
+FID_PBR^FIDPBR^9^2^7^43^1000^0^0
+FIDX_PER^FIDXPER^9^2^7^42^1000^0^0
+BSTP_KOR_ISNM^업종한글종목명^100^0^0^822^1000^0^0
+FIDX_CAS_TRGT_ISSU_YN^FIDXCAS대상종목여부^1^0^0^5181^1000^0^0
+FIDX_VCM_STAT_CLS_CODE^FIDXVCM상태구분코드^1^0^0^5166^1000^0^0
+FIDX_ENG_ISNM^FIDX영문종목명^65^0^0^5112^1000^0^0
+FIDX_SDPR^FIDX기준가^14^4^7^24^1000^0^0
+FIDX_VCM_STA_HOUR^FIDXVCM시작시간^6^0^0^5167^1000^0^0
+FIDX_VCM_FIN_HOUR^FIDXVCM종료시간^6^0^0^5168^1000^0^0
+FIDX_SELL_ONLY^FIDXSELLONLY^2^0^7^5173^1000^0^0
+FIDX_ISSU_STAT_CLS_CODE^FIDX종목상태구분코드^1^0^0^6016^1000^0^0
+FIDX_CAS_IEP^FIDXCASIEP^11^4^7^5215^1000^0^0
+FIDX_CAS_IEV^FIDXCASIEV^11^4^7^5216^1000^0^0
+FIDX_ETF_YN^FIDXETF여부^1^0^0^5159^1000^0^0
+FID_LVRG^FID레버리지^14^6^7^81^1000^0^0
+FIDX_CAS_TRGT_ISSU^FIDXCAS대상종목^1^0^0^5221^1000^0^0
+FIDX_CAS_STAT^FIDXCAS상태^2^0^0^5222^1000^0^0
+FIDX_CAS_SDPR^FIDXCAS기준가^14^4^7^5223^1000^0^0
+FIDX_CAS_MXPR^FIDXCAS상한가^14^4^7^5224^1000^0^0
+FIDX_CAS_LLAM^FIDXCAS하한가^14^4^7^5225^1000^0^0
+FIDX_ETF_TYPE_CODE^FIDXETF유형코드^3^0^0^5210^1000^0^0
+FIDX_UNCH_PRPR^FIDX환산현재가^14^4^7^2051^1000^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_6000_017r" title="해외주식 주간거래 현재가 조회" realdata="0" attribute="1" dessvr="4" datamode=".SFID" >
+				<TRBLOCK name="InBlock1" inout="in" _len="321" toutblk="OutBlock1" _ulen="247" >
+
+FID_INPUT_COND_MRKT_DIV_CODE^FID입력조건시장분류코드^2^0^0^9100^9999^0^0
+FID_INPUT_OVRS_ISCD^FID입력해외종목코드^16^0^0^9030^9999^0^0
+FID_COND_MRKT_CLS_CODE^FID조건시장구분코드^2^0^0^9103^9999^0^0
+FIDX_INPUT_DELY_RLTM_CLS_CODE^FIDX입력지연실시간구분코드^1^0^0^9152^9999^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="584" _ulen="470" >
+
+FIDX_ISCD^FIDX종목코드^16^0^0^1^1000^0^0
+FIDX_DYTM_PRPR^FIDX주간현재가^14^4^7^7479^1000^0^0
+FIDX_DYTM_PRDY_VRSS_SIGN^FIDX주간전일대비부호^1^0^0^7480^1000^0^0
+FIDX_DYTM_PRDY_VRSS^FIDX주간전일대비^14^4^7^7481^1000^0^0
+FIDX_DYTM_PRDY_CTRT^FIDX주간전일대비율^11^2^7^7482^1000^0^0
+FIDX_DYTM_ACML_VOL^FIDX주간누적거래량^19^0^7^7484^1000^0^0
+FIDX_DYTM_ACML_TR_PBMN^FIDX주간누적거래대금^19^0^7^7485^1000^0^0
+FIDX_DYTM_MKT_YN^FIDX주간장여부^1^0^0^7483^1000^0^0
+FIDX_DYTM_UNCH_PRPR^FIDX주간환산현재가^14^4^7^2052^1000^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_6000_023r" title="해외주식 애프터장 거래 현재가(" realdata="0" attribute="1" dessvr="4" datamode=".SFID" >
+				<TRBLOCK name="InBlock1" inout="in" _len="321" toutblk="OutBlock1" _ulen="247" >
+
+FID_INPUT_COND_MRKT_DIV_CODE^FID입력조건시장분류코드^2^0^0^9100^9999^0^0
+FID_INPUT_OVRS_ISCD^FID입력해외종목코드^16^0^0^9030^9999^0^0
+FID_COND_MRKT_CLS_CODE^FID조건시장구분코드^2^0^0^9103^9999^0^0
+FIDX_INPUT_DELY_RLTM_CLS_CODE^FIDX입력지연실시간구분코드^1^0^0^9152^9999^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="454" _ulen="370" >
+
+FIDX_ISCD^FIDX종목코드^16^0^0^1^1000^0^0
+FIDX_MKT_AFT_PRPR^FIDX장후현재가^14^4^7^7487^1000^0^0
+FIDX_MKT_AFT_PRDY_VRSS_SIGN^FIDX장후전일대비부호^1^0^0^7488^1000^0^0
+FIDX_MKT_AFT_PRDY_VRSS^FIDX장후전일대비^14^4^7^7489^1000^0^0
+FIDX_MKT_AFT_PRDY_CTRT^FIDX장후전일대비율^11^2^7^7490^1000^0^0
+FIDX_ACML_VOL^FIDX누적거래량^19^0^7^14^1000^0^0
+FIDX_MKT_AFT_UNCH_PRPR^FIDX장후환산현재가^14^4^7^2053^1000^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_1001_001r" title="현재가(시세&상세내역)" realdata="0" attribute="1" dessvr="1" datamode=".SFID" >
+				<TRBLOCK name="InBlock1" inout="in" _len="149" toutblk="OutBlock1" _ulen="117" >
+
+FID_INPUT_COND_MRKT_DIV_CODE^FID입력조건시장분류코드^2^0^0^9100^9999^0^0
+FID_INPUT_ISCD^FID입력종목코드^12^0^0^9030^9999^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="3978" _ulen="3226" >
+
+FID_ISSU_STAT_CLS_CODE^FID종목상태구분코드^2^0^0^6016^1000^0^0
+FID_MARG_RATE^FID증거금비율^9^2^7^144^1000^0^0
+FID_RPRS_MRKT_KOR_NAME^FID대표시장한글명^40^0^0^824^1000^0^0
+FID_NW_HPRC_LPRC_CLCD^FID신고가저가구분코드^10^0^0^6521^1000^0^0
+FID_RPRS_BSTP_KOR_ISNM^FID대표업종한글종목명^40^0^0^822^1000^0^0
+FID_TMPR_SUSP_YN^FID임시정지여부^2^0^0^6167^1000^0^0
+FID_OPRC_RANG_EXTS_YN^FID시가범위연장여부^2^0^0^6168^1000^0^0
+FID_CLPR_RANG_EXTS_YN^FID종가범위연장여부^2^0^0^6169^1000^0^0
+FID_CRDT_ABLE_YN^FID신용가능여부^2^0^0^6378^1000^0^0
+FID_GRMN_RATE_CLS_CODE^FID보증금비율구분코드^5^0^0^6134^1000^0^0
+FID_ELW_PBLC_YN^FIDELW발행여부^2^0^0^6135^1000^0^0
+FID_STCK_PRPR^FID주식현재가^13^0^7^4^1000^0^0
+FID_PRDY_VRSS^FID전일대비^13^0^7^5^1000^0^0
+FID_PRDY_VRSS_SIGN^FID전일대비부호^2^0^0^6^1000^0^0
+FID_PRDY_CTRT^FID전일대비율^9^2^7^7^1000^0^0
+FID_ACML_VOL^FID누적거래량^19^0^7^14^1000^0^0
+FID_PRDY_VRSS_VOL_RATE^FID전일대비거래량비율^9^2^7^15^1000^0^0
+FID_PRDY_SMNS_HOUR_VOL_RATE^FID전일동일시간거래량비율^9^2^7^1050^1000^0^0
+FID_OPRC^FID시가^13^0^7^17^1000^0^0
+FID_HPRC^FID고가^13^0^7^18^1000^0^0
+FID_LPRC^FID저가^13^0^7^19^1000^0^0
+FID_MXPR^FID상한가^13^0^7^26^1000^0^0
+FID_LLAM^FID하한가^13^0^7^27^1000^0^0
+FID_SDPR^FID기준가^13^0^7^24^1000^0^0
+FID_WGHN_AVRG_PRC^FID가중평균가격^11^4^7^38^1000^0^0
+FID_SSTS_CNTG_QTY^FID공매도체결수량^13^0^7^410^1000^0^0
+FID_FRGN_EHRT^FID외국인소진율^9^2^7^41^1000^0^0
+FID_WHOL_FNCG_RMND_RATE^FID전체융자잔고비율^9^2^7^2757^1000^0^0
+FID_FRGN_HLDN_QTY_ICDC^FID외국인보유수량증감^13^0^7^2650^1000^0^0
+FID_PVT_SCND_DMRS^FID피벗2차디저항^13^0^7^48^1000^0^0
+FID_PVT_FST_DMRS^FID피벗1차디저항^13^0^7^49^1000^0^0
+FID_PVT_PONT^FID피벗포인트^13^0^7^50^1000^0^0
+FID_PVT_FST_DMSP^FID피벗1차디지지^13^0^7^51^1000^0^0
+FID_PVT_SCND_DMSP^FID피벗2차디지지^13^0^7^52^1000^0^0
+FID_DMRS^FID디저항^13^0^7^296^1000^0^0
+FID_DMSP^FID디지지^13^0^7^295^1000^0^0
+FID_FCAM^FID액면가^14^3^7^39^1000^0^0
+FID_SSPR^FID대용가^13^0^7^25^1000^0^0
+FID_ASPR_UNIT^FID호가단위^13^0^7^6166^1000^0^0
+FID_DEAL_QTY_UNIT^FID매매수량단위^13^0^7^11^1000^0^0
+FID_CPFN^FID자본금^19^0^7^29^1000^0^0
+FID_LSTN_STCN^FID상장주수^19^0^7^30^1000^0^0
+FID_AVLS^FID시가총액^19^0^7^28^1000^0^0
+FID_PRDY_AVLS_RANK^FID전일시가총액순위^5^0^7^490^1000^0^0
+FID_FRGN_HLDN_QTY^FID외국인보유수량^13^0^7^149^1000^0^0
+FID_PER^FIDPER^9^2^7^42^1000^0^0
+FID_PBR^FIDPBR^9^2^7^43^1000^0^0
+FID_FNAF_EPS^FID재무EPS^26^2^7^210^1000^0^0
+FID_FNAF_BPS^FID재무BPS^26^2^7^212^1000^0^0
+FID_DRYY_HGPR^FID연중최고가^13^0^7^157^1000^0^0
+FID_DRYY_HGPR_DATE^FID연중최고가일자^8^0^0^352^1000^0^0
+FID_DRYY_HGPR_RATE^FID연중최고가비율^9^2^7^6071^1000^0^0
+FID_DRYY_LWPR^FID연중최저가^13^0^7^158^1000^0^0
+FID_DRYY_LWPR_RATE^FID연중최저가비율^9^2^7^6072^1000^0^0
+FID_DRYY_LWPR_DATE^FID연중최저가일자^8^0^0^353^1000^0^0
+FID_52_WEEK_HGPR^FID52주최고가^13^0^7^32^1000^0^0
+FID_52_WEEK_HGPR_RATE^FID52주최고가비율^9^2^7^33^1000^0^0
+FID_52_WEEK_HGPR_DATE^FID52주최고가일자^8^0^0^34^1000^0^0
+FID_52_WEEK_LWPR^FID52주최저가^13^0^7^35^1000^0^0
+FID_52_WEEK_LWPR_RATE^FID52주최저가비율^9^2^7^36^1000^0^0
+FID_52_WEEK_LWPR_DATE^FID52주최저가일자^8^0^0^37^1000^0^0
+FID_SSTS_YN^FID공매도여부^2^0^0^6141^1000^0^0
+FID_SHRN_ISCD^FID단축종목코드^9^0^0^1^1000^0^0
+FID_SLTR_YN^FID정리매매여부^2^0^0^965^1000^0^0
+FID_INVT_EPMD_CNTT^FID투자유의내용^50^0^0^350^1000^0^0
+FID_KOR_ISNM^FID한글종목명^40^0^0^2^1000^0^0
+FID_STAC_MONTH^FID결산월^2^0^0^44^1000^0^0
+FID_PRDY_VOL^FID전일거래량^19^0^7^133^1000^0^0
+FID_GLOB_NTBY_QTY^FID외국계순매수수량^19^0^7^1203^1000^0^0
+FID_ACML_TR_PBMN^FID누적거래대금^19^0^7^16^1000^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obtro_comn_025r" title="해외주식 고시환율 단건 조회" realdata="0" dessvr="9" >
+				<TRBLOCK name="InBlock1" inout="in" _len="77" _ulen="61" >
+
+STND_DATE^기준일자^8^0^0^0^0^0^0
+CRCD^통화코드^3^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="45" _ulen="37" >
+
+ANNC_EXRT^고시환율^12^4^7^0^0^0^0
+
+				</TRBLOCK>
+			</TRAN>
+		</TRIO_INFO>
+	</DATAIO_INFO>
+</ROOT>

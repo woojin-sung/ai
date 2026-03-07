@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="16000" scrname="해외주식현재가_종목토론" version="2" writer="이재원" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,523,1" />
+	<CONTROL_INFO>
+		<ITEMCODE name="ItemCode0" itemtype="11" marketcodelist="" ly_vert="555,86,209,39,1" />
+		<WEBVIEW name="webNews" urlpath="about:blank" ly_vert="0,0,375,423,1" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="4356" _ulen="4026" >
+'----------------------------------------------------------------------------
+' 01. 화 면 명 : 해외주식현재가
+' 02. 화면설명 : 해외주식현재가의 종목정보 탭
+' 03. 작    성 : 2024.05.13 HWG
+'----------------------------------------------------------------------------
+
+'****************************************************************************
+'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+'****************************************************************************
+Dim g_szItemCode, g_szExidCd, g_szOnlyCd
+
+Dim g_szOsType
+g_szOsType = ""
+
+'****************************************************************************
+'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             	
+'****************************************************************************
+Function Transform_Exid(szExid)
+	'20241128_02 KBC START : 해외주식 네이버 토론방 연계 수정
+	if szExid = "HK" then
+		if left(g_szOnlyCd, 1) = "0" then
+			g_szOnlyCd = right(g_szOnlyCd, 4)
+		end if
+		
+		Transform_Exid = "HK"
+		exit function
+		
+	elseif szExid = "SH" then 
+		Transform_Exid = "SS"	'선강퉁
+		exit function
+
+	elseif szExid = "SZ" then
+		Transform_Exid = "SZ"	'후강퉁
+		exit function
+		
+	elseif szExid = "OQ" then
+		Transform_Exid = "O"	'나스닥		
+		exit function
+		
+	elseif szExid = "AX" or szExid = "NY" then
+		if Len(g_szOnlyCd) >= 4 then
+			Transform_Exid = "K"
+			exit function
+		else
+			Transform_Exid = ""
+			exit function
+		end if
+	
+	elseif szExid = "JP" then
+		Transform_Exid = "T"	'일본
+		exit function
+	else
+		Transform_Exid = ""
+		exit function
+	end if
+	'20241128_02 KBC END
+
+	'MsgBox Transform_Exid
+	
+
+End Function
+
+'****************************************************************************
+'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+'****************************************************************************
+'============================================================================
+Sub Form_OnFormInit()
+	g_szOsType = Form.GetSharedData("&OS_TYPE", false )
+End Sub
+
+'============================================================================
+Sub Form_OnTriggerEvent(sEventName, sParam)
+	if (sEventName == "RequestData") then
+		g_szItemCode = sParam
+		If sParam = "" Then
+			Exit Sub
+		End If
+		
+		if g_szOsType == "1" then
+			webNews.height = 423
+		else
+			webNews.height = 523
+		end if
+		
+		sTemp = split(g_szItemCode, "@")
+		g_szExidCd = sTemp[0] '시장구분
+		g_szOnlyCd = sTemp[1] '종목코드 
+		
+		Dim szExidCd_Naver
+		szExidCd_Naver = Transform_Exid(g_szExidCd)
+		
+		Dim szData
+		szData = ""
+		
+		if szExidCd_Naver == "" then
+			szData = g_szOnlyCd
+		else
+			szData = g_szOnlyCd & "." & szExidCd_Naver 
+		end if
+		
+		webNews.urlpath = "https://m.stock.naver.com/"
+		
+		szUrl = "https://m.stock.naver.com/worldstock/stock/" & szData & "/discuss"
+		
+		'20241128_02 KBC START : 해외주식 네이버 토론방 연계 수정
+		' (방법1)
+		' ETF 종목의 경우 URL이 다르다. 규칙 찾는중 (네이버에서 답변이 없음)
+		' 	예) 뉴욕거래소 (같은 ETF인데도 주소가 다르다)
+		'		GYLD : /etf
+		'		ASGI : /stock
+		'
+		' (방법2)
+		' 추정 
+		' 	-> 미국이고 종목명 끝이 " ETF" 인 경우 or 중간에 " ETF "가 포함된 경우 => /etf/ 경로 사용
+		'
+		' 위 방법도 맞지않음....방법1로 적용
+
+		szETF = Form.getItemCodeInfo(g_szItemCode, "etfyn")
+		
+		szName = Form.getItemCodeInfo(g_szItemCode, "name")
+		
+		if g_szExidCd == "OQ" or g_szExidCd == "AX" or g_szExidCd == "NY" then
+			'방법1
+			if szETF == "Y" then
+				szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
+			end if
+		
+			'방법2
+'			if LEN(szName) >= 4 then
+'				if RIGHT(szName, 4) == " ETF" then
+'					szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
+'				end if
+'
+'				if LEN(szName) >= 5 then
+'					if InStr( szName, " ETF " ) > 0 then 
+'						szUrl = "https://m.stock.naver.com/worldstock/etf/" & szData & "/discuss"
+'					end if
+'				end if
+'			end if
+		end if
+		'MsgBox szUrl
+		'20241128_02 KBC END
+		
+		webNews.urlpath = szUrl
+	elseif sEventName == "CONTMAIN_SCROLLING" then
+		webNews.height = 523
+		
+	elseif sEventName == "CONTMAIN_SCROLL_POS" then
+		if g_szOsType == "1" then
+			webNews.height = 423 + Cint(sParam)
+		end if
+	end if	
+End Sub
+
+	</SCRIPT_INFO>
+</ROOT>
