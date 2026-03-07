@@ -1,0 +1,1963 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문_실행내역탭" version="2" writer="함원규" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,555,1" />
+	<CONTROL_INFO>
+		<GRID name="Grid0" colcount="14" ly_vert="0,100,375,450,1" ver="1" itemcodeid="" >
+			<CONTROL_INFO>
+				<LABEL name="bd_cell0" fontsize="-2" valign="2" autofontsize="1" />
+				<LABEL name="th_cell0" fontsize="-2" caption="실행일시" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell1" fontsize="-2" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell2" fontsize="-2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell3" fontsize="-2" halign="2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell4" fontsize="-2" halign="2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell5" fontsize="-2" halign="2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell6" fontsize="-2" halign="2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell7" fontsize="-2" halign="2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell8" fontsize="-2" halign="2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell9" fontsize="-2" halign="2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell10" fontsize="-2" halign="2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell11" fontsize="-2" halign="2" valign="2" autofontsize="1" />
+				<LABEL name="bd_cell12" halign="2" />
+				<LABEL name="bd_cell13" halign="2" />
+				<LABEL name="bd_cell14" halign="2" />
+				<LABEL name="bd_cell15" fontsize="-2" valign="0" multiline="1" paddinginfo="10,0,0,5" />
+				<LABEL name="bd_cell16" fontsize="-2" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="bd_cell17" fontsize="-2" valign="0" multiline="1" paddinginfo="10,0,0,5" />
+				<LABEL name="bd_cell19" fontsize="-2" halign="2" valign="0" autofontsize="1" />
+				<LABEL name="bd_cell20" fontsize="-2" halign="2" valign="0" autofontsize="1" />
+				<LABEL name="bd_cell21" fontsize="-2" halign="2" valign="0" autofontsize="1" />
+				<LABEL name="bd_cell22" fontsize="-2" halign="2" valign="0" multiline="1" paddinginfo="0,0,10,5" />
+				<LABEL name="bd_cell23" fontsize="-2" halign="2" valign="0" autofontsize="1" />
+				<LABEL name="bd_cell24" fontsize="-2" halign="2" valign="0" multiline="1" />
+				<LABEL name="bd_cell25" halign="2" />
+				<LABEL name="bd_cell26" halign="2" />
+				<LABEL name="bd_cell27" halign="2" />
+				<LABEL name="bd_cell28" halign="2" />
+				<LABEL name="bd_cell29" halign="2" />
+				<LABEL name="th_cell1" fontsize="-2" caption="매매구분" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell2" fontsize="-2" caption="처리결과" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell3" fontsize="-2" caption="감시기준가" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell4" fontsize="-2" caption="주문유형" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell5" fontsize="-2" caption="주문수량" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell6" fontsize="-2" caption="체결수량" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell7" fontsize="-2" caption="감시종료일" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell8" fontsize="-2" caption="거래소" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell9" fontsize="-2" caption="구분" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell10" fontsize="-2" caption="주문번호" halign="1" valign="2" autofontsize="1" />
+				<LABEL name="th_cell11" caption="거래소코드" halign="1" />
+				<LABEL name="th_cell12" caption="정정취소여부" halign="1" />
+				<LABEL name="th_cell13" halign="1" />
+				<LABEL name="th_cell14" halign="1" />
+				<LABEL name="th_cell15" fontsize="-2" caption="종목명" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="th_cell16" fontsize="-2" caption="종목코드" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="th_cell17" fontsize="-2" caption="감시조건" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="th_cell19" fontsize="-2" caption="주문가격구분" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="th_cell20" fontsize="-2" caption="주문가격" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="th_cell21" fontsize="-2" caption="체결가격" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="th_cell22" fontsize="-2" caption="거부/종료 사유" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="th_cell23" fontsize="-2" caption="국가" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="th_cell24" fontsize="-2" caption="통화" halign="1" valign="0" autofontsize="1" />
+				<LABEL name="th_cell25" halign="1" />
+				<LABEL name="th_cell26" halign="1" />
+				<LABEL name="th_cell27" halign="1" />
+				<LABEL name="th_cell28" halign="1" />
+				<LABEL name="th_cell29" halign="1" />
+			</CONTROL_INFO>
+			<DEFAULTINFO frozencol="1" useblockclr="0" initrowcount="0" border="0100" inlinecolor="025:255255255" />
+			<COLINFO ly_vert_width="110,70,195,100,100,100,200,70,70,70,70,70,70,70" ly_vert_visible="0,0,0,0,0,0,0,0,0,0,2,2,2,2" >
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="110" ly_vert_visible="0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell0" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell15" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell0" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell15" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="70" ly_vert_visible="0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell1" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell16" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell1" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell16" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="2" >
+					<SUBCOLINFO ly_vert_width="80,115" ly_vert_visible="0,0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell2" cell_ly="0,0,0,0" line="0,0" />
+							<CELL name="th_cell3" cell_ly="1,0,1,0" line="1,0" />
+							<CELL name="th_cell17" cell_ly="0,1,1,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell2" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell3" cell_ly="1,0,1,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell17" cell_ly="0,1,1,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="100" ly_vert_visible="0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell4" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell19" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell4" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell19" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="100" ly_vert_visible="0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell5" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell20" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell5" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell20" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="100" ly_vert_visible="0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell6" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell21" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell6" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell21" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="200" ly_vert_visible="0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell7" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell22" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell7" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell22" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="70" ly_vert_visible="0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell8" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell23" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell8" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell23" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="70" ly_vert_visible="0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell9" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell24" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell9" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell24" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="70" ly_vert_visible="0" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell10" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell25" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell10" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell25" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell11" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell26" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell11" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell26" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell12" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell27" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell12" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell27" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell13" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell28" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell13" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell28" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+				<COLUMN colcount="1" >
+					<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+					<TOPHEADER rowcount="2" >
+						<ROWINFO ly_vert_height="25,25" />
+						<CELLINFO>
+							<CELL name="th_cell14" cell_ly="0,0,0,0" line="1,0" />
+							<CELL name="th_cell29" cell_ly="0,1,0,1" />
+						</CELLINFO>
+					</TOPHEADER>
+					<BODY rowcount="2" >
+						<ROWINFO ly_vert_height="30,36" />
+						<CELLINFO>
+							<CELL name="bd_cell14" cell_ly="0,0,0,0" line="0,0" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+							<CELL name="bd_cell29" cell_ly="0,1,0,1" line="0,1" >
+								<STATECOMP_INFO desttype="1" />
+							</CELL>
+						</CELLINFO>
+					</BODY>
+				</COLUMN>
+			</COLINFO>
+			<UPDATETR_INFO/>
+			<UPDATEBC_INFO keycellid="bd_cell0" rangecellid="bd_cell0" hlcolorcellid="bd_cell0" />
+		</GRID>
+		<IMAGE name="img1" autosize="1" imgpath="input_02_n.9" ly_vert="10,48,205,35,1" />
+		<IMAGE name="imgNotice" visible="0" autosize="1" imgpath="icon_notice_3" ly_vert="160,226,50,50,0" />
+		<LABEL name="LabelGuideText2" visible="0" fgcolor="333:115118124" caption="감시 주문 내역이 없어요." halign="1" ly_vert="0,280,375,32,0" />
+		<BUTTON name="btn0" enable="0" visible="0" caption="당일" fgcolor="013:051051051" fontsize="-2" ly_vert="1000,50,50,32,0" />
+		<BUTTON name="btn1" caption="1주일" fgcolor="013:051051051" fontsize="-2" ly_vert="1000,10,50,32,1" />
+		<BUTTON name="btn2" caption="1개월" fgcolor="013:051051051" fontsize="-2" ly_vert="1000,10,50,32,1" />
+		<CALENDAR name="Calendar0" fontsize="-2" dispmode="-986896" ly_vert="10,10,140,32,1" />
+		<CALENDAR name="Calendar1" fontsize="-2" dispmode="-986896" ly_vert="165,10,140,32,1" />
+		<LABEL name="Label0" caption="~" halign="1" ly_vert="153,10,10,32,1" />
+		<IMAGE name="imgSearch" autosize="1" imgpath="icon_main_06" ly_vert="20,55,20,20,1" />
+		<LABEL name="lblItemName" fontsize="-2" caption="종목명/종목코드/초성입력" multiline="1" click="1" ly_vert="45,48,142,35,1" />
+		<LABEL name="LabelFilter" fontsize="-2" caption="필터" bgcolor="029:255212175" halign="2" multiline="1" click="1" ly_vert="250,45,100,40,1" />
+		<IMAGE name="Image0" autosize="1" imgpath="icon_filter" ly_vert="345,55,20,20,1" />
+		<IMAGE name="Image1" visible="0" autosize="1" imgpath="icon_remove" ly_vert="190,56,18,18,0" />
+		<CHKBUTTON name="chk0" fontsize="-2" chkcaption="당일" unchkcaption="당일" chkbtnimage="checkmenu_o" unchkbtnimage="checkmenu_n" ly_vert="314,10,60,32,1" />
+		<IMAGE name="Image2" autosize="1" imgpath="icon_refresh" ly_vert="220,52,26,26,1" />
+		<CONTAINER name="contToast" visible="0" ly_vert="500,48,315,70,0" scroll_ly_vert="500,48,315,70,0" >
+			<CONTROL_INFO>
+				<IMAGE name="ImageBack" imgpath="btn_15_n.9" ly_vert="0,0,315,70,1" />
+				<LABEL name="LabelText" fgcolor="062:255255255" fontsize="-2" caption="비용포함 조건을 설정 시, 평가손익과 수익률은
+수수료/세금/이자를 포함한 추정치로 오차가
+생길 수 있습니다." bgcolor="035:237246255" multiline="1" click="1" ly_vert="15,5,275,60,1" />
+				<IMAGE name="ImageClose" imgpath="icon_close_w" ly_vert="295,7,10,10,1" />
+			</CONTROL_INFO>
+		</CONTAINER>
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="43856" _ulen="41526" >
+'****************************************************************************
+'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+'****************************************************************************
+Dim g_nDataCnt
+g_nDataCnt = 0
+
+Dim g_nRunCnt 
+g_nRunCnt = 0
+
+Dim g_nClickIdx
+g_nClickIdx = 0
+
+Dim g_nViewMode
+g_nViewMode = 0
+
+Dim g_isModify
+g_isModify = false
+
+Dim g_sModifyInfo
+
+Dim g_sGbn
+Dim g_sCode
+Dim g_sExid
+Dim g_sItemCode
+Dim g_sItemName
+Dim g_sNation
+Dim g_sMarket
+Dim g_sExid2
+Dim g_sExid3
+
+Dim g_sQtyUnit
+
+Dim g_sStep
+
+Dim g_sOrderGbn
+g_sOrderGbn = ""
+
+Dim g_sResultGbn
+g_sResultGbn = ""
+
+g_sCode = ""
+g_sExid = ""
+g_sItemCode = ""
+g_sNation = ""
+g_sExid2 = ""
+g_sQtyUnit = ""
+g_sExid3 = ""
+
+Dim g_sNextKey
+g_sNextKey = ""
+
+
+Dim g_szSaveFilterData1
+Dim g_szSaveFilterData2
+
+Dim g_szFilterData1
+Dim g_szFilterData2
+
+g_szSaveFilterData1 = ""
+g_szSaveFilterData2 = ""
+
+g_szFilterData1 = "매수`매도"
+g_szFilterData2 = "전체(종료제외)`주문`체결`주문취소`거부`감시종료(주문미실행)"
+
+' 공통 에러 문구(REST API 용)
+Dim g_sCommonErrorMsg
+g_sCommonErrorMsg = "현재 자동감시주문 실행이\n불가합니다.\n고객지원센터에 문의해주세요."
+
+Dim g_sCal0
+g_sCal0 = ""
+Dim g_sCal1
+g_sCal1 = ""
+Dim g_sBizDate
+g_sBizDate = ""
+
+Dim g_isFst
+g_isFst = false
+
+Dim g_sAcno
+g_sAcno = ""
+
+Dim g_sAsno
+g_sAsno = ""
+
+Dim g_sPwd
+g_sPwd = ""
+
+Dim g_sAccName
+g_sAccName = ""
+
+Dim g_isClick
+g_isClick = false
+
+'****************************************************************************
+'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+'****************************************************************************
+'===============================================
+' NULL 체크 
+'===============================================
+Function isEmpty(sData)
+	if trim(sData) == "" or sData == null or trim(sData) == "null" then
+		return true
+	else
+		return false
+	end if
+End Function
+
+'===============================================
+' 숫자 소수점 절사 함수
+'===============================================
+Function truncateToDecimalPlaces(nVal, nDeimalPlaces)
+	nVal = Cdbl(nVal)
+	nFactor = 10 ^ nDeimalPlaces
+	szNumStr = FormatNumber(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = instr(szNumStr, ".")
+	
+	nTotalData = 0
+	if Cint(nDecimalIdx) > 0 then
+		nTotalData = Cdbl(left(szNumStr, Cint(nDecimalIdx)-1))
+	else
+		nTotalData = Cdbl(szNumStr)
+	end if
+
+	return nTotalData / nFactor
+End Function
+
+'===============================================
+' (NonNull) 문자열 -> 배열 변환함수
+'===============================================
+Function Convert_StrToArr(szData, szSeperator)
+
+	Dim arrData
+	
+	'--------------------------------------------
+	' 링크데이터 값 체크
+	'--------------------------------------------
+	if isEmpty(szData) then
+		arrData = {}
+		return arrData
+	end if
+	
+	'--------------------------------------------
+	' 구분자 값 체크
+	'--------------------------------------------
+	if isEmpty(szSeperator) then
+		' 단일변수
+		arrData = {}
+		Table.insert(arrData, szData)
+	else
+		' 다중변수
+		arrData = split(szData, szSeperator)
+	end if
+	
+	return arrData
+	
+End Function
+
+Function AutoRule_SelectOrderHistory() 
+	g_sStep = "SELECT_ORDER_HISTORY"
+	
+	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	
+	Form.releaseRequestData()
+	
+	sCode = g_sCode
+	
+	g_sNextKey = ""
+	Grid0.SetClear()
+	Grid0.rowcount = 0
+	Grid0.initScrollX()
+	
+	Form.makeRequestData("accountNumber", sAcno)
+	Form.makeRequestData("accountSeqNumber", sAsno)
+	Form.makeRequestData("dataTargetType", "2")
+	Form.makeRequestData("queryStartDate", Calendar0.caption)
+	Form.makeRequestData("queryEndDate", Calendar1.caption)
+	
+	if isEmpty(sCode) == false then
+		Form.makeRequestData("stockCode", sCode)
+	end if
+	
+	if isEmpty(g_sOrderGbn) == false then
+		Form.makeRequestData("tradeType", g_sOrderGbn)
+	end if
+	
+	if isEmpty(g_sResultGbn) == false then
+		Form.makeRequestData("procResultType", g_sResultGbn)
+	end if
+	
+	sState = chk0.checkstate
+	if isEmpty(sState) == false and sState == "1" then
+		Form.makeRequestData("todayFlagType", sState)
+	end if
+
+	
+	if isEmpty(g_sNextKey) == false then
+		Form.makeRequestData("nextKey", g_sNextKey)
+	end if
+	
+	Form.makeRequestData("pageInfo", "20")
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/select-order-history", "ORDER_LIST_"&g_sStep)
+End Function
+
+Function AutoRule_SelectOrderHistory_Next() 
+	g_sStep = "SELECT_ORDER_HISTORY_NEXT"
+	
+	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	
+	Form.releaseRequestData()
+	
+	sCode = g_sCode
+	
+	Form.makeRequestData("accountNumber", sAcno)
+	Form.makeRequestData("accountSeqNumber", sAsno)
+	Form.makeRequestData("dataTargetType", "2")
+	Form.makeRequestData("queryStartDate", Calendar0.caption)
+	Form.makeRequestData("queryEndDate", Calendar1.caption)
+	
+	if isEmpty(sCode) == false then
+		Form.makeRequestData("stockCode", sCode)
+	end if
+	
+	if isEmpty(g_sOrderGbn) == false then
+		Form.makeRequestData("tradeType", g_sOrderGbn)
+	end if
+	
+	if isEmpty(g_sResultGbn) == false then
+		Form.makeRequestData("procResultType", g_sResultGbn)
+	end if
+	
+	sState = chk0.checkstate
+	if isEmpty(sState) == false and sState == "1" then
+		Form.makeRequestData("todayFlagType", sState)
+	end if
+	
+	if isEmpty(g_sNextKey) == false then
+		Form.makeRequestData("nextKey", g_sNextKey)
+	end if
+	
+	Form.makeRequestData("pageInfo", "20")
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/select-order-history", "ORDER_LIST_"&g_sStep)
+End Function
+
+'===============================================
+' REST API_토큰발급
+'===============================================
+Function IssueToken() 
+	g_sStep = "ISSUE_TOKEN"
+	
+	Form.releaseRequestData()
+	
+	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("&USER_ID", false )
+	sData2  = Form.GetSharedData("&MCI_SESSION_KEY", false )
+	sData3  = Form.GetSharedData("&SEMI_SSO_KEY", false )
+	
+	Form.makeRequestData("channelClsCode", 	sData0)
+	Form.makeRequestData("userId", 			sData1)
+	Form.makeRequestData("sessionKey", 		sData2)
+	Form.makeRequestData("semiSsoKey", 		sData3)
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+	
+	Form.requestRestAPI(sUrl&"auth/issue-token", "ORDER_LIST_"&g_sStep)
+End Function
+
+Function DisplaySet_EmptyNotice(isShow) 
+	if isShow == true then
+		imgNotice.visible = true
+		LabelGuideText2.visible = true
+	
+	else
+		imgNotice.visible = false
+		LabelGuideText2.visible = false
+		
+	end if
+End Function
+
+Function DisplaySet_Pannel(nIdx, orderConditionId, registrationDate, accountNumber, accountSeqNumber, stockExchangeCode, stockExchangeName,
+					stockCode, stockKoreaName, tradeType, procResultName, watchBasePrice, watchCondition, orderPaymentType, orderClsType, orderClsTypeNm,
+					orderPriceType, orderPrice, orderPriceDesc, orderQty, expirationDate, cntgQty, cntgCamt, orderResponseCode, orderMsg, orderNo, orderDate, canModifyYn)
+					
+	sTicker = Form.GetEnvData("common.ticker_text")
+	
+	'윗줄
+	Grid0.SetCellData("bd_cell0", nIdx, orderDate)
+	
+	sTradeTypeNm = ""
+	if tradeType == "1" then
+		sTradeTypeNm = "매도"
+		Grid0.SetCellFgColor("bd_cell1", nIdx, "291")
+	elseif tradeType == "2" then
+		sTradeTypeNm = "매수"
+		Grid0.SetCellFgColor("bd_cell1", nIdx, "290")
+	end if
+	
+	Grid0.SetCellData("bd_cell1", nIdx, sTradeTypeNm)
+	Grid0.SetCellData("bd_cell2", nIdx, procResultName)
+	Grid0.SetCellData("bd_cell3", nIdx, watchBasePrice)
+	Grid0.SetCellData("bd_cell4", nIdx, orderClsTypeNm)
+	Grid0.SetCellData("bd_cell5", nIdx, orderQty)
+	Grid0.SetCellData("bd_cell6", nIdx, cntgQty)
+	Grid0.SetCellData("bd_cell7", nIdx, expirationDate)
+	Grid0.SetCellData("bd_cell8", nIdx, stockExchangeName)
+	Grid0.SetCellData("bd_cell9", nIdx, "일반")
+	Grid0.SetCellData("bd_cell10", nIdx, orderNo)
+	
+	Grid0.SetCellData("bd_cell11", nIdx, stockExchangeCode)
+	Grid0.SetCellData("bd_cell12", nIdx, canModifyYn)
+'	Grid0.SetCellData("bd_cell13", nIdx, )
+'	Grid0.SetCellData("bd_cell14", nIdx, )
+	
+	'아랫줄
+	Grid0.SetCellData("bd_cell15", nIdx, stockKoreaName)
+	Grid0.SetCellData("bd_cell16", nIdx, stockCode)
+	Grid0.SetCellData("bd_cell17", nIdx, watchCondition)
+	'Grid0.SetCellData("bd_cell18", nIdx, )	'빈칸
+	Grid0.SetCellData("bd_cell19", nIdx, orderPriceDesc)
+	Grid0.SetCellData("bd_cell20", nIdx, orderPrice)
+	Grid0.SetCellData("bd_cell21", nIdx, cntgCamt)
+	Grid0.SetCellData("bd_cell22", nIdx, orderMsg)
+	Grid0.SetCellData("bd_cell23", nIdx, "미국")
+	Grid0.SetCellData("bd_cell24", nIdx, "USD")
+	
+'	Grid0.SetCellData("bd_cell25", nIdx, )
+'	Grid0.SetCellData("bd_cell26", nIdx, )
+'	Grid0.SetCellData("bd_cell27", nIdx, )
+'	Grid0.SetCellData("bd_cell28", nIdx, )
+'	Grid0.SetCellData("bd_cell29", nIdx, )
+	
+End Function
+'****************************************************************************
+'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+'****************************************************************************
+'============================================================================
+Sub Form_OnFormInitBefore()
+	imgNotice.maintainratio = "1"
+	imgSearch.maintainratio = "1"
+	Image0.maintainratio = "1"
+	Image1.maintainratio = "1"
+	Image2.maintainratio = "1"
+	Grid0.SetCellMaxLineCount("bd_cell15", 2)
+	Grid0.SetCellMaxLineCount("bd_cell17", 2)
+	Grid0.SetCellMaxLineCount("bd_cell22", 2)
+	
+	lblItemName.paddinginfo = "0,0,0,0"
+End Sub
+
+Sub Form_OnDelayEvent(nID)
+	if Cint(nID) == 1 then
+		AutoRule_SelectOrderHistory() 
+	elseif Cint(nID) == 2 then
+		DATAMANAGER.RequestTranData("obtro_oder_268r")
+	elseif Cint(nID) == 3 then
+		contToast.visible = false
+		contToast.left = 500
+	end if
+End Sub 
+
+'============================================================================
+Sub Form_OnTriggerEvent(sEventName, sParam, sParam2)
+
+	if sEventName ==  "TOKEN_SUCCESS" or sEventName ==  "TAB_CHANGE" then
+		if isEmpty(sParam) == false then
+			arrData = Convert_StrToArr(sParam, "`")
+			nArrCnt = #arrData
+			
+			if nArrCnt > 2 then
+				g_sAcno = arrData(0)
+				g_sAsno = arrData(1)
+				g_sAccName = arrData(2)
+			end if
+			
+			if nArrCnt > 3 then
+				g_sPwd = arrData(3)
+			end if
+		end if
+		
+		g_sOrderGbn = Form.GetSharedData("17100_T3_ORDER_GBN" , false)
+		g_sResultGbn = Form.GetSharedData("17100_T3_RESULT_GBN" , false)
+		
+		sFilter = ""
+		nCnt_Total = 0
+		
+		if isEmpty(g_sOrderGbn) == false then
+			sFilter = Return_OrderText(g_sOrderGbn)
+			
+			g_szSaveFilterData1 = Return_OrderText(g_sOrderGbn)
+			
+			if Return_OrderText(g_sOrderGbn) == "전체" then
+				nCnt_Total = nCnt_Total + 1
+			end if
+		else
+			sFilter = "전체"
+		end if
+		
+		if isEmpty(g_sResultGbn) == false then
+			if isEmpty(sFilter) == true then
+				sFilter = Return_ResultText(g_sResultGbn)
+			else
+				if Return_ResultText(g_sResultGbn) == "감시종료(주문미실행)" or Return_ResultText(g_sResultGbn) == "전체(종료제외)" or Return_ResultText(g_sResultGbn) == "주문취소"  then
+					sFilter = sFilter & "ㆍ\n" & Return_ResultText(g_sResultGbn)
+				else
+					sFilter = sFilter & "ㆍ" & Return_ResultText(g_sResultGbn)
+				end if
+			end if
+			
+			g_szSaveFilterData2 =  Return_ResultText(g_sResultGbn)
+			
+			if Return_ResultText(g_sResultGbn) == "전체" then
+				nCnt_Total = nCnt_Total + 1
+			end if
+		else
+			if isEmpty(sFilter) == true then
+				sFilter = "필터"
+			else
+				sFilter = sFilter & "ㆍ전체"
+			end if
+		end if
+		
+		if nCnt_Total == 2 or sFilter = "전체ㆍ전체" then
+			sFilter = "필터"
+		end if
+		
+		LabelFilter.fontsize = -2
+		LabelFilter.maxlinecnt = "2"
+		LabelFilter.caption = "1"
+		LabelFilter.caption = sFilter
+		
+		sCode = Form.GetSharedData("17100_T3_ITEMCODE" , false)
+'		if isEmpty(sCode) == false then
+'			Check_ItemCode(sCode)
+'		end if
+		
+'		sDate = Form.GetSharedData("17100_T3_CALENDAR" , false)
+'		
+'		if isEmpty(sDate) == false then
+'			Calendar0.caption = sDate
+'			
+'			sDateBase = Form.GetSharedData("17100_T3_CALENDAR_BASE" , false)
+'			if isEmpty(sDateBase) == false then
+'				Calendar1.caption = sDateBase
+'			end if
+'		else
+'			sCal = CalcDate("d",-30)
+'			Calendar0.caption = sCal
+'		end if
+
+		Calendar1.caption = CalcDate("d",0)
+		Calendar0.caption = CalcDate("d",-30)
+		
+		sChk = Form.GetSharedData("17100_T3_CHK0" , false)
+		sChk = Form.GetEnvData("17100_T3_CHK0")
+		if isEmpty(sChk) == false then
+			chk0.chksilence = sChk
+			g_isFst = true
+			
+			if sChk == "1" then
+				chk0_OnChange(sChk)
+			else
+				g_isFst = false
+				AutoRule_SelectOrderHistory() 
+			end if
+		else
+			AutoRule_SelectOrderHistory() 
+		end if
+		
+		
+'		Form.setDelayEvent(1, 0.2)
+'		AutoRule_SelectOrderHistory() 
+	end if
+	
+	if sEventName ==  "ACCT_CHANGE" then
+		if isEmpty(sParam) == false then
+			arrData = Convert_StrToArr(sParam, "`")
+			nArrCnt = #arrData
+			
+			if nArrCnt > 2 then
+				g_sAcno = arrData(0)
+				g_sAsno = arrData(1)
+				g_sAccName = arrData(2)
+			end if
+			
+			if nArrCnt > 3 then
+				g_sPwd = arrData(3)
+			end if
+		end if
+		
+		AutoRule_SelectOrderHistory() 
+	end if
+	
+	if sEventName ==  "REFRESH_LIST" then
+		if isEmpty(sParam) == false then
+			arrData = Convert_StrToArr(sParam, "`")
+			nArrCnt = #arrData
+			
+			if nArrCnt > 2 then
+				g_sAcno = arrData(0)
+				g_sAsno = arrData(1)
+				g_sAccName = arrData(2)
+			end if
+			
+			if nArrCnt > 3 then
+				g_sPwd = arrData(3)
+			end if
+		end if
+		
+		AutoRule_SelectOrderHistory() 
+	end if
+	
+	if Cint(instr(sEventName, "RESTAPI_RETURN_ORDER_LIST")) > 0 then
+		sStep = replace(sEventName, "RESTAPI_RETURN_ORDER_LIST_", "") 'g_sStep
+		g_sStep = ""
+		
+'		if sParam <> "SUCCESS" then
+'			oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParam2)
+'			
+'			if isEmpty(oError) == false then
+'				errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+'
+'				if errorCode == "INVALID_TOKEN" then
+'					g_sStep_Prev = sStep
+'					IssueToken() 
+'					Exit Sub 
+'				end if
+'			end if
+'		end if
+		
+		'----------------------------------------
+		' 서버 검증용 토큰 발급
+		'----------------------------------------
+		if sStep == "ISSUE_TOKEN" then
+		
+			'----------------------------------------
+			' 성공
+			'----------------------------------------
+			if sParam == "SUCCESS" then
+			
+				data = Form.responseRestAPI("JSONOBJ", 0, "data", sParam2)
+				
+				accessToken = Form.responseRestAPI("DATA", 0, "accessToken", data)
+				refreshToken = Form.responseRestAPI("DATA", 0, "refreshToken", data)
+				
+				if isEmpty(accessToken) == false then
+					Form.SetSharedData("&REST_API_TOKEN", " Bearer " & accessToken )
+				end if
+				
+				if isEmpty(refreshToken) == false then
+					Form.SetSharedData("&REST_API_REFRESH_TOKEN", " Bearer " & refreshToken )
+				end if
+				
+				if g_sStep_Prev == "SELECT_ORDER_HISTORY" then
+					AutoRule_SelectOrderHistory()
+				end if
+				
+			'----------------------------------------
+			' 실패(ERROR or EXCEPTION)
+			'----------------------------------------
+			else
+				Form.MsgBox("알림", "현재 자동감시주문 실행이 불가합니다.\n고객지원센터에 문의해주세요.", "CLOSE_FORM", 6)
+			end if
+			
+			g_sStep_Prev = ""
+		
+		elseif sStep == "SELECT_ORDER_HISTORY" or sStep == "SELECT_ORDER_HISTORY_NEXT" then
+			'----------------------------------------
+			' 성공
+			'----------------------------------------
+			if sParam == "SUCCESS" then
+				
+				if sStep == "SELECT_ORDER_HISTORY" then
+					g_sNextKey = ""
+					Grid0.SetClear()
+					Grid0.rowcount = 0
+					Grid0.initScrollX()
+				end if
+				'--------------------
+				' 응답데이터(전체)
+				'--------------------
+				oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParam2)	
+				
+				'--------------------
+				' ROW COUNT
+				'--------------------
+				nDataCnt = Form.responseRestAPI("DATA", 0, "dataCount", oData)
+				
+				'--------------------
+				' NEXT KEY
+				'--------------------
+				shasNext = Form.responseRestAPI("DATA", 0, "hasNext", oData)
+				
+				if shasNext == true or shasNext == "true" or shasNext == "1" then
+					g_sNextKey = Form.responseRestAPI("DATA", 0, "nextKey", oData)
+				else
+					g_sNextKey = ""
+				end if
+
+				if Cdbl(nDataCnt) > 0 then
+					for i = 0 to Cdbl(nDataCnt) - 1
+					
+						'--------------------
+						' ROW DATA
+						'--------------------
+						oListData = Form.responseRestAPI("JSONLIST", i, "data", oData)
+						
+						'--------------------
+						' 내역 정보
+						'--------------------
+						orderConditionId 	= Form.responseRestAPI("DATA", 0, "orderConditionId", 	oListData)
+						registrationDate 	= Form.responseRestAPI("DATA", 0, "registrationDate", 	oListData)
+						accountNumber		= Form.responseRestAPI("DATA", 0, "accountNumber", 		oListData)
+						accountSeqNumber	= Form.responseRestAPI("DATA", 0, "accountSeqNumber", 	oListData)
+						stockExchangeCode	= Form.responseRestAPI("DATA", 0, "stockExchangeCode", 	oListData)
+						stockExchangeName	= Form.responseRestAPI("DATA", 0, "stockExchangeName", 	oListData)
+						stockCode			= Form.responseRestAPI("DATA", 0, "stockCode", 			oListData)
+						stockKoreaName		= Form.responseRestAPI("DATA", 0, "stockKoreaName", 		oListData)
+						tradeType			= Form.responseRestAPI("DATA", 0, "tradeType", 			oListData)
+						procResultName		= Form.responseRestAPI("DATA", 0, "procResultName", 		oListData)
+						watchBasePrice		= Form.responseRestAPI("DATA", 0, "watchBasePrice", 		oListData)
+						watchCondition		= Form.responseRestAPI("DATA", 0, "watchCondition", 		oListData)
+						orderPaymentType	= Form.responseRestAPI("DATA", 0, "orderPaymentType", 	oListData)
+						orderClsType		= Form.responseRestAPI("DATA", 0, "orderClsType", 		oListData)
+						orderClsTypeNm		= Form.responseRestAPI("DATA", 0, "orderClsTypeNm", 		oListData)
+						orderPriceType		= Form.responseRestAPI("DATA", 0, "orderPriceType", 		oListData)
+						orderPrice			= Form.responseRestAPI("DATA", 0, "orderPrice", 		oListData)
+						orderPriceDesc		= Form.responseRestAPI("DATA", 0, "orderPriceDesc", 		oListData)
+						orderQty			= Form.responseRestAPI("DATA", 0, "orderQty", 			oListData)
+						expirationDate		= Form.responseRestAPI("DATA", 0, "expirationDate", 		oListData)
+						cntgQty			= Form.responseRestAPI("DATA", 0, "cntgQty", 			oListData)
+						cntgCamt			= Form.responseRestAPI("DATA", 0, "cntgCamt", 			oListData)
+						orderResponseCode	= Form.responseRestAPI("DATA", 0, "orderResponseCode", 	oListData)
+						orderMsg			= Form.responseRestAPI("DATA", 0, "orderMsg", 			oListData)
+						orderNo			= Form.responseRestAPI("DATA", 0, "orderNo", 			oListData)
+						orderDate			= Form.responseRestAPI("DATA", 0, "orderDate", 			oListData)
+						canModifyYn		= Form.responseRestAPI("DATA", 0, "canModifyYn", 		oListData)
+						
+						'--------------------
+						' ADD ROW
+						'--------------------
+						Grid0.AddRow()
+						nIdx = Cint(Grid0.rowcount) - 1 
+						
+						'--------------------
+						' ROW DATA 저장
+						'--------------------
+						DisplaySet_Pannel(nIdx, orderConditionId, registrationDate, accountNumber, accountSeqNumber, stockExchangeCode, stockExchangeName,
+						stockCode, stockKoreaName, tradeType, procResultName, watchBasePrice, watchCondition, orderPaymentType, orderClsType, orderClsTypeNm,
+						orderPriceType, orderPrice, orderPriceDesc, orderQty, expirationDate, cntgQty, cntgCamt, orderResponseCode, orderMsg, orderNo, orderDate, canModifyYn)
+						
+					next	
+				end if
+				
+			'----------------------------------------
+			' 실패(ERROR or EXCEPTION)
+			'----------------------------------------
+			else	
+'				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+'			
+'				if isEmpty(oError) == false then
+'					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+'					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+'					
+'					if isEmpty(errorMessage) == false then
+'						Form.ShowAlert("알림", errorMessage)
+'						Exit Sub 
+'					end if
+'				end if
+				
+				Form.ShowAlert("알림", g_sCommonErrorMsg)
+			end if
+			
+			nRowCnt = Cdbl(Grid0.rowcount)
+				
+			if nRowCnt > 0 then
+				DisplaySet_EmptyNotice(false)
+			else
+				DisplaySet_EmptyNotice(true)
+			end if
+			
+			g_isClick = false
+		end if
+	end if
+	
+	
+	if sEventName ==  "ACCT_PWD_CHECK" then
+		sRet = ""
+		if isEmpty(sParam) == false then
+			arrData = Convert_StrToArr(sParam, "`")
+			nArrCnt = #arrData
+			
+			if nArrCnt > 1 then
+				sRet = arrData(0)
+				g_sPwd = arrData(1)
+			else
+				sRet = sParam
+			end if
+		end if
+		
+		if sRet == "SUCCESS" then
+			sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+			sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+			
+			sAcntNm 	= g_sAccName 'Form.getTopCtlProp("act0","accountname")
+			
+			sPwd 	= g_sPwd	'Form.getTopCtlProp("edtPwd","caption")
+			
+			sLinkData = "1"
+			sLinkData = sLinkData & "`" & sAcno
+			sLinkData = sLinkData & "`" & sAsno
+			sLinkData = sLinkData & "`" & sPwd
+			sLinkData = sLinkData & "`" & sAcntNm
+			
+			if g_isModify = true then
+				sLinkData = sLinkData & "`" & g_sModifyInfo
+				
+				g_sModifyInfo = ""
+				g_isModify = false
+			end if
+
+			Form.OpenPopup("nrshtro17100_p2" , sLinkData , "")
+		end if
+	end if
+End Sub
+'============================================================================
+Sub Form_OnPopupReturn(sKeyName, sRet)
+	if sKeyName == "COMPLETE_ORDER" then
+		AutoRule_SelectByAccount() 
+		
+	elseif sKeyName == "INFO_DELETE" then
+		AutoRule_SelectByAccount() 
+		
+	elseif sKeyName == "INFO_MODIFY" then
+		g_isModify = true
+		g_sModifyInfo = sRet
+		
+		Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+	elseif sKeyName == "DLG_SELECT" then
+		Check_ItemCode(sRet)
+		
+		AutoRule_SelectOrderHistory()
+		
+	elseif sKeyName == "17100_RETURN_DATA_HISTORY" then
+		arrLinkData = Convert_StrToArr(sRet, "★")
+		nArrCnt = #arrLinkData
+		
+		sFilter = ""
+		nCnt_Total = 0
+		if nArrCnt > 0 then
+			g_sOrderGbn = Return_OrderCode(arrLinkData(0))
+			Form.SetSharedData("17100_T3_ORDER_GBN" , g_sOrderGbn)
+			sFilter = arrLinkData(0)
+			
+			g_szSaveFilterData1 =  arrLinkData(0)
+			
+			if arrLinkData(0) == "전체" then
+				nCnt_Total = nCnt_Total + 1
+			end if
+		end if
+		
+		if nArrCnt > 1 then
+			g_sResultGbn = Return_ResultCode(arrLinkData(1))
+			Form.SetSharedData("17100_T3_RESULT_GBN" , g_sResultGbn)
+			if isEmpty(sFilter) == true then
+				sFilter = arrLinkData(1)
+			else
+				if Return_ResultText(g_sResultGbn) == "감시종료(주문미실행)" or Return_ResultText(g_sResultGbn) == "전체(종료제외)" or Return_ResultText(g_sResultGbn) == "주문취소" then
+					sFilter = sFilter & "ㆍ\n" & arrLinkData(1)
+				else
+					sFilter = sFilter & "ㆍ" & arrLinkData(1)
+				end if
+				
+			end if
+			
+			g_szSaveFilterData2 =  arrLinkData(1)
+			
+			if arrLinkData(1) == "전체" then
+				nCnt_Total = nCnt_Total + 1
+			end if
+		end if
+		
+		if nCnt_Total == 2 then
+			sFilter = "필터"
+		end if
+		
+		LabelFilter.fontsize = -2
+		LabelFilter.maxlinecnt = "2"
+		LabelFilter.caption = "1"
+		LabelFilter.caption = sFilter
+		
+		
+		AutoRule_SelectOrderHistory()
+		
+	elseif sKeyName == "MOVEPOPUP_RETURN" then
+		'sRet = 선택행인덱스★이동화면 구분값 
+		arrData = Split(sRet,"★")
+		
+		sIndex = arrData(0)
+		sGubun = arrData(1)
+		
+		if sIndex <> "" and sGubun <> "" then
+			MoveScreen(sGubun,sIndex)
+		end if
+	end if
+End Sub
+
+Function Return_OrderCode(sCode)
+	Select case sCode
+		case "전체"
+			return ""
+			
+		case "매도"
+			return "1"
+			
+		case "매수"
+			return "2"
+			
+		case else
+			return ""
+	End Select
+End Function
+
+Function Return_OrderText(sCode)
+	Select case sCode
+		case ""
+			return "전체"
+			
+		case "1"
+			return "매도"
+			
+		case "2"
+			return "매수"
+			
+		case else
+			return "전체"
+	End Select
+End Function
+
+Function Return_ResultCode(sCode)
+	Select case sCode
+		case "전체", "전체(종료포함)"
+			return ""
+			
+		case "전체(종료제외)"
+			return "0"
+			
+		case "주문실행", "주문"
+			return "1"
+			
+		case "주문체결", "체결"
+			return "2"
+		
+		case "거부", "주문거부"
+			return "3"
+			
+		case "주문취소", "취소"
+			return "4"
+		
+		case "감시종료(주문미실행)", "감시종료"
+			return "5"
+			
+		case else
+			return ""
+	End Select
+End Function
+
+Function Return_ResultText(sCode)
+	Select case sCode
+		case ""
+			return "전체"
+			
+		case "0"
+			return "전체(종료제외)"
+			
+		case "1"
+			return "주문"
+			
+		case "2"
+			return "체결"
+		
+		case "3"
+			return "거부"
+			
+		case "4"
+			return "주문취소"
+			
+		case "5"
+			return "감시종료(주문미실행)"
+			
+		case else
+			return ""
+	End Select
+End Function
+
+
+'============================================================================
+' 마스터파일에 있는 종목인지 체크
+'============================================================================
+Function CheckMasterFile(szCode)
+	if szCode == "" or szCode == null then
+		CheckMasterFile = false
+		Exit Function
+	end if
+	arrCode = Split(szCode,"@")
+	
+	if #arrCode < 2 then
+		CheckMasterFile = false
+		Exit Function
+	end if
+	
+	g_sMarket = arrCode(0)
+	
+	szTransExidCode = Transform_Exid2(arrCode(0))
+	szTransItemCode = szTransExidCode .. "@" .. arrCode(1)
+	szCheckData = Form.GetItemCodeInfo(szTransItemCode, "exchid")
+	
+	if szCheckData = "" or szCheckData = null then
+		CheckMasterFile = false
+		Exit Function
+	end if
+	
+	CheckMasterFile = true
+	
+End Function
+
+'==============================================
+' 종목코드 변경 
+'==============================================
+Function Check_ItemCode(szCode)
+	arrLinkCode = Split(szCode,"★")
+	
+	if #arrLinkCode < 1 then
+		Exit Function
+	end if
+	
+	szCheckData = Form.GetItemCodeInfo(arrLinkCode(0), "name")
+	szCheckData2 = Form.GetItemCodeInfo(arrLinkCode(0), "enablefst")
+	
+	'종목정보 확인 (name 없는 경우, 마스터 파일에 없다고 판단)
+	if CheckMasterFile(arrLinkCode(0)) == false then
+		Exit Function
+	end if
+	
+	'------------------------------------------------------
+	' 종목코드 분리 (거래소코드@종목코드)
+	'------------------------------------------------------
+	arrCode = split(arrLinkCode(0), "@")
+	
+	if #arrCode > 1 then 
+		Form.SetSharedData("17100_T3_ITEMCODE" , arrLinkCode(0))
+		g_sCode = arrCode(1)		
+		g_sExid = Transform_Exid2(arrCode(0))
+		g_sMarket = Transform_Exid3(arrCode(0))
+		g_sItemCode = g_sExid & "@" & g_sCode
+		
+		g_sNation 	= Form.GetItemCodeInfo(g_sItemCode, "ovsnation") '국가구분 코드
+		g_sExid2 	= Form.GetItemCodeInfo(g_sItemCode, "exchcode3") '거래소 구분코드
+		g_sExid3	= Form.GetItemCodeInfo(g_sItemCode, "exchid")
+		g_sItemName = Form.GetItemCodeInfo(g_sItemCode, "name")
+		
+		sTicker = Form.GetEnvData("common.ticker_text")
+		
+		if g_sExid == "AX" or g_sExid == "NY" or g_sExid == "OQ" then
+			if sTicker == "1" then
+				lblItemName.caption = g_sItemName
+			elseif sTicker == "2" then
+				lblItemName.caption = g_sCode
+			else
+				sName = g_sItemName
+				
+				if Form.getItemCodeInfo(g_sItemCode, "etfyn") = "Y" then 
+					sName = g_sCode
+				end if
+				
+				lblItemName.caption = sName
+			end if
+		else
+			lblItemName.caption = g_sItemName
+		end if
+		
+		Image1.visible = true
+	else
+		Exit Function
+	end if
+End Function
+
+'==============================================
+' 거래소 구분코드 변경(3자리 -> 2자리)
+' 원장조회 종목연동 시, 과거 거래소 코드로 연동되는 경우 예외처리를 위해 필요
+'==============================================
+Function Transform_Exid2(sValue)
+	if sValue = "HKS" then
+		Transform_Exid2 = "HK"
+		exit Function
+	elseif sValue = "SHS" then
+		Transform_Exid2 = "SH"
+		exit Function
+	elseif sValue = "SZS" then
+		Transform_Exid2 = "SZ"
+		exit Function
+	elseif sValue = "NYS" then
+		Transform_Exid2 = "NY"
+		exit Function
+	elseif sValue = "AMX" then
+		Transform_Exid2 = "AX"
+		exit Function
+	elseif sValue = "NAS" then
+		Transform_Exid2 = "OQ"
+		exit Function
+	elseif sValue = "TSE" then
+		Transform_Exid2 = "JP"
+		exit Function
+	else
+		Transform_Exid2 = sValue
+		exit Function
+	end if
+End Function
+
+Function Transform_Exid3(sValue)
+	if sValue = "HK" then
+		Transform_Exid3 = "HKS"
+		exit Function
+	elseif sValue = "SH" then
+		Transform_Exid3 = "SHS"
+		exit Function
+	elseif sValue = "SZ" then
+		Transform_Exid3 = "SZS"
+		exit Function
+	elseif sValue = "NY" then
+		Transform_Exid3 = "NYS"
+		exit Function
+	elseif sValue = "AX" then
+		Transform_Exid3 = "AMX"
+		exit Function
+	elseif sValue = "OQ" then
+		Transform_Exid3 = "NAS"
+		exit Function
+	elseif sValue = "JP" then
+		Transform_Exid3 = "TSE"
+		exit Function
+	else
+		Transform_Exid3 = sValue
+		exit Function
+	end if
+End Function
+
+
+'============================================================================
+' From일로부터 + @일/개월 가져오기
+'============================================================================
+Function CalcDate(sType,nDiff)
+	
+	sDate = Form.GetSharedData("&HOST_DATE", false )
+	sYear = left(sDate, 4)
+	sMonth = mid(sDate, 5, 2)
+	sDay = right(sDate, 2)
+	
+	sRsltDate = Replace(DateAdd (sType, nDiff,  sYear&"-"& sMonth &"-"& sDay), "-", "")
+	return sRsltDate
+
+End Function
+
+''============================================================================
+'Sub btn0_OnClick()
+'	sCal = CalcDate("d",0)
+'	Calendar0.caption = sCal
+'	Calendar1.caption = sCal
+'	
+'	Form.SetSharedData("17100_T3_CALENDAR" , Calendar0.caption)
+'	Form.SetSharedData("17100_T3_CALENDAR_BASE" , Calendar1.caption)
+'	
+'	AutoRule_SelectOrderHistory()
+'End Sub
+
+'============================================================================
+Sub chk0_OnChange(sCheckState)
+	Form.SetSharedData("17100_T3_CHK0" , sCheckState)
+	Form.SetEnvData(1, "17100_T3_CHK0", sCheckState)
+	
+	if sCheckState == "0" then
+		SetShowToast(false)
+'		sDate = Form.GetSharedData("17100_T3_CALENDAR" , false)
+'		if isEmpty(sDate) == false then
+'			g_sCal0 = sDate
+'		end if
+'		
+'		sDateBase = Form.GetSharedData("17100_T3_CALENDAR_BASE" , false)
+'		if isEmpty(sDateBase) == false then
+'			g_sCal1 = sDateBase
+'		end if
+		
+'		if isEmpty(g_sCal0) == true or isEmpty(g_sCal1) == true then
+			g_sCal0 = CalcDate("d",-30)
+			g_sCal1 = CalcDate("d",0)
+'		end if
+	
+		Calendar0.caption = g_sCal0
+		Calendar1.caption = g_sCal1
+		
+		Calendar0.enable = true
+		Calendar1.enable = true
+		
+		Form.SetSharedData("17100_T3_CALENDAR" , Calendar0.caption)
+		Form.SetSharedData("17100_T3_CALENDAR_BASE" , Calendar1.caption)
+		
+		AutoRule_SelectOrderHistory()
+	else
+		SetShowToast(true)
+		g_sCal0 = Calendar0.caption
+		g_sCal1 = Calendar1.caption
+		
+		DATAMANAGER.RequestTranData("obtro_oder_268r")
+		
+		Calendar0.enable = false
+		Calendar1.enable = false
+	end if
+	
+	g_isFst = false
+End Sub
+
+'============================================================================
+Sub imgSearch_OnClick()
+	Form.OpenPopup("msearchdialog", "종목검색★56:52★INTG_DIVIDE_HISTORY★EMPTY★EMPTY", "")
+End Sub
+'============================================================================
+Sub lblItemName_OnClick()
+	Form.OpenPopup("msearchdialog", "종목검색★56:52★INTG_DIVIDE_HISTORY★EMPTY★EMPTY", "")
+End Sub
+
+'============================================================================
+Sub Image0_OnClick()
+	if g_szSaveFilterData1 = "" then
+		g_szSaveFilterData1 = "전체"
+	end if
+	
+	if g_szSaveFilterData2 = "" then
+		g_szSaveFilterData2 = "전체"
+	end if
+	
+	Form.OpenPopup("nrshtro17100_p5", "HISTORY★1★1★"&g_szFilterData1&"★"&g_szFilterData2&"★"&g_szSaveFilterData1&"★"&g_szSaveFilterData2 , "")
+End Sub
+
+'============================================================================
+Sub LabelFilter_OnClick()
+	Image0_OnClick()
+End Sub
+
+'============================================================================
+Sub Image1_OnClick()
+	g_sCode = ""
+	g_sExid = ""
+	g_sMarket = ""
+	g_sItemCode = ""
+	
+	g_sNation 	= ""
+	g_sExid2 	= ""
+	g_sExid3	= ""
+	g_sItemName = ""
+	
+	lblItemName.caption = "종목명/종목코드/초성입력"
+	Image1.visible = false
+	
+	Form.SetSharedData("17100_T3_ITEMCODE" , "")
+	
+	AutoRule_SelectOrderHistory()
+End Sub
+
+
+'============================================================================
+Sub Calendar0_OnEditComplete()
+	
+	if Cint(Calendar0.caption) >  Cint(Calendar1.caption) then
+		Form.ShowAlert("알림", "과거일자가 기준일자보다 큽니다.")
+		Calendar0.caption = Calendar1.caption
+	end if
+	
+	'sCal = CalcDate("d",-365)
+	
+	sDate = Calendar1.caption
+	sYear = left(sDate, 4)
+	sMonth = mid(sDate, 5, 2)
+	sDay = right(sDate, 2)
+	
+	sRsltDate = Replace(DateAdd ("d", -365,  sYear&"-"& sMonth &"-"& sDay), "-", "")
+	
+	if Cint(Calendar0.caption) <  Cint(sRsltDate) then
+		Form.ShowAlert("알림", "최대 1년 단위로만 조회 가능합니다.")
+		Calendar0.caption = sRsltDate
+	end if
+	
+	Form.SetSharedData("17100_T3_CALENDAR" , Calendar0.caption)
+	Form.SetSharedData("17100_T3_CALENDAR_BASE" , Calendar1.caption)
+	
+	AutoRule_SelectOrderHistory()
+End Sub
+
+'============================================================================
+Sub Calendar1_OnEditComplete()
+	
+	if Cint(Calendar0.caption) >  Cint(Calendar1.caption) then
+		Form.ShowAlert("알림", "과거일자가 기준일자보다 큽니다.")
+		Calendar1.caption = Calendar0.caption
+	end if
+	
+	sDate = Calendar0.caption
+	sYear = left(sDate, 4)
+	sMonth = mid(sDate, 5, 2)
+	sDay = right(sDate, 2)
+	
+	sRsltDate = Replace(DateAdd ("d", 365,  sYear&"-"& sMonth &"-"& sDay), "-", "")
+	
+	sHostDate = Form.GetSharedData("&HOST_DATE", false)
+	
+	if Cint(sRsltDate) > Cint(sHostDate) then
+		if Cint(Calendar1.caption) >  Cint(sHostDate) then
+			Form.ShowAlert("알림", "당일 이후 날짜는 선택 불가해요.")
+			Calendar1.caption = sHostDate
+		end if
+	else
+		if Cint(Calendar1.caption) >  Cint(sRsltDate) then
+			Form.ShowAlert("알림", "최대 1년 단위로만 조회 가능합니다.")
+			Calendar1.caption = sRsltDate
+		end if
+	end if
+	
+	Form.SetSharedData("17100_T3_CALENDAR" , Calendar0.caption)
+	Form.SetSharedData("17100_T3_CALENDAR_BASE" , Calendar1.caption)
+	
+	AutoRule_SelectOrderHistory()
+End Sub
+
+
+
+'============================================================================
+Sub Grid0_OnClickUp(lRow, szCellID)
+	SetShowToast(false)
+	
+	OpenMovePopup(lRow)
+End Sub
+
+'============================================================================
+Function OpenMovePopup(nIndex)
+
+	'--------------------------------------------
+	'무브팝업 화면에 넘겨줄 데이터 가져옴
+	'--------------------------------------------
+	listLocation =  Split(Grid0.location,":")
+	
+	nYPos = Int(listLocation[1])
+	nHeight = listLocation[3]
+
+	sIndex 		= nIndex
+	sName 		= Grid0.GetCellData("bd_cell15", nIndex)
+	sCode 		= Grid0.GetCellData("bd_cell16", nIndex)
+	sVndrCode 		= Grid0.GetCellData("bd_cell11", nIndex)
+	sCanMod		= Grid0.GetCellData("bd_cell12", nIndex)
+	
+	sExid		= Transform_Exid2(sVndrCode)
+	sExid3		= Form.GetItemCodeInfo(sExid&"@"&sCode, "exchid")
+	
+	sResult       = Grid0.GetCellData("bd_cell2", nIndex)
+	sResultCode   = Return_ResultCode(sResult)
+	
+	if sExid == "" then
+		'Form.ShowAlert("알림", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요")
+		Exit Function
+	end if
+	
+	szData = "OVRS_ODER_JANGO" & "★" & nYPos & "★" & nHeight & "★" & sIndex & "★" & sName & "★" & sCode & "★" & sExid3 & "★" & sResultCode  & "★" & sCanMod 
+
+	
+	'--------------------------------------------
+	'무브팝업 오픈
+	'--------------------------------------------
+	Form.OpenPopup("nrshtro17100_pmove" , szData , "")
+	
+
+End Function
+
+Function MoveScreen(sGubun,sIndex)
+
+	Dim nIndex
+	nIndex = Cint(sIndex)
+	
+	szName 		= Grid0.GetCellData("bd_cell15", nIndex)
+	
+	sCode 		= Grid0.GetCellData("bd_cell16", nIndex)
+	sVndrCode 		= Grid0.GetCellData("bd_cell11", nIndex)
+	
+	sCanMod		= Grid0.GetCellData("bd_cell12", nIndex)
+	
+	sResultGbn 	= Grid0.GetCellData("bd_cell2", nIndex)
+	
+	sExid		= Transform_Exid2(sVndrCode)
+	sExid3		= Form.GetItemCodeInfo(sExid&"@"&sCode, "exchid")
+	szItemCode = sExid&"@"&sCode
+
+	if sExid == "" then
+'		Form.ShowAlert("알림", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요")
+		Exit Function
+	end if
+
+'	showalert  szItemCode .. "|" .. szName .. "|" .. sJangoGubun .. "|" .. sOrdAbleQty .. "|" .. sLoanType .. "|" .. sLoanDate .. "|" .. sLoanSrno
+	Form.SetSharedData( "&ITEM_CODE" , szItemCode)
+	Form.SetSharedData( "&ITEM_KORNAME" , szName  )	
+	Form.SetSharedData( "&ITEM_OVERSTOCK", szItemCode.."★"..szName.."★".."", "" )			
+	Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", szItemCode.."★"..szName.."★".."", "" )
+	
+	'------------------------------------
+	' [현재가] : 종목연동
+	'------------------------------------
+	if sGubun == "MOVE_HYUN" then
+		if szItemCode <> "" then
+			Form.OpenScreen("16000", "")	
+		end if
+	
+	'------------------------------------
+	' [차트] : 종목연동
+	'------------------------------------
+	elseif sGubun == "MOVE_CHART" then
+		if szItemCode <> "" then
+			Form.OpenScreen("16020", "")
+		end if
+	
+	'------------------------------------
+	' [매수] : 종목연동
+	'------------------------------------
+	elseif sGubun == "MOVE_MOD" then
+		
+		if sResultGbn == "주문" and sCanMod == "1" then
+			if szItemCode <> "" then
+				Form.OpenScreen("16060", "2")
+			end if
+		else
+			Form.OpenScreen("16074", "")
+		end if
+		
+'	'------------------------------------
+'	' [매도] : 종목연동 / 매도가능수량 연동
+'	'------------------------------------
+'	elseif sGubun == "MOVE_MAEDO" then
+'		'---------------------------------------------------------------------------------------
+'		' 연동수량(주문가능수량) 천단위부호(,) 제거
+'		' 그리드에 있는 주문가능수량 데이터는 일반잔고/소수점 잔고의 수량을 
+'		' 표시하기 위해 문자형으로 세팅되어있음. 그대로 값을 가져오면 천단위 부호도 같이 넘어옴.
+'		' 넘어온 데이터를 그대로 천단위 부호까지 같이 넘기면
+'		' 안드로이드에서 천단위 부호 중복해서 보이는 현상 발생.
+'		'---------------------------------------------------------------------------------------
+'		sOrdAbleQty = replace(sOrdAbleQty,",","")
+'		
+'		'--------------------------------------------
+'		'소수점 잔고일 경우 소수점 주문화면으로 연동
+'		'--------------------------------------------
+'		if sJangoGubun == "03" then
+'		
+'			if szItemCode <> "" then
+'				szData = szItemCode & "★" & szName & "♥" & "1" & "♥" & "" & "♥" & "" & "♥" & "0000" & "♥" & "0" & "♥" & "00000000000"
+'				Form.OpenScreen("16092" , szData)
+'			end if
+'		
+'		'--------------------------------------------
+'		' 일반/대출 잔고일 경우 매도탭으로 연동
+'		'--------------------------------------------
+'		else
+'			
+'			if szItemCode <> "" then
+'				szData = szItemCode & "★" & szName & "♥" & "1" & "♥" & sOrdAbleQty & "♥" & sLoanDate & "♥" & sLoanType & "♥" & "0" & "♥" & sLoanSrno
+'				
+'				'--------------------------------------------
+'				' 현재 해외주식 신용합산 주문이 불가하므로,
+'				' 대출일 경우 대출합산 체크 여부 확인하여
+'				' 체크되어있으면 주문불가 안내팝업 발생
+'				'--------------------------------------------
+'				if sJangoGubun == "02" then
+'				
+'					nCheckHabsan = Cint(contBody.chk1.checkstate)
+'					
+'					if nCheckHabsan == 1 then
+'						Form.MsgBox("안내", "합산 주문이 불가합니다.\n대출합산 해지 후 매도를 진행해주세요.", "MOVEPOPUP_CHECK_HABSAN", 6)
+'						Exit Function
+'					end if
+'					
+'				end if
+'				
+'				Form.OpenScreen("16060", szData)
+'			
+'			end if
+'			
+'		end if
+	
+	end if
+
+End Function
+
+'============================================================================
+Sub Grid0_OnScrollEnd()
+	if isEmpty(g_sNextKey) == false then
+		AutoRule_SelectOrderHistory_Next()
+	end if
+End Sub
+
+'============================================================================
+Sub Form_OnFormInit()
+	LabelFilter.maxlinecnt = "2"
+	lblItemName.maxlinecnt = "1"
+	
+	contToast.LabelText.caption = "00:00 ~ After 시간에 당일 버튼 클릭 시 미국 현지일 기준으로 조회되어 정규장에 실행된 전체 내역을 확인 할 수 있어요."
+	
+'	Form.setDelayEvent(2, 0.2)
+End Sub
+
+'============================================================================
+' 비용포함 체크 시, 안내메시지 보임여부
+'============================================================================
+Function SetShowToast(bShow)
+	
+	if g_isFst == false then
+		if bShow then
+			contToast.left = 30
+			contToast.visible = true
+			
+			Form.setDelayEvent(3, 5)
+		else
+			contToast.visible = false
+			contToast.left = 500
+		end if
+	end if
+
+End Function
+
+
+
+'============================================================================
+Sub DATAMANAGER_OnSendTranBefore(szTranID)
+	'----------------------------------------
+	' 미국장 영업일 조회
+	'----------------------------------------
+	If szTranID == "obtro_comn_005r" then
+		DATAMANAGER.ClearInputData(0, "obtro_comn_005r")
+		
+		DATAMANAGER.SetDataValue(0, "obtro_comn_005r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE", 0 ,  "01")	'미국 거래소로 고정
+	elseif szTranID == "obtro_oder_268r" then
+		DATAMANAGER.ClearInputData(0, "obtro_oder_268r")
+		
+		DATAMANAGER.SetDataValue(0, "obtro_oder_268r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE"		, 0, "01")		' 해외주식시장 거래구분코드 : 미국
+		DATAMANAGER.SetDataValue(0, "obtro_oder_268r", "InBlock1", "OVRS_MKOP_CLS_CODE"				, 0, "005")		' 해외장 운영구분코드 : 정규장+에프터
+		
+	end if
+End Sub
+
+'============================================================================
+Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+	'----------------------------------------
+	' 미국장 영업일 조회
+	'----------------------------------------
+	If szTranID = "obtro_comn_005r" then
+		g_sBizDate   		= DATAMANAGER.GetDataValue(0, "obtro_comn_005r", "OutBlock1", "BSOP_DATE"	, 0) ' 미국장 영업일
+
+		if Cdbl(g_sBizDate) < Cdbl(CalcDate("d",-1)) then
+			Calendar0.caption = CalcDate("d",0)
+			Calendar1.caption = CalcDate("d",0)
+		else
+			Calendar0.caption = g_sBizDate
+			Calendar1.caption = CalcDate("d",0)
+		end if
+		
+		AutoRule_SelectOrderHistory()
+		
+	elseif szTranID = "obtro_oder_268r" then
+		g_sBizDate = DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "MANG_DATE", 0)
+		sHostDate = Form.GetSharedData("&HOST_DATE", false)
+		
+		Calendar0.caption = g_sBizDate
+		Calendar1.caption = sHostDate
+		
+		AutoRule_SelectOrderHistory()
+	end if
+End Sub
+
+'============================================================================
+' 비용포함 체크 시, 안내메시지 닫기
+'============================================================================
+Sub contToast_ImageClose_OnClick()
+	
+	SetShowToast(false)
+	
+End Sub
+
+'============================================================================
+' 비용포함 체크 시, 안내메시지 닫기
+'============================================================================
+Sub contToast_LabelText_OnClick()
+
+	SetShowToast(false)
+		
+End Sub
+
+'============================================================================
+Sub Image2_OnClick()
+	if g_isClick == false then
+		g_isClick = true
+		AutoRule_SelectOrderHistory()
+	end if
+End Sub
+
+	</SCRIPT_INFO>
+	<DATAIO_INFO>
+		<TRID_INFO>
+			<TRAN tranid="obtro_comn_005r" trcode="obtro_comn_005r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="obtro_oder_268r" trcode="obtro_oder_268r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+		</TRID_INFO>
+		<TRIO_INFO>
+			<TRAN name="obtro_comn_005r" title="해외주식시장 영업일자 조회" realdata="0" dessvr="9" >
+				<TRBLOCK name="InBlock1" inout="in" _len="85" _ulen="61" >
+
+OVRS_STCK_MRKT_TR_CLS_CODE^해외주식시장거래구분코드^2^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="44" _ulen="36" >
+
+BSOP_DATE^영업일자^8^0^0^0^0^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obtro_oder_268r" title="해외주식 예약주문 조회일자 당?" realdata="0" dessvr="9" >
+				<TRBLOCK name="InBlock1" inout="in" _len="147" _ulen="105" >
+
+OVRS_STCK_MRKT_TR_CLS_CODE^해외주식시장거래구분코드^2^0^0^0^0^0^0
+OVRS_MKOP_CLS_CODE^해외장운영구분코드^3^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="44" _ulen="36" >
+
+MANG_DATE^관리일자^8^0^0^0^0^0^0
+
+				</TRBLOCK>
+			</TRAN>
+		</TRIO_INFO>
+	</DATAIO_INFO>
+</ROOT>

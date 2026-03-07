@@ -1,0 +1,1982 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문_매수탭" version="2" writer="함원규" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,555,1" />
+	<CONTROL_INFO>
+		<IMAGE name="imgNotice" visible="0" autosize="1" imgpath="icon_notice_3" ly_vert="160,150,50,50,0" />
+		<LABEL name="LabelGuideText2" visible="0" fgcolor="333:115118124" caption="등록된 감시 조건이 없어요." halign="1" ly_vert="0,204,375,32,0" />
+		<LABEL name="LabelGuideText1" visible="0" fgcolor="333:115118124" caption="[매수 조건]을 추가해 주세요." halign="1" ly_vert="0,230,375,32,0" />
+		<CONTAINER name="cont0" ly_vert="400,0,375,495,1" scroll_ly_vert="400,0,375,495,1" >
+			<CONTROL_INFO>
+				<LABEL name="lblInfo" fgcolor="333:115118124" fontsize="-2" fontstyle="01" ly_vert="10,11,130,30,1" />
+				<PANNEL name="pnl0" bgcolor="320:246247248" ly_vert="0,60,375,435,1" >
+					<CONTROL_INFO>
+						<IMAGE name="Image4" autosize="1" imgpath="bg_listbox.9" ly_vert="5,0,365,160,1" />
+						<IMAGE name="Image7" autosize="1" imgpath="bg_infobox.9" ly_vert="25,45,325,35,1" />
+						<IMAGE name="Image3" ly_vert="325,13,26,26,1" />
+						<LABEL name="lblData3" fontsize="-2" mask="0,0,,주,0,,0,1,1,0,0" halign="2" autofontsize="1" ly_vert="90,110,115,32,1" />
+						<LABEL name="lblTitle3" fgcolor="333:115118124" fontsize="-2" caption="주문수량" autofontsize="1" ly_vert="15,110,75,32,1" />
+						<LABEL name="lblTitle2" fgcolor="333:115118124" fontsize="-2" caption="주문가격" autofontsize="1" ly_vert="15,87,75,32,1" />
+						<LABEL name="lblData2" fontsize="-2" halign="2" autofontsize="1" ly_vert="90,87,115,32,1" />
+						<LABEL name="lblTitle5" fgcolor="333:115118124" fontsize="-2" caption="주문유형" autofontsize="1" ly_vert="210,87,75,32,1" />
+						<LABEL name="lblData5" fontsize="-2" halign="2" autofontsize="1" ly_vert="270,87,90,32,1" />
+						<LABEL name="lblData6" fontsize="-2" halign="2" autofontsize="1" ly_vert="270,110,90,32,1" />
+						<LABEL name="lblData0" fontsize="-3" halign="2" autofontsize="1" ly_vert="100,46,250,32,1" />
+						<LABEL name="lblTitle0" fgcolor="333:115118124" fontsize="-3" caption="감시조건" autofontsize="1" ly_vert="25,46,75,32,1" />
+						<IMAGE name="Image5" autosize="1" imgpath="icon_remove" ly_vert="25,18,15,15,1" />
+						<LABEL name="lblItemInfo" fontstyle="01" multiline="1" ly_vert="45,10,215,30,1" />
+						<LABEL name="lblData4" visible="0" fontsize="-4" halign="2" autofontsize="1" paddinginfo="0,0,1,0" ly_vert="176,13,90,26,0" />
+						<LABEL name="lblTitle6" fgcolor="333:115118124" fontsize="-2" caption="종료일자" autofontsize="1" ly_vert="210,110,75,32,1" />
+						<LABEL name="orderConditionId" visible="0" ly_vert="10,160,70,15,0" />
+						<LABEL name="registrationDate" visible="0" ly_vert="10,180,70,15,0" />
+						<LABEL name="accountNumber" visible="0" ly_vert="10,200,130,15,0" />
+						<LABEL name="accountSeqNumber" visible="0" ly_vert="10,220,70,15,0" />
+						<LABEL name="stockExchangeCode" visible="0" ly_vert="10,240,70,15,0" />
+						<LABEL name="stockCode" visible="0" ly_vert="10,260,70,15,0" />
+						<LABEL name="stockKoreaName" visible="0" ly_vert="10,280,70,15,0" />
+						<LABEL name="tradeType" visible="0" ly_vert="10,300,70,15,0" />
+						<LABEL name="watchConditionType" visible="0" ly_vert="10,320,70,15,0" />
+						<LABEL name="watchConditionTypeNm" visible="0" ly_vert="10,340,70,15,0" />
+						<LABEL name="watchType" visible="0" ly_vert="10,360,70,15,0" />
+						<LABEL name="watchTypeNm" visible="0" ly_vert="10,380,70,15,0" />
+						<LABEL name="price" visible="0" ly_vert="10,400,70,15,0" />
+						<LABEL name="conditionStatusName" visible="0" ly_vert="90,340,70,15,0" />
+						<LABEL name="orderPaymentType" visible="0" ly_vert="90,160,70,15,0" />
+						<LABEL name="orderClsType" visible="0" ly_vert="90,180,70,15,0" />
+						<LABEL name="orderClsTypeNm" visible="0" ly_vert="90,200,70,15,0" />
+						<LABEL name="orderPriceType" visible="0" ly_vert="90,220,70,15,0" />
+						<LABEL name="tickValue" visible="0" ly_vert="90,240,70,15,0" />
+						<LABEL name="lblData1" fontsize="-2" bgcolor="290:235091091" halign="2" autofontsize="1" paddinginfo="0,0,5,0" click="1" ly_vert="260,13,65,26,1" />
+						<LABEL name="orderPrice" visible="0" ly_vert="90,260,70,15,0" />
+						<LABEL name="orderQty" visible="0" ly_vert="90,280,70,15,0" />
+						<LABEL name="expirationDate" visible="0" ly_vert="90,300,70,15,0" />
+						<LABEL name="conditionStatusCode" visible="0" ly_vert="90,320,70,15,0" />
+						<BUTTON name="btnDelete" btnimage="alpha" ly_vert="19,13,26,26,1" />
+					</CONTROL_INFO>
+					<CARD_INFO cardheight="160" >
+						<CELL name="lblData6" />
+						<CELL name="lblTitle6" />
+						<CELL name="lblData3" />
+						<CELL name="lblTitle3" />
+						<CELL name="lblTitle2" />
+						<CELL name="lblData2" />
+						<CELL name="lblTitle5" />
+						<CELL name="lblData5" />
+						<CELL name="lblData0" />
+						<CELL name="lblTitle0" />
+						<CELL name="Image5" />
+						<CELL name="lblItemInfo" />
+						<CELL name="lblData4" />
+						<CELL name="lblData1" />
+						<CELL name="Image3" />
+						<CELL name="Image4" />
+						<CELL name="orderConditionId" />
+						<CELL name="registrationDate" />
+						<CELL name="accountNumber" />
+						<CELL name="accountSeqNumber" />
+						<CELL name="stockExchangeCode" />
+						<CELL name="stockCode" />
+						<CELL name="stockKoreaName" />
+						<CELL name="tradeType" />
+						<CELL name="watchConditionType" />
+						<CELL name="watchConditionTypeNm" />
+						<CELL name="watchType" />
+						<CELL name="watchTypeNm" />
+						<CELL name="price" />
+						<CELL name="conditionStatusName" />
+						<CELL name="orderPaymentType" />
+						<CELL name="orderClsType" />
+						<CELL name="orderClsTypeNm" />
+						<CELL name="orderPriceType" />
+						<CELL name="tickValue" />
+						<CELL name="orderPrice" />
+						<CELL name="orderQty" />
+						<CELL name="expirationDate" />
+						<CELL name="conditionStatusCode" />
+						<CELL name="Image7" />
+						<CELL name="btnDelete" />
+					</CARD_INFO>
+				</PANNEL>
+				<IMAGE name="Image6" autosize="1" imgpath="btn_02_n.9" ly_vert="301,10,60,30,1" />
+				<IMAGE name="Image0" autosize="1" imgpath="btn_02_n.9" ly_vert="400,10,85,30,1" />
+				<IMAGE name="Image1" autosize="1" imgpath="btn_02_n.9" ly_vert="490,10,80,30,1" />
+				<IMAGE name="Image2" autosize="1" imgpath="img_bgbox_line2.9" ly_vert="301,10,60,30,1" />
+				<LABEL name="Label0" fontsize="-2" caption="전체실행" autofontsize="1" click="1" ly_vert="414,10,64,30,1" />
+				<LABEL name="Label1" fontsize="-2" caption="전체삭제" halign="1" autofontsize="1" click="1" ly_vert="498,10,64,30,1" />
+				<LABEL name="Label2" fontsize="-2" caption="상세" halign="1" multiline="1" click="1" ly_vert="315,10,42,30,1" />
+				<IMAGE name="Image8" autosize="1" imgpath="btn_icon_play_l" ly_vert="404,18,20,14,1" />
+				<LABEL name="Label3" bgcolor="320:246247248" transmode="0" ly_vert="0,50,375,10,1" />
+				<LABEL name="Label4" fgcolor="334:034034034" fontsize="-2" caption="전체" halign="1" ly_vert="150,10,40,32,1" />
+				<IMAGE name="Image10" autosize="1" imgpath="img_bgbox_line2.9" ly_vert="190,10,30,30,1" />
+				<IMAGE name="Image9" autosize="1" imgpath="img_bgbox_line2.9" ly_vert="225,10,30,30,1" />
+				<IMAGE name="Image11" autosize="1" imgpath="img_bgbox_line2.9" ly_vert="260,10,30,30,1" />
+				<IMAGE name="Image12" autosize="1" ly_vert="198,18,14,14,1" />
+				<IMAGE name="Image13" autosize="1" ly_vert="233,18,14,14,1" />
+				<IMAGE name="Image14" autosize="1" ly_vert="268,18,14,14,1" />
+				<IMAGE name="Image15" autosize="1" ly_vert="312,20,4,4,1" />
+				<IMAGE name="Image16" autosize="1" ly_vert="312,26,4,4,1" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<BUTTON name="btnReg" caption="매수 조건 추가하기" btnimage="btn_30.9" ly_vert="-5,495,385,60,1" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="61451" _ulen="58653" >
+'****************************************************************************
+'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+'****************************************************************************
+' 실행중인 감시조건 카운트
+Dim g_nRunCnt 		
+g_nRunCnt = 0
+
+' 내역조회 NEXT KEY
+Dim g_sNextKey
+g_sNextKey = ""
+
+' 클릭한 리스트 인덱스
+Dim g_nClickIdx		
+g_nClickIdx = 0
+
+' 상세/요약 보기 모드
+Dim g_nViewMode		
+g_nViewMode = 0
+
+' 조건수정 여부 (조건설정 화면 오픈 시 링크데이터 변환)
+Dim g_isModify
+g_isModify = false
+
+' 조건수정 데이터
+Dim g_sModifyInfo
+
+' 공통 에러 문구(REST API 용)
+Dim g_sCommonErrorMsg
+g_sCommonErrorMsg = "현재 자동감시주문 실행이\n불가합니다.\n고객지원센터에 문의해주세요."
+
+Dim g_sStep
+g_sStep = ""
+
+Dim g_sStep_Prev
+g_sStep_Prev = ""
+
+Dim g_sAcno
+g_sAcno = ""
+
+Dim g_sAsno
+g_sAsno = ""
+
+Dim g_sPwd
+g_sPwd = ""
+
+Dim g_sAccName
+g_sAccName = ""
+
+Dim g_isClickable
+g_isClickable = true
+
+
+'****************************************************************************
+'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+'****************************************************************************
+'===============================================
+' NULL 체크 
+'===============================================
+Function isEmpty(sData)
+	if trim(sData) == "" or sData == null or trim(sData) == "null" then
+		return true
+	else
+		return false
+	end if
+End Function
+
+'===============================================
+' 숫자 소수점 절사 함수
+'===============================================
+Function truncateToDecimalPlaces(nVal, nDeimalPlaces)
+	nVal = Cdbl(nVal)
+	nFactor = 10 ^ nDeimalPlaces
+	szNumStr = FormatNumber(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = instr(szNumStr, ".")
+	
+	nTotalData = 0
+	if Cint(nDecimalIdx) > 0 then
+		nTotalData = Cdbl(left(szNumStr, Cint(nDecimalIdx)-1))
+	else
+		nTotalData = Cdbl(szNumStr)
+	end if
+
+	return nTotalData / nFactor
+End Function
+
+'===============================================
+' (NonNull) 문자열 -> 배열 변환함수
+'===============================================
+Function Convert_StrToArr(szData, szSeperator)
+
+	Dim arrData
+	
+	'--------------------------------------------
+	' 링크데이터 값 체크
+	'--------------------------------------------
+	if isEmpty(szData) then
+		arrData = {}
+		return arrData
+	end if
+	
+	'--------------------------------------------
+	' 구분자 값 체크
+	'--------------------------------------------
+	if isEmpty(szSeperator) then
+		' 단일변수
+		arrData = {}
+		Table.insert(arrData, szData)
+	else
+		' 다중변수
+		arrData = split(szData, szSeperator)
+	end if
+	
+	return arrData
+	
+End Function
+
+'===============================================
+' 조회데이터 없는 경우 가이드문구 표시
+'===============================================
+Function DisplaySet_EmptyNotice(isShow) 
+	if isShow == true then
+		imgNotice.visible = true
+		LabelGuideText2.visible = true
+		LabelGuideText1.visible = true
+	else
+		imgNotice.visible = false
+		LabelGuideText2.visible = false
+		LabelGuideText1.visible = false
+	end if
+End Function
+
+'===============================================
+' 상세/요약 접기
+'===============================================
+Function Expand_List()
+
+	nCnt = cont0.pnl0.rowcount
+	
+	nHeight = 160
+	if g_nViewMode == 1 then
+		nHeight = 100
+	end if
+	
+	for i = 0 to nCnt-1
+		
+		cont0.pnl0.SetCardWHAt(i,nHeight)
+		cont0.pnl0.setPropCardCell("height", "Image4", i , nHeight )
+		
+		if g_nViewMode == 1 then
+			cont0.pnl0.setPropCardCell("width", "lblItemInfo", i , 125 )
+			
+			cont0.pnl0.setPropCardCell("visible", "lblTitle2", i , false )
+			cont0.pnl0.setPropCardCell("visible", "lblTitle3", i , false )
+			cont0.pnl0.setPropCardCell("visible", "lblTitle5", i , false )
+			cont0.pnl0.setPropCardCell("visible", "lblTitle6", i , false )
+			cont0.pnl0.setPropCardCell("visible", "lblData2", i , false )
+			cont0.pnl0.setPropCardCell("visible", "lblData3", i , false )
+			cont0.pnl0.setPropCardCell("visible", "lblData5", i , false )
+			cont0.pnl0.setPropCardCell("visible", "lblData6", i , false )
+			
+			cont0.pnl0.setPropCardCell("visible", "lblData4", i , true )
+			
+		else
+			cont0.pnl0.setPropCardCell("width", "lblItemInfo", i , 215 )
+			
+			cont0.pnl0.setPropCardCell("visible", "lblTitle2", i , true )
+			cont0.pnl0.setPropCardCell("visible", "lblTitle3", i , true )
+			cont0.pnl0.setPropCardCell("visible", "lblTitle5", i , true )
+			cont0.pnl0.setPropCardCell("visible", "lblTitle6", i , true )
+			cont0.pnl0.setPropCardCell("visible", "lblData2", i , true )
+			cont0.pnl0.setPropCardCell("visible", "lblData3", i , true )
+			cont0.pnl0.setPropCardCell("visible", "lblData5", i , true )
+			cont0.pnl0.setPropCardCell("visible", "lblData6", i , true )
+			
+			cont0.pnl0.setPropCardCell("visible", "lblData4", i , false )
+		end if
+	next
+
+End Function
+
+'===============================================
+' REST API_등록된 감시조건 갯수조회 (최대 50건)
+'===============================================
+Function AutoRule_SelectCount() 
+	g_sStep = "SELECT_COUNT"
+	
+	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	
+	Form.releaseRequestData()
+	
+	Form.makeRequestData("accountNumber", sAcno)
+	Form.makeRequestData("accountSeqNumber", sAsno)
+	Form.makeRequestData("tradeType", "2")			' 매도/매수 구분(1:매도, 2:매수)
+	Form.makeRequestData("dataTargetType", "2")		' 국내/해외 구분(1:국내, 2:해외)
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/select-valid-count", "BUY_"&g_sStep)
+End Function
+
+'===============================================
+' REST API_등록된 감시조건 조회 (최대 50건)
+'===============================================
+Function AutoRule_SelectByAccount() 
+	g_sStep = "SELECT_BY_ACCOUNT"
+	
+	'-----------------------------
+	' 조회내역 초기화
+	'-----------------------------
+	g_nRunCnt = 0
+	cont0.pnl0.rowcount = 0
+	cont0.lblInfo.caption = ""
+	
+	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	
+	Form.releaseRequestData()
+	
+	Form.makeRequestData("accountNumber", sAcno)
+	Form.makeRequestData("accountSeqNumber", sAsno)
+	Form.makeRequestData("tradeType", "2")			' 매도/매수 구분(1:매도, 2:매수)
+	Form.makeRequestData("dataTargetType", "2")		' 국내/해외 구분(1:국내, 2:해외)
+	Form.makeRequestData("pageInfo", "50")			' 조회 데이터 최대갯수
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/select-by-account", "BUY_"&g_sStep)
+End Function
+
+'===============================================
+' REST API_등록된 감시조건 조회 (최대 50건)
+'===============================================
+Function AutoRule_SelectByAccount_Next() 
+	g_sStep = "SELECT_BY_ACCOUNT"
+	
+	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	
+	Form.releaseRequestData()
+	
+	Form.makeRequestData("accountNumber", sAcno)
+	Form.makeRequestData("accountSeqNumber", sAsno)
+	Form.makeRequestData("tradeType", "2")			' 매도/매수 구분(1:매도, 2:매수)
+	Form.makeRequestData("dataTargetType", "2")		' 국내/해외 구분(1:국내, 2:해외)
+	Form.makeRequestData("pageInfo", "50")			' 조회 데이터 최대갯수
+	
+	if isEmpty(g_sNextKey) == false then
+		Form.makeRequestData("nextOrderConditionId", g_sNextKey)
+	end if
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/select-by-account", "BUY_"&g_sStep)
+End Function
+
+'===============================================
+' REST API_조건 단건 삭제
+'===============================================
+Function AutoRule_Delete(nIdx) 
+	g_sStep = "DELETE"
+	
+	Form.releaseRequestData()
+	
+	sCondID = cont0.pnl0.getPropCardCell("caption"		,"orderConditionId"	,nIdx)
+	Form.makeRequestData("orderConditionId", sCondID)
+	
+	Form.makeRequestData("conditionStatusCode", "99")	' 상태구분(01:감시중지, 02:감시중, 99:삭제)
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/update-status", "BUY_"&g_sStep)
+End Function
+
+'===============================================
+' REST API_조건 전체 삭제
+'===============================================
+Function AutoRule_AllDelete() 
+	g_sStep = "ALL_DELETE"
+	
+	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	
+	Form.releaseRequestData()
+	
+	Form.makeRequestData("accountNumber", sAcno)
+	Form.makeRequestData("accountSeqNumber", sAsno)
+	Form.makeRequestData("tradeType", "2")			' 매도/매수 구분(1:매도, 2:매수)
+	Form.makeRequestData("conditionStatusCode", "99")	' 상태구분(01:감시중지, 02:감시중, 99:삭제)
+		
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/bulk-update-status", "BUY_"&g_sStep)
+End Function
+
+
+'===============================================
+' REST API_조건 단건 감시여부 업데이트
+'===============================================
+Function AutoRule_UpdateStatus(nIdx) 
+	g_sStep = "UPDATE_STATUS"
+	
+	Form.releaseRequestData()
+	
+	sCondID = cont0.pnl0.getPropCardCell("caption"		,"orderConditionId"	,nIdx)
+	sStatus = cont0.pnl0.getPropCardCell("caption"		,"conditionStatusCode"	,nIdx)
+	
+	Form.makeRequestData("orderConditionId", sCondID)
+	
+	if sStatus == "01" then
+		sStatus = "02" 
+	elseif sStatus == "02" then
+		sStatus = "01" 
+	end if
+	
+	Form.makeRequestData("conditionStatusCode", sStatus)	' 상태구분(01:감시중지, 02:감시중, 99:삭제)
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/update-status", "BUY_"&g_sStep)
+End Function
+
+'===============================================
+' REST API_조건 전체실행
+'===============================================
+Function AutoRule_AllUpdateStatus() 
+	g_sStep = "ALL_UPDATE_STATUS"
+	
+	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	
+	Form.releaseRequestData()
+	
+	Form.makeRequestData("accountNumber", sAcno)
+	Form.makeRequestData("accountSeqNumber", sAsno)
+	Form.makeRequestData("tradeType", "2")			' 매도/매수 구분(1:매도, 2:매수)
+	Form.makeRequestData("conditionStatusCode", "02")	' 상태구분(01:감시중지, 02:감시중, 99:삭제)
+	
+		sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/bulk-update-status", "BUY_"&g_sStep)
+End Function
+
+Function AutoRule_AllUpdateStatus_Stop() 
+	g_sStep = "ALL_UPDATE_STATUS_STOP"
+	
+	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	
+	Form.releaseRequestData()
+	
+	Form.makeRequestData("accountNumber", sAcno)
+	Form.makeRequestData("accountSeqNumber", sAsno)
+	Form.makeRequestData("tradeType", "2")			' 매도/매수 구분(1:매도, 2:매수)
+	Form.makeRequestData("conditionStatusCode", "01")	' 상태구분(01:감시중지, 02:감시중, 99:삭제)
+	
+		sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+		
+	Form.requestRestAPI(sUrl&"api/v1/rule/bulk-update-status", "BUY_"&g_sStep)
+End Function
+
+'===============================================
+' REST API_토큰발급
+'===============================================
+Function IssueToken() 
+	g_sStep = "ISSUE_TOKEN"
+	
+	Form.releaseRequestData()
+	
+	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("&USER_ID", false )
+	sData2  = Form.GetSharedData("&MCI_SESSION_KEY", false )
+	sData3  = Form.GetSharedData("&SEMI_SSO_KEY", false )
+	
+	Form.makeRequestData("channelClsCode", 	sData0)
+	Form.makeRequestData("userId", 			sData1)
+	Form.makeRequestData("sessionKey", 		sData2)
+	Form.makeRequestData("semiSsoKey", 		sData3)
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	If sDev == "1" Then	'개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end if
+	
+	Form.requestRestAPI(sUrl&"auth/issue-token", "BUY_"&g_sStep)
+End Function
+
+Function Open_Info()
+	sLinkData = cont0.pnl0.getPropCardCell("caption", "orderConditionId", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "registrationDate", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "accountNumber", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "accountSeqNumber", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "stockExchangeCode", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "stockCode", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "stockKoreaName", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "tradeType", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "watchConditionType", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "watchConditionTypeNm", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "watchType", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "watchTypeNm", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "price", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "orderPaymentType", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "orderClsType", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "orderClsTypeNm", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "orderPriceType", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "tickValue", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "orderPrice", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "orderQty", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "expirationDate", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "conditionStatusCode", g_nClickIdx)
+	sLinkData = sLinkData & "`" & cont0.pnl0.getPropCardCell("caption", "conditionStatusName", g_nClickIdx)
+
+	Form.OpenPopup("nrshtro17100_p4" , sLinkData , "")
+End Function
+
+Function Set_Info(nIdx,orderConditionId,registrationDate,accountNumber,accountSeqNumber,stockExchangeCode,stockCode,stockKoreaName,tradeType,
+				watchConditionType,watchConditionTypeNm,watchType,watchTypeNm,price,
+				orderPaymentType,orderClsType,orderClsTypeNm,orderPriceType,tickValue,orderPrice,orderQty,expirationDate,
+				conditionStatusCode,conditionStatusName)	
+	
+	cont0.pnl0.setPropCardCell("caption", "orderConditionId",		nIdx, orderConditionId)
+	cont0.pnl0.setPropCardCell("caption", "registrationDate",		nIdx, registrationDate)
+	cont0.pnl0.setPropCardCell("caption", "accountNumber",		nIdx, accountNumber)
+	cont0.pnl0.setPropCardCell("caption", "accountSeqNumber", 		nIdx, accountSeqNumber)
+	cont0.pnl0.setPropCardCell("caption", "stockExchangeCode", 	nIdx, stockExchangeCode)
+	cont0.pnl0.setPropCardCell("caption", "stockCode", 			nIdx, stockCode)
+	cont0.pnl0.setPropCardCell("caption", "stockKoreaName", 		nIdx, stockKoreaName)
+	cont0.pnl0.setPropCardCell("caption", "tradeType", 			nIdx, tradeType)
+	cont0.pnl0.setPropCardCell("caption", "watchConditionType", 	nIdx, watchConditionType)
+	cont0.pnl0.setPropCardCell("caption", "watchConditionTypeNm", 	nIdx, watchConditionTypeNm)
+	cont0.pnl0.setPropCardCell("caption", "watchType", 			nIdx, watchType)
+	cont0.pnl0.setPropCardCell("caption", "watchTypeNm", 		nIdx, watchTypeNm)
+	cont0.pnl0.setPropCardCell("caption", "price", 				nIdx, price)
+	cont0.pnl0.setPropCardCell("caption", "orderPaymentType", 		nIdx, orderPaymentType)
+	cont0.pnl0.setPropCardCell("caption", "orderClsType", 		nIdx, orderClsType)
+	cont0.pnl0.setPropCardCell("caption", "orderClsTypeNm", 		nIdx, orderClsTypeNm)
+	cont0.pnl0.setPropCardCell("caption", "orderPriceType", 		nIdx, orderPriceType)
+	cont0.pnl0.setPropCardCell("caption", "tickValue", 			nIdx, tickValue)
+	cont0.pnl0.setPropCardCell("caption", "orderPrice", 			nIdx, orderPrice)
+	cont0.pnl0.setPropCardCell("caption", "orderQty", 			nIdx, orderQty)
+	cont0.pnl0.setPropCardCell("caption", "expirationDate", 		nIdx, expirationDate)
+	cont0.pnl0.setPropCardCell("caption", "conditionStatusCode", 	nIdx, conditionStatusCode)
+	cont0.pnl0.setPropCardCell("caption", "conditionStatusName", 	nIdx, conditionStatusName)
+
+End Function
+
+'==============================================
+' 거래소 구분코드 변경(3자리 -> 2자리)
+' 원장조회 종목연동 시, 과거 거래소 코드로 연동되는 경우 예외처리를 위해 필요
+'==============================================
+Function Transform_Exid2(sValue)
+	if sValue = "HKS" then
+		Transform_Exid2 = "HK"
+		exit Function
+	elseif sValue = "SHS" then
+		Transform_Exid2 = "SH"
+		exit Function
+	elseif sValue = "SZS" then
+		Transform_Exid2 = "SZ"
+		exit Function
+	elseif sValue = "NYS" then
+		Transform_Exid2 = "NY"
+		exit Function
+	elseif sValue = "AMX" then
+		Transform_Exid2 = "AX"
+		exit Function
+	elseif sValue = "NAS" then
+		Transform_Exid2 = "OQ"
+		exit Function
+	elseif sValue = "TSE" then
+		Transform_Exid2 = "JP"
+		exit Function
+	else
+		Transform_Exid2 = sValue
+		exit Function
+	end if
+End Function
+
+Function DisplaySet_Pannel(nIdx, stockExchangeCode, stockKoreaName, stockCode, 
+					watchConditionType, watchConditionTypeNm, price, watchTypeNm,
+					orderPrice, orderQty,orderClsType, orderClsTypeNm, expirationDate,
+					conditionStatusCode, conditionStatusName)
+					
+	sTicker = Form.GetEnvData("common.ticker_text")
+	sExch = Transform_Exid2(stockExchangeCode)
+	
+	cont0.pnl0.setPropCardCell("maxlinecnt"	,"lblItemInfo"	,nIdx	,"1^0" )
+	cont0.pnl0.setPropCardCell("paddinginfo"		,"lblItemInfo"	,nIdx	,"5,0,0,0" )
+	
+	if sExch == "AX" or sExch == "NY" or sExch == "OQ" then
+		if sTicker == "1" then
+			cont0.pnl0.setPropCardCell("caption"		,"lblItemInfo"	,nIdx	,stockKoreaName )
+		elseif sTicker == "2" then
+			cont0.pnl0.setPropCardCell("caption"		,"lblItemInfo"	,nIdx	,stockCode)
+		else
+			sName = stockKoreaName
+			
+			if Form.getItemCodeInfo(sExch&"@"&stockCode, "etfyn") = "Y" then 
+				sName = stockCode
+			end if
+			
+			cont0.pnl0.setPropCardCell("caption"		,"lblItemInfo"	,nIdx	,sName)
+		end if
+	else
+		cont0.pnl0.setPropCardCell("caption"		,"lblItemInfo"	,nIdx	,stockKoreaName )
+	end if
+	
+	sData1 = ""
+	if watchConditionType == "06" then
+		sData1 = watchConditionTypeNm .. " " .. FormatNumber(price,2) ..  " " .. "%" ..  " " .. watchTypeNm
+	else
+		sData1 = watchConditionTypeNm .. " " .. FormatNumber(price,4) ..  " " .. "USD" ..  " " .. watchTypeNm
+	end if
+	
+	cont0.pnl0.setPropCardCell("caption"		,"lblData0"	,nIdx	,sData1)
+	
+	if orderClsType == "05" or orderClsType == "34" then
+		cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"-")
+	else
+		if orderPriceType == "09" then
+			cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,FormatNumber(orderPrice,4))
+		elseif orderPriceType == "01" then
+			if Cint(tickValue) > 0 then
+				cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"현재가" .. " +" .. tickValue.."틱")
+			elseif Cint(tickValue) < 0 then
+				cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"현재가" .. " " .. tickValue.."틱")
+			elseif Cint(tickValue) == 0 then
+				cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"현재가")
+			end if
+			
+		elseif orderPriceType == "02" then
+			cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"시가")
+		elseif orderPriceType == "03" then
+			cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"고가")
+		elseif orderPriceType == "04" then
+			cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"저가")
+		end if
+	end if
+	
+
+	
+	'cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,orderPrice)
+	cont0.pnl0.setPropCardCell("caption"		,"lblData3"	,nIdx	,orderQty)
+	cont0.pnl0.setPropCardCell("caption"		,"lblData5"	,nIdx	,orderClsTypeNm)
+	
+	sData4 = replace(expirationDate, "-", "")
+	sDate = mid(sData4, 3,2) .. "." .. mid(sData4, 5,2) .. "." .. right(sData4, 2)
+	cont0.pnl0.setPropCardCell("caption"		,"lblData6"	,nIdx	,sDate)
+	cont0.pnl0.setPropCardCell("caption"		,"lblData4"	,nIdx	,sDate.." 까지")
+	cont0.pnl0.setPropCardCell("maintainratio"		,"Image5"	,nIdx	,"1" )
+	cont0.pnl0.setPropCardCell("imgpath"		,"Image5"	,nIdx	,"icon_remove" )
+	
+	cont0.pnl0.setPropCardCell("maintainratio"		,"Image3"	,nIdx	,"1" )
+	
+	if conditionStatusCode == "02" then
+		cont0.pnl0.setPropCardCell("imgpath"		,"Image3"	,nIdx	,"icon_watch_play" )
+		cont0.pnl0.setPropCardCell("fgcolor"		,"lblData1"	,nIdx	,"290")
+	else
+		cont0.pnl0.setPropCardCell("imgpath"		,"Image3"	,nIdx	,"icon_watch_pause" )
+		cont0.pnl0.setPropCardCell("fgcolor"		,"lblData1"	,nIdx	,"4")
+	end if
+	
+	cont0.pnl0.setPropCardCell("caption"		,"lblData1"	,nIdx	,conditionStatusName)
+	
+End Function
+'****************************************************************************
+'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+'****************************************************************************
+'============================================================================
+' Form_OnFormInitBefore
+'============================================================================
+Sub Form_OnFormInitBefore()
+	imgNotice.maintainratio = "1"
+	LabelGuideText1.changeTextAttr(0, 7, 290, 0, true)
+	
+	cont0.Label2.paddinginfo = "0,0,0,0"
+	cont0.Label2.maxlinecnt = "1"
+	
+	cont0.Image8.maintainratio = "1"
+	
+	cont0.Image12.maintainratio = "1"
+	cont0.Image13.maintainratio = "1"
+	cont0.Image14.maintainratio = "1"
+
+	sValue = Form.GetEnvData("common.theme")
+	if sValue == "white" then
+		cont0.Image8.imgpath = "btn_icon_play_l"
+		
+		cont0.Image12.imgpath = "btn_icon_play_l"
+		cont0.Image13.imgpath = "btn_icon_pause_l"
+		
+		cont0.Image14.imgpath = "icon_b_del"
+	else
+		cont0.Image8.imgpath = "btn_icon_play_d"
+		
+		cont0.Image12.imgpath = "btn_icon_play_d"
+		cont0.Image13.imgpath = "btn_icon_pause_d"
+		
+		cont0.Image14.imgpath = "icon_b_del_d"
+	end if
+	
+	
+	
+	cont0.Image15.maintainratio = "1" 
+	cont0.Image15.imgpath = "img_timeline_n.png"
+	cont0.Image16.maintainratio = "1" 
+	cont0.Image16.imgpath = "img_timeline_n.png"
+End Sub
+
+'============================================================================
+' Form_OnFormInit
+'============================================================================
+Sub Form_OnFormInit()
+	'(iOS전용) 판넬컨트롤 렌더링 오류 수정
+	cont0.pnl0.setDataNormal(true)
+	cont0.pnl0.setNotUseRecycleView(true)
+	
+'	sAcno 	= Form.getTopCtlProp("act0","total")
+'	
+'	if isEmpty(sAcno) == true then
+'		btnReg.enable = false
+'	end if
+	
+	btnReg.enable = false
+	
+	sViewMode = Form.GetEnvData("17100_EXPAND_BUY")
+	
+	if isEmpty(sViewMode) == true then
+		g_nViewMode = 1
+	else
+		g_nViewMode = Cint(sViewMode)
+	end if
+	
+	cont0_Image2_OnClick()
+End Sub
+
+'============================================================================
+' cont0_Image0_OnClick : 감시조건 전체실행
+'============================================================================
+Sub cont0_Image0_OnClick()
+	nCnt = 0
+	for i = 0 to Cint(cont0.pnl0.rowcount) - 1
+		sStatus = cont0.pnl0.getPropCardCell("caption"		,"conditionStatusCode"	,i)
+
+		if sStatus == "01" or sStatus == "02" then
+			nCnt = nCnt + 1
+		end if
+	next
+	
+	nRowCnt = Cdbl(cont0.pnl0.rowcount)
+	Form.MsgBox("안내", "전체 감시 조건 [총 "..nRowCnt.."/" & FormatNumber(nCnt,0) & "건] 에 대해\n자동 감시를 실행 하시겠습니까?", "ALL_RUN", 7, "확인", "취소")
+End Sub
+
+Sub cont0_Label0_OnClick()
+	cont0_Image0_OnClick()
+End Sub
+
+Sub cont0_Image10_OnClick()
+	cont0_Image0_OnClick()
+End Sub
+
+Sub cont0_Image12_OnClick()
+	cont0_Image0_OnClick()
+End Sub
+
+Sub cont0_Image9_OnClick()
+	Form.MsgBox("안내", "전체 감시를 중단 하시겠습니까?", "ALL_STOP", 7, "확인", "취소")
+End Sub
+
+Sub cont0_Image13_OnClick()
+	cont0_Image9_OnClick()
+End Sub
+
+'============================================================================
+' cont0_Image1_OnClick : 감시조건 전체삭제
+'============================================================================
+Sub cont0_Image1_OnClick()
+	Form.MsgBox("안내", "감시 조건을\n전체 삭제 하시겠습니까?", "ALL_DELETE", 7, "확인", "취소")
+End Sub
+
+Sub cont0_Label1_OnClick()
+	cont0_Image1_OnClick()
+End Sub
+
+Sub cont0_Image11_OnClick()
+	cont0_Image1_OnClick()
+End Sub
+
+Sub cont0_Image14_OnClick()
+	cont0_Image1_OnClick()
+End Sub
+
+
+'============================================================================
+' cont0_Image1_OnClick : 상세/요약 전환
+'============================================================================
+Sub cont0_Image2_OnClick()
+	Form.SetEnvData(1, "17100_EXPAND_BUY", g_nViewMode)
+	
+	if g_nViewMode == 0 then
+		g_nViewMode = 1
+		
+		cont0.Image15.imgpath = "img_timeline_n.png"
+		cont0.Image16.imgpath = "img_timeline_o.png"
+	
+'		cont0.Image2.imgpath = "toggle_2dots_03.9"
+		cont0.Label2.caption = "요약"
+	else
+		g_nViewMode = 0
+		
+		cont0.Image15.imgpath = "img_timeline_o.png"
+		cont0.Image16.imgpath = "img_timeline_n.png"
+		
+'		cont0.Image2.imgpath = "toggle_2dots_02.9"
+		cont0.Label2.caption = "상세"
+	end if
+	
+	Expand_List()
+End Sub
+
+Sub cont0_Label2_OnClick()
+	cont0_Image2_OnClick()
+End Sub
+
+'============================================================================
+' btnReg_OnClick : 매도 조건 추가하기
+'============================================================================
+Sub cont0_pnl0_OnClick(nIndex, sCellID)
+	g_nClickIdx = Cdbl(nIndex)
+	
+	'----------------------------------
+	' 삭제버튼 클릭
+	'----------------------------------
+	if sCellID == "Image5" or sCellID == "btnDelete" then
+		Form.MsgBox("안내", "감시 조건을\n삭제 하시겠습니까?", "DELETE", 7, "확인", "취소")
+	
+	'----------------------------------
+	' 감시여부 버튼 클릭
+	'----------------------------------
+	elseif sCellID == "lblData1" or  sCellID == "Image3" then
+		if g_isClickable == true then
+			g_isClickable = false
+			AutoRule_UpdateStatus(nIndex) 
+		end if
+	
+	'----------------------------------
+	' 이외 영역 -> 조건 상세 팝업
+	'----------------------------------
+	else
+		Open_Info()
+	end if
+End Sub
+
+'============================================================================
+' btnReg_OnClick : 매도 조건 추가하기
+'============================================================================
+Sub btnReg_OnClick()
+	AutoRule_SelectCount() 
+End Sub
+
+'============================================================================
+Sub Form_OnTriggerEvent(sEventName, sParam, sParma2)
+'	Form.ShowAlert("TEST", sEventName .. "|" .. sParam)
+	'----------------------------------
+	' 토큰발급 성공 -> 전체 재조회
+	'----------------------------------
+	if sEventName ==  "TOKEN_SUCCESS" then
+		if isEmpty(sParam) == false then
+			arrData = Convert_StrToArr(sParam, "`")
+			nArrCnt = #arrData
+			
+			if nArrCnt > 2 then
+				g_sAcno = arrData(0)
+				g_sAsno = arrData(1)
+				g_sAccName = arrData(2)
+				
+				btnReg.enable = true
+			end if
+			
+			if nArrCnt > 3 then
+				g_sPwd = arrData(3)
+			end if
+		end if
+		
+'		Form.setDelayEvent(1, 0.2)
+		AutoRule_SelectByAccount() 
+	end if
+	
+	'----------------------------------
+	' 탭 변경 -> 전체 재조회
+	'----------------------------------
+	if sEventName ==  "TAB_CHANGE" then
+		if isEmpty(sParam) == false then
+			arrData = Convert_StrToArr(sParam, "`")
+			nArrCnt = #arrData
+			
+			if nArrCnt > 2 then
+				g_sAcno = arrData(0)
+				g_sAsno = arrData(1)
+				g_sAccName = arrData(2)
+				
+				btnReg.enable = true
+			end if
+			
+			if nArrCnt > 3 then
+				g_sPwd = arrData(3)
+			end if
+		end if
+		
+'		Form.setDelayEvent(1, 0.2)
+		AutoRule_SelectByAccount() 
+	end if
+	
+	'----------------------------------
+	' (실시간) 감시조건 상태변경
+	'----------------------------------
+	if sEventName ==  "REFRESH_LIST" then
+		if isEmpty(sParam) == false then
+			arrData = Convert_StrToArr(sParam, "`")
+			nArrCnt = #arrData
+			
+			if nArrCnt > 2 then
+				g_sAcno = arrData(0)
+				g_sAsno = arrData(1)
+				g_sAccName = arrData(2)
+				
+				btnReg.enable = true
+			end if
+			
+			if nArrCnt > 3 then
+				g_sPwd = arrData(3)
+			end if
+		end if
+		
+'		Form.setDelayEvent(1, 0.2)
+		AutoRule_SelectByAccount() 
+	end if
+	
+	'----------------------------------
+	' 계좌 변경 -> 전체 재조회
+	'----------------------------------
+	if sEventName ==  "ACCT_CHANGE" then
+		if isEmpty(sParam) == false then
+			arrData = Convert_StrToArr(sParam, "`")
+			nArrCnt = #arrData
+			
+			if nArrCnt > 2 then
+				g_sAcno = arrData(0)
+				g_sAsno = arrData(1)
+				g_sAccName = arrData(2)
+				
+				btnReg.enable = true
+			end if
+			
+			if nArrCnt > 3 then
+				g_sPwd = arrData(3)
+			end if
+		end if
+		
+'		Form.setDelayEvent(1, 0.2)
+		AutoRule_SelectByAccount() 
+	end if
+	
+	'----------------------------------
+	' REST API 응답 성공
+	' 실패한 경우엔 부모화면에서 에러 팝업
+	'----------------------------------
+	if Cint(instr(sEventName, "RESTAPI_RETURN_BUY")) > 0 then
+		sStep = replace(sEventName, "RESTAPI_RETURN_BUY_", "") 'g_sStep
+		g_sStep = ""
+		
+'		if sParam <> "SUCCESS" then
+'			oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParma2)
+'			
+'			if isEmpty(oError) == false then
+'				errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+'
+'				if errorCode == "INVALID_TOKEN" then
+'					g_sStep_Prev = sStep
+'					IssueToken() 
+'					Exit Sub 
+'				end if
+'			end if
+'		end if
+		
+		'----------------------------------------
+		' 서버 검증용 토큰 발급
+		'----------------------------------------
+		if sStep == "ISSUE_TOKEN" then
+		
+			'----------------------------------------
+			' 성공
+			'----------------------------------------
+			if sParam == "SUCCESS" then
+			
+				data = Form.responseRestAPI("JSONOBJ", 0, "data", sParma2)
+				
+				accessToken = Form.responseRestAPI("DATA", 0, "accessToken", data)
+				refreshToken = Form.responseRestAPI("DATA", 0, "refreshToken", data)
+				
+				if isEmpty(accessToken) == false then
+					Form.SetSharedData("&REST_API_TOKEN", " Bearer " & accessToken )
+				end if
+				
+				if isEmpty(refreshToken) == false then
+					Form.SetSharedData("&REST_API_REFRESH_TOKEN", " Bearer " & refreshToken )
+				end if
+				
+				if g_sStep_Prev == "SELECT_BY_ACCOUNT" then
+					AutoRule_SelectByAccount()
+				elseif g_sStep_Prev == "UPDATE_STATUS" then
+					AutoRule_UpdateStatus(g_nClickIdx) 
+				elseif g_sStep_Prev == "ALL_UPDATE_STATUS" then
+					AutoRule_AllUpdateStatus() 
+				elseif g_sStep_Prev == "ALL_UPDATE_STATUS_STOP" then
+					AutoRule_AllUpdateStatus_Stop()
+				elseif g_sStep_Prev == "DELETE" then
+					AutoRule_Delete(g_nClickIdx) 
+				elseif g_sStep_Prev == "ALL_DELETE" then
+					AutoRule_AllDelete() 
+				elseif g_sStep_Prev == "SELECT_COUNT" then
+					AutoRule_SelectCount() 
+				end if
+				
+			'----------------------------------------
+			' 실패(ERROR or EXCEPTION)
+			'----------------------------------------
+			else
+				Form.MsgBox("알림", "현재 자동감시주문 실행이 불가합니다.\n고객지원센터에 문의해주세요.", "CLOSE_FORM", 6)
+			end if
+			
+			g_sStep_Prev = ""
+		
+		'----------------------------------
+		' 조건 전체조회
+		'----------------------------------
+		elseif sStep == "SELECT_BY_ACCOUNT" or sStep == "SELECT_BY_ACCOUNT_NEXT" then
+			'----------------------------------------
+			' 성공
+			'----------------------------------------
+			if sParam == "SUCCESS" then
+				if sStep == "SELECT_BY_ACCOUNT" then
+					g_nRunCnt = 0
+					cont0.pnl0.rowcount = 0
+					cont0.lblInfo.caption = ""
+				end if
+				
+				'--------------------
+				' 응답데이터(전체)
+				'--------------------
+				oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParma2)	
+				
+				'--------------------
+				' ROW COUNT
+				'--------------------
+				nDataCnt = Form.responseRestAPI("DATA", 0, "dataCount", oData)
+				
+				'--------------------
+				' NEXT KEY
+				'--------------------
+				shasNext = Form.responseRestAPI("DATA", 0, "hasNext", oData)
+				
+				if shasNext == true or shasNext == "true" or shasNext == "1" then
+					g_sNextKey = Form.responseRestAPI("DATA", 0, "nextOrderConditionId", oData)
+				else
+					g_sNextKey = ""
+				end if
+
+				if Cdbl(nDataCnt) > 0 then
+					for i = 0 to Cdbl(nDataCnt) - 1
+						'--------------------
+						' ROW DATA
+						'--------------------
+						oListData = Form.responseRestAPI("JSONLIST", i, "data", oData)
+						
+						'--------------------
+						' 등록내역 기본정보
+						'--------------------
+						orderConditionId 	= Form.responseRestAPI("DATA", 0, "orderConditionId", 	oListData)
+						registrationDate 	= Form.responseRestAPI("DATA", 0, "registrationDate", 	oListData)
+						accountNumber		= Form.responseRestAPI("DATA", 0, "accountNumber", 		oListData)
+						accountSeqNumber	= Form.responseRestAPI("DATA", 0, "accountSeqNumber", 	oListData)
+						stockExchangeCode	= Form.responseRestAPI("DATA", 0, "stockExchangeCode", 	oListData)
+						stockCode			= Form.responseRestAPI("DATA", 0, "stockCode", 			oListData)
+						stockKoreaName		= Form.responseRestAPI("DATA", 0, "stockKoreaName", 		oListData)
+						tradeType			= Form.responseRestAPI("DATA", 0, "tradeType", 			oListData)
+						
+						'--------------------
+						' 매수 감시조건
+						'--------------------
+						buyCondition		= Form.responseRestAPI("JSONOBJ", 0, "buyCondition", 	oListData)
+						watchConditionType	= Form.responseRestAPI("DATA", 0, "watchConditionType", 	buyCondition)
+						watchConditionTypeNm	= Form.responseRestAPI("DATA", 0, "watchConditionTypeNm", 	buyCondition)
+						watchType			= Form.responseRestAPI("DATA", 0, "watchType", 			buyCondition)
+						watchTypeNm		= Form.responseRestAPI("DATA", 0, "watchTypeNm", 		buyCondition)
+						price			= Form.responseRestAPI("DATA", 0, "price", 			buyCondition)
+						
+						'--------------------
+						' 주문 조건
+						'--------------------
+						orderPaymentType	= Form.responseRestAPI("DATA", 0, "orderPaymentType", 	oListData)
+						orderClsType		= Form.responseRestAPI("DATA", 0, "orderClsType", 		oListData)
+						orderClsTypeNm		= Form.responseRestAPI("DATA", 0, "orderClsTypeNm", 		oListData)
+						orderPriceType		= Form.responseRestAPI("DATA", 0, "orderPriceType", 		oListData)
+						tickValue			= Form.responseRestAPI("DATA", 0, "tickValue", 			oListData)
+						orderPrice			= Form.responseRestAPI("DATA", 0, "orderPrice", 		oListData)
+						orderQty			= Form.responseRestAPI("DATA", 0, "orderQty", 			oListData)
+						expirationDate		= Form.responseRestAPI("DATA", 0, "expirationDate", 		oListData)
+						
+						'--------------------
+						' 감시 실행여부
+						'--------------------
+						conditionStatusCode	= Form.responseRestAPI("DATA", 0, "conditionStatusCode", 	oListData)
+						conditionStatusName	= Form.responseRestAPI("DATA", 0, "conditionStatusName", 	oListData)
+			
+						'--------------------
+						' ADD ROW
+						'--------------------
+						nIdx = Cint(cont0.pnl0.AddRow())
+						
+						'--------------------
+						' ROW DATA 저장
+						'--------------------
+						Set_Info(nIdx,orderConditionId,registrationDate,accountNumber,accountSeqNumber,stockExchangeCode,stockCode,stockKoreaName,tradeType,
+								watchConditionType,watchConditionTypeNm,watchType,watchTypeNm,price,
+								orderPaymentType,orderClsType,orderClsTypeNm,orderPriceType,tickValue,orderPrice,orderQty,expirationDate,
+								conditionStatusCode,conditionStatusName)		
+						
+						'--------------------
+						' 화면 데이터 세팅
+						'--------------------
+						DisplaySet_Pannel(nIdx, stockExchangeCode, stockKoreaName, stockCode, 
+										watchConditionType, watchConditionTypeNm, price, watchTypeNm,
+										orderPrice, orderQty,orderClsType, orderClsTypeNm, expirationDate,
+										conditionStatusCode, conditionStatusName)
+					
+						'--------------------
+						' 감시중 데이터 COUNT
+						'--------------------
+						if conditionStatusCode == "02" then
+							g_nRunCnt = g_nRunCnt + 1
+						end if
+					next
+				end if
+				
+			'----------------------------------------
+			' 실패(ERROR or EXCEPTION)
+			'----------------------------------------
+			else	
+'				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+'			
+'				if isEmpty(oError) == false then
+'					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+'					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+'					
+'					if isEmpty(errorMessage) == false then
+'						Form.ShowAlert("알림", errorMessage)
+'						Exit Sub 
+'					end if
+'				end if
+				
+				Form.ShowAlert("알림", g_sCommonErrorMsg)
+			end if
+				
+			nRowCnt = Cdbl(cont0.pnl0.rowcount)
+				
+			if nRowCnt > 0 then
+				cont0.lblInfo.caption = "총 "..nRowCnt.."/"..g_nRunCnt .." 건 감시 중"
+				
+				cont0.left = 0
+				DisplaySet_EmptyNotice(false)
+				
+				Expand_List()
+				
+				'!!마지막 클릭 행 위치 조정
+				if g_nClickIdx > 0 then
+					cont0.pnl0.toprow = g_nClickIdx
+				end if
+
+			else
+				cont0.lblInfo.caption = ""
+				
+				cont0.left = 400
+				DisplaySet_EmptyNotice(true)
+			end if
+		
+		'----------------------------------
+		' 조건 단건 감시여부 변경
+		'----------------------------------
+		elseif sStep == "UPDATE_STATUS"  then	
+		
+			'----------------------------------------
+			' 성공
+			'----------------------------------------
+			if sParam == "SUCCESS" then
+			
+				'--------------------
+				' 응답데이터(전체)
+				'--------------------
+				oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParma2)
+				
+				'--------------------
+				' 등록내역 기본정보
+				'--------------------
+				orderConditionId 	= Form.responseRestAPI("DATA", 0, "orderConditionId", 	oData)
+				registrationDate 	= Form.responseRestAPI("DATA", 0, "registrationDate", 	oData)
+				accountNumber		= Form.responseRestAPI("DATA", 0, "accountNumber", 		oData)
+				accountSeqNumber	= Form.responseRestAPI("DATA", 0, "accountSeqNumber", 	oData)
+				stockExchangeCode	= Form.responseRestAPI("DATA", 0, "stockExchangeCode", 	oData)
+				stockCode			= Form.responseRestAPI("DATA", 0, "stockCode", 			oData)
+				stockKoreaName		= Form.responseRestAPI("DATA", 0, "stockKoreaName", 		oData)
+				tradeType			= Form.responseRestAPI("DATA", 0, "tradeType", 			oData)
+				
+				'--------------------
+				' 매수 감시조건
+				'--------------------
+				buyCondition		= Form.responseRestAPI("JSONOBJ", 0, "buyCondition", 	oData)
+				watchConditionType	= Form.responseRestAPI("DATA", 0, "watchConditionType", 	buyCondition)
+				watchConditionTypeNm	= Form.responseRestAPI("DATA", 0, "watchConditionTypeNm", 	buyCondition)
+				watchType			= Form.responseRestAPI("DATA", 0, "watchType", 			buyCondition)
+				watchTypeNm		= Form.responseRestAPI("DATA", 0, "watchTypeNm", 		buyCondition)
+				price			= Form.responseRestAPI("DATA", 0, "price", 			buyCondition)
+				
+				'--------------------
+				' 주문 조건
+				'--------------------
+				orderPaymentType	= Form.responseRestAPI("DATA", 0, "orderPaymentType", 	oData)
+				orderClsType		= Form.responseRestAPI("DATA", 0, "orderClsType", 		oData)
+				orderClsTypeNm		= Form.responseRestAPI("DATA", 0, "orderClsTypeNm", 		oData)
+				orderPriceType		= Form.responseRestAPI("DATA", 0, "orderPriceType", 		oData)
+				tickValue			= Form.responseRestAPI("DATA", 0, "tickValue", 			oData)
+				orderPrice			= Form.responseRestAPI("DATA", 0, "orderPrice", 		oData)
+				orderQty			= Form.responseRestAPI("DATA", 0, "orderQty", 			oData)
+				expirationDate		= Form.responseRestAPI("DATA", 0, "expirationDate", 		oData)
+				
+				'--------------------
+				' 감시 실행여부
+				'--------------------
+				conditionStatusCode	= Form.responseRestAPI("DATA", 0, "conditionStatusCode", 	oData)
+				conditionStatusName	= Form.responseRestAPI("DATA", 0, "conditionStatusName", 	oData)
+				
+				'--------------------
+				' ROW DATA 저장
+				'--------------------
+				Set_Info(g_nClickIdx,orderConditionId,registrationDate,accountNumber,accountSeqNumber,stockExchangeCode,stockCode,stockKoreaName,tradeType,
+						watchConditionType,watchConditionTypeNm,watchType,watchTypeNm,price,
+						orderPaymentType,orderClsType,orderClsTypeNm,orderPriceType,tickValue,orderPrice,orderQty,expirationDate,
+						conditionStatusCode,conditionStatusName)		
+				
+				'--------------------
+				' 화면 데이터 세팅
+				'--------------------
+				DisplaySet_Pannel(g_nClickIdx, stockExchangeCode, stockKoreaName, stockCode, 
+								watchConditionType, watchConditionTypeNm, price, watchTypeNm,
+								orderPrice, orderQty,orderClsType, orderClsTypeNm, expirationDate,
+								conditionStatusCode, conditionStatusName)
+									
+						
+				if conditionStatusCode == "02" then
+					g_nRunCnt = g_nRunCnt + 1
+				else
+					g_nRunCnt = g_nRunCnt - 1
+				end if
+				
+				nRowCnt = Cdbl(cont0.pnl0.rowcount)
+				cont0.lblInfo.caption = "총 "..nRowCnt.."/"..g_nRunCnt .." 건 감시 중"
+'				cont0.lblInfo.caption = "총 50/" .. g_nRunCnt .. " 건 감시 중"
+				
+				g_isClickable = true
+			'----------------------------------------
+			' 실패(ERROR or EXCEPTION)
+			'----------------------------------------
+			else
+				g_isClickable = true
+				
+				oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParma2)
+			
+				if isEmpty(oError) == false then
+					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					
+					if errorCode == "UNMODIFIABLE_STATUS" then
+						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
+						Exit Sub 
+					elseif errorCode == "FORCED_STOP_STATUS" then
+						Form.OpenPopup("nrshtro17100_p10", "", "")
+						Exit Sub
+					end if
+				end if
+
+				Form.ShowAlert("알림", g_sCommonErrorMsg)
+				Exit Sub 
+			end if
+		
+		'----------------------------------
+		' 조건 전체실행
+		'----------------------------------	
+		elseif sStep == "ALL_UPDATE_STATUS" or sStep == "ALL_UPDATE_STATUS_STOP" then
+			'----------------------------------------
+			' 성공
+			'----------------------------------------
+			if sParam == "SUCCESS" then
+			
+				'--------------------
+				' 응답데이터(전체)
+				'--------------------
+				oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParma2)	
+				
+				'--------------------
+				' ROW COUNT
+				'--------------------
+				nDataCnt = Form.responseCntRestAPI("data", sParma2)
+				
+				if Cdbl(nDataCnt) > 0 then
+		
+					for i = 0 to Cdbl(nDataCnt) - 1
+						'--------------------
+						' ROW DATA
+						'--------------------
+						oListData = Form.responseRestAPI("JSONLIST", i, "data", sParma2)
+						
+						'--------------------
+						' 등록내역 기본정보
+						'--------------------
+						orderConditionId 	= Form.responseRestAPI("DATA", 0, "orderConditionId", 	oListData)
+						registrationDate 	= Form.responseRestAPI("DATA", 0, "registrationDate", 	oListData)
+						accountNumber		= Form.responseRestAPI("DATA", 0, "accountNumber", 		oListData)
+						accountSeqNumber	= Form.responseRestAPI("DATA", 0, "accountSeqNumber", 	oListData)
+						stockExchangeCode	= Form.responseRestAPI("DATA", 0, "stockExchangeCode", 	oListData)
+						stockCode			= Form.responseRestAPI("DATA", 0, "stockCode", 			oListData)
+						stockKoreaName		= Form.responseRestAPI("DATA", 0, "stockKoreaName", 		oListData)
+						tradeType			= Form.responseRestAPI("DATA", 0, "tradeType", 			oListData)
+						
+						'--------------------
+						' 매수 감시조건
+						'--------------------
+						buyCondition		= Form.responseRestAPI("JSONOBJ", 0, "buyCondition", 	oListData)
+						watchConditionType	= Form.responseRestAPI("DATA", 0, "watchConditionType", 	buyCondition)
+						watchConditionTypeNm	= Form.responseRestAPI("DATA", 0, "watchConditionTypeNm", 	buyCondition)
+						watchType			= Form.responseRestAPI("DATA", 0, "watchType", 			buyCondition)
+						watchTypeNm		= Form.responseRestAPI("DATA", 0, "watchTypeNm", 		buyCondition)
+						price			= Form.responseRestAPI("DATA", 0, "price", 			buyCondition)
+						
+						'--------------------
+						' 주문 조건
+						'--------------------
+						orderPaymentType	= Form.responseRestAPI("DATA", 0, "orderPaymentType", 	oListData)
+						orderClsType		= Form.responseRestAPI("DATA", 0, "orderClsType", 		oListData)
+						orderClsTypeNm		= Form.responseRestAPI("DATA", 0, "orderClsTypeNm", 		oListData)
+						orderPriceType		= Form.responseRestAPI("DATA", 0, "orderPriceType", 		oListData)
+						tickValue			= Form.responseRestAPI("DATA", 0, "tickValue", 			oListData)
+						orderPrice			= Form.responseRestAPI("DATA", 0, "orderPrice", 		oListData)
+						orderQty			= Form.responseRestAPI("DATA", 0, "orderQty", 			oListData)
+						expirationDate		= Form.responseRestAPI("DATA", 0, "expirationDate", 		oListData)
+						
+						'--------------------
+						' 감시 실행여부
+						'--------------------
+						conditionStatusCode	= Form.responseRestAPI("DATA", 0, "conditionStatusCode", 	oListData)
+						conditionStatusName	= Form.responseRestAPI("DATA", 0, "conditionStatusName", 	oListData)
+						
+						'--------------------
+						' 동일 감시내역 찾기
+						'--------------------
+						nRowCnt = Cdbl(cont0.pnl0.rowcount)
+						nIdx = ""
+						for j = 0 to nRowCnt - 1
+							sPnlCondId = cont0.pnl0.getPropCardCell("caption"		,"orderConditionId"	,j)
+							if orderConditionId == sPnlCondId then
+								nIdx = j
+								Exit For
+							end if
+						next
+						
+						if nIdx <> "" then
+							'--------------------
+							' ROW DATA 저장
+							'--------------------
+							Set_Info(nIdx,orderConditionId,registrationDate,accountNumber,accountSeqNumber,stockExchangeCode,stockCode,stockKoreaName,tradeType,
+									watchConditionType,watchConditionTypeNm,watchType,watchTypeNm,price,
+									orderPaymentType,orderClsType,orderClsTypeNm,orderPriceType,tickValue,orderPrice,orderQty,expirationDate,
+									conditionStatusCode,conditionStatusName)		
+							
+							'--------------------
+							' 화면 데이터 세팅
+							'--------------------
+							DisplaySet_Pannel(nIdx, stockExchangeCode, stockKoreaName, stockCode, 
+											watchConditionType, watchConditionTypeNm, price, watchTypeNm,
+											orderPrice, orderQty,orderClsType, orderClsTypeNm, expirationDate,
+											conditionStatusCode, conditionStatusName)
+						
+							if conditionStatusCode == "02" then
+								g_nRunCnt = g_nRunCnt + 1
+							else
+								g_nRunCnt = g_nRunCnt - 1
+							end if
+						end if
+					next
+					
+					nRowCnt = Cdbl(cont0.pnl0.rowcount)
+					cont0.lblInfo.caption = "총 "..nRowCnt.."/"..g_nRunCnt .." 건 감시 중"
+'					cont0.lblInfo.caption = "총 50/" .. g_nRunCnt .. " 건 감시 중"
+					
+				end if
+				
+			'----------------------------------------
+			' 실패(ERROR or EXCEPTION)
+			'----------------------------------------
+			else
+				oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParma2)
+			
+				if isEmpty(oError) == false then
+					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					
+					if errorCode == "UNMODIFIABLE_STATUS" then
+						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
+						Exit Sub 
+					end if
+				end if
+
+				Form.ShowAlert("알림", g_sCommonErrorMsg)
+				Exit Sub 
+			end if
+
+		'----------------------------------
+		' 조건 단건 삭제
+		'----------------------------------
+		elseif sStep == "DELETE"  then
+'			AutoRule_SelectByAccount() 
+			'----------------------------------------
+			' 성공
+			'----------------------------------------
+			if sParam == "SUCCESS" then
+				status = Form.responseRestAPI("DATA", 0, "status", sParma2)
+
+				if status == "00" then
+					sStatCode = cont0.pnl0.getPropCardCell("caption", "conditionStatusCode", 	g_nClickIdx)
+			
+					if sStatCode == "02" then
+						g_nRunCnt = g_nRunCnt - 1
+					end if
+					
+					cont0.pnl0.DeleteRow(g_nClickIdx)
+				end if
+				
+				nRowCnt = Cdbl(cont0.pnl0.rowcount)
+				
+				if nRowCnt > 0 then
+					cont0.lblInfo.caption = "총 "..nRowCnt.."/"..g_nRunCnt .." 건 감시 중"
+'					cont0.lblInfo.caption = "총 50/" .. g_nRunCnt .. " 건 감시 중"
+					
+					cont0.left = 0
+					DisplaySet_EmptyNotice(false)
+					
+					Expand_List()
+					
+					'!!마지막 클릭 행 위치 조정
+					if g_nClickIdx > 0 then
+						cont0.pnl0.toprow = g_nClickIdx
+					end if
+	
+				else
+					cont0.lblInfo.caption = ""
+					
+					cont0.left = 400
+					DisplaySet_EmptyNotice(true)
+				end if
+				
+			'----------------------------------------
+			' 실패(ERROR or EXCEPTION)
+			'----------------------------------------
+			else
+				oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParma2)
+			
+				if isEmpty(oError) == false then
+					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					
+					if errorCode == "UNMODIFIABLE_STATUS" then
+						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
+						Exit Sub 
+					elseif errorCode == "FORCED_STOP_STATUS" then
+						Form.OpenPopup("nrshtro17100_p10", "", "")
+						Exit Sub
+					end if
+				end if
+
+				Form.ShowAlert("알림", g_sCommonErrorMsg)
+				Exit Sub 
+			end if
+		
+		'----------------------------------
+		' 조건 전체 삭제
+		'----------------------------------
+		elseif sStep == "ALL_DELETE"  then
+			'----------------------------------------
+			' 성공
+			'----------------------------------------
+			if sParam == "SUCCESS" then
+				AutoRule_SelectByAccount() 
+			'----------------------------------------
+			' 실패(ERROR or EXCEPTION)
+			'----------------------------------------
+			else
+				oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParma2)
+			
+				if isEmpty(oError) == false then
+					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					
+					if errorCode == "UNMODIFIABLE_STATUS" then
+						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
+						Exit Sub 
+					end if
+				end if
+
+				Form.ShowAlert("알림", g_sCommonErrorMsg)
+				Exit Sub 
+			end if
+			
+		'----------------------------------
+		' 조건등록 가능갯수
+		'----------------------------------
+		elseif sStep == "SELECT_COUNT"  then
+			'----------------------------------------
+			' 성공
+			'----------------------------------------
+			if sParam == "SUCCESS" then
+				status = Form.responseRestAPI("DATA", 0, "status", sParma2)
+
+				if status == "00" then
+					oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParma2)
+					
+					validCount = Form.responseRestAPI("DATA", 0, "validCount", 	oData)	
+					
+					if Cint(validCount) >= 50 then
+						Form.ShowAlert("알림", "자동 감시 주문은\n50개 까지만 등록 가능해요.")
+						Exit Sub
+					end if
+					
+					DATAMANAGER.RequestTranData("obpds_srvc_323r")
+				end if
+			'----------------------------------------
+			' 실패(ERROR or EXCEPTION)
+			'----------------------------------------
+			else
+'				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+'			
+'				if isEmpty(oError) == false then
+'					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+'					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+'					
+'					if errorCode == "UNMODIFIABLE_STATUS" then
+'						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
+'						Exit Sub 
+'					end if
+'				end if
+
+				Form.ShowAlert("알림", g_sCommonErrorMsg)
+				Exit Sub 
+			end if
+		end if
+	end if
+	
+	
+	if sEventName ==  "ACCT_PWD_CHECK" then
+		sRet = ""
+		if isEmpty(sParam) == false then
+			arrData = Convert_StrToArr(sParam, "`")
+			nArrCnt = #arrData
+			
+			if nArrCnt > 1 then
+				sRet = arrData(0)
+				g_sPwd = arrData(1)
+			else
+				sRet = sParam
+			end if
+		end if
+		
+		if sRet == "SUCCESS" then
+			sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+			sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+			
+			sAcntNm 	= g_sAccName 'Form.getTopCtlProp("act0","accountname")
+			
+			sPwd 	= g_sPwd	'Form.getTopCtlProp("edtPwd","caption")
+			
+			sLinkData = "1"
+			sLinkData = sLinkData & "`" & sAcno
+			sLinkData = sLinkData & "`" & sAsno
+			sLinkData = sLinkData & "`" & sPwd
+			sLinkData = sLinkData & "`" & sAcntNm
+			
+			if g_isModify = true then
+				sLinkData = sLinkData & "`" & g_sModifyInfo
+				
+				g_sModifyInfo = ""
+				g_isModify = false
+			end if
+
+			Form.OpenPopup("nrshtro17100_p2" , sLinkData , "")
+		end if
+	end if
+End Sub
+
+Sub Form_OnDelayEvent(nID)
+	if Cint(nID) == 1 then
+		AutoRule_SelectByAccount() 
+	elseif Cint(nID) == 2 then
+		AutoRule_Delete(g_nClickIdx)
+	end if
+End Sub 
+
+'============================================================================
+Sub Form_OnPopupReturn(sKeyName, sRet)
+	'(iOS전용) 판넬컨트롤 렌더링 오류 수정
+	cont0.pnl0.setDataNormal(true)
+	
+	'----------------------------------
+	' 조건 등록 성공 -> 전체 재조회
+	'----------------------------------	
+	if sKeyName == "COMPLETE_ORDER" then
+		g_nClickIdx = 0
+'		Form.setDelayEvent(1, 0.5)
+		AutoRule_SelectByAccount() 
+		
+	'----------------------------------
+	' 조건 변경 성공 -> 전체 재조회
+	'----------------------------------	
+	elseif sKeyName == "COMPLETE_MODIFY" then
+'		Form.setDelayEvent(1, 0.5)
+		AutoRule_SelectByAccount() 
+		
+	'----------------------------------
+	' 조건 삭제 -> 전체 재조회
+	'----------------------------------	
+	elseif sKeyName == "INFO_DELETE" then
+'		Form.setDelayEvent(1, 0.5)
+		AutoRule_SelectByAccount() 
+		
+	'----------------------------------
+	' 조건 삭제 -> 전체 재조회
+	'----------------------------------	
+	elseif sKeyName == "DELETE_ITEM" then
+'		Form.setDelayEvent(2, 0.5)
+		AutoRule_Delete(g_nClickIdx)
+		
+	'----------------------------------
+	' 조건 수정 -> 조건설정 화면으로 이동
+	'----------------------------------
+	elseif sKeyName == "INFO_MODIFY" then
+		g_isModify = true
+		g_sModifyInfo = sRet
+		
+		Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+		
+	'----------------------------------
+	' 조건 변경 -> 전체 재조회
+	'----------------------------------
+	elseif sKeyName == "INFO_CHANGE" then
+'		Form.setDelayEvent(1, 0.5)
+		AutoRule_SelectByAccount() 
+		
+	elseif sKeyName == "CHECK_AGREE" then
+		if sRet == "ok" then
+		
+			'Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+			DATAMANAGER.RequestTranData("obtro_oder_135a")
+		end if
+	end if
+End Sub
+
+
+
+'============================================================================
+' Form_OnMsgBoxClose
+'============================================================================
+Sub Form_OnMsgBoxClose(sKeyName, sRet)
+	'----------------------------------
+	' 전체실행
+	'----------------------------------
+	if sKeyName == "ALL_RUN" then
+		if sRet == "ok" then
+			AutoRule_AllUpdateStatus() 
+		end if
+		
+	elseif sKeyName == "ALL_STOP" then
+		if sRet == "ok" then
+			AutoRule_AllUpdateStatus_Stop() 
+		end if
+		
+	'----------------------------------
+	' 전체삭제
+	'----------------------------------
+	elseif sKeyName == "ALL_DELETE" then
+		if sRet == "ok" then
+			AutoRule_AllDelete() 
+		end if
+	
+	'----------------------------------
+	' 단건삭제
+	'----------------------------------
+	elseif sKeyName == "DELETE" then
+		if sRet == "ok" then
+			AutoRule_Delete(g_nClickIdx) 
+		end if
+		
+	elseif sKeyName == "REG" then
+		if sRet == "ok" then
+			sAcnt 	= g_sAcno&g_sAsno 'Form.getTopCtlProp("act0","caption")
+			Form.OpenScreen("87051" , sAcnt)
+		end if
+	end if
+End Sub
+
+
+'============================================================================
+Sub DATAMANAGER_OnSendTranBefore(szTranID)
+	if szTranID == "obpds_srvc_323r" then
+		sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+		sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	
+		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "ACNO" 				, 0 	, sAcno )
+		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "ASNO"				, 0 	, sAsno )
+		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "SVCD"				, 0 	, "082" )
+		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "CSNO"				, 0 	, "" )
+	elseif szTranID == "obtro_oder_135a" then
+		sCsno = Form.GetSharedData("&CUST_NUM", false)
+		sDate = Form.GetSharedData("&HOST_DATE", false)
+		sMediaCode = Form.GetSharedData("&MEDIA_CODE", false)
+		
+		sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
+		sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+		
+		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "BSWR_CLCD" , 0 , "U1")
+		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "CSNO" , 0 , sCsno)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "PROS_CLS_CODE" , 0 ,"1")
+		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "ACNO" , 0 , sAcno)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "ASNO" , 0 , sAsno)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "AGRM_YN" , 0 , "Y")
+		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "AGRM_DATE" , 0 , sDate)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "CHAN_TYPE_CLS_CODE" , 0 , sMediaCode)
+		
+	elseif szTranID == "obtro_oder_133r" then
+		
+		sCsno		= Form.GetSharedData("&CUST_NUM", false)
+		
+		DATAMANAGER.SetDataValue(0, "obtro_oder_133r", "InBlock1", "BSWR_CLCD" , 0 , 		"U1")
+		DATAMANAGER.SetDataValue(0, "obtro_oder_133r", "InBlock1", "CSNO" , 0 , 		sCsno)
+	
+	end if
+End Sub
+
+'============================================================================
+Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+	if szTranID == "obpds_srvc_323r" then
+		szYakCd = DATAMANAGER.GetDataMsgCode(szTranID)
+		
+		if szYakCd <> "5766" then
+			Form.MsgBox("안내", "해외주식 거래신청 미등록 계좌는 약정 신청 후 거래가 가능합니다. 해당 화면으로 이동하시겠습니까?" , "REG", 7, "거래신청하기" , "취소")
+			
+		else
+			DATAMANAGER.RequestTranData("obtro_oder_133r")
+'			Form.OpenPopup("nrshtro17100_p11" , "" , "")
+			'Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+		end if
+	elseif szTranID == "obtro_oder_135a" then
+		Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+		
+	elseif szTranID == "obtro_oder_133r" then
+		sYN = DATAMANAGER.GetDataValue(0, "obtro_oder_133r", "OutBlock1", "AGRM_YN" , 0)
+		
+		if sYN == "Y" then
+			Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+		else
+			Form.OpenPopup("nrshtro17100_p11" , "" , "")
+		end if
+	end if
+End Sub
+
+'============================================================================
+Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+	if szTranID == "obpds_srvc_323r" then
+		szYakCd = DATAMANAGER.GetDataMsgCode(szTranID)
+		
+		if szYakCd <> "5766" then
+			Form.MsgBox("안내", "해외주식 거래신청 미등록 계좌는 약정 신청 후 거래가 가능합니다. 해당 화면으로 이동하시겠습니까?" , "REG", 7 , "거래신청하기", "취소")
+
+		else
+			Form.OpenPopup("nrshtro17100_p11" , "" , "")
+			'Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+		end if
+		Exit Sub
+	end if
+	
+	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
+	
+	if	len(trim(szSubMsg))	>	0	then
+		Form.ShowAlert("알림", szErrMsg & "(" & szSubMsg & ")")
+	else
+		Form.ShowAlert("알림", szErrMsg )
+	end	if
+End Sub
+
+
+'============================================================================
+Sub cont0_pnl0_OnScrollEnd()
+	if isEmpty(g_sNextKey) == false then
+		AutoRule_SelectByAccount_Next()
+	end if
+End Sub
+
+
+	</SCRIPT_INFO>
+	<DATAIO_INFO>
+		<TRID_INFO>
+			<TRAN tranid="obpds_srvc_323r" trcode="obpds_srvc_323r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="obtro_oder_135a" trcode="obtro_oder_135a" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="obtro_oder_134r" trcode="obtro_oder_134r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="obtro_oder_133r" trcode="obtro_oder_133r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+		</TRID_INFO>
+		<TRIO_INFO>
+			<TRAN name="obpds_srvc_323r" title="HTS-WTS용 서비스 내역 조회" realdata="0" dessvr="9" >
+				<TRBLOCK name="InBlock1" inout="in" _len="148" _ulen="110" >
+
+ACNO^계좌번호^8^0^0^0^0^0^0
+ASNO^계좌일련번호^2^0^0^0^0^0^0
+SVCD^서비스코드^3^0^0^0^0^0^0
+CSNO^고객번호^10^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="159" _ulen="119" >
+
+SVCD^서비스코드^3^0^0^0^0^0^0
+SVC_SRNO^서비스일련번호^11^0^7^0^0^0^0
+CSNO^고객번호^10^0^0^0^0^0^0
+APRV_YN^승인여부^1^0^0^0^0^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obtro_oder_135a" title="해외주식 자동감시주문 동의내역" realdata="0" dessvr="9" >
+				<TRBLOCK name="InBlock1" inout="in" _len="337" _ulen="253" >
+
+BSWR_CLCD^업무구분코드^2^0^0^0^0^0^0
+CSNO^고객번호^10^0^0^0^0^0^0
+PROS_CLS_CODE^처리구분코드^1^0^0^0^0^0^0
+ACNO^계좌번호^8^0^0^0^0^0^0
+ASNO^계좌일련번호^2^0^0^0^0^0^0
+AGRM_YN^동의여부^1^0^0^0^0^0^0
+AGRM_DATE^동의일자^8^0^0^0^0^0^0
+CHAN_TYPE_CLS_CODE^채널유형구분코드^3^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="_calc_" />
+			</TRAN>
+			<TRAN name="obtro_oder_134r" title="해외주식 자동감시주문 동의내역" realdata="0" dessvr="9" >
+				<TRBLOCK name="InBlock1" inout="in" _len="350" _ulen="266" >
+
+IQRY_CLS_CODE^조회구분코드^1^0^0^0^0^0^0
+CUST_FULL_NAME^고객풀명^100^0^0^0^0^0^0
+ELFN_ID^전자금융ID^20^0^0^0^0^0^0
+ACNO^계좌번호^8^0^0^0^0^0^0
+ASNO^계좌일련번호^2^0^0^0^0^0^0
+BSWR_CLCD^업무구분코드^2^0^0^0^0^0^0
+IQRY_STA_DATE^조회시작일자^8^0^0^0^0^0^0
+IQRY_FIN_DATE^조회종료일자^8^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" occurs="30" inout="out" _len="411" _ulen="309" >
+
+CSNO^고객번호^10^0^0^0^0^0^0
+CSNM^고객명^40^0^0^0^0^0^0
+ACNO^계좌번호^8^0^0^0^0^0^0
+ASNO^계좌일련번호^2^0^0^0^0^0^0
+THCO_ACNO^당사계좌번호^10^0^0^0^0^0^0
+BSWR_CLCD^업무구분코드^2^0^0^0^0^0^0
+AGRM_YN^동의여부^1^0^0^0^0^0^0
+MNPL_YMDH^조작일시^19^0^0^0^0^0^0
+CHAN_TYPE_CLS_CODE^채널유형구분코드^3^0^0^0^0^0^0
+MNPL_TRNO^조작단말번호^39^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="NextBlock1" inout="next" _len="156" _ulen="116" >
+
+BSWR_CLCD^업무구분코드^2^0^0^0^0^0^0
+CSNO^고객번호^10^0^0^0^0^0^0
+ACNO^계좌번호^8^0^0^0^0^0^0
+ASNO^계좌일련번호^2^0^0^0^0^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obtro_oder_133r" title="해외주식 자동감시주문 신청여부" realdata="0" dessvr="9" >
+				<TRBLOCK name="InBlock1" inout="in" _len="84" _ulen="64" >
+
+BSWR_CLCD^업무구분코드^2^0^0^0^0^0^0
+CSNO^고객번호^10^0^0^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="42" _ulen="34" >
+
+AGRM_YN^동의여부^1^0^0^0^0^0^0
+
+				</TRBLOCK>
+			</TRAN>
+		</TRIO_INFO>
+	</DATAIO_INFO>
+</ROOT>
