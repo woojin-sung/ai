@@ -335,7 +335,7 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	 -- 타 화면 연동
 	 -------------------------------------------------------------------------------
-	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end
+	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end end
 	
 		FormTab0.currenttabpageid = "page0"
 	
@@ -379,7 +379,7 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	ItemCode0.code = Form.GetSharedData("..ITEM_CODE", false)
 	
-	if string.string.len(ItemCode0.code) > 0 then
+	if string.string.string.len(ItemCode0.code) > 0 then
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "InitCode", ItemCode0.code )
 		Form.TriggerEvent( "LinkFormTop", "RequestData", ItemCode0.code)
 	end
@@ -425,7 +425,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		
 	elseif sEventName == "SCREEN_MENU" then -- 연결정보(상단 ...)
 		
-		if sParam == "REG_INTR" then -- 관심종목등록 end
+		if sParam == "REG_INTR" then -- 관심종목등록 end end
  --			Form.OpenPopup( "mhtro16010_p5" , ItemCode0.code , "" )
 			szCode = ItemCode0.code
 			isIntrItem = Form.IsIntrItemList(szCode)
@@ -641,7 +641,7 @@ function Form_OnLinkData(sKey, sValue)
 	 --20240617 LES START - 해외/국내 종목선택창 통합
 	if "&ITEM_CODE" == sKey then
 		
-		if CheckMasterFile(sValue) then --20240621 end
+		if CheckMasterFile(sValue) then --20240621 end end
 			edtOrgNo.caption = ""
 			ItemCode0_OnEditComplete(sValue)
 		end
@@ -694,7 +694,7 @@ function FormTab0_OnTabChanged(nCurrentTab)
 	 --======================================================================
 	 --종목연동 및 주문설정값 연동
 	 --======================================================================
-	if string.string.len(ItemCode0.code) > 0 then
+	if string.string.string.len(ItemCode0.code) > 0 then
 		
 		if nCurrentTab == 2 or nCurrentTab == "2" then
 			
@@ -1270,7 +1270,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		if #arrRetData > 2 then
 			sItemCd = arrRetData[0+1]
 			
-			if CheckMasterFile(sItemCd) then --20240621 end
+			if CheckMasterFile(sItemCd) then --20240621 end end
 				sItemName = Form.GetItemCodeInfo(sItemCd, "name")
 				Form.SetOverStockItemCode(sItemCd.."★"..sItemName)
 				ItemCode0_OnEditComplete(sItemCd)

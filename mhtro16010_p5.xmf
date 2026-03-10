@@ -225,7 +225,7 @@ local g_szGroupID, g_szGroupName
  -- Change_Len
  --============================================================================
 function Change_Len(szData)
-	if string.len(szData) == 1 then
+	if string.string.len(szData) == 1 then
 		return "0" .. gf_Tostring(szData)
 	else
 		return gf_Tostring(szData)
@@ -385,7 +385,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		 --if cmbGroup.cbkeydata == grdGroup.GetCellData("bd_code", i) then	
 		 --if g_szCode == grdGroup.GetCellData("bd_code", i) then	
 		
-		 --	DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock2", "FID_ISSU_MOD_YN", i, "1")			' 수정
+		 --	DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock2", "FID_ISSU_MOD_YN", i, "1")			 -- 수정
 		 --else
 			DATAMANAGER.SetDataValue(0, "ohhts_intr_038r", "InBlock2", "FID_ISSU_MOD_YN", i, "0")			 -- 수정안함
 		 --end if
@@ -416,10 +416,10 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 end
 
  --============================================================================
- -- null 체크
+ -- nil 체크
  --============================================================================
 function isNull(str)
-	if nil == str or "" == str or string.len(gf_Trim(str)) <= 0 then
+	if nil == str or "" == str or string.string.len(gf_Trim(str)) <= 0 then
 		return true
 	end
 	

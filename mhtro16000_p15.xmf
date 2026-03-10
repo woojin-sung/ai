@@ -491,7 +491,7 @@ function MovePopup(nidx, nGbn)
 			Form.SetSharedData( "..ITEM_OVERSTOCK", szItemCd.."★"..szItemNm.."★".."", "" )					
 			Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", szItemCd.."★"..szItemNm.."★".."", "" )
 			
-			if nGbn == 0 then -- 현재가 end
+			if nGbn == 0 then -- 현재가 end end
 				Form.SendReturnToParent( "RETURN_LAYOUT" , "호가")			
 			elseif nGbn == 1 then -- 차트
 				Form.OpenScreen("16020", "")

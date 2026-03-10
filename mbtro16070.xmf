@@ -1458,7 +1458,7 @@ function DisplaySetting_Grid()
 	contBody.grd0.SetCellIDMaskInfo("bd_cell07", sMaskInfo_2)	 --평가금액
 	contBody.grd0.SetCellIDMaskInfo("bd_cell57", sMaskInfo_2)	 --매입금액
 	
-	 --contBody.grd0.SetCellIDMaskInfo("bd_cell09", sMaskInfo_2)	 --대출금액	'20241125_01 HWG START
+	 --contBody.grd0.SetCellIDMaskInfo("bd_cell09", sMaskInfo_2)	 --대출금액	 --20241125_01 HWG START
 	
 	 --20241112 SWJ START
 	contBody.grd0.SetCellIDMaskInfo("bd_cell12", sMaskInfo_3)	 --매수수수료
@@ -1692,7 +1692,7 @@ function RequestMarketInfo()
 	szMktOp = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 	if szMktOp ~= "" then
 		 --장 운영 정보값이 001 ~ 013 아닐 경우 004 정규장으로 구분값 세팅
-		if CheckValidMktOp(szMktOp) == false then --v0003 end
+		if CheckValidMktOp(szMktOp) == false then --v0003 end end
 			szMktOp = "004"
 		end
 
@@ -1795,7 +1795,7 @@ end
 
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0537" then -- 나스닥 end
+	if sValue == "0537" then -- 나스닥 end end
 		return "OQ"
 	elseif sValue == "0321" then -- 뉴욕
 		return "NY"
@@ -2033,7 +2033,7 @@ function MoveScreen(sGubun,sIndex)
 			if szItemCode ~= "" then
 				 --------------------------------------------------
 				 -- 링크데이터 구조
-				 -- 국내/해외구분`종목코드`보유수량 --평균단가'수익률
+				 -- 국내/해외구분`종목코드`보유수량 --평균단가 --수익률
 				 --------------------------------------------------
 				sLinkData = "1"														
  --				sLinkData = sLinkData .. "`" .. szItemCode .. "`" .. sOrdQty .. "`" .. sAvgPrc .. "`" .. sRate
@@ -2510,19 +2510,19 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		szChk2 = "N"
 		szChk3 = "1"
 		
-		if contBody.chk0.checkstate == "1" or gf_Tonumber(contBody.chk0.checkstate) == 1 then --비용포함 end
+		if contBody.chk0.checkstate == "1" or gf_Tonumber(contBody.chk0.checkstate) == 1 then --비용포함 end end
 			szChk0 = "Y"
 		else
 			szChk0 = "N"
 		end
 			
-		if contBody.chk1.checkstate == "1" or gf_Tonumber(contBody.chk1.checkstate) == 1 then --대출합산 end
+		if contBody.chk1.checkstate == "1" or gf_Tonumber(contBody.chk1.checkstate) == 1 then --대출합산 end end
 			szChk1 = "2"
 		else
 			szChk1 = "1"
 		end
 	
-		if contBody.chk2.checkstate == "1" or gf_Tonumber(contBody.chk2.checkstate) == 1 then --정규종가 end
+		if contBody.chk2.checkstate == "1" or gf_Tonumber(contBody.chk2.checkstate) == 1 then --정규종가 end end
 			szChk2 = "N"
 		else
 			szChk2 = "Y"
@@ -2606,19 +2606,19 @@ function Call_Tran()
 	szChk2 = "N"
 	szChk3 = "1"
 	
-	if contBody.chk0.checkstate == "1" or gf_Tonumber(contBody.chk0.checkstate) == 1 then --비용포함 end
+	if contBody.chk0.checkstate == "1" or gf_Tonumber(contBody.chk0.checkstate) == 1 then --비용포함 end end
 		szChk0 = "Y"
 	else
 		szChk0 = "N"
 	end
 		
-	if contBody.chk1.checkstate == "1" or gf_Tonumber(contBody.chk1.checkstate) == 1 then --대출합산 end
+	if contBody.chk1.checkstate == "1" or gf_Tonumber(contBody.chk1.checkstate) == 1 then --대출합산 end end
 		szChk1 = "2"
 	else
 		szChk1 = "1"
 	end
 
-	if contBody.chk2.checkstate == "1" or gf_Tonumber(contBody.chk2.checkstate) == 1 then --정규종가 end
+	if contBody.chk2.checkstate == "1" or gf_Tonumber(contBody.chk2.checkstate) == 1 then --정규종가 end end
 		szChk2 = "N"
 	else
 		szChk2 = "Y"
@@ -3289,19 +3289,19 @@ function RequestData()
 	szChk2 = "N"
 	szChk3 = "1"
 	
-	if contBody.chk0.checkstate == "1" or gf_Tonumber(contBody.chk0.checkstate) == 1 then --비용포함 end
+	if contBody.chk0.checkstate == "1" or gf_Tonumber(contBody.chk0.checkstate) == 1 then --비용포함 end end
 		szChk0 = "Y"
 	else
 		szChk0 = "N"
 	end
 		
-	if contBody.chk1.checkstate == "1" or gf_Tonumber(contBody.chk1.checkstate) == 1 then --대출합산 end
+	if contBody.chk1.checkstate == "1" or gf_Tonumber(contBody.chk1.checkstate) == 1 then --대출합산 end end
 		szChk1 = "2"
 	else
 		szChk1 = "1"
 	end
 
-	if contBody.chk2.checkstate == "1" or gf_Tonumber(contBody.chk2.checkstate) == 1 then --정규종가 end
+	if contBody.chk2.checkstate == "1" or gf_Tonumber(contBody.chk2.checkstate) == 1 then --정규종가 end end
 		szChk2 = "N"
 	else
 		szChk2 = "Y"
@@ -3346,7 +3346,7 @@ end
  --============================================================================
 function contBody_chk2_OnChange(sCheckState)
 	Form.SetEnvData(1, "OVRS_JANGO_CHK_3", sCheckState)
-	if contBody.chk2.checkstate == "1" or gf_Tonumber(contBody.chk2.checkstate) == 1 then --정규종가 end
+	if contBody.chk2.checkstate == "1" or gf_Tonumber(contBody.chk2.checkstate) == 1 then --정규종가 end end
 		szChk2 = "N"
 		g_szDytmYN = "N"
 	else

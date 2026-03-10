@@ -488,7 +488,7 @@ function Form_OnFormInit()
 		 -------------------------------------------------------------------------------
 		 --초기탭 이동 후 서비스 인풋값에 올라가는 값으로 변경
 		 -------------------------------------------------------------------------------
-		if g_szType == "0" then --현금 end
+		if g_szType == "0" then --현금 end end
 			g_szType = "1"
 		elseif g_szType == "1" then --대출
 			g_szType = "2"
@@ -730,7 +730,7 @@ end
  -- 거래소벤더코드 => 거래소명 세팅
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩 end
+	if sValue == "0104" then -- 홍콩 end end
 		return "홍콩"
 	elseif sValue == "HS0529I" then -- 항셍 지수
 		return "항셍"

@@ -193,7 +193,7 @@ function Form_OnFormInitBefore()
 	 -------------------------------------------------------------
 	 -- 예약주문(주문유형,주문시간 문구추가)
 	 -------------------------------------------------------------
-	if g_nIndex == "10" then --예약매수 end
+	if g_nIndex == "10" then --예약매수 end end
 		
 		g_nOrd_res_Type 	= arrData[13+1] 	 --예약주문유형
 		g_nOrd_res_Period	= arrData[14+1] 	 --예약주문기간
@@ -306,9 +306,9 @@ function Set_Data(nIndex)
 	 -------------------------------------------------------------
 	 -- 큰글씨 모드에 따른 컨트롤 위치이동
 	 -------------------------------------------------------------
-    if gf_Tonumber(g_nTextSize) > 0 then --큰글씨 end
+    if gf_Tonumber(g_nTextSize) > 0 then --큰글씨 end end
 	    imgInfo.left = 105
-		if nIndex == "10" then --예약매수 end
+		if nIndex == "10" then --예약매수 end end
 			if g_OsType == "1" then
 				imgInfo.top = 542
 			else
@@ -321,7 +321,7 @@ function Set_Data(nIndex)
 		end
 		    
 	else --큰글씨 아님
-		if nIndex == "10" then --예약매수 end
+		if nIndex == "10" then --예약매수 end end
 			if g_OsType == "1" then
 				imgInfo.top = 543
 			else

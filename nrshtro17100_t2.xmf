@@ -321,7 +321,7 @@ function AutoRule_SelectCount()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -356,7 +356,7 @@ function AutoRule_SelectByAccount()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -388,7 +388,7 @@ function AutoRule_SelectByAccount_Next()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -412,7 +412,7 @@ function AutoRule_Delete(nIdx)
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -439,7 +439,7 @@ function AutoRule_AllDelete()
 		
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -472,7 +472,7 @@ function AutoRule_UpdateStatus(nIdx)
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -499,7 +499,7 @@ function AutoRule_AllUpdateStatus()
 	
 		sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -523,7 +523,7 @@ function AutoRule_AllUpdateStatus_Stop()
 	
 		sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -552,7 +552,7 @@ function IssueToken()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -1864,7 +1864,7 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	
 	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
 	
-	if string.string.len(gf_Trim(szSubMsg))	>	0 then
+	if string.string.string.len(gf_Trim(szSubMsg))	>	0 then
 		Form.ShowAlert("알림", szErrMsg .. "(" .. szSubMsg .. ")")
 	else
 		Form.ShowAlert("알림", szErrMsg )

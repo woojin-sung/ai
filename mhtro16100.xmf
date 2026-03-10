@@ -363,7 +363,7 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	 -- 타 화면 연동
 	 -------------------------------------------------------------------------------
-	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end
+	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end end
 	
 		FormTab0.currenttabpageid = "page0"
 	
@@ -388,7 +388,7 @@ function Form_OnFormInit()
 			
 			szLinkCode = arrLinkCode[0+1]
 			
-			if szLinkCode ~= "기타" then -- 20251114 KSJ APPLINK 예외처리 end
+			if szLinkCode ~= "기타" then -- 20251114 KSJ APPLINK 예외처리 end end
 	
 				if CheckMasterFile(szLinkCode) then
 					
@@ -428,7 +428,7 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	ItemCode0.code = Form.GetSharedData("..ITEM_CODE", false)
 	
-	if string.string.len(ItemCode0.code) > 0 then
+	if string.string.string.len(ItemCode0.code) > 0 then
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "InitCode", ItemCode0.code )
 		Form.TriggerEvent( "LinkFormTop", "RequestData", ItemCode0.code)
 	end
@@ -460,7 +460,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 	 --------------------------------------------------------------------------
 	elseif sEventName == "SCREEN_MENU" then -- 연결정보(상단 ...)
 		
-		if sParam == "REG_INTR" then -- 관심종목등록 end
+		if sParam == "REG_INTR" then -- 관심종목등록 end end
 			Form.OpenPopup( "mhtro16010_p5" , ItemCode0.code , "" )
 
 		elseif sParam == "SET_SCREEN" then -- 화면설정
@@ -741,7 +741,7 @@ end
 function Form_OnLinkData(sKey, sValue)
 	 --20240617 LES START - 해외/국내 종목선택창 통합
 	if "&ITEM_CODE" == sKey then
-		if CheckMasterFile(sValue) then --20240621 end
+		if CheckMasterFile(sValue) then --20240621 end end
 			edtOrgNo.caption = ""
 			ItemCode0_OnEditComplete(sValue)
 		end
@@ -800,7 +800,7 @@ function FormTab0_OnTabChanged(nCurrentTab)
 	 --======================================================================
 	 --종목연동 및 주문설정값 연동
 	 --======================================================================
-	if string.string.len(ItemCode0.code) > 0 then
+	if string.string.string.len(ItemCode0.code) > 0 then
 		
 		if nCurrentTab == 2 or nCurrentTab == "2" then
 			
@@ -1079,7 +1079,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		sDnLimit		=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_LLAM" 		, 0 )))	 -- 하한가
 		sDecimalLen 	=  tostring(_tonumber(DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_DCPN_CNT" 	, 0 )))	 -- 가격소수점
 		
-		if g_NoSendItemInfo ~= true and g_NoSendItemInfoExceptCase ~= true then --20240725 end
+		if g_NoSendItemInfo ~= true and g_NoSendItemInfoExceptCase ~= true then --20240725 end end
 			SendItemInfo(sCurPrice,sUpLimit,sDnLimit,sOrdSize,sCurrency,sDecimalLen,sKorName,sTickType,sOrdSizeMaedo)
 		end
 		
@@ -1125,7 +1125,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			 --do nothing
 		 --20251114 YSH END
 		else
-			if g_NoSendHogaData ~= true and g_NoSendHogaDataExceptCase ~= true then --20240725 end
+			if g_NoSendHogaData ~= true and g_NoSendHogaDataExceptCase ~= true then --20240725 end end
 				Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "HOGA_COMPLETE", "")
 			end
 			
@@ -1439,7 +1439,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		if #arrRetData > 2 then
 			sItemCd = arrRetData[0+1]
 			
-			if CheckMasterFile(sItemCd) then --20240621 end
+			if CheckMasterFile(sItemCd) then --20240621 end end
 				sItemName = Form.GetItemCodeInfo(sItemCd, "name")
 				
 				 --종목선택창에서 종목을 선택한 경우, 아래 호출함수는 메인에서 호출
@@ -1574,7 +1574,7 @@ function Request_Hoga(sCode)
 	sDayYN = Form.GetSharedData( "..OVRS_DAYMARKET", false )
 	sAfterYN = Form.GetSharedData("OVRS_AFTER_MARKET_ORDER", false )
 	
-	if sDayYN == "Y" and g_NoSendHogaData == false and g_NoSendHogaDataExceptCase == false then --20240725 end
+	if sDayYN == "Y" and g_NoSendHogaData == false and g_NoSendHogaDataExceptCase == false then --20240725 end end
 		
 		if g_sCode ~= "" then
 			arrCode = gf_Split(g_sCode,"@")

@@ -39,17 +39,19 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="5088" _ulen="4372" >
-Dim gTextSize
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+local gTextSize
 gTextSize = -2
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	Container0.Image0.setMaintainingRatio("1")
+	Container0.Image0.SetMaintainingRatio("1")
 
-	'--------------------------------------------------------------
-	' 라벨 투명모드
-	'--------------------------------------------------------------
+	 ----------------------------------------------------------------
+	 -- 라벨 투명모드
+	 ----------------------------------------------------------------
 	Container0.Label1.transmode = "1"
 	Container0.Label2.transmode = "1"
 	Container0.Label3.transmode = "1"
@@ -62,9 +64,9 @@ Sub Form_OnFormInitBefore()
 	Container0.Label10.transmode = "1"
 	Container0.Label11.transmode = "1"
 	
-	'--------------------------------------------------------------
-	' 라벨 패딩값 설정
-	'--------------------------------------------------------------
+	 ----------------------------------------------------------------
+	 -- 라벨 패딩값 설정
+	 ----------------------------------------------------------------
 	Container0.Label1.paddinginfo = "0,0,0,0"
 	Container0.Label2.paddinginfo = "0,0,0,0"
 	Container0.Label3.paddinginfo = "0,0,0,0"
@@ -77,33 +79,33 @@ Sub Form_OnFormInitBefore()
 	Container0.Label10.paddinginfo = "0,0,0,0"
 	Container0.Label11.paddinginfo = "0,0,0,0"
 	
-	'--------------------------------------------------------------
-	' 큰글씨 모드 대응
-	'--------------------------------------------------------------
+	 ----------------------------------------------------------------
+	 -- 큰글씨 모드 대응
+	 ----------------------------------------------------------------
 	szTextSize = Form.GetEnvData("common.textsize")
-	if CInt(szTextSize) > 0 then
+	if gf_Tonumber(szTextSize) > 0 then
 	
-		gTextSize = - Cint((szTextSize * 2)) + 1
+		gTextSize = - gf_Tonumber((szTextSize * 2)) + 1
 		
-		Container0.Label1.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label2.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label3.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label4.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label5.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label6.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label7.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label8.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label9.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label10.fontsize = - Cint((szTextSize * 2)) + 1
-		Container0.Label11.fontsize = - Cint((szTextSize * 2)) + 1
+		Container0.Label1.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label2.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label3.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label4.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label5.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label6.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label7.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label8.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label9.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label10.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
+		Container0.Label11.fontsize = - gf_Tonumber((szTextSize * 2)) + 1
 		
-	end if
+	end
 	
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 
 	Container0.Label1.caption = "· 조회 시점의 시세로 잔고가 조회돼요"
 	Container0.Label2.caption = "· 실시간 시세 신청 기준에 따라\n   실시간/지연 시세가 반영되어 조회 돼요"
@@ -114,42 +116,43 @@ Sub Form_OnFormInit()
 	Container0.Label7.caption = "· 매도수수료(추정) \n   : 현재가로 전량 매도시 납부될 추정 매도수수료"
 	Container0.Label8.caption = "· 제세금(추정) \n   : 현재가로 전량 매도시 납부될 추정 제세금"
 	Container0.Label9.caption = "· 이자(추정) \n   : 매도시 발생될 추정 대출이자비용"
-'	Container0.Label10.caption = "   (단, After Market 시장은 '정규장 종가' 기준으로\n   잔고가 조회돼요)"
+ --	Container0.Label10.caption = "   (단, After Market 시장은 '정규장 종가' 기준으로\n   잔고가 조회돼요)"
 	Container0.Label11.caption = "· 정규종가 선택 옵션 기능은 '주간거래 시장' 에만\n   선택하여 조회 할 수 있어요"
 
-'	sChangeText = "· 실시간 시세 신청 기준에 따라"
-'	sChangeTextLen = Form.getLen(sChangeText)
-'	Container0.Label2.changeTextAttr(0, sChangeTextLen, 290, gTextSize, true)
-'	
-'	sStartText = "· 미국 주간거래, Pre Market, 정규장 시장은\n   "
-'	sStartOffset = Form.getLen(sStartText)
-'	sChangeText = "해당 시장의 시세가 반영되어 조회"
-'	sChangeTextLen = Form.getLen(sChangeText)
-'	Container0.Label3.changeTextAttr(sStartOffset, sChangeTextLen, 290, gTextSize, true)
-'	
-'	sStartText = "· 정규종가 선택 옵션 기능은 "
-'	sStartOffset = Form.getLen(sStartText)
-'	sChangeText = "'주간거래 시장'"
-'	sChangeTextLen = Form.getLen(sChangeText)
-'	Container0.Label11.changeTextAttr(sStartOffset, sChangeTextLen, 290, gTextSize, true)
-'	
-'	sStartText = "· 원화환산금액 적용환율은 "
-'	sStartOffset = Form.getLen(sStartText)
-'	sChangeText = "고시환율"
-'	sChangeTextLen = Form.getLen(sChangeText)
-'	Container0.Label5.changeTextAttr(sStartOffset, sChangeTextLen, 290, gTextSize, true)
+ --	sChangeText = "· 실시간 시세 신청 기준에 따라"
+ --	sChangeTextLen = Form.getLen(sChangeText)
+ --	Container0.Label2.changeTextAttr(0, sChangeTextLen, 290, gTextSize, true)
+ --	
+ --	sStartText = "· 미국 주간거래, Pre Market, 정규장 시장은\n   "
+ --	sStartOffset = Form.getLen(sStartText)
+ --	sChangeText = "해당 시장의 시세가 반영되어 조회"
+ --	sChangeTextLen = Form.getLen(sChangeText)
+ --	Container0.Label3.changeTextAttr(sStartOffset, sChangeTextLen, 290, gTextSize, true)
+ --	
+ --	sStartText = "· 정규종가 선택 옵션 기능은 "
+ --	sStartOffset = Form.getLen(sStartText)
+ --	sChangeText = "'주간거래 시장'"
+ --	sChangeTextLen = Form.getLen(sChangeText)
+ --	Container0.Label11.changeTextAttr(sStartOffset, sChangeTextLen, 290, gTextSize, true)
+ --	
+ --	sStartText = "· 원화환산금액 적용환율은 "
+ --	sStartOffset = Form.getLen(sStartText)
+ --	sChangeText = "고시환율"
+ --	sChangeTextLen = Form.getLen(sChangeText)
+ --	Container0.Label5.changeTextAttr(sStartOffset, sChangeTextLen, 290, gTextSize, true)
 	
-End Sub
+end
 
-'============================================================================
-Sub BtnClose_OnClick()
+ --============================================================================
+function BtnClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub btnOk_OnClick()
+ --============================================================================
+function btnOk_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

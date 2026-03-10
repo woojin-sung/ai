@@ -350,7 +350,7 @@ function Request_MktOp(szMkOpClsCd)
 	
 	-- SELECT CASE 변환 (수동 보정 필요)
 			
-		if szMkOpClsCd == "001" then --주간장 개시 end
+		if szMkOpClsCd == "001" then --주간장 개시 end end
 			Request_Tran_ohhts_6000_017r()
 	
 		elseif szMkOpClsCd == "002" then --주간장 종료

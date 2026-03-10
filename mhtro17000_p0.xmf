@@ -47,10 +47,12 @@
 		</TABLE>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="2537" _ulen="2511" >
-'============================================================================
-'해외주식 세미스크린 세미메뉴
-'============================================================================
-Sub Form_OnFormInit()
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ --해외주식 세미스크린 세미메뉴
+ --============================================================================
+function Form_OnFormInit()
 	szLinkData = Form.GetOpenLinkData()
 
 	if szLinkData == "JP" then
@@ -71,102 +73,103 @@ Sub Form_OnFormInit()
 		TblQuickJP.visible = false
 		
 		imgQuick.height = 320
-	end if
+	end
 	
-End Sub
-'============================================================================
-Sub TblQuick_OnClick(lRow , lColumn)
-	Select Case CInt(lRow)
-	Case 0
-'		Form.OpenPopup("mhetc91001" , "1", "")
+end
+ --============================================================================
+function TblQuick_OnClick(lRow , lColumn)
+	-- SELECT CASE 변환 (수동 보정 필요)
+	if gf_Tonumber(lRow) == 0 then
+ --		Form.OpenPopup("mhetc91001" , "1", "")
 		Form.OpenScreen("91001" , "1")
 		
-	Case 1
+	elseif gf_Tonumber(lRow) == 1 then
 		Form.OpenScreen("11010" , "")
 		
-	Case 2
+	elseif gf_Tonumber(lRow) == 2 then
 		Form.SendReturnToParent("SCREEN_MENU" , "REG_MEMO")
 
-	Case 3
+	elseif gf_Tonumber(lRow) == 3 then
 		Form.SendReturnToParent("SCREEN_MENU" , "DISCLAIMER")
 	
-	Case 4
+	elseif gf_Tonumber(lRow) == 4 then
 		Form.OpenScreen("16020" , "")
 
-	Case 5
+	elseif gf_Tonumber(lRow) == 5 then
 		Form.OpenScreen("87051" , "")
 		
-	Case 6
+	elseif gf_Tonumber(lRow) == 6 then
 		Form.OpenScreen("16090" , "")
 		
-	Case 7
+	elseif gf_Tonumber(lRow) == 7 then
 		Form.SendReturnToParent("SCREEN_MENU" , "SET_SCREEN")
 		
-	End Select
+	end
 	
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub TblQuickCHHK_OnClick(lRow , lColumn)
-	Select Case CInt(lRow)
-	Case 0
+ --============================================================================
+function TblQuickCHHK_OnClick(lRow , lColumn)
+	-- SELECT CASE 변환 (수동 보정 필요)
+	if gf_Tonumber(lRow) == 0 then
 		Form.OpenScreen("11010" , "")
 		
-	Case 1
+	elseif gf_Tonumber(lRow) == 1 then
 		Form.SendReturnToParent("SCREEN_MENU" , "REG_MEMO")
 
-	Case 2
+	elseif gf_Tonumber(lRow) == 2 then
 		Form.SendReturnToParent("SCREEN_MENU" , "DISCLAIMER")
 	
-	Case 3
+	elseif gf_Tonumber(lRow) == 3 then
 		Form.OpenScreen("16020" , "")
 
-	Case 4
+	elseif gf_Tonumber(lRow) == 4 then
 		Form.OpenScreen("87051" , "")
 		
-	Case 5
+	elseif gf_Tonumber(lRow) == 5 then
 		Form.OpenScreen("16090" , "")
 		
-	Case 6
+	elseif gf_Tonumber(lRow) == 6 then
 		Form.SendReturnToParent("SCREEN_MENU" , "SET_SCREEN")
 		
-	End Select
+	end
 	
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub TblQuickJP_OnClick(lRow , lColumn)
-	Select Case CInt(lRow)
+ --============================================================================
+function TblQuickJP_OnClick(lRow , lColumn)
+	-- SELECT CASE 변환 (수동 보정 필요)
 		
-	Case 0
+	if gf_Tonumber(lRow) == 0 then
 		Form.OpenScreen("11010" , "")
 		
-	Case 1
+	elseif gf_Tonumber(lRow) == 1 then
 		Form.SendReturnToParent("SCREEN_MENU" , "REG_MEMO")
 	
-	Case 2
+	elseif gf_Tonumber(lRow) == 2 then
 		Form.OpenScreen("16020" , "")
 
-	Case 3
+	elseif gf_Tonumber(lRow) == 3 then
 		Form.OpenScreen("87051" , "")
 		
-	Case 4
+	elseif gf_Tonumber(lRow) == 4 then
 		Form.OpenScreen("16090" , "")
 		
-	Case 5
+	elseif gf_Tonumber(lRow) == 5 then
 		Form.SendReturnToParent("SCREEN_MENU" , "SET_SCREEN")
 		
-	End Select
+	end
 	
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub imgBg_OnClick()
+ --============================================================================
+function imgBg_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

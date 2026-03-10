@@ -500,13 +500,13 @@ function Set_Unit(szData, sDecimal)
 			sztemp = sztemp .. ".0000"	
 		end
 	else
-		szCha = gf_Tonumber(string.len(sztemp) - szChk)
+		szCha = gf_Tonumber(string.string.len(sztemp) - szChk)
 
 		if szCha > gf_Tonumber(sDecimal) then
 			sztemp = gf_Round(sztemp, gf_Tonumber(sDecimal))
 		end
 		
-		szCha = gf_Tonumber(string.len(sztemp) - szChk)
+		szCha = gf_Tonumber(string.string.len(sztemp) - szChk)
 		
 		if gf_Tostring(szCha) == "1" then
 			if sDecimal == "2" then
@@ -620,7 +620,7 @@ function SetGridData()
 	
 	 --20200511 LES START
 	 --Form.ShowAlert("sCodeList_잔고팝업", sCodeList)
- --	Form.triggerEvent("linkform", "CodeList", sCodeList)
+ --	Form.TriggerEvent("linkform", "CodeList", sCodeList)
 	 --20200511 LES END
 	
 	
@@ -810,7 +810,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 				swapItemColor(i, nDiff)
 			end
 		   
-		    --Call Request_Data_108r()
+		    --Request_Data_108r()
 		end
 	
 	elseif szTranID == "obtro_oder_108r" then
@@ -912,7 +912,7 @@ function grdList_OnClickUp(lRow, szCellID)
 				
 		
 		
-		if string.len(szCutIscd) < 0 or string.len(szTranExch) < 0 then
+		if string.string.len(szCutIscd) < 0 or string.string.len(szTranExch) < 0 then
 			msgbox "필수 데이터 값이 존재하지 않습니다." .. "@" .. szCutIscd .. "@" .. szTranExch
 		end
 		
@@ -965,7 +965,7 @@ function grdList_OnClickUp(lRow, szCellID)
 		
 		
 			szData = "잔고" .. "★" .. szCdName .. "★" .. szCd .. "★" .. szVndrCd .. "★" .. szQty .. "★" .. szLoanDate .. "★" .. szLoanCd .. "★" .. szLoanSr
-			if szScreenNo == "16092" then --v001
+			if szScreenNo == "16092" then --v001 end
 				Form.SendReturnToParent("BALANCE", szData)
 			else
 				Form.SendReturnToParent("16060_BALANCE", szData)
@@ -989,7 +989,7 @@ end
  --============================================================================
  --20201209 SWJ START : 해외주식 잔고 그리드 오류 수정
  --Sub grdList_OnScrollEnd()
- --	'DATAMANAGER.RequestNextData( "obtro_oder_105r" )
+ --	 --DATAMANAGER.RequestNextData( "obtro_oder_105r" )
  --End Sub
  --20201209 SWJ END
  --============================================================================
@@ -1009,7 +1009,7 @@ end
  --============================================================================
 function Transform_codeToid(sValue)
 
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HKS"
 	elseif sValue == "0529" then -- 항셍 지수
 		return "HSI"
@@ -1025,7 +1025,7 @@ function Transform_codeToid(sValue)
 		return "OQ"
 	elseif sValue == "0130" then -- 미국 OTCBB
 		return "NAO"
-	elseif sValue == "0625" then -- S&P 지수
+	elseif sValue == "0625" then -- S..P 지수
 		return "SPI"
 	elseif sValue == "0310" then -- 다우존스 지수
 		return "DJI"
@@ -1053,7 +1053,7 @@ end
  -- 거래소코드 -> 거래소벤더코드 변환
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "홍콩"
 	elseif sValue == "HS0529I" then -- 항셍 지수
 		return "항셍"
@@ -1071,7 +1071,7 @@ function Transform_Exid(sValue)
 		return "나스닥"
 	elseif sValue == "0130" then -- 미국 OTCBB
 		return "미국 OTCBB"
-	elseif sValue == "0625" then -- S&P 지수
+	elseif sValue == "0625" then -- S..P 지수
 		return "S..P"
 	elseif sValue == "0310" then -- 다우존스 지수
 		return "다우존스"
@@ -1127,7 +1127,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 --20200616 LES START 
 		 --연합쪽에서 받아온 현재가를 넘겨 기간계 서비스에서(oder_108r)
 		 --평가손익/수익률/평가금액을 계산하여 받아온다
- --		Call Request_Data_108r()
+ --		Request_Data_108r()
 		 --LES END
 		
 	 --20220704 ITGEN START
@@ -1206,7 +1206,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		end
 		 --v001 END
 		
-		if szListItems[1+1]	==	"0" then --현재가
+		if szListItems[1+1]	==	"0" then --현재가 end
 			Form.OpenScreen("16000" , g_szNewData)
 		elseif szListItems[1+1]	==	"1" then
  --			Form.OpenScreen("16060" , g_szNewBuyData)

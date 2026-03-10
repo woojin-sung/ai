@@ -365,7 +365,7 @@ function Calc_Price_Ovrs(nGbn)
 		 -- + 버튼 클릭
 		 --------------------------------------------------
 		if nGbn == 0 then
-			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -385,7 +385,7 @@ function Calc_Price_Ovrs(nGbn)
 		 -- - 버튼 클릭 
 		 --------------------------------------------------
 		elseif nGbn == 1 then
-			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -630,10 +630,10 @@ function GetHogaUnit(sType, szPrc, nGbn)
 		 -------------------------------------------------------------------------
 		 -- 중국(상해/심천) 호가단위 설정
 		 -------------------------------------------------------------------------
-		if szMk == "0215" then --상해 end
+		if szMk == "0215" then --상해 end end
 		
 			 --20240613 LES START 틱단위 수정
-			if szTtype == 2 then --ETF end
+			if szTtype == 2 then --ETF end end
 				szUnit = "0.001"
 			else
 				szUnit = "0.010"
@@ -643,7 +643,7 @@ function GetHogaUnit(sType, szPrc, nGbn)
 		elseif szMk == "0214" then --심천
 			
 			 --20240613 LES START 틱단위 수정
-			if szTtype == 2 then --ETF end
+			if szTtype == 2 then --ETF end end
 				szUnit = "0.001"
 			else
 				szUnit = "0.010"
@@ -1292,7 +1292,7 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 체크
 	 -----------------------------------------------------------
-	if string.string.len(szQty) <= gMaxLen then
+	if string.string.string.len(szQty) <= gMaxLen then
 		if gf_Tostring(szQty) == "0" or gf_Tostring(szQty) == "" then
 			contMain.lblHideQty.caption = "1"
 			sQty = "1 주"
@@ -1418,7 +1418,7 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
 		 --------------------------------
 		 --소수점영역 길이
 		 --------------------------------
-		sCha = gf_Tonumber(string.string.len(nPrc) - sChk)
+		sCha = gf_Tonumber(string.string.string.len(nPrc) - sChk)
 		
 		 ---------------------------------------------------------
 		 --소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
@@ -1484,7 +1484,7 @@ end
 function Form_OnFormInit()
 	 --------------------------------------------------
 	 -- 링크데이터 구조
-	 -- 국내/해외구분`종목코드`보유수량 --평균단가'수익률
+	 -- 국내/해외구분`종목코드`보유수량 --평균단가 --수익률
 	 --------------------------------------------------
 	
 	sLinkData = Form.GetOpenLinkData()
@@ -1811,7 +1811,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 				 -----------------------------------------------------------
 				 -- 입력값 자리수 체크
 				 -----------------------------------------------------------
-				if string.string.len(sValue) <= gMaxLen then
+				if string.string.string.len(sValue) <= gMaxLen then
 					nMod = gf_Tonumber(sValue) % gf_Tonumber(sOrdSize)
 					
 					if nMod > 0 then

@@ -226,7 +226,7 @@ function Request_Tran_ohhts_6230_002r()
 	
 	sNtns = ""
 	szExidCd = ""
-	if g_szExidCd == "NY" or g_szExidCd == "AX" or g_szExidCd == "OQ" then --미국 각 시장 end
+	if g_szExidCd == "NY" or g_szExidCd == "AX" or g_szExidCd == "OQ" then --미국 각 시장 end end
 	    sNtns = "US"
 	elseif g_szExidCd == "SH" or g_szExidCd == "SZ" then --상해, 심천
 	    sNtns = "CN"
@@ -447,7 +447,7 @@ function MovePopup(nidx, nGbn)
 			
 	-- SELECT CASE 변환 (수동 보정 필요)
 		if szMktCd == "OQ" or szMktCd == "AX" or szMktCd == "NY" or szMktCd == "SH" or szMktCd == "SZ" or szMktCd == "HK" or szMktCd == "JP" then
-			if nGbn == 0 then -- 현재가 end
+			if nGbn == 0 then -- 현재가 end end
 				Form.TriggerEvent("#", "RETURN_LAYOUT", "호가")				
 			elseif nGbn == 1 then -- 차트
 				Form.OpenScreen("16020", "")

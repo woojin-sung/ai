@@ -355,7 +355,7 @@ function Process_Tran_obsim_oscm_331r()
 	sMrktCls    = DATAMANAGER.GetDataValue(false, "obsim_oscm_331r", "OutBlock2", "HLDY_YN", 0) 		 -- 휴일여부
 	
 	sWeekDate = WeekDay( CDate( string.sub(sWeekDate, 1, 4) .. "-" .. string.sub(sWeekDate, 5, 5 + 2 - 1) .. "-" .. string.sub(sWeekDate, -2) ) )
-	if gf_Trim(sMrktCls) == "Y" and sWeekDate ~= "1" and sWeekDate ~= "7" then --일요일, 토요일 제외 end
+	if gf_Trim(sMrktCls) == "Y" and sWeekDate ~= "1" and sWeekDate ~= "7" then --일요일, 토요일 제외 end end
 		contMain.lblData8.caption = "휴장"
 	else
 		if g_sClsCd == "Y" then

@@ -834,7 +834,7 @@ function RequestMarketInfo()
 	szMktOpClsCd = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 	
 	if szMktOpClsCd ~= "" and gMktOpClsCd ~= szMktOpClsCd then
-		if CheckValidMktOp(szMkOpClsCd) == false then --v0003 end
+		if CheckValidMktOp(szMkOpClsCd) == false then --v0003 end end
 			szMkOpClsCd = "004"
 		end
 		
@@ -2205,7 +2205,7 @@ function MoveScreen(sGubun,sIndex)
 			if szItemCode ~= "" then
 				 --------------------------------------------------
 				 -- 링크데이터 구조
-				 -- 국내/해외구분`종목코드`보유수량 --평균단가'수익률
+				 -- 국내/해외구분`종목코드`보유수량 --평균단가 --수익률
 				 --------------------------------------------------
 				sLinkData = "1"														
  --				sLinkData = sLinkData .. "`" .. szMK .. "@" .. szItemCode .. "`" .. sOrdQty .. "`" .. sAvgPrc .. "`" .. sRate
@@ -2311,7 +2311,7 @@ end
  --============================================================================
 function GetMarketCode(sValue)
 
-	if sValue == "0104" then -- 홍콩 end
+	if sValue == "0104" then -- 홍콩 end end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
@@ -2480,7 +2480,7 @@ end
  -- 거래소코드(4자리) <- 거래명(2자리)
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩 end
+	if sValue == "0104" then -- 홍콩 end end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"

@@ -34,7 +34,7 @@ end
  --============================================================================
 function Button0_OnClick()
 	 --Form.OpenPopup("notice_p4","","")
-	 --Form.openExternalBrowser("https://home.imeritz.com/bbs/BbsRead.go?bbsGrpId=bascGrp&bbsId=fstock&bbsCnttTurnNo=387&listCnt=10&pageNum=1&searchDiv=&searchText=")
+	 --Form.OpenExternalBrowser("https://home.imeritz.com/bbs/BbsRead.go?bbsGrpId=bascGrp..bbsId=fstock..bbsCnttTurnNo=387..listCnt=10..pageNum=1..searchDiv=..searchText=")
 	Form.OpenExternalBrowser("https://home.imeritz.com/bbs/BbsRead.go?bbsGrpId=bascGrp..bbsId=fstock_vm_mts..bbsCnttTurnNo=413..listCnt=10..pageNum=1..searchDiv=..searchText=")
 end
  --============================================================================
@@ -84,7 +84,7 @@ function ChkButton0_OnChange(sCheckState)
 	if sCheckState == "1" then
 		ServerMode = Form.GetSharedData("..SERVER_MODE", false)
 	
-		if ServerMode == "1" then --개발기
+		if ServerMode == "1" then --개발기 end
 			Form.OpenExternalBrowser("https://testhome.imeritz.com/include/resource/comm/ctcn/notice/mts_meritz_avgo.pdf")
 		else
 			Form.OpenExternalBrowser("https://home.imeritz.com/include/resource/comm/ctcn/notice/mts_meritz_avgo.pdf")

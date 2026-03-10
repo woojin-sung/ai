@@ -375,7 +375,7 @@ end
  -- Change_Len
  --============================================================================
 function Change_Len(szData)
-	if string.string.len(szData) == 1 then
+	if string.string.string.len(szData) == 1 then
 		return "0" .. gf_Tostring(szData)
 	else
 		return gf_Tostring(szData)
@@ -412,7 +412,7 @@ function Add_Item(nGbn)
 	
 	g_szCd = ""
 	
-	if nGbn == 0 then -- 20160407 end
+	if nGbn == 0 then -- 20160407 end end
 		Check_LocalOrServer()
 	end
 end
@@ -442,7 +442,7 @@ function Form_OnFormInit()
 	 -- 관심 동기화 //////////////////////////////////////////////////////////
 	g_szCloud = Form.GetEnvData("common.interest_cloud")
 	
-	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용) end
+	if gf_Trim(g_szCloud) == "" then -- 초기값 : 1(동기화 사용) end end
 		g_szCloud = "1"
 	end
 	 -- //////////////////////////////////////////////////////////////////////
@@ -451,7 +451,7 @@ function Form_OnFormInit()
 	grdList.rowmove = "1"
 	
 	 -- 설정에서 구분자를 받아온다.
-	if g_szCloud == "1" then -- Server 저장시 end
+	if g_szCloud == "1" then -- Server 저장시 end end
 		 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 		DATAMANAGER.RequestTranData("ohhts_intr_026r")
 	else -- Local 저장시
@@ -756,7 +756,7 @@ function cmbGroup_OnEditComplete(iIndex)
 	Form.SetEnvData("1", "GLOBAL_INTR_GROUP_SELECT" , cmbGroup.cbkeydata)
 	 --20160906 NOHES END
 	
-	if g_szCloud == "0" then -- 로컬 end
+	if g_szCloud == "0" then -- 로컬 end end
 		Load_GWList()
 	else -- 서버
 		 -- 관심종목 종목 조회

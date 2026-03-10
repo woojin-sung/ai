@@ -104,7 +104,7 @@ end
  -- Init_Control : 설정 초기화(0: 화면오픈, 1:초기화버튽클릭)
  --======================================
 function Init_Control(nIdx)
-	if nIdx == 1 then -- 초기화 버튼 클릭시 end
+	if nIdx == 1 then -- 초기화 버튼 클릭시 end end
 		Set_TableData(0, "선택")
 		Set_TableData(1, "선택")
 		Set_TableData(2, "선택")
@@ -283,7 +283,7 @@ end
 function contSet_tblSet_OnClick(lRow , lColumn)
 
 	if lColumn == 1 or lColumn == 2 then
-		if lRow == 0 then -- 호가등락률 end
+		if lRow == 0 then -- 호가등락률 end end
 			contSet_imgDispdiff_OnClick()
 		elseif lRow == 1 then -- 호가잔량그래프
 			contSet_imgjangraph_OnClick()

@@ -42,7 +42,7 @@ function Form_OnFormInit()
 	if gf_Trim(g_szItemCode) == "" then
 		return
 	end
-	if string.string.len(g_szExid) < 1 then
+	if string.string.string.len(g_szExid) < 1 then
 		szExid = ""
 	else
 		szExid = "."..g_szExid

@@ -159,11 +159,11 @@ function btnSave_OnClick()
 	end
 	
 	if flag == 1 or flag == 2 then
-		if cldStart.caption == "" or string.len(cldStart.caption) ~= 8 then
+		if cldStart.caption == "" or string.string.len(cldStart.caption) ~= 8 then
 			Form.ShowAlert("기간설정", "예약주문 시작일자가 유효하지 않습니다.")
 			return
 		end
-		if cldFinish.caption == "" or string.len(cldFinish.caption) ~= 8 then
+		if cldFinish.caption == "" or string.string.len(cldFinish.caption) ~= 8 then
 			Form.ShowAlert("기간설정", "예약주문 종료일자가 유효하지 않습니다.")
 			return
 		end
@@ -198,7 +198,7 @@ function btnSave_OnClick()
 		 --20200911 LES END
 	
 	elseif flag == 3 then
-			if cldStart.caption == "" or string.len(cldStart.caption) ~= 8 then
+			if cldStart.caption == "" or string.string.len(cldStart.caption) ~= 8 then
 				Form.ShowAlert("기간설정", "예약주문 시작일자가 유효하지 않습니다.")
 				return
 			end
@@ -220,7 +220,7 @@ end
 
  --============================================================================
 function cldStart_OnEditComplete()
-	if string.len(cldStart.caption) ~= 8 then
+	if string.string.len(cldStart.caption) ~= 8 then
 		Form.ShowAlert("기간설정", "예약주문 시작일자가 유효하지 않습니다.")
 		cldStart.caption = ""
 		return
@@ -261,7 +261,7 @@ end
 
  --============================================================================
 function cldFinish_OnEditComplete()
-	if string.len(cldFinish.caption) ~= 8 then
+	if string.string.len(cldFinish.caption) ~= 8 then
 		Form.ShowAlert("기간설정", "예약주문 종료일자가 유효하지 않습니다.")
 		cldFinish.caption = ""
 		return
@@ -303,7 +303,7 @@ function rdoRange_OnClick(nIndex)
  --				cldStart.caption = cldHost.caption
  --			end if
 		end
- --		Form.SetSharedData("&mhtro16061_order_date", cldStart.caption)
+ --		Form.SetSharedData("..mhtro16061_order_date", cldStart.caption)
  --		g_orderDate = cldStart.caption
 		
 	elseif gf_Tonumber(nIndex) == 0 or gf_Tonumber(nIndex) == 1 then
@@ -324,8 +324,8 @@ function rdoRange_OnClick(nIndex)
 			cldFinish.caption = cldNextDay.caption
 		end
 		
- --		Form.SetSharedData("&mhtro16061_order_range_start", cldStart.caption)
- --		Form.SetSharedData("&mhtro16061_order_range_end", cldFinish.caption)
+ --		Form.SetSharedData("..mhtro16061_order_range_start", cldStart.caption)
+ --		Form.SetSharedData("..mhtro16061_order_range_end", cldFinish.caption)
  --		g_orderRangeStart = cldStart.caption
  --		g_orderRangeEnd = cldFinish.caption
 	end
@@ -336,7 +336,7 @@ function rdoRange_OnClick(nIndex)
 	-- SELECT CASE 변환 (수동 보정 필요)
 	 -- 기간잔량
 	if gf_Tonumber(rdoRange.currentindex) == 0 then
-		if gf_Tonumber(g_szTextSize) > 0 then --글자크기 세팅(특정일주문 선택 후 글자크기 초기화 필요)
+		if gf_Tonumber(g_szTextSize) > 0 then --글자크기 세팅(특정일주문 선택 후 글자크기 초기화 필요) end
 			lblRangeTxt.fontsize = -2
 		end
 		lblRangeTxt.caption = "예약수량이 전부 체결될 때까지 주문이 진행돼요. \n기간은 90일 이내만 지정 가능해요."
@@ -344,7 +344,7 @@ function rdoRange_OnClick(nIndex)
 	
 	 -- 기간예약
 	elseif gf_Tonumber(rdoRange.currentindex) == 1 then
-		if gf_Tonumber(g_szTextSize) > 0 then --글자크기 세팅(특정일주문 선택 후 글자크기 초기화 필요)
+		if gf_Tonumber(g_szTextSize) > 0 then --글자크기 세팅(특정일주문 선택 후 글자크기 초기화 필요) end
 			lblRangeTxt.fontsize = -2
 		end
 		lblRangeTxt.caption = "지정기간 동안 예약수량을 매일 반복해서 주문이 진행돼요. 기간은 90일 이내만 지정 가능해요."
@@ -353,8 +353,8 @@ function rdoRange_OnClick(nIndex)
 	
 	 --특정일주문
 	elseif gf_Tonumber(rdoRange.currentindex) == 2 then
-		if g_Vendor == "0321" or g_Vendor == "0537" or g_Vendor == "0066" then --미국
-			if gf_Tonumber(g_szTextSize) > 0 then --큰글씨
+		if g_Vendor == "0321" or g_Vendor == "0537" or g_Vendor == "0066" then --미국 end
+			if gf_Tonumber(g_szTextSize) > 0 then --큰글씨 end
 				nSize = - 3 - gf_Tonumber(szTextSize)
 				lblRangeTxt.fontsize = nSize
 			else
@@ -401,7 +401,7 @@ end
 
  --============================================================================
 function rdoOrdType_OnClick(nIndex)
-	if gf_Tonumber(nIndex) == 0 then --일반예약
+	if gf_Tonumber(nIndex) == 0 then --일반예약 end
 		imgBG.top = 140
 		lblTitle.top = 140
 		lblTitle1.top = 195

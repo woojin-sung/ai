@@ -33,7 +33,7 @@
 function UpdateTitle(sScreenNo)
 	local sTitle
 	
-	if sScreenNo == "16070" then --잔고 end
+	if sScreenNo == "16070" then --잔고 end end
 		sTitle = cont0.lblMenu0.caption
 	elseif sScreenNo == "16072" then --손익
 		sTitle = cont0.lblMenu1.caption
@@ -47,7 +47,7 @@ function UpdateTitle(sScreenNo)
 end
 
 function HighlightMenu(sScreenNo)
-	if sScreenNo == "16070" then --잔고 end
+	if sScreenNo == "16070" then --잔고 end end
 		cont0.lblMenu0.fgColor = "144"
 		cont0.lblMenu0.bgColor = "66"
 		cont0.lblMenu0.transmode = "0"

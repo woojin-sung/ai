@@ -602,7 +602,7 @@ function AutoRule_SelectOrderHistory()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -652,7 +652,7 @@ function AutoRule_SelectOrderHistory_Next()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -681,7 +681,7 @@ function IssueToken()
 	
 	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"

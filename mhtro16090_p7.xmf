@@ -126,13 +126,13 @@ function Form_OnFormInitBefore()
 	g_nIndex				= orderData[2+1] 		 -- 매도수구분 (0:매수, 1:매도)
 	g_szOrd_ItmCode		= orderData[3+1]		 -- 종목코드
 	g_szOrd_ItmName 		= orderData[4+1]		 -- 종목명
- --	g_szOrd_OrdType  		= arrData( 5)	' 주문구분
- --	g_szOrd_Security 		= arrData( 6)	' 현금
- --	g_nOrd_Qty   			= arrData( 7)	' 주문수량
- --	g_nOrd_Price 			= arrData( 8)	' 주문가격
- --	g_nOrd_OrdNo 			= arrData( 9)	' 원주문번호
- --	g_nOrd_ChkAll 		= arrData(10)	' 잔량전부
- --	g_nOrd_Decimal		= arrData(11)	' 가격자릿수
+ --	g_szOrd_OrdType  		= arrData[5+1]	 -- 주문구분
+ --	g_szOrd_Security 		= arrData[6+1]	 -- 현금
+ --	g_nOrd_Qty   			= arrData[7+1]	 -- 주문수량
+ --	g_nOrd_Price 			= arrData[8+1]	 -- 주문가격
+ --	g_nOrd_OrdNo 			= arrData[9+1]	 -- 원주문번호
+ --	g_nOrd_ChkAll 		= arrData[10+1]	 -- 잔량전부
+ --	g_nOrd_Decimal		= arrData[11+1]	 -- 가격자릿수
 	
 	if int(g_szOrdnum) > 1 then
 		g_nIndex = "전체"

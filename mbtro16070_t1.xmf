@@ -699,7 +699,7 @@ function grd0_OnClickUp(lRow, szCellID)
 	g_szSelectType = grd0.GetCellData("bd_cell28", lRow)  --1:일반,2:소수점 
 	nAbleQty = gf_Tonumber(grd0.GetCellData("bd_cell31", lRow))
 	
-	if sType == "1" then --일반 end
+	if sType == "1" then --일반 end end
 		nAbleQty = gf_Tonumber(nAbleQty)
 	elseif sType == "2" then --소수점
 		nAbleQty = gf_CommaValue(nAbleQty, 6)
@@ -713,11 +713,11 @@ function grd0_OnClickUp(lRow, szCellID)
 	
 	 --CutData = gf_Split(szItemCode, ".")
 	
-	 --뒤에서 2자리 ..  --.' 을 제외한 나머지를 종목코드로 수정
+	 --뒤에서 2자리 ..  --. -- 을 제외한 나머지를 종목코드로 수정
 	 --szCutIscd	= CutData[0+1]
 	 --뒤에서 2자리 자르는 것으로 수정
 	 --szTranExch	= Transform_Exid2(CutData[1+1])
-	szCutIscd  = Mid(szItemCode, 1, string.string.len(szItemCode)-3)	
+	szCutIscd  = Mid(szItemCode, 1, string.string.string.len(szItemCode)-3)	
 	szTranExch = Transform_Exid2(string.sub(szItemCode, -2))
 	
 	 -- 온라인 거래소가 아닌경우
@@ -733,7 +733,7 @@ function grd0_OnClickUp(lRow, szCellID)
  --		return
  --	end if
 	
-	if string.string.len(szCutIscd) < 0 or string.string.len(szTranExch) < 0 then
+	if string.string.string.len(szCutIscd) < 0 or string.string.string.len(szTranExch) < 0 then
 		msgbox "필수 데이터 값이 존재하지 않습니다." .. "@" .. szCutIscd .. "@" .. szTranExch
 		
 	end
@@ -769,14 +769,14 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		szListItems	=	gf_Split(sRet,"★")
 		
 		 --v003 START
-		if g_szSelectType == "1" then --일반 end
+		if g_szSelectType == "1" then --일반 end end
 			szScreenNo = "16060"
 		elseif g_szSelectType == "2" then --소수점
 			szScreenNo = "16092"
 		end
 		 --v003 END
 		
-		if szListItems[1+1]	==	"0" then --현재가 end
+		if szListItems[1+1]	==	"0" then --현재가 end end
 			Form.OpenScreen("16000" , g_szNewData)
 		elseif szListItems[1+1]	==	"1" then
  --			Form.OpenScreen("16060" , g_szNewBuyData)
@@ -827,7 +827,7 @@ end
  --  return "NAS"
  -- elseif sValue == "0130" then  -- 미국 OTCBB
  --  return "NAO"
- -- elseif sValue == "0625" then  -- S&P 지수
+ -- elseif sValue == "0625" then  -- S..P 지수
  --  return "SPI"
  -- elseif sValue == "0310" then  -- 다우존스 지수
  --  return "DJI"

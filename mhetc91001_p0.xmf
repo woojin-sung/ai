@@ -292,7 +292,7 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
 		 --------------------------------
 		 --소수점영역 길이
 		 --------------------------------
-		sCha = gf_Tonumber(string.string.len(nPrc) - sChk)
+		sCha = gf_Tonumber(string.string.string.len(nPrc) - sChk)
 		
 		 ---------------------------------------------------------
 		 --소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
@@ -675,7 +675,7 @@ function InputKeypad(sType, sKeypad)
 			else
 				
 				sData = g_sInputData
-				nLen = string.string.len(sData)
+				nLen = string.string.string.len(sData)
 				sData = string.sub(sData, 1, nLen - 1)
 				g_sInputData = sData
 				
@@ -694,7 +694,7 @@ function InputKeypad(sType, sKeypad)
  --				
  --			else
  --				sData = g_sInputData
- --				nLen = string.len(sData)
+ --				nLen = string.string.len(sData)
  --				sData = string.sub(sData, 1, nLen - 1)
  --				g_sInputData = sData
  --				Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix

@@ -82,74 +82,76 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="48332" _ulen="44876" >
-'****************************************************************************
-' 수정사항
-'****************************************************************************
-' 20250715_01 : HWG : v20250715_01 : 해외주식 애프터 시세 개선
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ -- 수정사항
+ --****************************************************************************
+ -- 20250715_01 : HWG : v20250715_01 : 해외주식 애프터 시세 개선
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim g_szContBgColor
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+local g_szContBgColor
 g_szContBgColor = "333"
 
-Dim g_szBadgeBgColor_Red
+local g_szBadgeBgColor_Red
 g_szBadgeBgColor_Red = "290"
 
-Dim g_szBadgeBgColor_Blue
+local g_szBadgeBgColor_Blue
 g_szBadgeBgColor_Blue = "291"
 
-Dim g_szCurTab
+local g_szCurTab
 g_szCurTab = ""
 
-Dim g_szPrevTab
+local g_szPrevTab
 g_szPrevTab = ""
 
-Dim g_ItemInfoPage
-g_ItemInfoPage = "page04" '기업정보 페이지 정보
+local g_ItemInfoPage
+g_ItemInfoPage = "page04"  --기업정보 페이지 정보
 
-Dim g_nETF_Link_Tab
+local g_nETF_Link_Tab
 g_nETF_Link_Tab = ""
 
-Dim g_nETF_Link_SubTab
+local g_nETF_Link_SubTab
 g_nETF_Link_SubTab = ""
 
-Dim g_isFst
+local g_isFst
 g_isFst = false
 
-Dim g_isChangeCd
+local g_isChangeCd
 g_isChangeCd = false
 
-Dim g_szItemCode
-Dim g_sCode 	
-Dim g_sExid 
-Dim g_szMkOpClsCd
+local g_szItemCode
+local g_sCode
+local g_sExid
+local g_szMkOpClsCd
 g_szMkOpClsCd = ""
 
-Dim g_szIntrGrpCnt
+local g_szIntrGrpCnt
 g_szIntrGrpCnt = 0
 
-Dim g_isContScrollPos
+local g_isContScrollPos
 g_isContScrollPos = ""
 
-'20250221 SWJ START
-Dim gOSType
+ --20250221 SWJ START
+local gOSType
 gOSType = ""
-'20250221 SWJ END
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
-'==============================================
-' 탭정보 초기화
-'==============================================
-Function Init_Tab()
+ --20250221 SWJ END
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
+ --==============================================
+ -- 탭정보 초기화
+ --==============================================
+function Init_Tab()
 	szETF_YN	= Form.GetItemCodeInfo(g_szItemCode, "etfyn")
 	szExid	= Form.GetItemCodeInfo(g_szItemCode, "exchcode")
 	
-	'-----------------------------------------------------
-	' 이전탭 저장 (탭변경 여부 확인용)
-	' 종목별 탭 구성 다르므로 탭 변경되면 초기탭 설정 필요
-	'-----------------------------------------------------
+	 -------------------------------------------------------
+	 -- 이전탭 저장 (탭변경 여부 확인용)
+	 -- 종목별 탭 구성 다르므로 탭 변경되면 초기탭 설정 필요
+	 -------------------------------------------------------
 	contMain.FormTab.visible = false
 	contMain.FormTabJPN.visible = false
 	contMain.FormTabEtf.visible = false
@@ -162,46 +164,46 @@ Function Init_Tab()
 			g_szCurTab = "FormTabJPN"
 		else
 			g_szCurTab = "FormTab"
-		end if
-	end if
+		end
+	end
 	
 	if g_szCurTab == "FormTabEtf" then
 		contMain.FormTabEtf.visible = true
 	elseif g_szCurTab == "FormTabJPN" then
 		contMain.FormTabJPN.visible = true
-	else	
+	else
 		contMain.FormTab.visible = true
-	end if
+	end
 	
-	'-----------------------------------------------------
-	' 탭 변경 시 초기값 설정
-	'-----------------------------------------------------
-	if g_szCurTab <> g_szPrevTab then
-		szSelTabPage =  Form.getEnvData("16000_SELECT_TABPAGE_ID")
+	 -------------------------------------------------------
+	 -- 탭 변경 시 초기값 설정
+	 -------------------------------------------------------
+	if g_szCurTab ~= g_szPrevTab then
+		szSelTabPage =  Form.GetEnvData("16000_SELECT_TABPAGE_ID")
 	
 		if g_szCurTab == "FormTabJPN" then
 		
-			'컨센서스 / 배당 탭 인 경우 호가탭으로 이동
-			if szSelTabPage == "page05" or szSelTabPage = "page06" then
+			 --컨센서스 / 배당 탭 인 경우 호가탭으로 이동
+			if szSelTabPage == "page05" or szSelTabPage == "page06" then
 				szSelTabPage = "page01"
-			end if
+			end
 		elseif g_szCurTab == "FormTabEtf" then
 		
-			'기업개요 / 컨센서스 / 배당 탭 인 경우 호가탭으로 이동
-			if szSelTabPage == "page04" or szSelTabPage == "page05" or szSelTabPage = "page06" then
+			 --기업개요 / 컨센서스 / 배당 탭 인 경우 호가탭으로 이동
+			if szSelTabPage == "page04" or szSelTabPage == "page05" or szSelTabPage == "page06" then
 				szSelTabPage = "page01"
-			end if
-		end if
+			end
+		end
 		
-		'ETF 화면연동 정보 있는경우 
-		if g_nETF_Link_Tab <> "" then
-			' 연동화면 정보가 있는 경우
-			if g_nETF_Link_Tab = "1" then
-				'현재가 연동
+		 --ETF 화면연동 정보 있는경우 
+		if g_nETF_Link_Tab ~= "" then
+			 -- 연동화면 정보가 있는 경우
+			if g_nETF_Link_Tab == "1" then
+				 --현재가 연동
 				szSelTabPage = "page01"
 				
-			elseif g_nETF_Link_Tab = "0" then
-				'종목정보 연동
+			elseif g_nETF_Link_Tab == "0" then
+				 --종목정보 연동
 				if g_szCurTab == "FormTabEtf" then
 					szSelTabPage = "page00"
 					
@@ -210,100 +212,100 @@ Function Init_Tab()
 						szSelTabPage = "page04"
 					else
 						szSelTabPage = "page00"
-					end if
+					end
 					
 				else
 					if g_nETF_Link_SubTab == "3" then
 						szSelTabPage = "page06"
 					else
 						szSelTabPage = "page00"
-					end if
-				end if
+					end
+				end
 			
-			end if
-		end if
+			end
+		end
 
-		'현재탭에 탭 초기값 설정
-		Form.SetCtlProp("contMain." & g_szCurTab, "currenttabpageid", szSelTabPage)
+		 --현재탭에 탭 초기값 설정
+		Form.SetCtlProp("contMain." .. g_szCurTab, "currenttabpageid", szSelTabPage)
 		
-		'ETF탭 인 경우 서브정보 전달
-		if g_szCurTab == "FormTabEtf" and g_nETF_Link_SubTab <> "" and g_nETF_Link_Tab <> "" then
-			Form.triggerEvent( g_szCurTab &"." & contMain.FormTabEtf.currenttabpageid, "ETF_SUB_TAB", g_nETF_Link_SubTab)
-		end if
-	end if
+		 --ETF탭 인 경우 서브정보 전달
+		if g_szCurTab == "FormTabEtf" and g_nETF_Link_SubTab ~= "" and g_nETF_Link_Tab ~= "" then
+			Form.TriggerEvent( g_szCurTab .."." .. contMain.FormTabEtf.currenttabpageid, "ETF_SUB_TAB", g_nETF_Link_SubTab)
+		end
+	end
 	
-	' 연동정보 초기화
+	 -- 연동정보 초기화
 	g_nETF_Link_Tab = ""
 	g_nETF_Link_SubTab = ""
-End Function
+end
 
-'==============================================
-' 종목코드 변경 
-'==============================================
-Function Chnage_ItemCode(szCode)
-	if szCode == "" or szCode == null then
-		Exit Function
-	end if
+ --==============================================
+ -- 종목코드 변경 
+ --==============================================
+function Chnage_ItemCode(szCode)
+	if szCode == "" or szCode == nil then
+		return
+	end
 	
-	arrLinkCode = Split(szCode,"★")
+	arrLinkCode = gf_Split(szCode,"★")
 	
 	if #arrLinkCode < 1 then
-		Exit Function
-	end if
+		return
+	end
 	
-	szCheckData = Form.GetItemCodeInfo(arrLinkCode(0), "name")
-	szCheckData2 = Form.GetItemCodeInfo(arrLinkCode(0), "enablefst")
+	szCheckData = Form.GetItemCodeInfo(arrLinkCode[0+1], "name")
+	szCheckData2 = Form.GetItemCodeInfo(arrLinkCode[0+1], "enablefst")
 	
-	'종목정보 확인 (name 없는 경우, 마스터 파일에 없다고 판단)
-	if CheckMasterFile(arrLinkCode(0)) == false then
-		Exit Function
-	end if
+	 --종목정보 확인 (name 없는 경우, 마스터 파일에 없다고 판단)
+	if CheckMasterFile(arrLinkCode[0+1]) == false then
+		return
+	end
 	
-	'HWG 20250307
+	 --HWG 20250307
 	ItemCode0.code = szCode
-	'HWG 20250307
+	 --HWG 20250307
 	
-	'------------------------------------------------------
-	' 종목코드 분리 (거래소코드@종목코드)
-	'------------------------------------------------------
-	arrCode = split(arrLinkCode(0), "@")
+	 --------------------------------------------------------
+	 -- 종목코드 분리 (거래소코드@종목코드)
+	 --------------------------------------------------------
+	arrCode = gf_Split(arrLinkCode[0+1], "@")
 	
-	if #arrCode > 1 then 
-		g_sCode = arrCode(1)		
-		g_sExid = Transform_Exid2(arrCode(0))
+	if #arrCode > 1 then
+		g_sCode = arrCode[1+1]		
+		g_sExid = Transform_Exid2(arrCode[0+1])
 		
-		g_szItemCode = g_sExid & "@" & g_sCode
+		g_szItemCode = g_sExid .. "@" .. g_sCode
 	else
-		Exit Function
-	end if
+		return
+	end
 	
-	'------------------------------------------------------
-	' 종목변경 플래그 (폼탭 Change 이벤트와 중복처리 방지용)
-	'------------------------------------------------------
+	 --------------------------------------------------------
+	 -- 종목변경 플래그 (폼탭 Change 이벤트와 중복처리 방지용)
+	 --------------------------------------------------------
 	g_isChangeCd = true
 	
-	'------------------------------------------------------
-	' 종목명 세팅 및 관심그룹 조회
-	'------------------------------------------------------
+	 --------------------------------------------------------
+	 -- 종목명 세팅 및 관심그룹 조회
+	 --------------------------------------------------------
 	Form.SetTimerEvent2(99, 1, 0.2)
 	
-	'------------------------------------------------------
-	' 종목별 탭 초기설정
-	'------------------------------------------------------
+	 --------------------------------------------------------
+	 -- 종목별 탭 초기설정
+	 --------------------------------------------------------
 	Init_Tab()
 	
-	szCurPageID = Form.GetCtlProp("contMain." & g_szCurTab, "currenttabpageid")
+	szCurPageID = Form.GetCtlProp("contMain." .. g_szCurTab, "currenttabpageid")
 	
-	'20250221 SWJ START
+	 --20250221 SWJ START
 	contMain_Use_Gesture()
-	'20250221 SWJ END
+	 --20250221 SWJ END
 	
-	'------------------------------------------------------
-	' 현재탭이 종목정보탭 인 경우
-	' 주문화면 연동 버튼 구성 세팅 (소수점 포함여부)
-	'------------------------------------------------------
-	if szCheckData2 = "Y" or CInt(szCheckData2) = 1 then
-		'유지
+	 --------------------------------------------------------
+	 -- 현재탭이 종목정보탭 인 경우
+	 -- 주문화면 연동 버튼 구성 세팅 (소수점 포함여부)
+	 --------------------------------------------------------
+	if szCheckData2 == "Y" or gf_Tonumber(szCheckData2) == 1 then
+		 --유지
 		contBtn.Button2.visible = true
 		
 		contBtn.Button0.width = 105
@@ -311,342 +313,334 @@ Function Chnage_ItemCode(szCode)
 		contBtn.Button1.width = 105
 	
 	else
-		'소수점 불가
+		 --소수점 불가
 		contBtn.Button2.visible = false
 		
 		contBtn.Button0.width = 162
 		contBtn.Button1.left = 20 + 162 + 10
 		contBtn.Button1.width = 163
-	end if
+	end
 		
 	if szCurPageID == "page00" then
 		contBtn.visible = true
 	else
 		contBtn.visible = false
-	end if
+	end
 	
-	'------------------------------------------------------
-	' 종목코드 전달
-	'------------------------------------------------------
-	'Form.ShowAlert("TEST", "Init_Tab : " & g_szItemCode)
-	Form.TriggerEvent( g_szCurTab & "." & szCurPageID, "RequestData", g_szItemCode )
-	Form.triggerEvent( "LinkForm2", "RequestData", g_szItemCode)
+	 --------------------------------------------------------
+	 -- 종목코드 전달
+	 --------------------------------------------------------
+	 --Form.ShowAlert("TEST", "Init_Tab : " & g_szItemCode)
+	Form.TriggerEvent( g_szCurTab .. "." .. szCurPageID, "RequestData", g_szItemCode )
+	Form.TriggerEvent( "LinkForm2", "RequestData", g_szItemCode)
 	
-	'------------------------------------------------------
-	' 장구분 코드 전달
-	'------------------------------------------------------
-	if g_szMkOpClsCd <> "" then
-		Form.TriggerEvent( g_szCurTab & "." & szCurPageID, "CHANGE_MKTOP", g_szMkOpClsCd )
-	end if
+	 --------------------------------------------------------
+	 -- 장구분 코드 전달
+	 --------------------------------------------------------
+	if g_szMkOpClsCd ~= "" then
+		Form.TriggerEvent( g_szCurTab .. "." .. szCurPageID, "CHANGE_MKTOP", g_szMkOpClsCd )
+	end
 	
-	'------------------------------------------------------
-	' 관심종목 등록여부 확인 및 이미지 세팅
-	'------------------------------------------------------
-	isIntrItem = Form.isIntrItemList(g_szItemCode)
+	 --------------------------------------------------------
+	 -- 관심종목 등록여부 확인 및 이미지 세팅
+	 --------------------------------------------------------
+	isIntrItem = Form.IsIntrItemList(g_szItemCode)
 	if isIntrItem == true then
 		imgIntr.imgpath = "icon_like_o.png"
 	else
 		imgIntr.imgpath = "icon_like2_n.png"
-	end if
+	end
 	
-	'------------------------------------------------------
-	' 메인 컨테이너가 스크롤이 끝까지 내려가있는 경우
-	' 하위 탭에 트리서 이벤트 전달 (탭내 스크롤 가능여부 체크)
-	'------------------------------------------------------
-	Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "CONTMAIN_SCROLL_POS", contMain.scroll_pos)
+	 --------------------------------------------------------
+	 -- 메인 컨테이너가 스크롤이 끝까지 내려가있는 경우
+	 -- 하위 탭에 트리서 이벤트 전달 (탭내 스크롤 가능여부 체크)
+	 --------------------------------------------------------
+	Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "CONTMAIN_SCROLL_POS", contMain.scroll_pos)
 	
 	if g_isContScrollPos == "END" then
-		szCurPageID = Form.GetCtlProp( "contMain." & g_szCurTab, "currenttabpageid")
-		Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "ENABLE_SCROLL", "END" )
-'		Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "CONTMAIN_SCROLLING", "" )
-	end if
+		szCurPageID = Form.GetCtlProp( "contMain." .. g_szCurTab, "currenttabpageid")
+		Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "ENABLE_SCROLL", "END" )
+ --		Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "CONTMAIN_SCROLLING", "" )
+	end
 	
-	'------------------------------------------------------
-	' 플래그값 초기화
-	' 첫화면 오픈 / 종목코드 변경
-	'------------------------------------------------------
+	 --------------------------------------------------------
+	 -- 플래그값 초기화
+	 -- 첫화면 오픈 / 종목코드 변경
+	 --------------------------------------------------------
 	g_isFst = false
 	g_isChangeCd = false
 	
-	'------------------------------------------------------
-	' 종목메모 등록여부 조회
-	'------------------------------------------------------
+	 --------------------------------------------------------
+	 -- 종목메모 등록여부 조회
+	 --------------------------------------------------------
 	Request_Tran_ohhts_memo_011r()
-End Function
+end
 
-'==============================================
-' 거래소 구분코드 변경(3자리 -> 2자리)
-' 원장조회 종목연동 시, 과거 거래소 코드로 연동되는 경우 예외처리를 위해 필요
-'==============================================
-Function Transform_Exid2(sValue)
-	if sValue = "HKS" then
-		Transform_Exid2 = "HK"
-		exit Function
-	elseif sValue = "SHS" then
-		Transform_Exid2 = "SH"
-		exit Function
-	elseif sValue = "SZS" then
-		Transform_Exid2 = "SZ"
-		exit Function
-	elseif sValue = "NYS" then
-		Transform_Exid2 = "NY"
-		exit Function
-	elseif sValue = "AMX" then
-		Transform_Exid2 = "AX"
-		exit Function
-	elseif sValue = "NAS" then
-		Transform_Exid2 = "OQ"
-		exit Function
-	elseif sValue = "TSE" then
-		Transform_Exid2 = "JP"
-		exit Function
+ --==============================================
+ -- 거래소 구분코드 변경(3자리 -> 2자리)
+ -- 원장조회 종목연동 시, 과거 거래소 코드로 연동되는 경우 예외처리를 위해 필요
+ --==============================================
+function Transform_Exid2(sValue)
+	if sValue == "HKS" then
+		return "HK"
+	elseif sValue == "SHS" then
+		return "SH"
+	elseif sValue == "SZS" then
+		return "SZ"
+	elseif sValue == "NYS" then
+		return "NY"
+	elseif sValue == "AMX" then
+		return "AX"
+	elseif sValue == "NAS" then
+		return "OQ"
+	elseif sValue == "TSE" then
+		return "JP"
 	else
-		Transform_Exid2 = sValue
-		exit Function
-	end if
-End Function
+		return sValue
+	end
+end
 
-'==============================================
-' 장운영 정보 기반 시세서비스 호출
-'==============================================
-Function Request_MktOp(szMkOpClsCd)
+ --==============================================
+ -- 장운영 정보 기반 시세서비스 호출
+ --==============================================
+function Request_MktOp(szMkOpClsCd)
 
 	g_szMkOpClsCd = szMkOpClsCd
 	
-	'해외주식 체결(프리/정규) 실시간 해제
+	 --해외주식 체결(프리/정규) 실시간 해제
 	DATAMANAGER.CancelRealData("ohhts_exst_cntg")
 	
-	'해외주식 체결(주간) 실시간 해제
+	 --해외주식 체결(주간) 실시간 해제
 	DATAMANAGER.CancelRealData("ohhts_exst_cntd")
 	
-	'해외주식 체결(애프터) 실시간 해제
-	DATAMANAGER.CancelRealData("ohhts_exst_cnta")	'v20250715_01 >>
+	 --해외주식 체결(애프터) 실시간 해제
+	DATAMANAGER.CancelRealData("ohhts_exst_cnta")	 --v20250715_01 >>
 	
-	Select Case szMkOpClsCd
-		Case "001"	'주간장 개시
+	-- SELECT CASE 변환 (수동 보정 필요)
+		if szMkOpClsCd == "001" then --주간장 개시
 			Request_Tran_ohhts_6000_017r()
 			
-		Case "002"	'주간장 종료
+		elseif szMkOpClsCd == "002" then --주간장 종료
 			Request_Tran_ohhts_6000_017r()
 			
-'		Case "003"	'프리장 개시
-'			Request_Tran_ohhts_6000_001r()
-'		
-'		Case "004"	'정규장 개시
-'			Request_Tran_ohhts_6000_001r()
-'			
-		'v20250715_01 >>
-		Case "005"	'애프터장 개시
+ --		Case "003"	'프리장 개시
+ --			Request_Tran_ohhts_6000_001r()
+ --		
+ --		Case "004"	'정규장 개시
+ --			Request_Tran_ohhts_6000_001r()
+ --			
+		 --v20250715_01 >>
+		elseif szMkOpClsCd == "005" then --애프터장 개시
 			Request_Tran_ohhts_6000_023r()
-		'v20250715_01 <<
-'			
-'		Case "006"	'애프터장 종료
-'			Request_Tran_ohhts_6000_020r()
-'			
-'		Case "011", "012" 
-'			Request_Tran_ohhts_6000_001r()
+		 --v20250715_01 <<
+ --			
+ --		Case "006"	'애프터장 종료
+ --			Request_Tran_ohhts_6000_020r()
+ --			
+ --		Case "011", "012" 
+ --			Request_Tran_ohhts_6000_001r()
 			
-		Case Else
+		else
 			Request_Tran_ohhts_6000_001r()
 			
-	End Select
+	end
 
-End Function
+end
 
-'==============================================
-' 해외주식 현재가(프리/정규) 조회
-'==============================================
-Function Request_Tran_ohhts_6000_001r()
+ --==============================================
+ -- 해외주식 현재가(프리/정규) 조회
+ --==============================================
+function Request_Tran_ohhts_6000_001r()
 	DATAMANAGER.ClearInputData(false, "ohhts_6000_001r")
 	
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_sExid, false )
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분			
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	'마켓구분
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , g_sCode )	'종목코드
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	'실시간 여부
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		 --시장구분			
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	 --마켓구분
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , g_sCode )	 --종목코드
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	 --실시간 여부
 	
 	DATAMANAGER.RequestTranData("ohhts_6000_001r")
 	
 	Request_Real_ohhts_exst_cntg()
-End Function
+end
 
-Function Request_Tran_ohhts_6000_001r_1()
+function Request_Tran_ohhts_6000_001r_1()
 	DATAMANAGER.ClearInputData(false, "ohhts_6000_001r")
 	
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_sExid, false )
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )	'시장구분			
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	'마켓구분
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , g_sCode )	'종목코드
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	'실시간 여부
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )	 --시장구분			
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	 --마켓구분
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , g_sCode )	 --종목코드
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	 --실시간 여부
 	
 	DATAMANAGER.RequestTranData("ohhts_6000_001r")
-End Function
+end
 
-Function Request_Tran_ohhts_6000_017r()
+function Request_Tran_ohhts_6000_017r()
 	DATAMANAGER.ClearInputData(false, "ohhts_6000_017r")
 	
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_sExid, false )
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )	'시장구분			
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	'마켓구분
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , g_sCode )	'종목코드
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	'실시간 여부
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )	 --시장구분			
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	 --마켓구분
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , g_sCode )	 --종목코드
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	 --실시간 여부
 	
 	DATAMANAGER.RequestTranData("ohhts_6000_017r")
 	
 	Request_Real_ohhts_exst_cntd()
-End Function
+end
 
-'v20250715_01 >>
-'==============================================
-' 해외주식 현재가(애프터) 조회
-'==============================================
-Function Request_Tran_ohhts_6000_023r()
+ --v20250715_01 >>
+ --==============================================
+ -- 해외주식 현재가(애프터) 조회
+ --==============================================
+function Request_Tran_ohhts_6000_023r()
 	DATAMANAGER.ClearInputData(false, "ohhts_6000_023r")
 	
 	g_rtChk = Form.GetSharedData( "REALTIME_"..g_sExid, false )
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		'시장구분			
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	'마켓구분
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_sCode )	'종목코드
-	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	'실시간 여부
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		 --시장구분			
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )	 --마켓구분
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_sCode )	 --종목코드
+	DATAMANAGER.SetDataValue( false, "ohhts_6000_023r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )	 --실시간 여부
 	
 	DATAMANAGER.RequestTranData("ohhts_6000_023r")
 	
 	Request_Real_ohhts_exst_cnta()
-End Function
-'v20250715_01 <<
+end
+ --v20250715_01 <<
 
-Function Request_Real_ohhts_exst_cntg()
-'	DATAMANAGER.ClearInputData( true, "ohhts_exst_cntg")
+function Request_Real_ohhts_exst_cntg()
+ --	DATAMANAGER.ClearInputData( true, "ohhts_exst_cntg")
 	
 	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , g_szItemCode )
 	
 	DATAMANAGER.RequestRealData( "ohhts_exst_cntg" )
-End Function
+end
 
-Function Request_Real_ohhts_exst_cntd()
-'	DATAMANAGER.ClearInputData( true, "ohhts_exst_cntd")
+function Request_Real_ohhts_exst_cntd()
+ --	DATAMANAGER.ClearInputData( true, "ohhts_exst_cntd")
 	
 	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , g_szItemCode )
 	
 	DATAMANAGER.RequestRealData( "ohhts_exst_cntd" )
-End Function
+end
 
-'v20250715_01 >>
-Function Request_Real_ohhts_exst_cnta()
-'	DATAMANAGER.ClearInputData( true, "ohhts_exst_cnta")
+ --v20250715_01 >>
+function Request_Real_ohhts_exst_cnta()
+ --	DATAMANAGER.ClearInputData( true, "ohhts_exst_cnta")
 	
 	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , g_szItemCode )
 	
 	DATAMANAGER.RequestRealData( "ohhts_exst_cnta" )
-End Function
-'v20250715_01 <<
+end
+ --v20250715_01 <<
 
-'==============================================
-' 관심그룹 조회
-'==============================================
-Function RequestTranData_Intr()
+ --==============================================
+ -- 관심그룹 조회
+ --==============================================
+function RequestTranData_Intr()
 	DATAMANAGER.ClearInputData(0, "ohhts_intr_006r")
-	DATAMANAGER.SetDataValue(0, "ohhts_intr_006r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("&USER_ID", false))
+	DATAMANAGER.SetDataValue(0, "ohhts_intr_006r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("..USER_ID", false))
 	DATAMANAGER.RequestTranData("ohhts_intr_006r")
-End Function
+end
 
-Function ResponseTranData_Intr()
+function ResponseTranData_Intr()
 	g_szIntrGrpCnt = DATAMANAGER.GetDataCount(0, "ohhts_intr_006r" , "OutBlock1")
-End Function
+end
 
-'==============================================
-' 종목메모 조회
-'==============================================
-Function Request_Tran_ohhts_memo_011r()
+ --==============================================
+ -- 종목메모 조회
+ --==============================================
+function Request_Tran_ohhts_memo_011r()
 	DATAMANAGER.ClearInputData(0, "ohhts_memo_011r")
-	DATAMANAGER.SetDataValue(0, "ohhts_memo_011r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("&USER_ID", false))
+	DATAMANAGER.SetDataValue(0, "ohhts_memo_011r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("..USER_ID", false))
 	DATAMANAGER.SetDataValue(0, "ohhts_memo_011r", "InBlock1", "FID_NEW_ISSU_CODE", 0, g_szItemCode)
 	DATAMANAGER.RequestTranData("ohhts_memo_011r")
-End Function
+end
 
-Function Response_Tran_ohhts_memo_011r()
+function Response_Tran_ohhts_memo_011r()
 	nCnt = DATAMANAGER.GetDataCount(0, "ohhts_memo_011r" , "OutBlock1")
 	
-	if cint(nCnt) > 0 then
+	if gf_Tonumber(nCnt) > 0 then
 		imgMemo.visible = true
 		contHideTop.imgTopMemo.visible = true
 	else
 		imgMemo.visible = false
 		contHideTop.imgTopMemo.visible = false
-	end if
-End Function
+	end
+end
 
-'==============================================
-' 상단 시세 색상지정
-'==============================================
-Function Change_ContBgColor(szAttr)
+ --==============================================
+ -- 상단 시세 색상지정
+ --==============================================
+function Change_ContBgColor(szAttr)
 	contHideTop.contTopSearch.lblItemName.transmode = "1"
 	contHideTop.lblTopPrc.transmode = "1"
 	contHideTop.lblTopDiff.transmode = "1"
 	contHideTop.lblTopRate.transmode = "1"
 	contHideTop.lblTopSign.transmode = "1"
 	
-	if cint(szAttr) == 43 then
+	if gf_Tonumber(szAttr) == 43 then
 		contHideTop.bgcolor = "218100096"
 		contHideTop.contTopSearch.bgcolor = "218100096"
 		contHideTop.lblTopSign.caption = "▲"
-	elseif cint(szAttr) == 45 then
+	elseif gf_Tonumber(szAttr) == 45 then
 		contHideTop.bgcolor = "079102214"
 		contHideTop.contTopSearch.bgcolor = "079102214"
 		contHideTop.lblTopSign.caption = "▼"
 	else
-		contHideTop.bgcolor = "057062075"'
+		contHideTop.bgcolor = "057062075" --
 		contHideTop.contTopSearch.bgcolor = "057062075"
 		contHideTop.lblTopSign.caption = ""
-	end if
-End Function
+	end
+end
 
-'==============================================
-' 컨트롤 초기설정
-'==============================================
-Function Init_Control()
+ --==============================================
+ -- 컨트롤 초기설정
+ --==============================================
+function Init_Control()
 	
-	'컨테이너 스크롤 이벤트 발생 유무
+	 --컨테이너 스크롤 이벤트 발생 유무
 	contMain.SetUseScrollingEvent(true)
 	
-	'컨테이너 안보임 컨트롤 무시 유무(스크롤 위치)
-	contMain.setExceptInvisibleCtl(true)
+	 --컨테이너 안보임 컨트롤 무시 유무(스크롤 위치)
+	contMain.SetExceptInvisibleCtl(true)
 	
-	'컨테이너 스크롤 안보임 처리
-	contMain.setScrollBarVisible("0")
+	 --컨테이너 스크롤 안보임 처리
+	contMain.SetScrollBarVisible("0")
 	
-	'컨테이너 제스터 이벤트 사용유무
+	 --컨테이너 제스터 이벤트 사용유무
 	contMain.gesture = true
 	
-	'컨테이너 헤더 여백조정(탭순서변경 버튼 추가)
-	contMain.FormTab.setHorzMargin(0, 30) 
-	contMain.FormTabEtf.setHorzMargin(0, 30) 
-	contMain.FormTabJPN.setHorzMargin(0, 30) 
+	 --컨테이너 헤더 여백조정(탭순서변경 버튼 추가)
+	contMain.FormTab.SetHorzMargin(0, 30) 
+	contMain.FormTabEtf.SetHorzMargin(0, 30) 
+	contMain.FormTabJPN.SetHorzMargin(0, 30) 
 	
-	sOsType = Form.GetSharedData("&OS_TYPE", false )
+	sOsType = Form.GetSharedData("..OS_TYPE", false )
 	
 	if sOsType == "1" then
 		Label1.top = 39
 	elseif sOsType == "2" then
 		Label1.top = 37
-	end if
+	end
 	
-	'CFD 여부 확인
-	If trim(g_szScreenNo) == "16100" then
-		Form.setSearchType("26")
+	 --CFD 여부 확인
+	if gf_Trim(g_szScreenNo) == "16100" then
+		Form.SetSearchType("26")
 		
 		cont0.imgCfd0.visible = true
 		contHideTop.contTopSearch.imgTopCfd.visible = true
 		
-		'20250117 SWJ START
+		 --20250117 SWJ START
 		sTheme = Form.GetEnvData("common.theme")
 		
 		if sTheme == "black" then
 			cont0.imgCfd0.imgpath = "icon_cfd_w"
 		else
 			cont0.imgCfd0.imgpath = "icon_cfd_b"
-		end if
-		'20250117 SWJ END
+		end
+		 --20250117 SWJ END
 		
 		contHideTop.contTopSearch.imgTopCfd.imgpath = "icon_cfd_w"
 		
@@ -656,364 +650,364 @@ Function Init_Control()
 		contHideTop.contTopSearch.lblItemName.left = 20
 		contHideTop.contTopSearch.lblItemName.width = 130
 	else
-		Form.setSearchType("19")
-		Form.setSearchTypeClick("1")
+		Form.SetSearchType("19")
+		Form.SetSearchTypeClick("1")
 		
 		cont0.imgCfd0.visible = false
 		contHideTop.contTopSearch.imgTopCfd.visible = false
-	end if
+	end
 	
-	'--------------------
-	'기본컨트롤 설정 START
-	'--------------------
-	'뒤로가기 버튼 설정
+	 ----------------------
+	 --기본컨트롤 설정 START
+	 ----------------------
+	 --뒤로가기 버튼 설정
 	ImgBackPress.maintainratio = "2"
 	ImgBackPress.imgpath = "icon_main_01"
 	
-	'탭 순서변경 버튼 설정
+	 --탭 순서변경 버튼 설정
 	contMain.imgEdit.maintainratio = "3"
 	contMain.imgEdit.imgpath = "btn_tab_edit"
 	
-	'세미메뉴(우측상단 버튼 설정)
+	 --세미메뉴(우측상단 버튼 설정)
 	imgMenu.maintainratio = "3"
 	imgMenu.imgpath = "icon_main_02"
 	
-	'돋보기버튼 설정
+	 --돋보기버튼 설정
 	imgSearch.maintainratio = "3"
 	imgSearch.imgpath = "icon_search"
 	
-	'종목명 텍스트 롤링 처리
-	cont0.lblName.setUseAutoScroll(True, 30, True)
+	 --종목명 텍스트 롤링 처리
+	cont0.lblName.SetUseAutoScroll(True, 30, True)
 	
-	'주문화면 연동버튼 설정
+	 --주문화면 연동버튼 설정
 	lblOrder.imagefilepth = "img_bground_12_5.9"
 	
 	imgMemo.maintainratio = "1"
 	imgMemo.imgpath = "icon_txt_m"
 	
 	contBtn.Button2.singleimage = "btn_4r_gray.9"
-	'--------------------
-	'기본컨트롤 설정 END
-	'--------------------
+	 ----------------------
+	 --기본컨트롤 설정 END
+	 ----------------------
 	
-	'--------------------
-	'숨김 컨테이너(상단) 설정 START
-	'--------------------
-	'뒤로가기 버튼 설정
+	 ----------------------
+	 --숨김 컨테이너(상단) 설정 START
+	 ----------------------
+	 --뒤로가기 버튼 설정
 	contHideTop.imgTopBack.maintainratio = "2"
 	contHideTop.imgTopBack.imgpath = "icon_main_01_white"
 	
-	'돋보기 버튼 설정
+	 --돋보기 버튼 설정
 	contHideTop.imgTopSearch.maintainratio = "3"
 	contHideTop.imgTopSearch.imgpath = "icon_search_white"
 	
-	'메모이미지 설정
+	 --메모이미지 설정
 	contHideTop.imgTopMemo.maintainratio = "1"
 	contHideTop.imgTopMemo.imgpath = "icon_txt_m"
 	
-	'언더라인
+	 --언더라인
 	contHideTop.lblUnderLine.bgcolor = "340"
 	
-	'종목명 텍스트 롤링 처리
+	 --종목명 텍스트 롤링 처리
 	contHideTop.contTopSearch.lblItemName.paddinginfo = "0,0,0,0"
-	contHideTop.contTopSearch.lblItemName.setUseAutoScroll(True, 30, True)
+	contHideTop.contTopSearch.lblItemName.SetUseAutoScroll(True, 30, True)
 	
-	'현재가 설정
+	 --현재가 설정
 	contHideTop.lblTopPrc.paddinginfo = "0,0,0,0"
 	contHideTop.lblTopPrc.maxlinecnt = "1"
-	contHideTop.lblTopPrc.setAttributeEnable(false)
+	contHideTop.lblTopPrc.SetAttributeEnable(false)
 	
-	'전일대비 설정
+	 --전일대비 설정
 	contHideTop.lblTopDiff.paddinginfo = "0,0,0,0"
 	contHideTop.lblTopDiff.maxlinecnt = "1"
-	contHideTop.lblTopDiff.setAttributeEnable(false)
+	contHideTop.lblTopDiff.SetAttributeEnable(false)
 	
-	'등락률 설정
+	 --등락률 설정
 	contHideTop.lblTopRate.paddinginfo = "0,0,0,0"
 	contHideTop.lblTopRate.maxlinecnt = "1"
-	contHideTop.lblTopRate.setAttributeEnable(false)
+	contHideTop.lblTopRate.SetAttributeEnable(false)
 	
-	'전일대비부호 설정
+	 --전일대비부호 설정
 	contHideTop.lblTopSign.paddinginfo = "0,0,0,0"
 	contHideTop.lblTopSign.maxlinecnt = "1"
-	contHideTop.lblTopSign.setAttributeEnable(false)
+	contHideTop.lblTopSign.SetAttributeEnable(false)
 
 	contHideTop.top = -42
-	'--------------------
-	'숨김 컨테이너(상단) 설정 END
-	'--------------------
-End Function
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'============================================================================
-'[[ 폼 초기화 ]]
-'============================================================================
-Sub Form_OnFormInitBefore()
+	 ----------------------
+	 --숨김 컨테이너(상단) 설정 END
+	 ----------------------
+end
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --============================================================================
+ --[[ 폼 초기화 ]]
+ --============================================================================
+function Form_OnFormInitBefore()
 	imgIntr.maintainratio = "1"
 	imgMenu.maintainratio = "1"
 	
 	cont0.imgCfd0.maintainratio = "2"
 	contHideTop.contTopSearch.imgTopCfd.maintainratio = "2"
-End Sub
+end
 
-Sub Form_OnFormInit()
-	'20251208_01 >>
-	sScreenNo = Form.GetSharedData("&SCREEN_NO", false)
-	sScreenName = Form.getScreenName(sScreenNo)
+function Form_OnFormInit()
+	 --20251208_01 >>
+	sScreenNo = Form.GetSharedData("..SCREEN_NO", false)
+	sScreenName = Form.GetScreenName(sScreenNo)
 	
-	Form.startBuildJson()
-	Form.putJsonData("OBZEN_EVENT_NAME", "PageView")
-	Form.putJsonData("EVENT_TAG_PARAM_TITLE", sScreenName)
-	Form.putJsonData("EVENT_TAG_PARAM_PAGE_PATH", sScreenNo)
-	sResultJson = Form.endBuildJson()
+	Form.StartBuildJson()
+	Form.PutJsonData("OBZEN_EVENT_NAME", "PageView")
+	Form.PutJsonData("EVENT_TAG_PARAM_TITLE", sScreenName)
+	Form.PutJsonData("EVENT_TAG_PARAM_PAGE_PATH", sScreenNo)
+	sResultJson = Form.EndBuildJson()
 	
-	Form.logObzenCustomEvent("EVENT_TYPE_PAGE", sResultJson)
-	'20251208_01 <<
+	Form.LogObzenCustomEvent("EVENT_TYPE_PAGE", sResultJson)
+	 --20251208_01 <<
 	
-	lblOrder.fgcolor = 200		'20241210 HSZ: 다크모드 대응
+	lblOrder.fgcolor = 200		 --20241210 HSZ: 다크모드 대응
 	
-	'화면 첫 진입 플래그
+	 --화면 첫 진입 플래그
 	g_isFst = true	
 	
-	'해외CFD 분기처리
-	g_szScreenNo 		 = Form.GetSharedData( "&SCREEN_NO" , false )	
+	 --해외CFD 분기처리
+	g_szScreenNo 		 = Form.GetSharedData( "..SCREEN_NO" , false )	
 	
-	'컨트롤 초기화
+	 --컨트롤 초기화
 	Init_Control()
 	
-	'관심종목 리스트 조회
-	Form.requestIntrItemList("00")
+	 --관심종목 리스트 조회
+	Form.RequestIntrItemList("00")
 	
-	'최초 화면진입 시 호가탭 초기설정
-	szSelTabPage =  Form.getEnvData("16000_SELECT_TABPAGE_ID")
+	 --최초 화면진입 시 호가탭 초기설정
+	szSelTabPage =  Form.GetEnvData("16000_SELECT_TABPAGE_ID")
 
-	if szSelTabPage = "" then
+	if szSelTabPage == "" then
 		contMain.FormTab.currenttabpageid = "page01"
 		contMain.FormTabEtf.currenttabpageid = "page01"
 		contMain.FormTabJPN.currenttabpageid = "page01"
 		Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" , "page01")
-	end if
+	end
 	
-	'20250221 SWJ START
-	'컨테이너 제스터 이벤트 사용유무
-	gOSType = Form.GetSharedData("&OS_TYPE", false )
+	 --20250221 SWJ START
+	 --컨테이너 제스터 이벤트 사용유무
+	gOSType = Form.GetSharedData("..OS_TYPE", false )
 	
 	contMain_Use_Gesture()
-	'20250221 SWJ END
+	 --20250221 SWJ END
 	
 	szData = Form.GetOpenLinkData()
 
-	'========================================================
-	' ETF 관련화면 연동 처리 로직
-	'========================================================
-	' 종목코드★ETF/INCOME★1(호가) / 0(종목정보/기업개요)★하위탭 인덱스
-	if instr(szData, "★ETF★") > 0 or instr(szData, "★INCOME★") > 0 then
-		arrData = Split(szData, "★")
+	 --========================================================
+	 -- ETF 관련화면 연동 처리 로직
+	 --========================================================
+	 -- 종목코드★ETF/INCOME★1(호가) / 0(종목정보/기업개요)★하위탭 인덱스
+	if string.find(szData, "★ETF★") > 0 or string.find(szData, "★INCOME★") > 0 then
+		arrData = gf_Split(szData, "★")
 		
 		g_nETF_Link_Tab = ""
 		g_nETF_Link_SubTab = ""
 		
 		if #arrData > 2 then
-			g_nETF_Link_Tab = arrData(2)
+			g_nETF_Link_Tab = arrData[2+1]
 		
 			if #arrData > 3 then
-				g_nETF_Link_SubTab = arrData(3) 
-			end if
-		end if
+				g_nETF_Link_SubTab = arrData[3+1] 
+			end
+		end
 		
-		Exit Sub
-	end if
+		return
+	end
 
-	arrData = Split(szData, "♥")
+	arrData = gf_Split(szData, "♥")
 
-	if arrData(0) <> "" then
-		arrLinkCode = Split(arrData(0),"★")
-		szLinkCode = arrLinkCode(0)
+	if arrData[0+1] ~= "" then
+		arrLinkCode = gf_Split(arrData[0+1],"★")
+		szLinkCode = arrLinkCode[0+1]
 		
 		if CheckMasterFile(szLinkCode) then
 			
 		else
 			Form.ShowAlert("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.")
-			Exit Sub
-		end if
+			return
+		end
 		
-		g_szItemCode = arrData(0)
-		Form.setOverStockItemCode(arrData(0))
-	end if
+		g_szItemCode = arrData[0+1]
+		Form.SetOverStockItemCode(arrData[0+1])
+	end
 	
-	'해외CFD 잔고화면 차트 버튼
-	if UBOUND(arrData) > 0 then
-		if int(arrData(1)) == 2 then
+	 --해외CFD 잔고화면 차트 버튼
+	if #arrData > 0 then
+		if int(arrData[1+1]) == 2 then
 			Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" , "page03")
 
-'			contMain.FormTab.currenttab = 2
-'			call contMain_FormTab_OnTabChanged(2)
-		end if
-	end if
+ --			contMain.FormTab.currenttab = 2
+ --			call contMain_FormTab_OnTabChanged(2)
+		end
+	end
 	
-'	if Form.GetOpenLinkData( ) == "GMP_CURRENT"	then
-'		szItemCode = Form.GetSharedData("&ITEM_CODE", false)
-'		Chnage_ItemCode(szItemCode)
-'		
-'	elseif Form.GetOpenLinkData( ) == "ITEMINFO_POP_CLOSE"	then
-'		Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" , g_ItemInfoPage)
-'
-'	else
-'		
-'	end if
-end Sub
+ --	if Form.GetOpenLinkData( ) == "GMP_CURRENT"	then
+ --		szItemCode = Form.GetSharedData("&ITEM_CODE", false)
+ --		Chnage_ItemCode(szItemCode)
+ --		
+ --	elseif Form.GetOpenLinkData( ) == "ITEMINFO_POP_CLOSE"	then
+ --		Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" , g_ItemInfoPage)
+ --
+ --	else
+ --		
+ --	end if
+end
 
-'============================================================================
-'[[ 폼탭 변경시 ]]
-'============================================================================
-Sub contMain_FormTab_OnTabChanged(nCurrentTab)
-	'---------------------------------
-	' 화면 첫 오픈 시 이벤트 처리 제외
-	'---------------------------------
+ --============================================================================
+ --[[ 폼탭 변경시 ]]
+ --============================================================================
+function contMain_FormTab_OnTabChanged(nCurrentTab)
+	 -----------------------------------
+	 -- 화면 첫 오픈 시 이벤트 처리 제외
+	 -----------------------------------
 	if g_isFst == true then
-		Exit Sub
-	end if
+		return
+	end
 	
-	'20250221 SWJ START
+	 --20250221 SWJ START
 	contMain_Use_Gesture()
-	'20250221 SWJ END
+	 --20250221 SWJ END
 	
 	Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" , contMain.FormTab.currenttabpageid)
 	
-	'-------------------------------------------------
-	' 종목변경으로 인한 탭변경 시에는 이벤트 처리 제외
-	'-------------------------------------------------
+	 ---------------------------------------------------
+	 -- 종목변경으로 인한 탭변경 시에는 이벤트 처리 제외
+	 ---------------------------------------------------
 	if g_isChangeCd == true then
-		Exit Sub 
-	end if
+		return 
+	end
 	
 
-	if Len(g_szItemCode) > 0  then
-'		Form.ShowAlert("TEST", "contMain_FormTab_OnTabChanged : "& g_szItemCode)
+	if string.len(g_szItemCode) > 0 then
+ --		Form.ShowAlert("TEST", "contMain_FormTab_OnTabChanged : "& g_szItemCode)
 		Form.TriggerEvent( "FormTab." .. contMain.FormTab.currenttabpageid, "RequestData", g_szItemCode )
-	end if
+	end
 	
-	if g_szMkOpClsCd <> "" then
+	if g_szMkOpClsCd ~= "" then
 		Form.TriggerEvent( "FormTab." .. contMain.FormTab.currenttabpageid, "CHANGE_MKTOP", g_szMkOpClsCd )
-	end if
+	end
 	
 	Form.TriggerEvent("FormTab." .. contMain.FormTab.currenttabpageid, "CONTMAIN_SCROLL_POS", contMain.scroll_pos)
 	
 	if g_isContScrollPos == "END" then
 		Form.TriggerEvent("FormTab." .. contMain.FormTab.currenttabpageid, "ENABLE_SCROLL", "END" )
-'		Form.TriggerEvent("FormTab." .. contMain.FormTab.currenttabpageid, "CONTMAIN_SCROLLING", "" )
-	end if
+ --		Form.TriggerEvent("FormTab." .. contMain.FormTab.currenttabpageid, "CONTMAIN_SCROLLING", "" )
+	end
 	
 	if contMain.FormTab.currenttabpageid == "page00" then
 		contBtn.visible = true
 	else
 		contBtn.visible = false
-	end if
-end Sub
+	end
+end
 
-'============================================================================
-Sub contMain_FormTabEtf_OnTabChanged(nCurrentTab)
-	'----------------------------------
-	' 화면 첫 오픈 시 이벤트 처리 제외
-	'----------------------------------
+ --============================================================================
+function contMain_FormTabEtf_OnTabChanged(nCurrentTab)
+	 ------------------------------------
+	 -- 화면 첫 오픈 시 이벤트 처리 제외
+	 ------------------------------------
 	if g_isFst == true then
-		Exit Sub
-	end if
+		return
+	end
 	
-	'20250221 SWJ START
+	 --20250221 SWJ START
 	contMain_Use_Gesture()
-	'20250221 SWJ END
+	 --20250221 SWJ END
 	
 	Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" , contMain.FormTabEtf.currenttabpageid)
 	
-	'-------------------------------------------------
-	' 종목변경으로 인한 탭변경 시에는 이벤트 처리 제외
-	'-------------------------------------------------
+	 ---------------------------------------------------
+	 -- 종목변경으로 인한 탭변경 시에는 이벤트 처리 제외
+	 ---------------------------------------------------
 	if g_isChangeCd == true then
-		Exit Sub 
-	end if
+		return 
+	end
 	
-	if Len(g_szItemCode) > 0 then
-'		Form.ShowAlert("TEST", "contMain_FormTabEtf_OnTabChanged : "& g_szItemCode)
+	if string.len(g_szItemCode) > 0 then
+ --		Form.ShowAlert("TEST", "contMain_FormTabEtf_OnTabChanged : "& g_szItemCode)
 		Form.TriggerEvent( "FormTabEtf." .. contMain.FormTabEtf.currenttabpageid, "RequestData", g_szItemCode )
-	end if
+	end
 	
-	if g_szMkOpClsCd <> "" then
+	if g_szMkOpClsCd ~= "" then
 		Form.TriggerEvent( "FormTabEtf." .. contMain.FormTabEtf.currenttabpageid, "CHANGE_MKTOP", g_szMkOpClsCd )
-	end if
+	end
 	
 	Form.TriggerEvent("FormTabEtf." .. contMain.FormTabEtf.currenttabpageid, "CONTMAIN_SCROLL_POS", contMain.scroll_pos)
 	
 	if g_isContScrollPos == "END" then
 		Form.TriggerEvent("FormTabEtf." .. contMain.FormTabEtf.currenttabpageid, "ENABLE_SCROLL", "END" )
-'		Form.TriggerEvent("FormTabEtf." .. contMain.FormTabEtf.currenttabpageid, "CONTMAIN_SCROLLING", "" )
-	end if
+ --		Form.TriggerEvent("FormTabEtf." .. contMain.FormTabEtf.currenttabpageid, "CONTMAIN_SCROLLING", "" )
+	end
 	
 	if contMain.FormTabEtf.currenttabpageid == "page00" then
 		contBtn.visible = true
 	else
 		contBtn.visible = false
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub contMain_FormTabJPN_OnTabChanged(nCurrentTab)
-	'----------------------------------
-	' 화면 첫 오픈 시 이벤트 처리 제외
-	'----------------------------------
+ --============================================================================
+function contMain_FormTabJPN_OnTabChanged(nCurrentTab)
+	 ------------------------------------
+	 -- 화면 첫 오픈 시 이벤트 처리 제외
+	 ------------------------------------
 	if g_isFst == true then
-		Exit Sub
-	end if
+		return
+	end
 	
-	'20250221 SWJ START
+	 --20250221 SWJ START
 	contMain_Use_Gesture()
-	'20250221 SWJ END
+	 --20250221 SWJ END
 	
 	Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" , contMain.FormTabJPN.currenttabpageid)
 	
-	'-------------------------------------------------
-	' 종목변경으로 인한 탭변경 시에는 이벤트 처리 제외
-	'-------------------------------------------------
+	 ---------------------------------------------------
+	 -- 종목변경으로 인한 탭변경 시에는 이벤트 처리 제외
+	 ---------------------------------------------------
 	if g_isChangeCd == true then
-		Exit Sub 
-	end if
+		return 
+	end
 	
-	if Len(g_szItemCode) > 0  then
-'		Form.ShowAlert("TEST", "contMain_FormTabJPN_OnTabChanged : "& g_szItemCode)
+	if string.len(g_szItemCode) > 0 then
+ --		Form.ShowAlert("TEST", "contMain_FormTabJPN_OnTabChanged : "& g_szItemCode)
 		Form.TriggerEvent( "FormTabJPN." .. contMain.FormTabJPN.currenttabpageid, "RequestData", g_szItemCode )
 		
-	end if
+	end
 	
-	if g_szMkOpClsCd <> "" then
+	if g_szMkOpClsCd ~= "" then
 		Form.TriggerEvent( "FormTabJPN." .. contMain.FormTabJPN.currenttabpageid, "CHANGE_MKTOP", g_szMkOpClsCd )
-	end if
+	end
 	
 	Form.TriggerEvent("FormTabJPN." .. contMain.FormTabJPN.currenttabpageid, "CONTMAIN_SCROLL_POS", contMain.scroll_pos)
 	
 	if g_isContScrollPos == "END" then
 		Form.TriggerEvent("FormTabJPN." .. contMain.FormTabJPN.currenttabpageid, "ENABLE_SCROLL", "END" )
-'		Form.TriggerEvent("FormTabJPN." .. contMain.FormTabJPN.currenttabpageid, "CONTMAIN_SCROLLING", "" )
-	end if
+ --		Form.TriggerEvent("FormTabJPN." .. contMain.FormTabJPN.currenttabpageid, "CONTMAIN_SCROLLING", "" )
+	end
 	
-	if  contMain.FormTabJPN.currenttabpageid == "page00" then
+	if contMain.FormTabJPN.currenttabpageid == "page00" then
 		contBtn.visible = true
 	else
 		contBtn.visible = false
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub Form_OnRefresh()
-	if g_szItemCode <> "" then
+ --============================================================================
+function Form_OnRefresh()
+	if g_szItemCode ~= "" then
 		Chnage_ItemCode(g_szItemCode)
-	end if
-end Sub
+	end
+end
 
-'============================================================================
-' DATAMANAGER_OnReceiveTranComplete
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+ -- DATAMANAGER_OnReceiveTranComplete
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if szTranID == "ohhts_intr_006r" then
 		ResponseTranData_Intr()
 	elseif szTranID == "ohhts_memo_011r" then
@@ -1027,519 +1021,516 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 		szAttr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0)
 		Change_ContBgColor(szAttr)
 		
-		if Cdbl(contHideTop.lblTopPrc.caption) == 0 then
+		if gf_Tonumber(contHideTop.lblTopPrc.caption) == 0 then
 			Request_Tran_ohhts_6000_001r_1()
-		end if
+		end
 		
-	'v20250715_01 >>
+	 --v20250715_01 >>
 	elseif szTranID == "ohhts_6000_023r"then
 		szAttr = DATAMANAGER.GetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0)
 		Change_ContBgColor(szAttr)
 		
-		if Cdbl(contHideTop.lblTopPrc.caption) == 0 then
+		if gf_Tonumber(contHideTop.lblTopPrc.caption) == 0 then
 			Request_Tran_ohhts_6000_001r_1()
-		end if
-	'v20250715_01 <<
-	end if
-End Sub
+		end
+	 --v20250715_01 <<
+	end
+end
 
-'============================================================================
-' DATAMANAGER_OnReceiveTranError
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+ --============================================================================
+ -- DATAMANAGER_OnReceiveTranError
+ --============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	if szTranID == "ohhts_memo_011r" then
 		Response_Tran_ohhts_memo_011r()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' DATAMANAGER_OnReceiveRealComplete
-'============================================================================
-Sub DATAMANAGER_OnReceiveRealComplete(szTranID)
-	'v20250715_01 >>
+ --============================================================================
+ -- DATAMANAGER_OnReceiveRealComplete
+ --============================================================================
+function DATAMANAGER_OnReceiveRealComplete(szTranID)
+	 --v20250715_01 >>
 	if szTranID == "ohhts_exst_cntg" or szTranID == "ohhts_exst_cntd" or szTranID == "ohhts_exst_cnta" then
 		szAttr = DATAMANAGER.GetDataAttr(1, szTranID, "OutBlock1", "FIDXR_PRPR" , 0)
 		Change_ContBgColor(szAttr)
-	end if
-	'v20250715_01 <<
-End Sub
+	end
+	 --v20250715_01 <<
+end
  
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
-'	Form.ShowAlert("TEST", "Form_OnTriggerEvent : " .. sEventName .. "|" ..sParam)
-	' 상단바 클릭 시
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
+ --	Form.ShowAlert("TEST", "Form_OnTriggerEvent : " .. sEventName .. "|" ..sParam)
+	 -- 상단바 클릭 시
 	if "TITLE_CLICK" == sEventName then
-		If g_szScreenNo = "16100" then
+		if g_szScreenNo == "16100" then
 			Form.OpenCommonDialog("SEARCH", "26", "")
 		else
-			'Form.OpenCommonDialog("SEARCH", "19", "")
+			 --Form.OpenCommonDialog("SEARCH", "19", "")
 			Form.OpenPopup("msearchdialog", "종목검색★50:51:52:53:54:55★INTG_DIVIDE_HISTORY★OVRS★11000", "")
-		end if
+		end
 
-'	' 상반바 우측 관심추가 버튼 클릭 시 
-'	elseif "REG_INTR" == sEventName then
-'		Form.OpenPopup( "mhtro16010_p5" , g_szItemCode, "" )
+ --	' 상반바 우측 관심추가 버튼 클릭 시 
+ --	elseif "REG_INTR" == sEventName then
+ --		Form.OpenPopup( "mhtro16010_p5" , g_szItemCode, "" )
 		
-	ElseIf sEventName = "HOGA_SETUP" Then			' 폼탭 초기화
-		szCurPageID = Form.GetCtlProp( "contMain." & g_szCurTab, "currenttabpageid")
+	elseif sEventName == "HOGA_SETUP" then -- 폼탭 초기화
+		szCurPageID = Form.GetCtlProp( "contMain." .. g_szCurTab, "currenttabpageid")
 		
-		If szCurPageID == "page01" Then
-			Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "HOGA_SETUP", "" )
-		End If
+		if szCurPageID == "page01" then
+			Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "HOGA_SETUP", "" )
+		end
 		
-	ElseIf sEventName = "FormTab_INIT" Then							' 폼탭 초기화
+	elseif sEventName == "FormTab_INIT" then -- 폼탭 초기화
 		contMain.FormTab.SetDefaultHeader()
 		contMain.FormTabEtf.SetDefaultHeader()
 		contMain.FormTabJPN.SetDefaultHeader()
-'		
-'	ElseIf sEventName = "FormTab_SET" Then							' 폼탭 셋팅
-'		if g_szCurTab == "FormTab" then
-'			contMain.FormTab.showconfig("")
-'		elseif g_szCurTab == "FormTabEtf" then
-'			contMain.FormTabEtf.showconfig("")
-'		elseif g_szCurTab == "FormTabJPN" then
-'			contMain.FormTabJPN.showconfig("")
-'		end if
+ --		
+ --	ElseIf sEventName = "FormTab_SET" Then							' 폼탭 셋팅
+ --		if g_szCurTab == "FormTab" then
+ --			contMain.FormTab.showconfig("")
+ --		elseif g_szCurTab == "FormTabEtf" then
+ --			contMain.FormTabEtf.showconfig("")
+ --		elseif g_szCurTab == "FormTabJPN" then
+ --			contMain.FormTabJPN.showconfig("")
+ --		end if
 		
-	elseif sEventName = "RETURN_LAYOUT_T11" then
+	elseif sEventName == "RETURN_LAYOUT_T11" then
 		if sParam == "기업개요" then
 			Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" ,  "page04")
-			Form.SetCtlProp("contMain." &g_szCurTab, "currenttabpageid", "page04")
+			Form.SetCtlProp("contMain." ..g_szCurTab, "currenttabpageid", "page04")
 			Chnage_ItemCode(g_szItemCode)
 			
 		elseif sParam == "뉴스" then
 			Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" ,  "page07")
-			Form.SetCtlProp("contMain." &g_szCurTab, "currenttabpageid", "page07")
+			Form.SetCtlProp("contMain." ..g_szCurTab, "currenttabpageid", "page07")
 			Chnage_ItemCode(g_szItemCode)
 			
 		elseif sParam == "호가" then
 			Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" ,  "page01")
-			Form.SetCtlProp("contMain." &g_szCurTab, "currenttabpageid", "page01")
+			Form.SetCtlProp("contMain." ..g_szCurTab, "currenttabpageid", "page01")
 			Chnage_ItemCode(g_szItemCode)
 			
 		elseif sParam == "체결일자별" then
 			Form.SetEnvData(1, "16000_SELECT_TABPAGE_ID" ,  "page02")
-			Form.SetCtlProp("contMain." &g_szCurTab, "currenttabpageid", "page02")
+			Form.SetCtlProp("contMain." ..g_szCurTab, "currenttabpageid", "page02")
 			Chnage_ItemCode(g_szItemCode)
 			
-			szCurPageID = Form.GetCtlProp( "contMain." & g_szCurTab, "currenttabpageid")
-			Form.TriggerEvent(g_szCurTab & ".page02", "CHANGE_RDO", "1" )
-		end if
+			szCurPageID = Form.GetCtlProp( "contMain." .. g_szCurTab, "currenttabpageid")
+			Form.TriggerEvent(g_szCurTab .. ".page02", "CHANGE_RDO", "1" )
+		end
 
-	elseif sEventName = "CHANGE_MKTOP" then
+	elseif sEventName == "CHANGE_MKTOP" then
 		Request_MktOp(sParam)
 		
-		if g_szMkOpClsCd <> "" then
-			szCurPageID = Form.GetCtlProp( "contMain." & g_szCurTab, "currenttabpageid")
-			Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "CHANGE_MKTOP", g_szMkOpClsCd )
-		End If
+		if g_szMkOpClsCd ~= "" then
+			szCurPageID = Form.GetCtlProp( "contMain." .. g_szCurTab, "currenttabpageid")
+			Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "CHANGE_MKTOP", g_szMkOpClsCd )
+		end
 		
-	elseif sEventName = "REFRESH_INTR_ITEM" then
+	elseif sEventName == "REFRESH_INTR_ITEM" then
 		
-		isIntrItem = Form.isIntrItemList(g_szItemCode)
+		isIntrItem = Form.IsIntrItemList(g_szItemCode)
 		if isIntrItem == true then
 			imgIntr.imgpath = "icon_like_o.png"
 		else
 			imgIntr.imgpath = "icon_like2_n.png"
-		end if
-	End if
-end Sub
+		end
+	end
+end
 
 
-'============================================================================
-' Form_OnPopupReturn
-'============================================================================
-Sub Form_OnPopupReturn(sKeyName, sRet)	
-'	Form.ShowAlert("TEST", "Form_OnPopupReturn : " .. sKeyName .. "|" ..sRet)
+ --============================================================================
+ -- Form_OnPopupReturn
+ --============================================================================
+function Form_OnPopupReturn(sKeyName, sRet)
+ --	Form.ShowAlert("TEST", "Form_OnPopupReturn : " .. sKeyName .. "|" ..sRet)
 	
-	'---------------------------------
-	' 우측상단 메뉴 클릭 
-	'---------------------------------
-	if sKeyName = "SCREEN_MENU" Then
+	 -----------------------------------
+	 -- 우측상단 메뉴 클릭 
+	 -----------------------------------
+	if sKeyName == "SCREEN_MENU" then
 	
-		'---------------------------------
-		' 현재가 화면설정
-		'---------------------------------
-		If sRet == "SET_SCREEN" Then				
+		 -----------------------------------
+		 -- 현재가 화면설정
+		 -----------------------------------
+		if sRet == "SET_SCREEN" then
 			Form.OpenFramePopup("mhtro16000_pc" , "" , "")
 			
-		'---------------------------------
-		' 종목메모
-		'---------------------------------	
+		 -----------------------------------
+		 -- 종목메모
+		 -----------------------------------	
 		elseif sRet == "REG_MEMO" then
-			Form.OpenPopup("mhtro16000_p17" , g_sExid & "@" & g_sCode & "@" & g_szMkOpClsCd , "")
+			Form.OpenPopup("mhtro16000_p17" , g_sExid .. "@" .. g_sCode .. "@" .. g_szMkOpClsCd , "")
 			
-		'---------------------------------
-		' DISCLAIMER
-		'---------------------------------
+		 -----------------------------------
+		 -- DISCLAIMER
+		 -----------------------------------
 		elseif sRet == "DISCLAIMER" then
 			Form.OpenPopup("mhtro17000_p1" , g_sExid , "")
-		end if
+		end
 		
-	'---------------------------------
-	' 호가창 설정변경
-	'---------------------------------
-	elseif sKeyName = "HOGA_SETUP" Then	
+	 -----------------------------------
+	 -- 호가창 설정변경
+	 -----------------------------------
+	elseif sKeyName == "HOGA_SETUP" then
 		
-		'---------------------------------
-		' sRet 정의
-		' - CLICK : 설정 변경
-		' - 빈값 : 설정 미변경 또는 초기화
-		'---------------------------------
-'		if sRet == "CLICK" then
-			szCurPageID = Form.GetCtlProp( "contMain." & g_szCurTab, "currenttabpageid")
+		 -----------------------------------
+		 -- sRet 정의
+		 -- - CLICK : 설정 변경
+		 -- - 빈값 : 설정 미변경 또는 초기화
+		 -----------------------------------
+ --		if sRet == "CLICK" then
+			szCurPageID = Form.GetCtlProp( "contMain." .. g_szCurTab, "currenttabpageid")
 		
-			If szCurPageID == "page01" Then
-				Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "HOGA_SETUP", "" )
-			End If
-'		end if
+			if szCurPageID == "page01" then
+				Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "HOGA_SETUP", "" )
+			end
+ --		end if
 	
-	'---------------------------------
-	' 폼탭(호가창) 초기화
-	'---------------------------------
-	elseif sKeyName = "FormTab_INIT" Then							
+	 -----------------------------------
+	 -- 폼탭(호가창) 초기화
+	 -----------------------------------
+	elseif sKeyName == "FormTab_INIT" then
 		contMain.FormTab.SetDefaultHeader()
 		contMain.FormTabEtf.SetDefaultHeader()
 		contMain.FormTabJPN.SetDefaultHeader()
 	
-	'---------------------------------
-	' 관심종목 등록/삭제처리
-	'---------------------------------	
-	elseif sKeyName = "mhprc11000_save" then '관심등록 완료 후
+	 -----------------------------------
+	 -- 관심종목 등록/삭제처리
+	 -----------------------------------	
+	elseif sKeyName == "mhprc11000_save" then --관심등록 완료 후
 		
-		arrRet = split(sRet, "★")
+		arrRet = gf_Split(sRet, "★")
 		
-		' 관심종목 삭제
-		if arrRet(2) = "DEL" then
-			Form.delIntrItemList(g_szItemCode)
+		 -- 관심종목 삭제
+		if arrRet[2+1] == "DEL" then
+			Form.DelIntrItemList(g_szItemCode)
 			imgIntr.imgpath = "icon_like2_n.png"
 			
-		' 관심종목 등록
+		 -- 관심종목 등록
 		else
-			Form.addIntrItemList(g_szItemCode)
+			Form.AddIntrItemList(g_szItemCode)
 			RequestTranData_Intr()
 			imgIntr.imgpath = "icon_like_o.png"
-		end if
+		end
 	
-	'---------------------------------
-	' 종목 통합검색 팝업 리턴
-	'---------------------------------	
-	elseif sKeyName = "DLG_SELECT" then
-		'처리 불필요
+	 -----------------------------------
+	 -- 종목 통합검색 팝업 리턴
+	 -----------------------------------	
+	elseif sKeyName == "DLG_SELECT" then
+		 --처리 불필요
 
-	'---------------------------------
-	' 종목메모 팝업 리턴
-	'---------------------------------
+	 -----------------------------------
+	 -- 종목메모 팝업 리턴
+	 -----------------------------------
 	elseif sKeyName == "REG_MEMO" then
 		Request_Tran_ohhts_memo_011r()
 		
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' 마스터파일에 있는 종목인지 체크
-'============================================================================
-Function CheckMasterFile(szCode)
-	if szCode == "" or szCode == null then
-		CheckMasterFile = false
-		Exit Function
-	end if
-	arrCode = Split(szCode,"@")
+ --============================================================================
+ -- 마스터파일에 있는 종목인지 체크
+ --============================================================================
+function CheckMasterFile(szCode)
+	if szCode == "" or szCode == nil then
+		return false
+	end
+	arrCode = gf_Split(szCode,"@")
 	
 	if #arrCode < 2 then
-		CheckMasterFile = false
-		Exit Function
-	end if
+		return false
+	end
 	
-	szTransExidCode = Transform_Exid2(arrCode(0))
-	szTransItemCode = szTransExidCode .. "@" .. arrCode(1)
+	szTransExidCode = Transform_Exid2(arrCode[0+1])
+	szTransItemCode = szTransExidCode .. "@" .. arrCode[1+1]
 	szCheckData = Form.GetItemCodeInfo(szTransItemCode, "exchid")
 	
-	if szCheckData = "" or szCheckData = null then
-		CheckMasterFile = false
-		Exit Function
-	end if
+	if szCheckData == "" or szCheckData == nil then
+		return false
+	end
 	
-	CheckMasterFile = true
+	return true
 	
-End Function
+end
 
-'============================================================================
-' 탭설정창 버튼
-'============================================================================
-Sub contMain_imgEdit_OnClick()
+ --============================================================================
+ -- 탭설정창 버튼
+ --============================================================================
+function contMain_imgEdit_OnClick()
 	if g_szCurTab == "FormTab" then
-		contMain.FormTab.showconfig("")
+		contMain.FormTab.Showconfig("")
 	elseif g_szCurTab == "FormTabEtf" then
-		contMain.FormTabEtf.showconfig("")
+		contMain.FormTabEtf.Showconfig("")
 	elseif g_szCurTab == "FormTabJPN" then
-		contMain.FormTabJPN.showconfig("")
-	end if
-End Sub
+		contMain.FormTabJPN.Showconfig("")
+	end
+end
 
-'============================================================================
-' 타이머 이벤트 처리(종목명 세팅 및 관심그룹 조회)
-'============================================================================
-Sub Form_OnTimerEvent(sTimerID)
-	if CInt(sTimerID) == 99 then
+ --============================================================================
+ -- 타이머 이벤트 처리(종목명 세팅 및 관심그룹 조회)
+ --============================================================================
+function Form_OnTimerEvent(sTimerID)
+	if gf_Tonumber(sTimerID) == 99 then
 		Form.SetTimerEvent2(99, 0, 0.2)
-		contHideTop.contTopSearch.lblItemName.setAutoScrollText(Form.GetItemCodeInfo(g_szItemCode, "name"))	
-		cont0.lblName.setAutoScrollText(Form.GetItemCodeInfo(g_szItemCode, "name"))
+		contHideTop.contTopSearch.lblItemName.SetAutoScrollText(Form.GetItemCodeInfo(g_szItemCode, "name"))	
+		cont0.lblName.SetAutoScrollText(Form.GetItemCodeInfo(g_szItemCode, "name"))
 		
 		RequestTranData_Intr()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' 컨테이너 위로 올리는 경우
-'============================================================================
-Sub contMain_OnScrollEnd()
-'	Form.ShowAlert("TEST", "contMain_OnScrollEnd")
+ --============================================================================
+ -- 컨테이너 위로 올리는 경우
+ --============================================================================
+function contMain_OnScrollEnd()
+ --	Form.ShowAlert("TEST", "contMain_OnScrollEnd")
 
 	g_isContScrollPos = "END"
 	contMain.gesture = false
 	contHideTop.gesture = true
-	contHideTop.fixTopAreaWhenScrolling("1", 0, "Down")
-	contHideTop.fixTopMoving("")
+	contHideTop.FixTopAreaWhenScrolling("1", 0, "Down")
+	contHideTop.FixTopMoving("")
 	
-	Form.setItemSwipeEnable("0")
+	Form.SetItemSwipeEnable("0")
 	
-	szCurPageID = Form.GetCtlProp( "contMain." & g_szCurTab, "currenttabpageid")
+	szCurPageID = Form.GetCtlProp( "contMain." .. g_szCurTab, "currenttabpageid")
 	
-	Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "ENABLE_SCROLL", "END" )
+	Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "ENABLE_SCROLL", "END" )
 	
 	if szCurPageID == "page03" then
-		Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "RESIZE_CHART", "END" )
-	end if
-End Sub
+		Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "RESIZE_CHART", "END" )
+	end
+end
 
-'============================================================================
-' 컨테이너 아래로 내리는 경우
-'============================================================================
-Sub contMain_OnScrollTop()
-'	Form.ShowAlert("TEST", "contMain_OnScrollTop")
-'	contMain.gesture = true
+ --============================================================================
+ -- 컨테이너 아래로 내리는 경우
+ --============================================================================
+function contMain_OnScrollTop()
+ --	Form.ShowAlert("TEST", "contMain_OnScrollTop")
+ --	contMain.gesture = true
 	g_isContScrollPos = "TOP"
 	contHideTop.gesture = true
-	contHideTop.fixTopAreaWhenScrolling("1", -50, "Up")
-	contHideTop.fixTopMoving("")
+	contHideTop.FixTopAreaWhenScrolling("1", -50, "Up")
+	contHideTop.FixTopMoving("")
 	
-	Form.setItemSwipeEnable("1")
+	Form.SetItemSwipeEnable("1")
 	
-	szCurPageID = Form.GetCtlProp( "contMain." & g_szCurTab, "currenttabpageid")
+	szCurPageID = Form.GetCtlProp( "contMain." .. g_szCurTab, "currenttabpageid")
 	
-	Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "ENABLE_SCROLL", "TOP" )
+	Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "ENABLE_SCROLL", "TOP" )
 	
 	if szCurPageID == "page03" then
-		Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "RESIZE_CHART", "TOP" )
-	end if
-End Sub
+		Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "RESIZE_CHART", "TOP" )
+	end
+end
 
-'============================================================================
-' 컨테이너 스크롤 중
-'============================================================================
-Sub contMain_OnScrolling()
+ --============================================================================
+ -- 컨테이너 스크롤 중
+ --============================================================================
+function contMain_OnScrolling()
 	
-	szCurPageID = Form.GetCtlProp( "contMain." & g_szCurTab, "currenttabpageid")
+	szCurPageID = Form.GetCtlProp( "contMain." .. g_szCurTab, "currenttabpageid")
 	
-	Form.TriggerEvent(g_szCurTab & "." & szCurPageID, "CONTMAIN_SCROLLING", "" )
-End Sub
+	Form.TriggerEvent(g_szCurTab .. "." .. szCurPageID, "CONTMAIN_SCROLLING", "" )
+end
 
-'============================================================================
-' 숨김 컨테이너 종목검색 클릭
-'============================================================================
-Sub contHideTop_btnTopSearch_OnClick()
-	If g_szScreenNo = "16100" then
+ --============================================================================
+ -- 숨김 컨테이너 종목검색 클릭
+ --============================================================================
+function contHideTop_btnTopSearch_OnClick()
+	if g_szScreenNo == "16100" then
 		Form.OpenCommonDialog("SEARCH", "26", "")
 	else
-		'Form.OpenCommonDialog("SEARCH", "19", "")
+		 --Form.OpenCommonDialog("SEARCH", "19", "")
 		Form.OpenPopup("msearchdialog", "종목검색★50:51:52:53:54:55★INTG_DIVIDE_HISTORY★OVRS★11000", "")
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' 종목검색 클릭
-'============================================================================
-Sub btnSearch_OnClick()
-	If g_szScreenNo = "16100" then
+ --============================================================================
+ -- 종목검색 클릭
+ --============================================================================
+function btnSearch_OnClick()
+	if g_szScreenNo == "16100" then
 		Form.OpenCommonDialog("SEARCH", "26", "")
 	else
-		'Form.OpenCommonDialog("SEARCH", "19", "")
+		 --Form.OpenCommonDialog("SEARCH", "19", "")
 		Form.OpenPopup("msearchdialog", "종목검색★50:51:52:53:54:55★INTG_DIVIDE_HISTORY★OVRS★11000", "")
-	end if
-End Sub
+	end
+end
 
 
-'============================================================================
-' 관심종목 등록/삭제버튼 클릭
-'============================================================================
-Sub imgIntr_OnClick()
+ --============================================================================
+ -- 관심종목 등록/삭제버튼 클릭
+ --============================================================================
+function imgIntr_OnClick()
 
-	isIntrItem = Form.isIntrItemList(g_szItemCode)
+	isIntrItem = Form.IsIntrItemList(g_szItemCode)
 	
-	if isIntrItem = true then
-		Form.OpenPopup("mhprc11000_pe", g_szItemCode& "★"& "DEL","", "")
+	if isIntrItem == true then
+		Form.OpenPopup("mhprc11000_pe", g_szItemCode.. "★".. "DEL","", "")
 	else
-		if CInt(g_szIntrGrpCnt) < 1 then
+		if gf_Tonumber(g_szIntrGrpCnt) < 1 then
 			g_szAction = "GROUP_ADD2"			
-			Form.OpenPopup("mhprc11000_pf", g_szAction & "★" & g_szItemCode & "★", "")
+			Form.OpenPopup("mhprc11000_pf", g_szAction .. "★" .. g_szItemCode .. "★", "")
 		else
-			Form.OpenPopupAnimation("mhprc11000_pd", g_szItemCode& "★"& "ADD","", "2")	'종목등록
-		end if
-	end if
+			Form.OpenPopupAnimation("mhprc11000_pd", g_szItemCode.. "★".. "ADD","", "2")	 --종목등록
+		end
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 주문버튼 클릭
-'============================================================================
-Sub lblOrder_OnClick()
-	If g_szScreenNo = "16100" then
+ --============================================================================
+ -- 주문버튼 클릭
+ --============================================================================
+function lblOrder_OnClick()
+	if g_szScreenNo == "16100" then
 		Form.OpenScreen("16200", "", "")
 	else
 		Form.OpenScreen("16060", "", "")
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' 우측상단 메뉴 클릭
-'============================================================================
-Sub imgMenu_OnClick()
+ --============================================================================
+ -- 우측상단 메뉴 클릭
+ --============================================================================
+function imgMenu_OnClick()
 	Form.OpenPopup("mhtro17000_p0", g_sExid, "")
-End Sub
+end
 
-'============================================================================
-' 우측상단 메뉴 클릭
-'============================================================================
-Sub contBtn_Button0_OnClick()
+ --============================================================================
+ -- 우측상단 메뉴 클릭
+ --============================================================================
+function contBtn_Button0_OnClick()
 
 	szItemNm = Form.GetItemCodeInfo(g_szItemCode, "name")
-	Form.SetSharedData( "&ITEM_CODE" , g_szItemCode )
-	Form.SetSharedData( "&ITEM_KORNAME" , szItemNm )
-	Form.SetSharedData( "&ITEM_OVERSTOCK", g_szItemCode.."★"..szItemNm.."★".."", "" )					
+	Form.SetSharedData( "..ITEM_CODE" , g_szItemCode )
+	Form.SetSharedData( "..ITEM_KORNAME" , szItemNm )
+	Form.SetSharedData( "..ITEM_OVERSTOCK", g_szItemCode.."★"..szItemNm.."★".."", "" )					
 	Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", g_szItemCode.."★"..szItemNm.."★".."", "" )
 	
-	If g_szScreenNo = "16100" then
+	if g_szScreenNo == "16100" then
 		Form.OpenScreen("16200", "0", "")
 	else
 		Form.OpenScreen("16060", "0")
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub contBtn_Button1_OnClick()
+ --============================================================================
+function contBtn_Button1_OnClick()
 	szItemNm = Form.GetItemCodeInfo(g_szItemCode, "name")
-	Form.SetSharedData( "&ITEM_CODE" , g_szItemCode )
-	Form.SetSharedData( "&ITEM_KORNAME" , szItemNm )
-	Form.SetSharedData( "&ITEM_OVERSTOCK", g_szItemCode.."★"..szItemNm.."★".."", "" )					
+	Form.SetSharedData( "..ITEM_CODE" , g_szItemCode )
+	Form.SetSharedData( "..ITEM_KORNAME" , szItemNm )
+	Form.SetSharedData( "..ITEM_OVERSTOCK", g_szItemCode.."★"..szItemNm.."★".."", "" )					
 	Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", g_szItemCode.."★"..szItemNm.."★".."", "" )
 	
-	If g_szScreenNo = "16100" then
+	if g_szScreenNo == "16100" then
 		Form.OpenScreen("16200", "1", "")
 	else
 		Form.OpenScreen("16060", "1")
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub contBtn_Button2_OnClick()
+ --============================================================================
+function contBtn_Button2_OnClick()
 	szItemNm = Form.GetItemCodeInfo(g_szItemCode, "name")
-	Form.SetSharedData( "&ITEM_CODE" , g_szItemCode )
-	Form.SetSharedData( "&ITEM_KORNAME" , szItemNm )
-	Form.SetSharedData( "&ITEM_OVERSTOCK", g_szItemCode.."★"..szItemNm.."★".."", "" )					
+	Form.SetSharedData( "..ITEM_CODE" , g_szItemCode )
+	Form.SetSharedData( "..ITEM_KORNAME" , szItemNm )
+	Form.SetSharedData( "..ITEM_OVERSTOCK", g_szItemCode.."★"..szItemNm.."★".."", "" )					
 	Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", g_szItemCode.."★"..szItemNm.."★".."", "" )
 	
 	Form.OpenScreen("16092", "", "")
-End Sub
+end
 
-'============================================================================
-' Form_OnLinkData
-'============================================================================
-Sub Form_OnLinkData(sKey, sValue)
-'	Form.ShowAlert("TEST", "Form_OnLinkData : " .. sKey .. "|" ..sValue)
-	'-----------------------------------------------
-	' 종목연동
-	' sValue : 거래소구분코드@종목코드
-	' ex) OQ@AAPL
-	'-----------------------------------------------
+ --============================================================================
+ -- Form_OnLinkData
+ --============================================================================
+function Form_OnLinkData(sKey, sValue)
+ --	Form.ShowAlert("TEST", "Form_OnLinkData : " .. sKey .. "|" ..sValue)
+	 -------------------------------------------------
+	 -- 종목연동
+	 -- sValue : 거래소구분코드@종목코드
+	 -- ex) OQ@AAPL
+	 -------------------------------------------------
 	if "&ITEM_CODE" == sKey then
 		Chnage_ItemCode(sValue)
 	
-	'-----------------------------------------------
-	' 로그인 (화면 열어둔 상태에서 로그인)
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- 로그인 (화면 열어둔 상태에서 로그인)
+	 -------------------------------------------------
 	elseif "&LOGIN" == sKey then
 		
-		'-----------------------------------------------
-		' 로그인 시, USER_ID 변경가능 
-		'-----------------------------------------------
+		 -------------------------------------------------
+		 -- 로그인 시, USER_ID 변경가능 
+		 -------------------------------------------------
 		
-		' 관심종목 업데이트 / 관심그룹 재조회 
-		Form.requestIntrItemList("00")
+		 -- 관심종목 업데이트 / 관심그룹 재조회 
+		Form.RequestIntrItemList("00")
 		RequestTranData_Intr()
 		
-		' 종목메모 재조회
+		 -- 종목메모 재조회
 		Request_Tran_ohhts_memo_011r()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' Form_OnTriggerEventSemiScreen
-'============================================================================
-' 이벤트 시점 : 화면오픈 / 외부화면 종목연동 
-'============================================================================
-Sub Form_OnTriggerEventSemiScreen(sEventName, sParam)
-	'Form.ShowAlert("TEST", "Form_OnTriggerEventSemiScreen : " .. sEventName .. "|" ..sParam)
-	'-----------------------------------------------
-	' 종목연동
-	' sParam : 거래소구분코드@종목코드★종목명★기타
-	' ex) OQ@AAPL★애플★
-	'-----------------------------------------------
+ --============================================================================
+ -- Form_OnTriggerEventSemiScreen
+ --============================================================================
+ -- 이벤트 시점 : 화면오픈 / 외부화면 종목연동 
+ --============================================================================
+function Form_OnTriggerEventSemiScreen(sEventName, sParam)
+	 --Form.ShowAlert("TEST", "Form_OnTriggerEventSemiScreen : " .. sEventName .. "|" ..sParam)
+	 -------------------------------------------------
+	 -- 종목연동
+	 -- sParam : 거래소구분코드@종목코드★종목명★기타
+	 -- ex) OQ@AAPL★애플★
+	 -------------------------------------------------
 	if sEventName == "ITEM_CD" then
 		Chnage_ItemCode(sParam)
 		
-		'HWG 20250307
-		'ItemCode0.code = sParam
-		'HWG 20250307
+		 --HWG 20250307
+		 --ItemCode0.code = sParam
+		 --HWG 20250307
 		
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' Form_OnCommonDialogReturn
-'============================================================================
-Sub Form_OnCommonDialogReturn(sDlgName, sReturn1, sReturn2)		
-	'sReturn1 = 거래소코드★종목코드
+ --============================================================================
+ -- Form_OnCommonDialogReturn
+ --============================================================================
+function Form_OnCommonDialogReturn(sDlgName, sReturn1, sReturn2)
+	 --sReturn1 = 거래소코드★종목코드
 	name = Form.GetItemCodeInfo(sReturn1, "name")
-	Form.setOverStockItemCode(sReturn1.."★"..name)
-End Sub
+	Form.SetOverStockItemCode(sReturn1.."★"..name)
+end
 
-'============================================================================
-Sub ImgBackPress_OnClick()
-	Form.openPrevScreen()
-End Sub
+ --============================================================================
+function ImgBackPress_OnClick()
+	Form.OpenPrevScreen()
+end
 
-'============================================================================
-Sub contHideTop_imgTopBack_OnClick()
-	Form.openPrevScreen()
-End Sub
+ --============================================================================
+function contHideTop_imgTopBack_OnClick()
+	Form.OpenPrevScreen()
+end
 
-'============================================================================
-'20250221 SWJ START
-'(iOS)
-'컨테이너가 gesture를 사용할 때
-'내부에 상속받는 컨트롤들이
+ --============================================================================
+ --20250221 SWJ START
+ --(iOS)
+ --컨테이너가 gesture를 사용할 때
+ --내부에 상속받는 컨트롤들이
 
-'컨테이너의 gesture 선언 기준으로 움직이게 되어
-'해외주식 현재가 화면은, 컨테이너 gesture 이벤트 처리도 해야하고
-'차트 탭에서는 고정을 해야하고, 또한 종목정보 탭에서는 차트를 눌러서 스크롤링도 가능해야하기 때문에
-'예외처리 함수를 추가하였다. (iOS만)
+ --컨테이너의 gesture 선언 기준으로 움직이게 되어
+ --해외주식 현재가 화면은, 컨테이너 gesture 이벤트 처리도 해야하고
+ --차트 탭에서는 고정을 해야하고, 또한 종목정보 탭에서는 차트를 눌러서 스크롤링도 가능해야하기 때문에
+ --예외처리 함수를 추가하였다. (iOS만)
 
-'False면 컨테이너 내에서 컨트롤의 제스처 동작은 제한 받게 된다. (True가 모든 화면 기본 동작)
-'============================================================================
-Function contMain_Use_Gesture()
+ --False면 컨테이너 내에서 컨트롤의 제스처 동작은 제한 받게 된다. (True가 모든 화면 기본 동작)
+ --============================================================================
+function contMain_Use_Gesture()
 	
 	if gOSType == "2" then
 		
@@ -1547,18 +1538,19 @@ Function contMain_Use_Gesture()
 		or contMain.FormTabJPN.currenttabpageid == "page03" then
 		
 			contMain.gesture = False
-			contMain.setUseInheritedGesture(False)
+			contMain.SetUseInheritedGesture(False)
 			
 		else
 			contMain.gesture = True
-			contMain.setUseInheritedGesture(True)
-		end if
+			contMain.SetUseInheritedGesture(True)
+		end
 		
-	end if
+	end
 	
-End Function
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />

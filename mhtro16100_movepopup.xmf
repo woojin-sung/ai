@@ -147,7 +147,7 @@ function Form_OnFormInit()
 		 -- 실시간 시세 적용여부(해외종합잔고에서 호출시에만 시세 조회/실시간 호출)
 		 -------------------------------------------
 		sParentScrNo = Form.GetSharedData("..SCREEN_NO", false)
-		if sParentScrNo == "16070" or sParentScrNo == "16037" then --20250522 JSH - PTP종목조회(16037) end
+		if sParentScrNo == "16070" or sParentScrNo == "16037" then --20250522 JSH - PTP종목조회(16037) end end
 			gApplyRealSise = "Y"
 			
 			 -------------------------------------------------------------
@@ -491,7 +491,7 @@ end
  --============================================================================
 function GetMarketCode(sValue)
 
-	if sValue == "0104" then -- 홍콩 end
+	if sValue == "0104" then -- 홍콩 end end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"

@@ -133,7 +133,7 @@ g_szTitle = "알림"
 function Form_OnFormInit( )
 	g_szCloud = Form.GetEnvData("common.interest_cloud")
 	
-	if gf_Trim(g_szCloud) == "" then --초기값 : 1(동기화 사용) end
+	if gf_Trim(g_szCloud) == "" then --초기값 : 1(동기화 사용) end end
 		g_szCloud = "1"
 	end
 	 -- //////////////////////////////////////////////////////////////////////
@@ -174,7 +174,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		grdGroup.SetCellData("bd_code", g_szRow, tData[0+1])
 		grdGroup.SetCellData("bd_name", g_szRow, tData[1+1])
 			
-		if g_szCloud == "1" then -- Server 저장시 end
+		if g_szCloud == "1" then -- Server 저장시 end end
 			 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 			DATAMANAGER.RequestTranData("ohhts_intr_028r")
 			Save_GWGroup( )
@@ -233,7 +233,7 @@ function btnAdd_OnClick( )
 		 --20180905_01 NOHES START : 관심그룹 생성 시, 순차적으로 확인해서 코드 빠졌을 때 채워넣으면서 만든다.
 		 --                          그룹이 10개 이상인 경우에 szCd == szCode 처리 못해서 CStr 처리함.
 		for i = 0, 99 do
-			if string.string.len(i) == 1 then
+			if string.string.string.len(i) == 1 then
 				szCode = "0" .. i
 			else
 				szCode = gf_Tostring(i)
@@ -428,7 +428,7 @@ end
 function Get_GWGroup( )
 	grdGroup.rowcount = 0
 	
-	if g_szCloud == "1" then -- Server 저장시 end
+	if g_szCloud == "1" then -- Server 저장시 end end
 		 -- 관심그룹조회 : 조회수 관심그룹 그룹콤보에 넣는다.
 		DATAMANAGER.RequestTranData("ohhts_intr_026r")
 	else -- Local 저장시

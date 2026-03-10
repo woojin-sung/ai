@@ -246,7 +246,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 -----------------------------------------------------------------------------------
 		 --sPrice = Form.GetSharedData("PRICE", true)
 		 --
-		 --if sPrice <> "" and sPrice <> null	then
+		 --if sPrice ~= "" and sPrice ~= nil	then
 		 --	edtPrc.caption = sPrice
 		 --	
 		 --else
@@ -316,7 +316,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 				 -----------------------------------------------------------------------------------
 				 --sPrice = Form.GetSharedData("PRICE", true)
 				 --
-				 --if sPrice <> "" and sPrice <> null	then
+				 --if sPrice ~= "" and sPrice ~= nil	then
 				 --	edtPrc.caption = sPrice
 					
 				 --else
@@ -365,7 +365,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 			 -----------------------------------------------------------------------------------
 			 --sPrice = Form.GetSharedData("PRICE", true)
 			 --
-			 --if sPrice <> "" and sPrice <> null	then
+			 --if sPrice ~= "" and sPrice ~= nil	then
 			 --	edtPrc.caption = sPrice
 			 --	
 			 --else
@@ -418,7 +418,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 -- 주문가격 자동입력이 미사용으로 되어있으면 빈값이 넘어옴.
 		 -- 빈값으로 넘어온 경우에는 세팅해주지 않는다
 		 ----------------------------------------------------------
-		if g_szChangeInit ~= "1" and sParam ~= "" and gSettingSelectPriceForAutoPrice ~= true then --20240729
+		if g_szChangeInit ~= "1" and sParam ~= "" and gSettingSelectPriceForAutoPrice ~= true then --20240729 end
 			edtPrc.caption = sParam
 			Calc_OrderPrice()
 		end
@@ -622,7 +622,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		cmbType.currentindex = "0"
 		
 	 --============================================================================
-	 -- 주간장 현재가 세팅(가격자동입력 활성화 & 현재가 세팅으로 되어있을때)
+	 -- 주간장 현재가 세팅(가격자동입력 활성화 .. 현재가 세팅으로 되어있을때)
 	 --============================================================================
 	elseif sEventName == "SEND_DAYMARKET_PRC" or sEventName == "SEND_AFTERMARKET_PRC" then
 	
@@ -686,7 +686,7 @@ end
  --============================================================================
 function RequestAutoQty()
 
-	if g_szSellQty == "1" then -- 보유잔고수량
+	if g_szSellQty == "1" then -- 보유잔고수량 end
 		
 		Request_Able()
 		
@@ -792,10 +792,10 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	 -------------------------------------------------------------------------
 	 -- 중국(상해/심천) 호가단위 설정
 	 -------------------------------------------------------------------------
-	if szMk == "0215" then --상해
+	if szMk == "0215" then --상해 end
 	
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -805,7 +805,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	elseif szMk == "0214" then --심천
 		
 		 --20240613 LES START 틱단위 수정
-		if szTtype == 2 then --ETF
+		if szTtype == 2 then --ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -1406,7 +1406,7 @@ function Calc_Price(nGbn)
 		 -- + 버튼 클릭
 		 --------------------------------------------------
 		if nGbn == 0 then
-			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1426,7 +1426,7 @@ function Calc_Price(nGbn)
 		 -- - 버튼 클릭 
 		 --------------------------------------------------
 		elseif nGbn == 1 then
-			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1497,13 +1497,13 @@ function Calc_Qty(nGbn,nUnit)
 	
 	szQty = edtQty.caption
 	
- --	'---------------------------------------------------------
- --	' (기존요건) 최대입력 가능 수량 99000000
- --	'---------------------------------------------------------
- --	if Trim(szQty) <> "" then
- --		if CDbl(szQty) >= 99000000 then
+ --	 -----------------------------------------------------------
+ --	 -- (기존요건) 최대입력 가능 수량 99000000
+ --	 -----------------------------------------------------------
+ --	if gf_Trim(szQty) ~= "" then
+ --		if gf_Tonumber(szQty) >= 99000000 then
  --			if nGbn == 0 then
- --				Exit Function
+ --				return
  --			end if
  --		end if
  --	end if
@@ -1559,7 +1559,7 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 체크
 	 -----------------------------------------------------------
-	if string.len(szQty) <= gMaxLen then
+	if string.string.len(szQty) <= gMaxLen then
 		if gf_Tostring(szQty) == "0" or gf_Tostring(szQty) == "" then
 			edtQty.caption = ""
 		else
@@ -1762,12 +1762,12 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "SELN_BYOV_CLCD"		, 0 , "1")									 -- 매도/매수구분코드
 		
 		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "RSEV_ASPR_TPCD"		, 0,  Check_OrdCond())			 -- 주문구분코드
- --		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "ODER_CLS_CODE"		, 0 , Check_OrdType())							' 주문구분코드
- --		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "ODER_COND_CLS_CODE"	, 0 , Check_OrdCond())							' 주문조건구분코드
+ --		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "ODER_CLS_CODE"		, 0 , Check_OrdType())							 -- 주문구분코드
+ --		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "ODER_COND_CLS_CODE"	, 0 , Check_OrdCond())							 -- 주문조건구분코드
 		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "ODQT"				, 0 , edtQty.caption)							 -- 주문수량
 		
 		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "OVRS_STCK_ODER_PRC"	, 0 , szPrc)									 -- 주문단가
- --		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "ODER_OCRN_TYPE_CODE"	, 0 , "01")									' 주문발생유형코드(01:일반주문)
+ --		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "ODER_OCRN_TYPE_CODE"	, 0 , "01")									 -- 주문발생유형코드(01:일반주문)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "WARN_CNFR_YN"		, 0 , g_szWarnFlag)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_112a", "InBlock1", "ODER_GRP_NO"			, 0, "0")			 -- 주문그룹번호
 		
@@ -1847,7 +1847,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		elseif szWarnCd == "3" then
 			
 			szData = "1" .. "|" .. szWarnMsg	 -- 매매구분|메시지
-			 --Form.OpenPopup("mhtro16060_p15", szData , "")	'OnPopupReturn -> "PTP주문경고"
+			 --Form.OpenPopup("mhtro16060_p15", szData , "")	 --OnPopupReturn -> "PTP주문경고"
 			Form.OpenPopupAnimation("mhtro16100_p15", szData, "", "2")
 			
 		 ----------------------------------
@@ -2106,7 +2106,7 @@ function btnBuy_OnClick()
 		szData = g_szMk .. "★" .. cmbType.cbkeydata .. "★"
 		Form.OpenPopupAnimation("mhtro16061_p5", szData , "", "2")
 		
- --		' 주문확인창 오픈여부
+ --		 -- 주문확인창 오픈여부
  --		if g_szOdrPop == "1" then
  --			Open_ConfirmPopup("")
  --		else
@@ -2127,7 +2127,7 @@ function Check_InputData(sGubun)
 		
 		 --계좌번호
 		szAcnt = Form.GetTopCtlProp("acnt", "caption")
-		if string.len(szAcnt) < 10 then
+		if string.string.len(szAcnt) < 10 then
 			Form.ShowAlert(g_szTitle, "계좌번호를 확인후 다시 입력하십시오.")
 			return False
 		end
@@ -2266,11 +2266,11 @@ function Check_OrdType()
 		elseif szIdx == "1" then
 			return "05"  --시장가
  --		Case "2" 
- --			return "31" 'LOO
+ --			return "31"  --LOO
 		elseif szIdx == "2" then
 			return "32"  --LOC
  --		Case "4"
- --			return "33" 'MOO
+ --			return "33"  --MOO
 		elseif szIdx == "3" then
 			return "34"  --MOC
 		elseif szIdx == "4" then
@@ -2377,7 +2377,7 @@ function Request_Order()
 	g_szWarnFlag	= "N"
 	
 	 ------------------------------------
-	 -- 현금/대출 구분 & 주문서비스 호출
+	 -- 현금/대출 구분 .. 주문서비스 호출
 	 ------------------------------------
  --	szCLS = rdoGbn.currentindex
  --	
@@ -2418,9 +2418,9 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	elseif sKeyName == "주문전송" then
 		if sRet == "1" then
 			 --20250102 HSZ START
-			if gf_Tonumber(cmbType.currentindex) == 0 and g_szOdrPop == "1" then --지정가&주문확인창 사용 CASE
+			if gf_Tonumber(cmbType.currentindex) == 0 and g_szOdrPop == "1" then --지정가..주문확인창 사용 CASE end
 				if gf_Trim(gConfirmPrice) ~= "" then
-					if gf_Tonumber(edtPrc.caption) ~= gf_Tonumber(gConfirmPrice) then --입력된 주문 가격이 다른 경우에만
+					if gf_Tonumber(edtPrc.caption) ~= gf_Tonumber(gConfirmPrice) then --입력된 주문 가격이 다른 경우에만 end
 						edtPrc.caption = gConfirmPrice
 						Calc_OrderPrice()
 					end
@@ -2698,7 +2698,7 @@ function cmbType_OnEditComplete(iIndex)
 	 -------------------------------------------------------
 	
 	 -------------------------------------------------------
-	 --지정가/LOO/LOC/Limit VWAP/'Limit TWAP
+	 --지정가/LOO/LOC/Limit VWAP/ --Limit TWAP
 	 -------------------------------------------------------
 	if Check_OrdType() = "01" or Check_OrdType() == "31" or Check_OrdType() == "32" 
 		or Check_OrdType() == "35" or Check_OrdType() == "36" then
@@ -3003,7 +3003,7 @@ end
  -- 거래소코드(4자리) <- 거래명(2자리)
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"

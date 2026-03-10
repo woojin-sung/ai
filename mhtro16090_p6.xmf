@@ -69,7 +69,7 @@ function Form_OnFormInitBefore()
 	imgClose0.SetMaintainingRatio("1")
 	imgClose1.SetMaintainingRatio("1")
 end
- --'============================================================================
+ -- --============================================================================
 	
 </SCRIPT_INFO>
 </ROOT>

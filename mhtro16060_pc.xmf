@@ -366,7 +366,7 @@ local szMarket , szVndrCd --20201218 SWJ START : 해외주식 오프라인 유�
  -- 거래소코드 -> 거래소벤더코드 변환
  --============================================================================
 function Transform_Name(sValue)
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "홍콩"
 	elseif sValue == "0529" then -- 항셍 지수
 		return "항셍"
@@ -382,7 +382,7 @@ function Transform_Name(sValue)
 		return "나스닥"
 	elseif sValue == "0130" then -- 미국 OTCBB
 		return "미국 OTCBB"
-	elseif sValue == "0625" then -- S&P 지수
+	elseif sValue == "0625" then -- S..P 지수
 		return "S..P"
 	elseif sValue == "0310" then -- 다우존스 지수
 		return "다우존스"
@@ -411,7 +411,7 @@ function Transform_Name(sValue)
 	elseif sValue == "XHEL" then -- 핀란드
 		return "헬싱키"
 	elseif sValue == "0787" then
-		if szMarket == "12" then --프랑스
+		if szMarket == "12" then --프랑스 end
 			return "프랑스"
 	     elseif szMarket == "13" then --벨기에
 			return "브뤼셀"
@@ -457,7 +457,7 @@ function Set_Unit(szData, sDecimal)
 			sztemp = sztemp .. ".0000"	
 		end
 	else
-		szCha = gf_Tonumber(string.len(sztemp) - szChk)
+		szCha = gf_Tonumber(string.string.len(sztemp) - szChk)
 	
 	
 		if gf_Tostring(szCha) == "1" then
@@ -527,7 +527,7 @@ end
  --============================================================================
 function DATAMANAGER_OnSendTranBefore(szTranID)
 	 --Dim szDate
-	 --szDate = Form.GetSharedData("&BIZ_DT", false)
+	 --szDate = Form.GetSharedData("..BIZ_DT", false)
 	
 	grdList.rowcount = 0
 	
@@ -725,11 +725,11 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			 -- 주문가, 체결가
  --			szDecimal = grdList.GetCellData("bd_cell11" , iCnt)
  --			szVltnPrlsCamt = grdList.GetCellData("bd_cell4", iCnt)
- --			szVltnPrlsCamt2 = Set_Unit(CDbl(szVltnPrlsCamt), szDecimal)
+ --			szVltnPrlsCamt2 = Set_Unit(gf_Tonumber(szVltnPrlsCamt), szDecimal)
  --			grdList.SetCellData("bd_cell4", iCnt, szVltnPrlsCamt2)
  --		
  --			szPsntPrc = grdList.GetCellData("bd_cell5", iCnt)
- --			szPsntPrc2 = Set_Unit(CDbl(szPsntPrc), szDecimal)
+ --			szPsntPrc2 = Set_Unit(gf_Tonumber(szPsntPrc), szDecimal)
  --			grdList.SetCellData("bd_cell5", iCnt, szPsntPrc2)
 		end
 	end

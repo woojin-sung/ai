@@ -138,10 +138,10 @@ function Form_OnFormInit()
 
 	btnPwd.Bringfront("1")	 --20220425 HWG : 계좌비밀번호 입력 개선
 	
-	 --f_EventPopup()	'20240710 SWJ START: 위치 변경
+	 --f_EventPopup()	 --20240710 SWJ START: 위치 변경
 	Load_OrderSet()
 	
-	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수
+	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end
 		FormTab0.currenttabpageid = "page0"
 	elseif Form.GetOpenLinkData( ) == "1" or Form.GetOpenLinkData( ) == 1 then --매도
 		FormTab0.currenttabpageid = "page1"	
@@ -170,7 +170,7 @@ function Form_OnFormInit()
 				
 				 --20201021 LES START 해외주식 매도상환
 				 --szTranExch@szCutIscd★szItemName♥sellbuyGubun♥szQty♥szLoanDate♥szLoanCd♥0♥szLoanSr
-				 --Form.SetSharedData("JANGO" , arrData(2))
+				 --Form.SetSharedData("JANGO" , arrData[2+1])
 				 --매도매수구분/수량/대출일자/대출상세유형코드/대출일련번호
 				Form.SetSharedData("JANGO" , arrData[1+1].."★"..arrData[2+1].."★"..arrData[3+1].."★"..arrData[4+1].."★"..arrData[6+1])
 				 --20201021 LES END
@@ -182,7 +182,7 @@ function Form_OnFormInit()
 	 --기타★★ 추가 -- 20250314 YTK
 	 --URL로 화면오픈할 시 예외처리
 	if Form.GetOpenLinkData() == "" or Form.GetOpenLinkData() == nil or Form.GetOpenLinkData() == "기타★★" then
- --		szfsData = Form.GetSharedData("&ITEM_OVERSTOCK_FS_CODE", false)
+ --		szfsData = Form.GetSharedData("..ITEM_OVERSTOCK_FS_CODE", false)
 		szfsIdx = Form.GetRecentHistoryIMaxCount_FS()
 		if gf_Tonumber(szfsIdx) > 0 then
 			szfsData = Form.GetRecentHistoryIMax_FS(szfsIdx-1)
@@ -203,7 +203,7 @@ function Form_OnFormInit()
 	end
 	ItemCode0.code = g_szCode
 
-	if string.len(g_szCode) > 0 then
+	if string.string.len(g_szCode) > 0 then
  --		Form.ShowAlert("g_szCode", g_szCode)
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "InitCode", g_szCode )
 		Form.TriggerEvent( "LinkForm2", "RequestData", g_szCode)
@@ -234,7 +234,7 @@ end
  
  --============================================================================
 function Form_OnTriggerEvent(sEventName, sParam)
- --	Form.ShowAlert("16090main", sEventName&sParam)
+ --	Form.ShowAlert("16090main", sEventName..sParam)
 	if sEventName == "SCREEN_REFRESH" then
 		set_itemcode(g_szCode)
 	
@@ -243,7 +243,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		
 	elseif sEventName == "SCREEN_MENU" then -- 연결정보(상단 ...)
 		
-		if sParam == "REG_INTR" then -- 관심종목등록
+		if sParam == "REG_INTR" then -- 관심종목등록 end
 			
 			 ------------------------------------------------------------------
 			 --20240626 LES START - 관심종목 등록팝업 변경
@@ -269,10 +269,10 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		end
 
 	elseif (sEventName == "16090_BALANCE") then
- --		Form.setOverStockItemCode(sParam)
+ --		Form.SetOverStockItemCode(sParam)
 		
 	elseif (sEventName == "16060_CONTRACT") then
- --		Form.setOverStockItemCode(sParam)
+ --		Form.SetOverStockItemCode(sParam)
 		
 	elseif sEventName == "CHANGE_CODE" then
 		 --hsz
@@ -286,7 +286,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		szName = Form.GetItemCodeInfo(g_szCode, "name")
 		Form.SetOverStockItemCode(g_szCode.."★"..szName)
 		ItemCode0.code = g_szCode
-		if string.len(g_szCode) > 0 then
+		if string.string.len(g_szCode) > 0 then
 			Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "InitCode", g_szCode )
 			Form.TriggerEvent( "LinkForm2", "RequestData", g_szCode)
 			DATAMANAGER.RequestTranData("ohhts_6000_001r")
@@ -359,9 +359,9 @@ end
 
  --============================================================================
 function FormTab0_OnTabChanged(nCurrentTab)
-	if string.len(g_szCode) > 0 then
+	if string.string.len(g_szCode) > 0 then
 		if nCurrentTab == 2 then
-			if g_szAfterOrg == "1" then --주문연동시
+			if g_szAfterOrg == "1" then --주문연동시 end
 				if edtOrgNo.caption ~= "" then
 					Form.TriggerEvent("FormTab0." .. FormTab0.currenttabpageid, "AFTER_ORGNO", edtOrgNo.caption)  --주문번호 연동
 				end
@@ -381,7 +381,7 @@ end
 
  --============================================================================
 function DATAMANAGER_OnSendTranBefore(szTranID)
-	if szTranID == "obpds_srvc_311r" then --소수점 매매 약정 가능 여부 체크
+	if szTranID == "obpds_srvc_311r" then --소수점 매매 약정 가능 여부 체크 end
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_311r", "InBlock1", "ACNO" 				, 0 	, acnt.total )
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_311r", "InBlock1", "ASNO"				, 0 	, acnt.sequence )
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_311r", "InBlock1", "SVCD"				, 0 	, "079" )  --해외주식소수점
@@ -391,15 +391,15 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	 --20200827 LES START 애플/테슬라 액면분할 관련 고객유의사항
  --	elseif szTranID == "obtro_acnt_900r" then
  --	
- --		szCustNum = Form.GetSharedData("&CUST_NUM", false)
+ --		szCustNum = Form.GetSharedData("..CUST_NUM", false)
  --	
- --		DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "BSWR_CLCD" 			, 0 , "05") '20220713 SWJ START : 구글 권리 선반영
+ --		DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "BSWR_CLCD" 			, 0 , "05")  --20220713 SWJ START : 구글 권리 선반영
  --		DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "CSNO" 				, 0 , szCustNum)
  --	
- --	'20220719 SWJ START : GME 권리 선반영
+ --	 --20220719 SWJ START : GME 권리 선반영
  --	elseif szTranID == "obtro_acnt_902r" then
  --	
- --		szCustNum = Form.GetSharedData("&CUST_NUM", false)
+ --		szCustNum = Form.GetSharedData("..CUST_NUM", false)
  --	
  --		DATAMANAGER.SetDataValue(0, "obtro_acnt_902r", "InBlock1", "BSWR_CLCD" 			, 0 , "09")
  --		DATAMANAGER.SetDataValue(0, "obtro_acnt_902r", "InBlock1", "CSNO" 				, 0 , szCustNum)
@@ -410,7 +410,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 
 		local sCodeData, szDelay
 	
-		sCodeData = {}	 -- sCodeData[1] 마켓, sCodeData[2] 코드
+		sCodeData = {}	 -- sCodeData[1+1] 마켓, sCodeData[2+1] 코드
 		sCodeData = gf_Split(g_szCode, "@")
 		
 		szDelay = Form.GetSharedData("REALTIME_"..sCodeData[0+1], 0 )
@@ -421,11 +421,11 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue( 0, szTranID, "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , szDelay)	
 	 --20200827 LES END
  --	elseif szTranID == "obrtp_drab_001r" then
- --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "ACNO" , 0 , acnt.total ) ' 계좌번호
- --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "ASNO" , 0 , acnt.sequence ) ' 계좌일련번호
- --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "PROS_DATE" , 0 , Form.GetSharedData("&HOST_DATE", false) ) ' 처리일자
- --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "SMCD" , 0 , "001020" ) ' 적요코드
- --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "SUMR_DRNG_YN" , 0 , "" ) ' 적요출금여부
+ --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "ACNO" , 0 , acnt.total )  -- 계좌번호
+ --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "ASNO" , 0 , acnt.sequence )  -- 계좌일련번호
+ --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "PROS_DATE" , 0 , Form.GetSharedData("..HOST_DATE", false) )  -- 처리일자
+ --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "SMCD" , 0 , "001020" )  -- 적요코드
+ --		DATAMANAGER.SetDataValue( 0, "obrtp_drab_001r", "InBlock1", "SUMR_DRNG_YN" , 0 , "" )  -- 적요출금여부
 
 	end
 end
@@ -446,11 +446,11 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			 --20220713 SWJ START ; 구글 권리 선반영
 			szToday = Form.GetSharedData("..HOST_DATE", false )
 			
-			 --if tonumber(szToday) >= 20220718 and tonumber(szToday) <= 20220721 then
+			 --if gf_Tonumber(szToday) >= 20220718 and gf_Tonumber(szToday) <= 20220721 then
 				
 				 --구글 보유고객 중, 유의사항 동의하지 않은 고객조회
 			 --	DATAMANAGER.RequestTranData("obtro_acnt_900r")
-			 --elseif tonumber(szToday) >= 20220722 and tonumber(szToday) <= 20220728 then
+			 --elseif gf_Tonumber(szToday) >= 20220722 and gf_Tonumber(szToday) <= 20220728 then
 				
 				 --GME 보유고객 중, 유의사항 동의하지 않은 고객조회
 				 --소수점 잔고 전용으로 서비스 새로 나옴 (구글은 일반/소수점 통합 버전 그대로 사용)
@@ -596,7 +596,7 @@ function f_EventPopup()
 	 --20240710 SWJ END
 	
 	 --20201111 SWJ START : 프리마켓 유의사항 팝업 게시
- --	szMediaCode = Form.GetSharedData("&MEDIA_CODE", false )
+ --	szMediaCode = Form.GetSharedData("..MEDIA_CODE", false )
  --    if szMediaCode = "156" or szMediaCode = "157" then
  --    
  --		bPopYN = Form.GetEnvData("PreMarket")
@@ -620,7 +620,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		 --20240710 SWJ START
 		 --권리선반영 팝업 이후 약정 체크
  --		if sRet == "cancel" then
- --			szPrevScr = Form.GetSharedData("&PREV_SCREEN_NO", false )
+ --			szPrevScr = Form.GetSharedData("..PREV_SCREEN_NO", false )
  --			
  --			if szPrevScr == "" or szPrevScr == nil or szPrevScr == "16060" then
  --				szPrevScr = "41000"

@@ -135,7 +135,7 @@ function Form_OnFormInit()
 
  --	Dim szOpenData
  --	szOpenData = Form.GetopenLinkData()
- --	if szOpenData <> "" Then
+ --	if szOpenData ~= "" Then
 	
 	Form.SetScreenName("해외주식 소수점거래 주문유의사항")
 	cont0.SetScrollAutoSize()

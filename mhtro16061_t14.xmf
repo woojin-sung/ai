@@ -449,7 +449,7 @@ function Check_Accout()
 	
 	szAcctNo = Form.GetTopCtlProp("acnt", "caption")
     
-    if string.len(gf_Trim(szAcctNo)) < 10 then
+    if string.string.len(gf_Trim(szAcctNo)) < 10 then
 	    Form.ShowAlert( g_szTitle, "계좌번호를 확인후 다시 입력하십시오." )
 	    return False
 	end
@@ -545,7 +545,7 @@ function Set_Unit(szData, sDecimal)
 			sztemp = sztemp .. ".0000"	
 		end
 	else
-		szCha = gf_Tonumber(string.len(sztemp) - szChk)
+		szCha = gf_Tonumber(string.string.len(sztemp) - szChk)
 	
 	
 		if gf_Tostring(szCha) == "1" then
@@ -700,7 +700,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			hOurType  = grd0.GetCellData( "bd_cell9", i)	 --주문예약시간구분코드 - 2019.10.14
 
  --			szOdrPrc = grd0.GetCellData("bd_cell15", i)
- --			szOdrPrc2 = Set_Unit(CDbl(szOdrPrc), szDecimal)
+ --			szOdrPrc2 = Set_Unit(gf_Tonumber(szOdrPrc), szDecimal)
  --			grd0.SetCellData("bd_cell15", i, szOdrPrc2)
 
 			
@@ -836,22 +836,22 @@ function btnSearch_OnClick()
 	
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function btnMove_OnClick()
 	Form.OpenScreen("16074" , "")
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function LabelFilter_OnClick()
 	Form.OpenPopupAnimation("mhtro16061_p9", g_rsltCls .. "★" .. g_selnByovClcd, "", "2")
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function ButtonFilter_OnClick()
 	LabelFilter_OnClick()
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function Form_OnPopupReturn(sKeyName, sRet)
 	if sKeyName == "mhtro16061_p9" then
 		arrData = gf_Split(sRet,"★")
@@ -867,7 +867,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	end
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function setLabelFilterCaption()
 	local s_rsltCls, s_selnByovClcd
 	
@@ -893,7 +893,7 @@ function setLabelFilterCaption()
 	
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function cld0_OnEditComplete()
 	btnSearch_OnClick()
 end

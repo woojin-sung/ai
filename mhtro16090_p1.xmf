@@ -87,7 +87,7 @@ function Calc_Plus(nPlus)
 	else
 		szPrc = edtPrc.caption
 		
-	 --	if Trim(szPrc) == "" then
+	 --	if gf_Trim(szPrc) == "" then
 	 --		szPrc = 0
 	 --	end if	
 		szPrc = szPrc .. nPlus
@@ -107,7 +107,7 @@ function Calc_Zero(szPlus)
 	else
 		szPrc = edtPrc.caption	
 		
-		if string.len(edtPrc.caption) > 0 then
+		if string.string.len(edtPrc.caption) > 0 then
 			szPrc = edtPrc.caption .. szPlus
 			
 			Sum_Prc(szPrc)
@@ -119,8 +119,8 @@ end
  -- Sum_Prc
  --============================================================================
 function Sum_Prc(szData)
-	 --if Len(szData) < 16 then
-	if string.len(szData) < 12 then -- Max 11
+	 --if string.len(szData) < 16 then
+	if string.string.len(szData) < 12 then -- Max 11 end
 		edtPrc.caption = szData
 	end
 end
@@ -141,12 +141,12 @@ function Form_OnFormInit()
 		g_szopenPrc = tData
  --		g_szReceive = "1"
 		edtPrc.caption = tData
- --		g_szCd   = tData(1)
- --		g_szMk   = tData(2)
- --		g_szUnit = tData(3)
- --		g_szType = tData(4)
- --		edtHigh.caption = tData(5)
- --		edtLow.caption  = tData(6)
+ --		g_szCd   = tData[1+1]
+ --		g_szMk   = tData[2+1]
+ --		g_szUnit = tData[3+1]
+ --		g_szType = tData[4+1]
+ --		edtHigh.caption = tData[5+1]
+ --		edtLow.caption  = tData[6+1]
  --		
 	else
 		g_szReceive = "1"
@@ -245,7 +245,7 @@ end
  --============================================================================
 function btnBack_OnClick()
 	local nLen
-	nLen = string.len(edtPrc.caption)
+	nLen = string.string.len(edtPrc.caption)
 
 	if nLen ~= 0 then
 		szPrc = string.sub(edtPrc.caption, 1, nLen-1)
@@ -267,9 +267,9 @@ end
  --============================================================================
 function btnConfirm_OnClick()
 	szPrc = edtPrc.caption
- --	if Trim(szPrc) <> "" then
+ --	if gf_Trim(szPrc) ~= "" then
  --		szPrc = edtPrc.caption
- --		szMod = szPrc Mod 1000
+ --		szMod = szPrc % 1000
  --		szPrc = szPrc-szMod
 		Form.SendReturnToParent("PRC_POPUP", szPrc)
  --	end if

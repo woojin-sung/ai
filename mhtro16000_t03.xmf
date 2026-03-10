@@ -333,7 +333,7 @@ function RequestData()
 	
 	PeriodSetChart(g_szChrtType)   --20230905 한국금융IT : 일주월분 차트 주기 설정
 	
-	if g_szChrtType == "A" then --분차트 end
+	if g_szChrtType == "A" then --분차트 end end
 		sMin = gf_Split(g_szMinType, "분", -1, 1)
 		sTemp = sMin[0+1] * 60
 		
@@ -452,7 +452,7 @@ function DATAMANAGER_OnReceiveTranData(szTranID)
 	local szName, sz40Name
 	szName = DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "FIDX_KOR_ISNM" , 0)
 	
-	if string.string.len(szName) > 39 then
+	if string.string.string.len(szName) > 39 then
 		sz40Name = string.sub(szName, 1, 39)
 		DATAMANAGER.SetDataValue(0, szTranID, "OutBlock1", "FIDX_KOR_ISNM" , 0 , sz40Name)
 	end
@@ -832,10 +832,10 @@ function PeriodSet(sPeriodType)
 	end
 	
 	sPeriod = gf_Tonumber(g_sPeriod)
-	if string.string.len(sPeriod)== 1 then
+	if string.string.string.len(sPeriod)== 1 then
 	   g_sPeriod = "00"..g_sPeriod
 	   
-	elseif string.string.len(sPeriod)== 2 then
+	elseif string.string.string.len(sPeriod)== 2 then
 	   g_sPeriod = "0"..g_sPeriod
 	   
 	end
@@ -876,10 +876,10 @@ function PeriodSetChart(sPeriodType)
 	end
 	
 	sPeriod = gf_Tonumber(g_sPeriod)
-	if string.string.len(sPeriod)== 1 then
+	if string.string.string.len(sPeriod)== 1 then
 	   g_sPeriod = "00"..g_sPeriod
 	   
-	elseif string.string.len(sPeriod)== 2 then
+	elseif string.string.string.len(sPeriod)== 2 then
 	   g_sPeriod = "0"..g_sPeriod
 	   
 	end
@@ -905,7 +905,7 @@ end
 
  --======================================
 function RadioGroup0_OnClick(nIndex)
-	if nIndex == 0 then --일 end
+	if nIndex == 0 then --일 end end
 		g_flagMin = false
 		g_flagTic = false
 		g_flagWeek = false
@@ -1272,7 +1272,7 @@ function ChartEx0_OnSelectedChart(nIndex, sData)
 	g_sPeriod       = gf_Tostring(gf_Trim(Data[3+1]))
 	
 	if g_sPeriodType == "0" or g_sPeriodType == "1" then
-		if g_sPeriodType == "0" then --틱 end
+		if g_sPeriodType == "0" then --틱 end end
 			g_TempIndex = 3
 			g_szChrtType = "T"
 			g_szTicType = g_sPeriod
@@ -1291,7 +1291,7 @@ function ChartEx0_OnSelectedChart(nIndex, sData)
 	else
 		g_sPeriod = "1"
 		
-		if g_sPeriodType == "2" then --일 end
+		if g_sPeriodType == "2" then --일 end end
 			g_TempIndex = 0
 			g_szChrtType = "D"			 --PENTA13 START => 2023.08.08(차트성능개선)
 			
@@ -1632,7 +1632,7 @@ function Apply_Use_AvgBuyPrice()
 	
 	g_sUserID = Form.GetSharedData("..USER_ID", false)		 --20240610 SWJ START
 	
-	if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end
+	if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end end
 	else
 		Image5.imgpath = "btn_switch_n"
 		ChartEx0.SetAvgBuyPrice(""..";".."0")
@@ -1712,7 +1712,7 @@ function Apply_Use_OrderList()
 	
 	g_sUserID = Form.GetSharedData("..USER_ID", false)
 	
-	if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end
+	if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end end
 	else
 		Image5.imgpath = "btn_switch_n"
 		ChartEx0.SetTradeData("")
@@ -1838,7 +1838,7 @@ function Image4_OnClick()
 			local sLOGIN_TYPE
 			sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end
+			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end end
 				Change_Use_AvgBuyPrice()
 			else
 				Form.OpenScreen("90020" , "90022")
@@ -1860,7 +1860,7 @@ function Image4_OnClick()
 			local sLOGIN_TYPE
 			sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end
+			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end end
 				Change_Use_OrderList()
 			else
 				Form.OpenScreen("90020" , "90022")
@@ -1884,7 +1884,7 @@ function Image4_OnClick()
 			local sLOGIN_TYPE
 			sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end
+			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end end
 				Change_Use_AvgBuyPrice()
 			else
 				Form.OpenScreen("90020" , "90022")
@@ -1899,7 +1899,7 @@ function Image4_OnClick()
 			local sLOGIN_TYPE
 			sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end
+			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end end
 				Change_Use_OrderList()
 			else
 				Form.OpenScreen("90020" , "90022")
@@ -2004,7 +2004,7 @@ function LoginCheck_PopupSetting()
 	local sLOGIN_TYPE
 	sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-	if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end
+	if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태 end end
 		
 	else
 		Form.OpenScreen("90020" , "90022")

@@ -85,7 +85,7 @@ function Set_Data(nIndex)
 		end
 	end
 	
- --	If g_szOrder_MarketType = "W" Then	'ELW
+ --	If g_szOrder_MarketType = "W" Then	 --ELW
  --		If g_nIndex = "0" Then
  --			lblTitle.caption = "ELW매수주문"
  --		ElseIf g_nIndex = "1" Then
@@ -125,7 +125,7 @@ function Set_Data(nIndex)
 	
 	 --20220623 HSZ START: 해외소수점 마스킹 추가 / 수량, 소수점 6자리수까지
 	szScrno = Form.GetSharedData( "..SCREEN_NO" , false ) 
-	if szScrno == "16092" or g_nIndex == "20" then --250722 HSZ: 주식 모으기 추가
+	if szScrno == "16092" or g_nIndex == "20" then --250722 HSZ: 주식 모으기 추가 end
 		tbl0.SetCellMaskInfo( 3, 1,  "0,0,,,0,,".."6"..",1,1,2,0")
 		tbl0.SetCellString( 4, 0, "금      액")	 --250722 HSZ
 	end

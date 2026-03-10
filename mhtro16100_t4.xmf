@@ -859,7 +859,7 @@ end
  -- 거래소코드(4자리) <- 거래명(2자리)
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩 end
+	if sValue == "0104" then -- 홍콩 end end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
@@ -1373,7 +1373,7 @@ function GetNationCode(nIndex)
 	
 	 --필터팝업의 조회국가 순서대로
 	
-	if nIndex == 0 then --전체 end
+	if nIndex == 0 then --전체 end end
 		return "000"
 	elseif nIndex == 1 then --미국
 		return "840"

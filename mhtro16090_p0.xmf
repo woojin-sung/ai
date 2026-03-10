@@ -67,7 +67,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
  --		initRealCheck(g_sExid)
 		
  --		DATAMANAGER.CancelRealData("ohhts_exst_cntg")
-		if string.len(sItemCode) > 0 then
+		if string.string.len(sItemCode) > 0 then
 			DATAMANAGER.RequestTranData( "ohhts_6000_001r" )
 			DATAMANAGER.RequestTranData( "obsim_oscm_343r" )
 			
@@ -136,14 +136,14 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		LblExid.caption = sExid
 		
 		g_sClsCd = DATAMANAGER.GetDataValue(false,"ohhts_6000_001r", "OutBlock1", "FIDX_ISSU_STAT_CLS_CODE", 0)  -- 종목상태구분코드 Y : 거래정지
-		g_sSellOnly = gf_Tonumber(DATAMANAGER.GetDataValue(false,"ohhts_6000_001r", "OutBlock1", "FIDX_SELL_ONLY", 0))  --거래상태 ' 1매도만가능
+		g_sSellOnly = gf_Tonumber(DATAMANAGER.GetDataValue(false,"ohhts_6000_001r", "OutBlock1", "FIDX_SELL_ONLY", 0))  --거래상태  -- 1매도만가능
 		
 		sEtfYn = DATAMANAGER.GetDataValue(false,"ohhts_6000_001r", "OutBlock1", "FIDX_ETF_YN", 0)  -- ETF여부
 		sLvrg = DATAMANAGER.GetDataValue(false,"ohhts_6000_001r", "OutBlock1", "FID_LVRG", 0)  -- 레버리지
 		g_szCur		=  DATAMANAGER.GetDataValue( 0, "ohhts_6000_001r", "OutBlock1", "FIDX_CRNC_CODE" 	, 0 )	 -- 통화
  --		if sEtfYn = "Y" then
- --			LblIndu.caption = "ETF(" & FormatNumber(sLvrg,1) & ")"
- --			LblIndu1.caption = "ETF(" & FormatNumber(sLvrg,1) & ")"
+ --			LblIndu.caption = "ETF(" .. gf_CommaValue(sLvrg,1) .. ")"
+ --			LblIndu1.caption = "ETF(" .. gf_CommaValue(sLvrg,1) .. ")"
  --		end if
 		
 		DATAMANAGER.RequestTranData( "obsim_oscm_331r" )
@@ -162,7 +162,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		
 
 		sWeekDate = WeekDay( CDate( string.sub(sWeekDate, 1, 4) .. "-" .. string.sub(sWeekDate, 5, 5 + 2 - 1) .. "-" .. string.sub(sWeekDate, -2) ) )
-		if gf_Trim(sMrktCls) == "Y" and gf_Trim(sWeekDate) ~= "1" and gf_Trim(sWeekDate) ~= "7" then --일요일, 토요일 제외
+		if gf_Trim(sMrktCls) == "Y" and gf_Trim(sWeekDate) ~= "1" and gf_Trim(sWeekDate) ~= "7" then --일요일, 토요일 제외 end
 			LblStatus.caption = "휴장"
 		else
 			if g_sClsCd == "Y" then
@@ -221,7 +221,7 @@ end
  -- 거래소 ID 이름으로 변환
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "HKS" then -- 104
+	if sValue == "HKS" then -- 104 end
 		return "홍콩"
 	elseif sValue == "HSI" then -- 529
 		return "항셍 지수"
@@ -334,7 +334,7 @@ function Form_OnCommonDialogReturn(sDlgName, sReturn1, sReturn2)
 			LblName.caption = szName
 			
  --			DATAMANAGER.CancelRealData("ohhts_exst_cntg")
-			if string.len(sItemCode) > 0 then
+			if string.string.len(sItemCode) > 0 then
 				DATAMANAGER.RequestTranData( "ohhts_6000_001r" )
 				DATAMANAGER.RequestTranData( "obsim_oscm_343r" )
 				Form.TriggerEvent("#", "CHANGE_CODE", sItemCode)

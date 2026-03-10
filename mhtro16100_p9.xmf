@@ -179,7 +179,7 @@ function Set_Data(nIndex)
 	 -------------------------------------------------------------
 	 -- 큰글씨 모드에 따른 컨트롤 위치이동
 	 -------------------------------------------------------------
-    if gf_Tonumber(g_nTextSize) > 0 then --큰글씨 end
+    if gf_Tonumber(g_nTextSize) > 0 then --큰글씨 end end
 	    
 	    imgInfo.left = 105
 		

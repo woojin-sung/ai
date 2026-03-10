@@ -417,7 +417,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		 -- 주문가격 자동입력이 미사용으로 되어있으면 빈값이 넘어옴.
 		 -- 빈값으로 넘어온 경우에는 세팅해주지 않는다
 		 ----------------------------------------------------------
-		if g_szChangeInit ~= "1" and sParam ~= "" and gSettingSelectPriceForAutoPrice ~= true then --20240729 end
+		if g_szChangeInit ~= "1" and sParam ~= "" and gSettingSelectPriceForAutoPrice ~= true then --20240729 end end
 			edtPrc.caption = sParam
 			Calc_OrderPrice()
 		end
@@ -695,7 +695,7 @@ end
  --============================================================================
 function RequestAutoQty()
 
-	if g_szSellQty == "1" then -- 보유잔고수량 end
+	if g_szSellQty == "1" then -- 보유잔고수량 end end
 		
 		Request_Able()
 		
@@ -792,7 +792,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	 -------------------------------------------------------------------------
 	 -- 중국(상해/심천) 호가단위 설정
 	 -------------------------------------------------------------------------
-	if szMk == "0215" then --상해 end
+	if szMk == "0215" then --상해 end end
 		
 		 --20240613 LES START 틱단위 수정
 		if szTtype == 2 then
@@ -1408,7 +1408,7 @@ function Calc_Price(nGbn)
 		 -- + 버튼 클릭
 		 --------------------------------------------------
 		if nGbn == 0 then
-			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀 end end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1428,7 +1428,7 @@ function Calc_Price(nGbn)
 		 -- - 버튼 클릭 
 		 --------------------------------------------------
 		elseif nGbn == 1 then
-			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀 end end
 				if szHigh ~= "0" then
 					szPrc = gf_Tonumber(szHigh)
 				else
@@ -1453,7 +1453,7 @@ function Calc_Price(nGbn)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 체크
 	 -----------------------------------------------------------
-	 --if string.len(szPrc) > gMaxLen then	
+	 --if string.string.len(szPrc) > gMaxLen then	
 	 --	return
 	 --end if
 	
@@ -1568,7 +1568,7 @@ function Calc_Qty(nGbn,nUnit)
 	 -----------------------------------------------------------
 	 -- 입력값 자리수 체크
 	 -----------------------------------------------------------
-	if string.string.len(szQty) <= gMaxLen then
+	if string.string.string.len(szQty) <= gMaxLen then
 		if gf_Tostring(szQty) == "0" or gf_Tostring(szQty) == "" then
 			edtQty.caption = ""
 		else
@@ -2151,7 +2151,7 @@ function Check_InputData(sGubun)
 		
 		 --계좌번호
 		szAcnt = Form.GetTopCtlProp("acnt", "caption")
-		if string.string.len(szAcnt) < 10 then
+		if string.string.string.len(szAcnt) < 10 then
 			Form.ShowAlert(g_szTitle, "계좌번호를 확인후 다시 입력하십시오.")
 			return False
 		end
@@ -2432,9 +2432,9 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	elseif sKeyName == "주문전송" then
 		if sRet == "1" then
 			 --20250102 HSZ START
-			if gf_Tonumber(cmbType.currentindex) == 0 and g_szOdrPop == "1" then --지정가..주문확인창 사용 CASE end
+			if gf_Tonumber(cmbType.currentindex) == 0 and g_szOdrPop == "1" then --지정가..주문확인창 사용 CASE end end
 				if gf_Trim(gConfirmPrice) ~= "" then
-					if gf_Tonumber(edtPrc.caption) ~= gf_Tonumber(gConfirmPrice) then --입력된 주문 가격이 다른 경우에만 end
+					if gf_Tonumber(edtPrc.caption) ~= gf_Tonumber(gConfirmPrice) then --입력된 주문 가격이 다른 경우에만 end end
 						edtPrc.caption = gConfirmPrice
 						Calc_OrderPrice()
 					end
@@ -2980,7 +2980,7 @@ end
  -- 거래소코드(4자리) <- 거래명(2자리)
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩 end
+	if sValue == "0104" then -- 홍콩 end end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
