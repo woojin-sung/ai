@@ -64,7 +64,9 @@
 		<IMAGE name="imgInfo1" autosize="1" imgpath="icon_question" margin="0,1,0,1" ly_vert="150,372,20,20,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="16052" _ulen="15098" >
-Dim gGubun,gAcno,gAsno,gCode,gVndrCode,gCashCredit,gPrice,gQty,gDecimal,gCurrency
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+local gGubun,gAcno,gAsno,gCode,gVndrCode,gCashCredit,gPrice,gQty,gDecimal,gCurrency
 gGubun = ""
 gAcno = ""
 gAsno = "" 
@@ -76,32 +78,32 @@ gQty = ""
 gDecimal = ""
 gCurrency = ""
 
-Dim gHabsan,gLoanType,gLoanDate,gLoanSrno,gRepayAll
+local gHabsan,gLoanType,gLoanDate,gLoanSrno,gRepayAll
 gHabsan = ""
 gLoanType = ""
 gLoanDate = ""
 gLoanSrno = ""
 gRepayAll = ""
 
-Dim gMask
+local gMask
 gMask = ""
 
-Dim gOsType
+local gOsType
 
-Dim gbLargeFont
+local gbLargeFont
 gbLargeFont = false
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	gOsType = Form.GetSharedData("&OS_TYPE", false)
+	gOsType = Form.GetSharedData("..OS_TYPE", false)
 
-	imgInfo0.setMaintainingRatio("1")
-	imgInfo1.setMaintainingRatio("1")
+	imgInfo0.SetMaintainingRatio("1")
+	imgInfo1.SetMaintainingRatio("1")
 	
-	'---------------------------------------------------
-	' 공통(주문금액 영역) 
-	'---------------------------------------------------
+	 -----------------------------------------------------
+	 -- 공통(주문금액 영역) 
+	 -----------------------------------------------------
 	LabelTitle0.paddinginfo = "0,0,0,0"
 	
 	LabelPrcTitle.paddinginfo = "0,0,0,0"
@@ -111,9 +113,9 @@ Sub Form_OnFormInitBefore()
 	LabelOrdPrcTitle.paddinginfo = "0,0,0,0"
 	LabelOrdPrcData.paddinginfo = "0,0,0,0"
 	
-	'---------------------------------------------------
-	' 현금(정산금액 영역)
-	'---------------------------------------------------
+	 -----------------------------------------------------
+	 -- 현금(정산금액 영역)
+	 -----------------------------------------------------
 	contCash.LabelCashPrePrcTitle.paddinginfo = "0,0,0,0"
 	contCash.LabelCashOrdPrcTitle.paddinginfo = "0,0,0,0"
 	contCash.LabelCashFeeTitle.paddinginfo = "0,0,0,0"
@@ -129,9 +131,9 @@ Sub Form_OnFormInitBefore()
 	contCash.LabelCashExchangeRateData.paddinginfo = "0,0,0,0"
 	contCash.LabelCashWonData.paddinginfo = "0,0,0,0"
 	
-	'---------------------------------------------------
-	' 대출(정산금액 영역)
-	'---------------------------------------------------
+	 -----------------------------------------------------
+	 -- 대출(정산금액 영역)
+	 -----------------------------------------------------
 	contCredit.LabelCreditPrePrcTitle.paddinginfo = "0,0,0,0"
 	contCredit.LabelCreditOrdPrcTitle.paddinginfo = "0,0,0,0"
 	contCredit.LabelCreditFeeTitle.paddinginfo = "0,0,0,0"
@@ -154,219 +156,219 @@ Sub Form_OnFormInitBefore()
 	contCredit.LabelCreditFinalData.paddinginfo = "0,0,0,0"
 	
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 
-	'--------------------------------------------------------------
-	'큰글씨모드 대응
-	'--------------------------------------------------------------
+	 ----------------------------------------------------------------
+	 --큰글씨모드 대응
+	 ----------------------------------------------------------------
 	szTextSize = Form.GetEnvData("common.textsize")
-	if CInt(szTextSize) > 0 then
+	if gf_Tonumber(szTextSize) > 0 then
 		gbLargeFont = true
-	end if	
+	end
 
 
-	'매수/매도구분값★종합계좌★계좌일련번호★종목코드★거래소코드★현금/대출구분값★입력가격★입력수량★소수점자리수★통화
-	'★일반/신용합산여부★대출상세유형코드★대출일자★대출일련번호★전액상환여부
+	 --매수/매도구분값★종합계좌★계좌일련번호★종목코드★거래소코드★현금/대출구분값★입력가격★입력수량★소수점자리수★통화
+	 --★일반/신용합산여부★대출상세유형코드★대출일자★대출일련번호★전액상환여부
 	szLinkData = Form.GetOpenLinkData()
-	'Form.ShowAlert("szLinkData", szLinkData)
+	 --Form.ShowAlert("szLinkData", szLinkData)
 	
-	arrData = Split(szLinkData,"★")
+	arrData = gf_Split(szLinkData,"★")
 	
 	if #arrData > 9 then
 		
-		gGubun 		= arrData(0) '매수(2)/매도(1)
-		gAcno 		= arrData(1)
-		gAsno 		= arrData(2)
-		gCode 		= arrData(3)
-		gVndrCode 	= arrData(4)
-		gCashCredit 	= arrData(5) '현금(0)/대출(1)
-		gPrice 		= arrData(6)
-		gQty 		= arrData(7)
-		gDecimal 	= arrData(8)
-		gCurrency 	= arrData(9)
-		gHabsan		= arrData(10) '일반(1)/신용합산(2)
+		gGubun 		= arrData[0+1]  --매수(2)/매도(1)
+		gAcno 		= arrData[1+1]
+		gAsno 		= arrData[2+1]
+		gCode 		= arrData[3+1]
+		gVndrCode 	= arrData[4+1]
+		gCashCredit 	= arrData[5+1]  --현금(0)/대출(1)
+		gPrice 		= arrData[6+1]
+		gQty 		= arrData[7+1]
+		gDecimal 	= arrData[8+1]
+		gCurrency 	= arrData[9+1]
+		gHabsan		= arrData[10+1]  --일반(1)/신용합산(2)
 		
-		'대출일때 대출관련 데이터 GET
+		 --대출일때 대출관련 데이터 GET
 		if gCashCredit == "1" then
-			gLoanType 	= arrData(11)
-			gLoanDate 	= arrData(12)
-			gLoanSrno 	= arrData(13)
-			gRepayAll 	= arrData(14)
-		end if
+			gLoanType 	= arrData[11+1]
+			gLoanDate 	= arrData[12+1]
+			gLoanSrno 	= arrData[13+1]
+			gRepayAll 	= arrData[14+1]
+		end
 	
-	end if
+	end
 	
 	SetContType(gCashCredit)
 	SetOrderPrice(gPrice,gQty,gDecimal,gCurrency)
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 
 	if szTranID == "obtro_oder_263r" then
 			
-		ordPrcData 		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "DEAL_CAMT" 		, 0) '주문금액
-		ordFeeData 		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "ODER_CFEE" 		, 0) '수수료
-		ordTaxData 		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "RCGN_CTAX" 		, 0) '세금
+		ordPrcData 		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "DEAL_CAMT" 		, 0)  --주문금액
+		ordFeeData 		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "ODER_CFEE" 		, 0)  --수수료
+		ordTaxData 		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "RCGN_CTAX" 		, 0)  --세금
 		
-		ordRepayData		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "RDMP_AMT" 		, 0) '상환금액
-		ordIntrData		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "RDMP_INT" 		, 0) '상환이자
+		ordRepayData		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "RDMP_AMT" 		, 0)  --상환금액
+		ordIntrData		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "RDMP_INT" 		, 0)  --상환이자
 		
-		ordPrePrcData 	= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "EXCL_CAMT" 		, 0) '정산통화금액
-		ordExchangeData  	= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "DEAL_STND_EXRT" 	, 0) '환율
-		ordWonData 		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "WNCR_EXCL_AMT" 	, 0) '원화정산금액
+		ordPrePrcData 	= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "EXCL_CAMT" 		, 0)  --정산통화금액
+		ordExchangeData  	= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "DEAL_STND_EXRT" 	, 0)  --환율
+		ordWonData 		= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "WNCR_EXCL_AMT" 	, 0)  --원화정산금액
 		
-		ordFinalPrcData	= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "ANTC_CALC_AMT" 	, 0) '최종금액
+		ordFinalPrcData	= DATAMANAGER.GetDataValue(0, "obtro_oder_263r", "OutBlock1", "ANTC_CALC_AMT" 	, 0)  --최종금액
 			
-		'==========================================================
-		' 현금
-		'==========================================================
+		 --==========================================================
+		 -- 현금
+		 --==========================================================
 		if gCashCredit == "0" then
 		
-			'----------------------------------------------------------
-			' 주문금액
-			'----------------------------------------------------------
-			if ordPrcData <> "" then
+			 ------------------------------------------------------------
+			 -- 주문금액
+			 ------------------------------------------------------------
+			if ordPrcData ~= "" then
 				contCash.LabelCashOrdPrcData.mask = gMask
 				contCash.LabelCashOrdPrcData.caption = ordPrcData
 			else
 				contCash.LabelCashOrdPrcData.caption = "-"
-			end if
+			end
 			
-			'----------------------------------------------------------
-			' 수수료
-			'----------------------------------------------------------
+			 ------------------------------------------------------------
+			 -- 수수료
+			 ------------------------------------------------------------
 			contCash.LabelCashFeeData.mask = gMask
 			contCash.LabelCashFeeData.caption = ordFeeData
 			
-			'----------------------------------------------------------
-			' 세금
-			'----------------------------------------------------------
+			 ------------------------------------------------------------
+			 -- 세금
+			 ------------------------------------------------------------
 			contCash.LabelCashTaxData.mask = gMask
 			contCash.LabelCashTaxData.caption = ordTaxData
 			
-			'----------------------------------------------------------
-			' 정산금액(예상)
-			'----------------------------------------------------------
-			if ordPrePrcData <> "" then
+			 ------------------------------------------------------------
+			 -- 정산금액(예상)
+			 ------------------------------------------------------------
+			if ordPrePrcData ~= "" then
 				contCash.LabelCashPreOrdPrcData.mask = gMask
 				contCash.LabelCashPreOrdPrcData.caption = ordPrePrcData
 			else
 				contCash.LabelCashPreOrdPrcData.caption = "-"
-			end if
+			end
 			
-			'----------------------------------------------------------
-			' 환율
-			'----------------------------------------------------------
+			 ------------------------------------------------------------
+			 -- 환율
+			 ------------------------------------------------------------
 			if gCurrency == "JPY" then
 				LabelExchangeRateMaskData = "0,1,," .."".. ",0,,4,1,1,0,0"
 			else
 				LabelExchangeRateMaskData = "0,1,," .."".. ",0,,2,1,1,0,0"	
-			end if
+			end
 			
 			contCash.LabelCashExchangeRateData.mask = LabelExchangeRateMaskData
 			contCash.LabelCashExchangeRateData.caption = ordExchangeData
 			
-			'----------------------------------------------------------
-			' 원화환산(예상)
-			'----------------------------------------------------------
+			 ------------------------------------------------------------
+			 -- 원화환산(예상)
+			 ------------------------------------------------------------
 			contCash.LabelCashWonData.caption = ordWonData
 		
-		'==========================================================
-		' 대출
-		'==========================================================
+		 --==========================================================
+		 -- 대출
+		 --==========================================================
 		elseif gCashCredit == "1" then
 			
-			'----------------------------------------------------------
-			' 주문금액
-			'----------------------------------------------------------
-			if ordPrcData <> "" then
+			 ------------------------------------------------------------
+			 -- 주문금액
+			 ------------------------------------------------------------
+			if ordPrcData ~= "" then
 				contCredit.LabelCreditOrdPrcData.mask = gMask
 				contCredit.LabelCreditOrdPrcData.caption = ordPrcData
 			else
 				contCredit.LabelCreditOrdPrcData.caption = "-"
-			end if
+			end
 			
-			'----------------------------------------------------------
-			' 수수료
-			'----------------------------------------------------------
+			 ------------------------------------------------------------
+			 -- 수수료
+			 ------------------------------------------------------------
 			contCredit.LabelCreditFeeData.mask = gMask
 			contCredit.LabelCreditFeeData.caption = ordFeeData
 			
-			'----------------------------------------------------------
-			' 세금
-			'----------------------------------------------------------
+			 ------------------------------------------------------------
+			 -- 세금
+			 ------------------------------------------------------------
 			contCredit.LabelCreditTaxData.mask = gMask
 			contCredit.LabelCreditTaxData.caption = ordTaxData
 			
-			'----------------------------------------------------------
-			' 정산금액(예상) : 주문금액  (수수료+세금)
-			'----------------------------------------------------------
-			if ordPrePrcData <> "" then
+			 ------------------------------------------------------------
+			 -- 정산금액(예상) : 주문금액  (수수료+세금)
+			 ------------------------------------------------------------
+			if ordPrePrcData ~= "" then
 				contCredit.LabelCreditPreOrdPrcData.mask = gMask
 				contCredit.LabelCreditPreOrdPrcData.caption = ordPrePrcData
 			else
 				contCredit.LabelCreditPreOrdPrcData.caption = "-"
-			end if
+			end
 			
-			'----------------------------------------------------------
-			' 환율
-			'----------------------------------------------------------
+			 ------------------------------------------------------------
+			 -- 환율
+			 ------------------------------------------------------------
 			if gCurrency == "JPY" then
 				LabelExchangeRateMaskData = "0,1,," .."".. ",0,,4,1,1,0,0"
 			else
 				LabelExchangeRateMaskData = "0,1,," .."".. ",0,,2,1,1,0,0"	
-			end if
+			end
 			
 			contCredit.LabelCreditExchangeRateData.mask = LabelExchangeRateMaskData
 			contCredit.LabelCreditExchangeRateData.caption = ordExchangeData
 			
-			'----------------------------------------------------------
-			' 원화환산(예상) : 정산금액(예상) * 환율
-			'----------------------------------------------------------
+			 ------------------------------------------------------------
+			 -- 원화환산(예상) : 정산금액(예상) * 환율
+			 ------------------------------------------------------------
 			contCredit.LabelCreditWonData.caption = ordWonData
 			
-			'----------------------------------------------------------
-			' 상환금액
-			'----------------------------------------------------------
-			'contCredit.LabelCreditRepayData.mask = gMask
+			 ------------------------------------------------------------
+			 -- 상환금액
+			 ------------------------------------------------------------
+			 --contCredit.LabelCreditRepayData.mask = gMask
 			contCredit.LabelCreditRepayData.caption = ordRepayData
 			
-			'----------------------------------------------------------
-			' 이자
-			'----------------------------------------------------------
-			'contCredit.LabelCreditIntrData.mask = gMask
+			 ------------------------------------------------------------
+			 -- 이자
+			 ------------------------------------------------------------
+			 --contCredit.LabelCreditIntrData.mask = gMask
 			contCredit.LabelCreditIntrData.caption = ordIntrData
 			
-			'----------------------------------------------------------
-			' 최종금액(예상)
-			'----------------------------------------------------------
+			 ------------------------------------------------------------
+			 -- 최종금액(예상)
+			 ------------------------------------------------------------
 			contCredit.LabelCreditFinalData.caption = ordFinalPrcData
 			
 		
 		
-		end if
+		end
 		
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub ButtonOK_OnClick()
+ --============================================================================
+function ButtonOK_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub imgBg_OnClick()
+ --============================================================================
+function imgBg_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Function RequestData()
+ --============================================================================
+function RequestData()
 
 	DATAMANAGER.SetDataValue(0, "obtro_oder_263r", "InBlock1", "ACNO" 				, 0 , gAcno)
 	DATAMANAGER.SetDataValue(0, "obtro_oder_263r", "InBlock1", "ASNO" 				, 0 , gAsno)
@@ -376,24 +378,24 @@ Function RequestData()
 	DATAMANAGER.SetDataValue(0, "obtro_oder_263r", "InBlock1", "ODQT" 				, 0 , gQty)
 	DATAMANAGER.SetDataValue(0, "obtro_oder_263r", "InBlock1", "OVRS_STCK_ODER_PRC" 	, 0 , gPrice)
 	
-	'대출일때
+	 --대출일때
 	if gCashCredit == "1" then
 		DATAMANAGER.SetDataValue(0, "obtro_oder_263r", "InBlock1", "LOAN_DTL_TYPE_CODE" 	, 0 , gLoanType)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_263r", "InBlock1", "LOAN_DATE" 			, 0 , gLoanDate)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_263r", "InBlock1", "LOAN_SRNO" 			, 0 , gLoanSrno)
-	end if
+	end
 	
-	'매도일때
+	 --매도일때
 	if gGubun == "1" then
 		DATAMANAGER.SetDataValue(0, "obtro_oder_263r", "InBlock1", "RDMP_CLS_CODE" 		, 0 , gRepayAll)
-	end if
+	end
 	
 	DATAMANAGER.SetDataValue(0, "obtro_oder_263r", "InBlock1", "IQRY_CLS_CODE" 		, 0 , gHabsan)
 	DATAMANAGER.RequestTranData("obtro_oder_263r")
 
-End Function
-'============================================================================
-Function SetContType(sType)
+end
+ --============================================================================
+function SetContType(sType)
 	
 	if sType == "1" then
 		
@@ -423,106 +425,107 @@ Function SetContType(sType)
 		else
 			imgInfo0.top = 182
 			imgInfo1.top = 312
-		end if
+		end
 		
-	end if
+	end
 	
 	if gbLargeFont then
 		imgInfo0.left = 90
 		imgInfo1.left = 160
-	end if
+	end
 	
 
-End Function
-'============================================================================
-Function SetOrderPrice(sPrice,sQty,sDecimal,sCurrency)
+end
+ --============================================================================
+function SetOrderPrice(sPrice,sQty,sDecimal,sCurrency)
 	
-	Dim sMask
+	local sMask
 	sMask = ""
 	
-	'-----------------------------------------------------------------------
-	' 소수점 자리수 세팅 / 통화기호 세팅
-	'-----------------------------------------------------------------------
-	if sCurrency <> "" and sDecimal <> "" then
+	 -------------------------------------------------------------------------
+	 -- 소수점 자리수 세팅 / 통화기호 세팅
+	 -------------------------------------------------------------------------
+	if sCurrency ~= "" and sDecimal ~= "" then
 		sMask = "0,0,,".. " " .. sCurrency .. ",0,,"..sDecimal..",1,1,2,0"
 	else
 		sMask = "0,0,,,0,,".."4"..",1,1,2,0"
-	end if
+	end
 	
 	gMask = sMask
 	
-	'-----------------------------------------------------------------------
-	' 주문금액 세팅
-	'-----------------------------------------------------------------------
+	 -------------------------------------------------------------------------
+	 -- 주문금액 세팅
+	 -------------------------------------------------------------------------
 	if sPrice == "" then
 		LabelPrcData.caption = "- "  .. sCurrency
 	else
 		LabelPrcData.mask = sMask
 		LabelPrcData.caption = sPrice
-	end if
+	end
 	
 	if sQty == "" then
 		LabelQtyData.caption = "-"
 	else
-		LabelQtyData.caption = FormatNumber(sQty,0)
-	end if
+		LabelQtyData.caption = gf_CommaValue(sQty,0)
+	end
 	
-	if sPrice <> "" and sQty <> "" then
-		nOrdPrice = Cdbl(sPrice) * Cint(sQty)
+	if sPrice ~= "" and sQty ~= "" then
+		nOrdPrice = gf_Tonumber(sPrice) * gf_Tonumber(sQty)
 		LabelOrdPrcData.mask = sMask
 		LabelOrdPrcData.caption = nOrdPrice
 	else
 		LabelOrdPrcData.caption = "- " .. sCurrency
-	end if
+	end
 	
-	'-----------------------------------------------------------------------
-	' 정산금액 미리보기 
-	'-----------------------------------------------------------------------
-	'contCash.LabelCashOrdPrcData.mask = sMask
-	'contCash.LabelCashFeeData.mask = sMask
-	'contCash.LabelCashPreOrdPrcData.mask = sMask
+	 -------------------------------------------------------------------------
+	 -- 정산금액 미리보기 
+	 -------------------------------------------------------------------------
+	 --contCash.LabelCashOrdPrcData.mask = sMask
+	 --contCash.LabelCashFeeData.mask = sMask
+	 --contCash.LabelCashPreOrdPrcData.mask = sMask
 	
 	
-	'-----------------------------------------------------------------------
-	' 정산금액 조회 서비스 호출
-	'-----------------------------------------------------------------------
-	if sPrice <> "" and sQty <> "" then
+	 -------------------------------------------------------------------------
+	 -- 정산금액 조회 서비스 호출
+	 -------------------------------------------------------------------------
+	if sPrice ~= "" and sQty ~= "" then
 		RequestData()
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-' 주문금액 툴팁
-'============================================================================
-Sub imgInfo0_OnClick()
+ --============================================================================
+ -- 주문금액 툴팁
+ --============================================================================
+function imgInfo0_OnClick()
 	
 	if gbLargeFont then
 		sText = " '단가, 수량' 을 모두 입력한 경우만 조회되며,\n주문화면에서는 제비용(수수료/세금)이 제외되어 조회돼요"
-		imgInfo0.openToolTip(sText, 345, 90, 2)
+		imgInfo0.OpenToolTip(sText, 345, 90, 2)
 	else
 		sText = " '단가, 수량' 을 모두 입력한 경우만 조회되며,\n주문화면에서는 제비용(수수료/세금)이 제외되어 조회돼요"
-		imgInfo0.openToolTip(sText, 320, 90, 2)
-	end if
+		imgInfo0.OpenToolTip(sText, 320, 90, 2)
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 정산금액 툴팁
-'============================================================================
-Sub imgInfo1_OnClick()
+ --============================================================================
+ -- 정산금액 툴팁
+ --============================================================================
+function imgInfo1_OnClick()
 	
 	if gbLargeFont then
 		sText = "종목별 합산되어 정산되므로, 최종 정산금액은 현재 조회되는 금액과 상이 할 수 있어요."
-		imgInfo1.openToolTip(sText, 340, 75, 0)
+		imgInfo1.OpenToolTip(sText, 340, 75, 0)
 	else
 		sText = "종목별 합산되어 정산되므로, 최종 정산금액은 현재 조회되는 금액과 상이 할 수 있어요."
-		imgInfo1.openToolTip(sText, 320, 70, 0)
-	end if
+		imgInfo1.OpenToolTip(sText, 320, 70, 0)
+	end
 	
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_263r" trcode="obtro_oder_263r" compress="1" encryption="1" inputcheck="1" useattr="0" />

@@ -24,54 +24,56 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="20796" _ulen="19278" >
-'20241216 LES START - 해외주식 미국종목 휴일인 경우에는 정규장 종가로 조회
-'20250522 JSH - PTP종목조회 무브팝업(시세조회가능하도록 화면번호추가)
-' 20250627 HWG : v0001 : 미국주식 애프터장 실시간 시세 추가 
-' 20250708 YSH : v0002 : 해외주식 장운영 정보 조회방식 변경
-' 20250924 : HWG : v20250924_02 : 물타기 계산기 신규개발
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --20241216 LES START - 해외주식 미국종목 휴일인 경우에는 정규장 종가로 조회
+ --20250522 JSH - PTP종목조회 무브팝업(시세조회가능하도록 화면번호추가)
+ -- 20250627 HWG : v0001 : 미국주식 애프터장 실시간 시세 추가 
+ -- 20250708 YSH : v0002 : 해외주식 장운영 정보 조회방식 변경
+ -- 20250924 : HWG : v20250924_02 : 물타기 계산기 신규개발
 
-Dim gType
-Dim gYPos
-Dim gHeight
-Dim gIndex
-Dim gName
-Dim gCode
-Dim gVndrCode
-Dim gMarket
+local gType
+local gYPos
+local gHeight
+local gIndex
+local gName
+local gCode
+local gVndrCode
+local gMarket
 
-Dim gOsType
+local gOsType
 
-Dim gUSItem
+local gUSItem
 gUSItem = "N"
 
-Dim gDayMarket
+local gDayMarket
 gDayMarket = "N"
 
-Dim gApplyRealSise
+local gApplyRealSise
 gApplyRealSise = "N"
 
-Dim gAddTopPos
+local gAddTopPos
 gAddTopPos = 0
 
-'v0001 >>
-Dim gAfterMarket
+ --v0001 >>
+local gAfterMarket
 gAfterMarket = "N"
-'v0001 <<
+ --v0001 <<
 
-'v0002 >>
-Dim g_szMkOpClsCd
+ --v0002 >>
+local g_szMkOpClsCd
 g_szMkOpClsCd = ""
-'v0002 <<
+ --v0002 <<
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	gOsType = Form.GetSharedData("&OS_TYPE", false )
+	gOsType = Form.GetSharedData("..OS_TYPE", false )
 	
-	'--------------------------------------
-	' 대비/등락률 간격 조정을 위해서 호출
-	'--------------------------------------
-	contOvrsStock.LabelDebi.sizeAutoFit()
+	 ----------------------------------------
+	 -- 대비/등락률 간격 조정을 위해서 호출
+	 ----------------------------------------
+	contOvrsStock.LabelDebi.SizeAutoFit()
 	
 	
 	contOvrsStock.imgLink4.maintainratio = "3"
@@ -82,20 +84,20 @@ Sub Form_OnFormInitBefore()
 		contOvrsStock.imgLink4.imgpath = "icon_w_calculator_d"
 	else
 		contOvrsStock.imgLink4.imgpath = "icon_w_calculator_l"
-	end if
+	end
 	
-	nWidth = Form.getTextWidth("물타기 계산기",-2,true,false)
+	nWidth = Form.GetTextWidth("물타기 계산기",-2,true,false)
 	
 	contOvrsStock.imgLink4.left = 375 - nWidth - 20 - 45
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 	
 	
-	'-----------------------------------------
-	' 컨트롤 설정
-	'-----------------------------------------
+	 -------------------------------------------
+	 -- 컨트롤 설정
+	 -------------------------------------------
 	contOvrsStock.LabelName.transmode = "1"
 	
 	contOvrsStock.LabelName.paddinginfo		 = "0,0,0,0"
@@ -106,64 +108,64 @@ Sub Form_OnFormInit()
 	
 	contOvrsStock.LabelName.maxlinecnt = "2^-4"
 
-	'---------------------------------------------------------------------------------------------------
-	'호출화면구분명★선택행의Y좌표★선택행의높이★선택행인덱스★종목명★종목코드★거래소벤더코드(4자리)
-	'---------------------------------------------------------------------------------------------------
+	 -----------------------------------------------------------------------------------------------------
+	 --호출화면구분명★선택행의Y좌표★선택행의높이★선택행인덱스★종목명★종목코드★거래소벤더코드(4자리)
+	 -----------------------------------------------------------------------------------------------------
 	szData = Form.GetOpenLinkData()
-	arrData = Split(szData , "★")
+	arrData = gf_Split(szData , "★")
 	
 	if #arrData > 2 then
 	
-		gType 		= arrData(0) 
-		gYPos 		= arrData(1)
-		gHeight 		= arrData(2)
-		gIndex 		= arrData(3)
-		gName 		= arrData(4)
-		gCode 		= arrData(5)
-		gVndrCode 	= arrData(6)
+		gType 		= arrData[0+1] 
+		gYPos 		= arrData[1+1]
+		gHeight 		= arrData[2+1]
+		gIndex 		= arrData[3+1]
+		gName 		= arrData[4+1]
+		gCode 		= arrData[5+1]
+		gVndrCode 	= arrData[6+1]
 		gMarket		= GetMarketCode(gVndrCode)
 		
-		'v20250924_02 >>
+		 --v20250924_02 >>
 		sOrdGbn		= ""
 		if #arrData >= 8 then
-			sOrdGbn = arrData(7)
-		end if
-		'v20250924_02 <<
-		'-----------------------------------------
-		' 주간장 여부
-		'-----------------------------------------
-		gDayMarket = Form.GetSharedData( "&OVRS_DAYMARKET", false ) 
+			sOrdGbn = arrData[7+1]
+		end
+		 --v20250924_02 <<
+		 -------------------------------------------
+		 -- 주간장 여부
+		 -------------------------------------------
+		gDayMarket = Form.GetSharedData( "..OVRS_DAYMARKET", false ) 
 
-		'-----------------------------------------
-		' 미국종목 여부
-		'-----------------------------------------
+		 -------------------------------------------
+		 -- 미국종목 여부
+		 -------------------------------------------
 		if gMarket == "OQ" or gMarket == "AX" or gMarket == "NY" then
 			gUSItem = "Y"
-		end if
+		end
 		
-		'-----------------------------------------
-		' 실시간 시세 적용여부(해외종합잔고에서 호출시에만 시세 조회/실시간 호출)
-		'-----------------------------------------
-		sParentScrNo = Form.GetSharedData("&SCREEN_NO", false)
-		if sParentScrNo == "16070" or sParentScrNo == "16037" then '20250522 JSH - PTP종목조회(16037)
+		 -------------------------------------------
+		 -- 실시간 시세 적용여부(해외종합잔고에서 호출시에만 시세 조회/실시간 호출)
+		 -------------------------------------------
+		sParentScrNo = Form.GetSharedData("..SCREEN_NO", false)
+		if sParentScrNo == "16070" or sParentScrNo == "16037" then --20250522 JSH - PTP종목조회(16037) end
 			gApplyRealSise = "Y"
 			
-			'-----------------------------------------------------------
-			' 시세조회
-			'-----------------------------------------------------------
-			'20241216 LES START - 미국종목의 경우 장운영정보 먼저 조회
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 -- 시세조회
+			 -------------------------------------------------------------
+			 --20241216 LES START - 미국종목의 경우 장운영정보 먼저 조회
+			 -------------------------------------------------------------
 			if gUSItem == "Y" then
 				RequestMarketInfo()
 			else
 				RequestData()
-			end if
-			'-----------------------------------------------------------
-			'20241216 LES END
-			'-----------------------------------------------------------
+			end
+			 -------------------------------------------------------------
+			 --20241216 LES END
+			 -------------------------------------------------------------
 			
-			'v20250924_02 >>
-			if sParentScrNo <> "16070" then
+			 --v20250924_02 >>
+			if sParentScrNo ~= "16070" then
 				contOvrsStock.height = 107
 				contOvrsStock.ImageBg.height = 107
 				contOvrsStock.ButtonLink4.visible = false
@@ -180,17 +182,17 @@ Sub Form_OnFormInit()
 					contOvrsStock.ImageBg.height = 107
 					contOvrsStock.ButtonLink4.visible = false
 					contOvrsStock.imgLink4.visible = false
-				end if
-			end if
-			'v20250924_02 <<
+				end
+			end
+			 --v20250924_02 <<
 		else
 		
-			'--------------------------
-			' 종목명/시세영역 숨김처리
-			'--------------------------
+			 ----------------------------
+			 -- 종목명/시세영역 숨김처리
+			 ----------------------------
 			SetHideSiseLabel()
 			
-			'v20250924_02 >>
+			 --v20250924_02 >>
 			if sParentScrNo == "16060" then
 				if sOrdGbn == "현금" then
 					contOvrsStock.height = 57 + 42
@@ -201,42 +203,42 @@ Sub Form_OnFormInit()
 				else
 					contOvrsStock.ButtonLink4.visible = false
 					contOvrsStock.imgLink4.visible = false
-				end if
+				end
 			else
 				contOvrsStock.ButtonLink4.visible = false
 				contOvrsStock.imgLink4.visible = false
-			end if
-			'v20250924_02 <<
-		end if
+			end
+			 --v20250924_02 <<
+		end
 		
-		'-----------------------
-		' 종목명 세팅
-		'-----------------------
+		 -------------------------
+		 -- 종목명 세팅
+		 -------------------------
 		contOvrsStock.LabelName.caption = gName
 		
-		'-----------------------
-		' 위치설정
-		'-----------------------
+		 -------------------------
+		 -- 위치설정
+		 -------------------------
 		SetMovePopupPos()
 	
 	else
 		
-		'Form.CloseForm()
+		 --Form.CloseForm()
 	
-	end if
+	end
 	
-End Sub
-'============================================================================
-Sub BtnClose_OnClick()
+end
+ --============================================================================
+function BtnClose_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Function SetMovePopupPos()
+ --============================================================================
+function SetMovePopupPos()
 	
-	'------------------------------------------------------------
-	'(해외주식 주문 > 잔고 탭) : [현재가] [차트] [매수] [매도]
-	'------------------------------------------------------------
+	 --------------------------------------------------------------
+	 --(해외주식 주문 > 잔고 탭) : [현재가] [차트] [매수] [매도]
+	 --------------------------------------------------------------
 	if gType == "OVRS_ODER_JANGO" then
 	
 		contOvrsStock.visible = true
@@ -246,9 +248,9 @@ Function SetMovePopupPos()
 		nImageTop 	= contOvrsStock.ImageBg.top
 		nImageHeight 	= contOvrsStock.ImageBg.height
 		
-		'---------------------------------------------------
-		' 위로 떠야 하는 경우
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 -- 위로 떠야 하는 경우
+		 -----------------------------------------------------
 		if nConHeight + gYPos + gHeight > nScreenHeight then
 			
 			if gOsType == "1" then
@@ -257,7 +259,7 @@ Function SetMovePopupPos()
 			else
 				contOvrsStock.top = gYPos - nConHeight - 3
 				contOvrsStock.ImageBg.top = -3
-			end if
+			end
 		
 			
 			contOvrsStock.ImageBg.imgpath = "btn_link_shadow_bg2.9"
@@ -271,21 +273,21 @@ Function SetMovePopupPos()
 				contOvrsStock.LabelDebiSign.top = 35
 			else
 				contOvrsStock.LabelDebiSign.top = 33
-			end if
+			end
 			
 			contOvrsStock.ButtonLink0.top = gAddTopPos + 59
 			contOvrsStock.ButtonLink1.top = gAddTopPos + 59
 			contOvrsStock.ButtonLink2.top = gAddTopPos + 59
 			contOvrsStock.ButtonLink3.top = gAddTopPos + 59
-			contOvrsStock.ButtonLink4.top = gAddTopPos + 59 + 38	'v20250924_02 >>
+			contOvrsStock.ButtonLink4.top = gAddTopPos + 59 + 38	 --v20250924_02 >>
 			contOvrsStock.imgLink4.top = gAddTopPos + 59 + 46
 			
 			contOvrsStock.LabelBg.visible = true
 			contOvrsStock.LabelBg.top = gAddTopPos + 68
 			
-		'---------------------------------------------------
-		' 아래로 떠야 하는 경우
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 -- 아래로 떠야 하는 경우
+		 -----------------------------------------------------
 		else
 		
 			contOvrsStock.top = gYPos + gHeight - 10
@@ -302,166 +304,166 @@ Function SetMovePopupPos()
 				contOvrsStock.LabelRate.top 	= 36
 				contOvrsStock.LabelDebi.top 	= 36
 				contOvrsStock.LabelDebiSign.top = 36
-			end if
+			end
 			
 			contOvrsStock.ButtonLink0.top = gAddTopPos + 65
 			contOvrsStock.ButtonLink1.top = gAddTopPos + 65
 			contOvrsStock.ButtonLink2.top = gAddTopPos + 65
 			contOvrsStock.ButtonLink3.top = gAddTopPos + 65
-			contOvrsStock.ButtonLink4.top = gAddTopPos + 65 + 38	'v20250924_02 >>
+			contOvrsStock.ButtonLink4.top = gAddTopPos + 65 + 38	 --v20250924_02 >>
 			contOvrsStock.imgLink4.top = gAddTopPos + 65 + 46
 			
 			contOvrsStock.LabelBg.visible = true
 		
-		end if
+		end
 	
-	end if
+	end
 
 
-End Function
+end
 
-'============================================================================
-' 장운영정보 조회 
-'============================================================================
-Function RequestMarketInfo()
-	'20250704 YSH START : 해외주식 장운영 정보 조회방식 변경
-	szMkOpClsCd = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
-	if szMkOpClsCd <> "" and g_szMkOpClsCd <> szMkOpClsCd then
+ --============================================================================
+ -- 장운영정보 조회 
+ --============================================================================
+function RequestMarketInfo()
+	 --20250704 YSH START : 해외주식 장운영 정보 조회방식 변경
+	szMkOpClsCd = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
+	if szMkOpClsCd ~= "" and g_szMkOpClsCd ~= szMkOpClsCd then
 		g_szMkOpClsCd = szMkOpClsCd
-		'000:휴장/013:휴일
+		 --000:휴장/013:휴일
 		if szMkOpClsCd == "013" or szMkOpClsCd == "000" then
 			gDayMarket = "N"
-		end if
+		end
 		
-		'v0001 >>
+		 --v0001 >>
 		if szMkOpClsCd == "005" then
 			gAfterMarket = "Y"
-		end if
-		'v0001 <<
+		end
+		 --v0001 <<
 		
 		RequestData()
-	end if
-	'20250704 YSH END
-End Function
+	end
+	 --20250704 YSH END
+end
 
-'============================================================================
-' 종목 시세조회
-'============================================================================
-Function RequestData()
+ --============================================================================
+ -- 종목 시세조회
+ --============================================================================
+function RequestData()
 	
-	'----------------------------------
-	'해당 거래소 실시간 신청여부
-	'----------------------------------
+	 ------------------------------------
+	 --해당 거래소 실시간 신청여부
+	 ------------------------------------
 	szDelay = Form.GetSharedData("REALTIME_"..gMarket, false)
 	
 	
-	'----------------------------------------------------
-	'주간장 & 미국종목일 경우에만 주간현재가 조회 서비스 호출
-	'----------------------------------------------------
+	 ------------------------------------------------------
+	 --주간장 .. 미국종목일 경우에만 주간현재가 조회 서비스 호출
+	 ------------------------------------------------------
 	if gDayMarket == "Y" and gUSItem == "Y" then
 	
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" ) 		' 해외주식 OV
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , gCode ) 	' 종목코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , gMarket ) 	' 거래소코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE"	, 0 , szDelay ) 	' 실시간구분 0 : 실시간 (Default), 1:지연
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" ) 		 -- 해외주식 OV
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , gCode ) 	 -- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , gMarket ) 	 -- 거래소코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE"	, 0 , szDelay ) 	 -- 실시간구분 0 : 실시간 (Default), 1:지연
 		DATAMANAGER.RequestTranData("ohhts_6000_017r")
 	
 	else
-		'v0001 >>
+		 --v0001 >>
 		if gAfterMarket == "Y" and gUSItem == "Y" then
-			DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" ) 		' 해외주식 OV
-			DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , gCode ) 	' 종목코드
-			DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , gMarket ) 	' 거래소코드
-			DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE"	, 0 , szDelay ) 	' 실시간구분 0 : 실시간 (Default), 1:지연
+			DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" ) 		 -- 해외주식 OV
+			DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , gCode ) 	 -- 종목코드
+			DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , gMarket ) 	 -- 거래소코드
+			DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE"	, 0 , szDelay ) 	 -- 실시간구분 0 : 실시간 (Default), 1:지연
 			DATAMANAGER.RequestTranData("ohhts_6000_023r")
 			
 		else
-			DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" ) 		' 해외주식 OV
-			DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , gCode ) 	' 종목코드
-			DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , gMarket ) 	' 거래소코드
-			DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE"	, 0 , szDelay ) 	' 실시간구분 0 : 실시간 (Default), 1:지연
+			DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" ) 		 -- 해외주식 OV
+			DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , gCode ) 	 -- 종목코드
+			DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , gMarket ) 	 -- 거래소코드
+			DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE"	, 0 , szDelay ) 	 -- 실시간구분 0 : 실시간 (Default), 1:지연
 			DATAMANAGER.RequestTranData("ohhts_6000_001r")
 			
-		end if
-		'v0001 <<
+		end
+		 --v0001 <<
 		
-	end if
+	end
 	
-End Function
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+end
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	
-	'v0001
+	 --v0001
 	if szTranID == "ohhts_6000_001r" or szTranID == "ohhts_6000_017r" or szTranID == "ohhts_6000_023r"then
 		
-		'---------------------------------------
-		'실시간 해제 및 인풋값 클리어
-		'---------------------------------------
+		 -----------------------------------------
+		 --실시간 해제 및 인풋값 클리어
+		 -----------------------------------------
 		DATAMANAGER.CancelRealData("ohhts_exst_cntg")
 		DATAMANAGER.CancelRealData("ohhts_exst_cntd")
-		DATAMANAGER.CancelRealData("ohhts_exst_cnta")		'v0001 
+		DATAMANAGER.CancelRealData("ohhts_exst_cnta")		 --v0001 
 		
 		DATAMANAGER.ClearInputData(1, "ohhts_exst_cntg")
 		DATAMANAGER.ClearInputData(1, "ohhts_exst_cntd")
-		DATAMANAGER.ClearInputData(1, "ohhts_exst_cnta")	'v0001 	
+		DATAMANAGER.ClearInputData(1, "ohhts_exst_cnta")	 --v0001 	
 		
-		'---------------------------------------
-		' 실시간 호출 여부
-		'---------------------------------------
+		 -----------------------------------------
+		 -- 실시간 호출 여부
+		 -----------------------------------------
 		if gApplyRealSise == "Y" then
 			
-			'---------------------------------------
-			'미국
-			'---------------------------------------
+			 -----------------------------------------
+			 --미국
+			 -----------------------------------------
 			if gUSItem == "Y" then
-				'---------------------------------------
-				' 주간장
-				'---------------------------------------
+				 -----------------------------------------
+				 -- 주간장
+				 -----------------------------------------
 				if gDayMarket == "Y" then
 					
-					DATAMANAGER.SetDataValue(1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , gMarket & "@" & gCode)
+					DATAMANAGER.SetDataValue(1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , gMarket .. "@" .. gCode)
 					DATAMANAGER.RequestRealData("ohhts_exst_cntd")
 				
-				'---------------------------------------
-				' 정규장 
-				'---------------------------------------
+				 -----------------------------------------
+				 -- 정규장 
+				 -----------------------------------------
 				else
 				
-					DATAMANAGER.SetDataValue(1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , gMarket & "@" & gCode)
+					DATAMANAGER.SetDataValue(1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , gMarket .. "@" .. gCode)
 					DATAMANAGER.RequestRealData("ohhts_exst_cntg")
 					
-					'v0001 >>
-					DATAMANAGER.SetDataValue(1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , gMarket & "@" & gCode)
+					 --v0001 >>
+					DATAMANAGER.SetDataValue(1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , gMarket .. "@" .. gCode)
 					DATAMANAGER.RequestRealData("ohhts_exst_cnta")
-					'v0001 <<
+					 --v0001 <<
 				
-				end if
+				end
 				
-			'---------------------------------------
-			'중국/홍콩/일본
-			'---------------------------------------
+			 -----------------------------------------
+			 --중국/홍콩/일본
+			 -----------------------------------------
 			else
 			
-				DATAMANAGER.SetDataValue(1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , gMarket & "@" & gCode)
+				DATAMANAGER.SetDataValue(1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , gMarket .. "@" .. gCode)
 				DATAMANAGER.RequestRealData("ohhts_exst_cntg")
 			
-			end if
+			end
 		
-		end if
+		end
 		
-		'------------------------------------------------------------------------------
-		' 주간장 조회 시 거래량이 0이면 정규장 시세 서비스 호출
-		'------------------------------------------------------------------------------
+		 --------------------------------------------------------------------------------
+		 -- 주간장 조회 시 거래량이 0이면 정규장 시세 서비스 호출
+		 --------------------------------------------------------------------------------
 		if szTranID == "ohhts_6000_017r" then
-			nVol = Cint(DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_ACML_VOL" , 0))
+			nVol = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_ACML_VOL" , 0))
 			
 			if nVol == 0 then
 			
 				szDelay = Form.GetSharedData("REALTIME_"..gMarket, false)
-				DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" ) 		' 해외주식 OV
-				DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , gCode ) 	' 종목코드
-				DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , gMarket ) 	' 거래소코드
-				DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE"	, 0 , szDelay ) 	' 실시간구분 0 : 실시간 (Default), 1:지연
+				DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" ) 		 -- 해외주식 OV
+				DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 		, 0 , gCode ) 	 -- 종목코드
+				DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , gMarket ) 	 -- 거래소코드
+				DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE"	, 0 , szDelay ) 	 -- 실시간구분 0 : 실시간 (Default), 1:지연
 				DATAMANAGER.RequestTranData("ohhts_6000_001r")
 			
 			else
@@ -470,157 +472,157 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 				contOvrsStock.LabelDebi.visible = true
 				contOvrsStock.LabelRate.visible = true
 			
-			end if
+			end
 		
-		'v0001
+		 --v0001
 		elseif szTranID == "ohhts_6000_001r" or szTranID == "ohhts_6000_023r" then
 		
 			contOvrsStock.LabelPrice.visible = true
 			contOvrsStock.LabelDebi.visible = true
 			contOvrsStock.LabelRate.visible = true
 			
-		end if
+		end
 		
-	end if
+	end
 	
-End Sub
-'============================================================================
-' 거래소벤더코드(4자리) -> 거래소코드(2자리)
-'============================================================================
-Function GetMarketCode(sValue)
+end
+ --============================================================================
+ -- 거래소벤더코드(4자리) -> 거래소코드(2자리)
+ --============================================================================
+function GetMarketCode(sValue)
 
-	if sValue == "0104" then	' 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HK"
-	elseif sValue == "0215" then ' 상해
+	elseif sValue == "0215" then -- 상해
 		return "SH"
-	elseif sValue == "0214" then ' 심천
+	elseif sValue == "0214" then -- 심천
 		return "SZ"
-	elseif sValue == "0321" then ' 뉴욕
+	elseif sValue == "0321" then -- 뉴욕
 		return "NY"
-	elseif sValue == "0066" then ' 아멕스
+	elseif sValue == "0066" then -- 아멕스
 		return "AX"
-	elseif sValue == "0537" then ' 나스닥
+	elseif sValue == "0537" then -- 나스닥
 		return "OQ"
-	elseif sValue == "0106" then ' 도쿄
+	elseif sValue == "0106" then -- 도쿄
 		return "JP"
 	else
 		return ""
-	end if
+	end
 	
-end Function
+end
 
 
-'============================================================================
-' 현재가
-'============================================================================
-Sub contOvrsStock_ButtonLink0_OnClick()
+ --============================================================================
+ -- 현재가
+ --============================================================================
+function contOvrsStock_ButtonLink0_OnClick()
 
-	if gMarket <> "" then
+	if gMarket ~= "" then
 
-		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex & "★" & "MOVE_HYUN")
+		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex .. "★" .. "MOVE_HYUN")
 		Form.CloseForm()
 	else
 		
 		Form.MsgBox("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.", "OnLineCheck", 6)
 	
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 차트
-'============================================================================
-Sub contOvrsStock_ButtonLink1_OnClick()
+ --============================================================================
+ -- 차트
+ --============================================================================
+function contOvrsStock_ButtonLink1_OnClick()
 	
-	if gMarket <> "" then
+	if gMarket ~= "" then
 		
-		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex & "★" & "MOVE_CHART")
+		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex .. "★" .. "MOVE_CHART")
 		Form.CloseForm()
 		
 	else
 		
 		Form.MsgBox("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.", "OnLineCheck", 6)
 	
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 매수
-'============================================================================
-Sub contOvrsStock_ButtonLink2_OnClick()
+ --============================================================================
+ -- 매수
+ --============================================================================
+function contOvrsStock_ButtonLink2_OnClick()
 
-	if gMarket <> "" then
+	if gMarket ~= "" then
 	
-		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex & "★" & "MOVE_MAESU")
+		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex .. "★" .. "MOVE_MAESU")
 		Form.CloseForm()
 	
 	else
 
 		Form.MsgBox("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.", "OnLineCheck", 6)
 	
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 매도
-'============================================================================
-Sub contOvrsStock_ButtonLink3_OnClick()
+ --============================================================================
+ -- 매도
+ --============================================================================
+function contOvrsStock_ButtonLink3_OnClick()
 	
-	if gMarket <> "" then
+	if gMarket ~= "" then
 
-		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex & "★" & "MOVE_MAEDO")
+		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex .. "★" .. "MOVE_MAEDO")
 		Form.CloseForm()
 	
 	else
 		
 		Form.MsgBox("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.", "OnLineCheck", 6)
 	
-	end if
+	end
 	
-End Sub
+end
 
-'v20250924_02 >>
-'============================================================================
-' 물타기
-'============================================================================
-Sub contOvrsStock_ButtonLink4_OnClick()
-	if gMarket <> "" then
+ --v20250924_02 >>
+ --============================================================================
+ -- 물타기
+ --============================================================================
+function contOvrsStock_ButtonLink4_OnClick()
+	if gMarket ~= "" then
 
-		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex & "★" & "MOVE_WATER")
+		Form.SendReturnToParent("MOVEPOPUP_RETURN" , gIndex .. "★" .. "MOVE_WATER")
 		Form.CloseForm()
 	else
 		
 		Form.MsgBox("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.", "OnLineCheck", 6)
 	
-	end if
-End Sub
-'v20250924_02 <<
+	end
+end
+ --v20250924_02 <<
 
 
-'============================================================================
-Sub contOvrsStock_imgLink4_OnClick()
+ --============================================================================
+function contOvrsStock_imgLink4_OnClick()
 	contOvrsStock_ButtonLink4_OnClick()
-End Sub
+end
 
-'============================================================================
-Sub contOvrsStock_LabelDebi_OnSizeAutoFit()
+ --============================================================================
+function contOvrsStock_LabelDebi_OnSizeAutoFit()
 
 	if gOsType == "1" then
-		nLeftDebi = Form.calcUnResize(contOvrsStock.LabelDebi.left, "2")
-		nWidthSign = Form.calcUnResize(contOvrsStock.LabelDebiSign.width, "2")
+		nLeftDebi = Form.CalcUnResize(contOvrsStock.LabelDebi.left, "2")
+		nWidthSign = Form.CalcUnResize(contOvrsStock.LabelDebiSign.width, "2")
 	else
 		nLeftDebi = contOvrsStock.LabelDebi.left
 		nWidthSign = contOvrsStock.LabelDebiSign.width
-	end if
+	end
 	
 	contOvrsStock.LabelDebiSign.left = nLeftDebi - nWidthSign - 2
 
-End Sub
+end
 
-'============================================================================
-Function SetHideSiseLabel()
+ --============================================================================
+function SetHideSiseLabel()
 
 	contOvrsStock.LabelName.visible = false
 	contOvrsStock.LabelPrice.visible = false
@@ -632,47 +634,48 @@ Function SetHideSiseLabel()
 	contOvrsStock.ImageBg.height = 57
 	gAddTopPos = -50
 	
-End Function
+end
 
-'============================================================================
-Sub Form_OnFormClose()
+ --============================================================================
+function Form_OnFormClose()
 	Form.SendReturnToParent("MOVEPOPUP_CLOSE" , "")
-End Sub
+end
 
-'============================================================================
-Sub Form_OnRefresh()
+ --============================================================================
+function Form_OnRefresh()
 	if gApplyRealSise == "Y" then
 		Form.CloseForm()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub Form_OnLinkData(sKey, sValue)
-	'20250707 YSH TEST
-	'showAlert(sKey & sValue)
-	'20250704 YSH START : 해외주식 장운영 정보 조회방식 변경
+ --============================================================================
+function Form_OnLinkData(sKey, sValue)
+	 --20250707 YSH TEST
+	 --showAlert(sKey .. sValue)
+	 --20250704 YSH START : 해외주식 장운영 정보 조회방식 변경
 	if sKey == "OVRS_MARKET_OPERATION_TRAN" then
 		if gApplyRealSise == "Y" and gUSItem == "Y" then
 			if sValue == "SUCCESS" then
 				RequestMarketInfo()
-			end if
-		end if
+			end
+		end
 
 	elseif sKey == "OVRS_MARKET_OPERATION_REAL" then
-		arrMktData = Split(sValue, "@")
+		arrMktData = gf_Split(sValue, "@")
 		if gApplyRealSise == "Y" and gUSItem == "Y" then
-			if arrMktData(0) == "US" and arrMktData(1) == "006" then
+			if arrMktData[0+1] == "US" and arrMktData[1+1] == "006" then
 				gAfterMarket = "N" 
 				RequestData()
-			end if
-		end if
-    end if
-    '20250704 YSH END
-End Sub
+			end
+		end
+    end
+     --20250704 YSH END
+end
 
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />
