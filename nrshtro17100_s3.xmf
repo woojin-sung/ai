@@ -26,7 +26,7 @@ dofile("scr/json.lua")
 local g_sTheme
 g_sTheme = Form.GetEnvData("common.theme")
 local g_sOsType
-g_sOsType = Form.GetSharedData("&OS_TYPE", false )
+g_sOsType = Form.GetSharedData("..OS_TYPE", false )
 local nextTop
 nextTop = 0
 -- =============================================================================
@@ -45,15 +45,15 @@ function Form_OnFormInit()
 		img1.imgpath = "guide_tab2_img2_d"
 	end
 	sText = "주가가 이익보존가격 도달 후 초과 상승하였으나, 목표로 정한 이익실현 가격에 도달하지 못하고 하락하여 이익보존 가격 이하로 도달 시 감시가 실행되어, 설정한 주문 방법으로 매도 주문이 실행돼요."
-	--	nLen = Cint(Form.getLen("이익실현 가격에 도달하지 못하고 하락하여 이익보존 가격 이하로 도달 시"))
-	--	nStart = Cint(Form.getLen("주가가 기준가 대비 상승하여, 이익보존가격 도달 후 초과 상승하였으나, "))
-	lblInfo0.sizeAutoFit()
+	--	nLen = gf_Tonumber(Form.GetLen("이익실현 가격에 도달하지 못하고 하락하여 이익보존 가격 이하로 도달 시"))
+	--	nStart = gf_Tonumber(Form.GetLen("주가가 기준가 대비 상승하여, 이익보존가격 도달 후 초과 상승하였으나, "))
+	lblInfo0.SizeAutoFit()
 	lblInfo0.caption = sText
-	--	lblInfo0.changeTextAttr(nStart, nLen, 290, -2, true)
+	--	lblInfo0.ChangeTextAttr(nStart, nLen, 290, -2, true)
 end
 -- =============================================================================
 function lblInfo0_OnSizeAutoFit()
-	--	nH = cint(lblInfo0.height2)
+	--	nH = gf_Tonumber(lblInfo0.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblInfo0.height)
@@ -65,12 +65,12 @@ function lblInfo0_OnSizeAutoFit()
 	nextTop = nextTop + 159 + 20
 	lblSubInfo0.top = nextTop
 	sText = "예) 주가가 $525(이익보존) 돌파 후 $550(이익실현)에 도달하지 못하고 하락 전환하여 $525(이익보존) 도달 시 설정한 주문 조건으로 주문이 실행 돼요."
-	lblSubInfo0.sizeAutoFit()
+	lblSubInfo0.SizeAutoFit()
 	lblSubInfo0.caption = sText
 end
 -- =============================================================================
 function lblSubInfo0_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo0.height2)
+	--	nH = gf_Tonumber(lblSubInfo0.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo0.height)
@@ -89,12 +89,12 @@ function lblSubInfo0_OnSizeAutoFit()
 	lblGuide0.top = nextTop
 	lblGuide0.caption = "①"
 	sText = "이익실현 입력시에만 이익보존 입력이 가능해요.(선택사항)"
-	lblSubInfo1.sizeAutoFit()
+	lblSubInfo1.SizeAutoFit()
 	lblSubInfo1.caption = sText
 end
 -- =============================================================================
 function lblSubInfo1_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo1.height2)
+	--	nH = gf_Tonumber(lblSubInfo1.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo1.height)
@@ -106,12 +106,12 @@ function lblSubInfo1_OnSizeAutoFit()
 	lblGuide1.top = nextTop
 	lblGuide1.caption = "②"
 	sText = "이익보존 가격은 이익실현보다 낮은 금액으로 입력 해야돼요."
-	lblSubInfo2.sizeAutoFit()
+	lblSubInfo2.SizeAutoFit()
 	lblSubInfo2.caption = sText
 end
 -- =============================================================================
 function lblSubInfo2_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo2.height2)
+	--	nH = gf_Tonumber(lblSubInfo2.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo2.height)
@@ -119,7 +119,8 @@ function lblSubInfo2_OnSizeAutoFit()
 		nH = gf_Tonumber(lblSubInfo2.height2)
 	end
 	nextTop = nextTop + nH + 20
-	Form.triggerEvent("#", "MID_2_SIZE", nextTop)
+	Form.TriggerEvent("#", "MID_2_SIZE", nextTop)
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

@@ -179,255 +179,257 @@
 		<BUTTON name="btnQty" btnimage="alpha" ly_vert="203,208,124,38,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="78625" _ulen="72639" >
-'============================================================================
-' 20241128 LES START : 해외주식 매수 시장가 주문유형 추가
-' 20241216 LES START : (미국)해외주식 휴일/휴장일때는 정규장종가 보여주도록 수정
-' 20250804 YSH START : 장 운영 정보 조회 방식 변경
-'============================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 20241128 LES START : 해외주식 매수 시장가 주문유형 추가
+ -- 20241216 LES START : (미국)해외주식 휴일/휴장일때는 정규장종가 보여주도록 수정
+ -- 20250804 YSH START : 장 운영 정보 조회 방식 변경
+ --============================================================================
 
-Dim gGubun
-Dim gCode,gMarket
-Dim gCredit
-Dim g_szCurPrice,gHighPrice,gLowPrice
-Dim gPrc,gQty
-Dim gOrderGubun
-Dim g_szCurrency
-Dim g_szDecimal
+local gGubun
+local gCode,gMarket
+local gCredit
+local g_szCurPrice,gHighPrice,gLowPrice
+local gPrc,gQty
+local gOrderGubun
+local g_szCurrency
+local g_szDecimal
 
-Dim gCalcOrderPrice
-Dim gCalcOrderPriceWon
-Dim gExchangeRate
-Dim g_szOrdSize
-Dim gMarketCode
-Dim gTickType
-Dim gMaeMaeGubun
-Dim gAcno
-Dim gAsno
-Dim gTotalYN
+local gCalcOrderPrice
+local gCalcOrderPriceWon
+local gExchangeRate
+local g_szOrdSize
+local gMarketCode
+local gTickType
+local gMaeMaeGubun
+local gAcno
+local gAsno
+local gTotalYN
 
 
-Dim g_szUnit
+local g_szUnit
 
-Dim g_szFocusIndex
-Dim g_szFocusEditClear
+local g_szFocusIndex
+local g_szFocusEditClear
 
-Dim gQty10_Size,gQty100_Size,gQty1000_Size
+local gQty10_Size,gQty100_Size,gQty1000_Size
 gQty10_Size = 10
 gQty100_Size = 100
 gQty1000_Size = 1000
 
-Dim gOsType
-Dim gMaxLen
+local gOsType
+local gMaxLen
 gMaxLen = 12
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	'tblData.visible = true
-	'tblData0.visible = true
+	 --tblData.visible = true
+	 --tblData0.visible = true
 	
-	gOsType = Form.GetSharedData("&OS_TYPE", false )
+	gOsType = Form.GetSharedData("..OS_TYPE", false )
 	
 	if gOsType == "1" then
 		lblOrderPrice.paddinginfo = "10,0,10,2"
 		lblOrderPriceWon.paddinginfo = "10,2,10,0"
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 
-	'==================================================
-	' 컨트롤 설정
-	'==================================================
-	grdPrc.SetUseScriptImageCell("1") 'IOS 그리드 반복그림 관련 버그 수정
+	 --==================================================
+	 -- 컨트롤 설정
+	 --==================================================
+	grdPrc.SetUseScriptImageCell("1")  --IOS 그리드 반복그림 관련 버그 수정
 
-	'==================================================
-	' 연결화면 링크값 세팅
-	'==================================================
-	' 0 : gGubun 				= 타이틀구분(단가/수량/금액)
-	' 1 : gMarket 			= 시장구분(2자리)
-	' 2 : gCode				= 종목코드
-	' 3 : gCredit				= 현금/신용구분
-	' 4 : g_szCurPrice 		= 현재가
-	' 5 : gPrc				= 입력가격
-	' 6 : gQty 				= 입력수량
-	' 7 : gHighPrice 			= 상한가
-	' 8 : gLowPrice 			= 하한가
-	' 9 : gOrderGubun 		= 주문구분(시장가/지정가..)
-	' 10 : g_szCurrency		= 통화구분
-	' 11 : g_szDecimal		= 소수점자리수
-	' 12 : gCalcOrderPrice 	= 주문금액(통화)
-	' 13 : gCalcOrderPriceWon 	= 주문금액(원화)
-	' 14 : gExchangeRate 		= 환율
-	' 15 : g_szOrdSize		= 매매단위
-	' 16 : gMarketCode		= 거래소코드(4자리)
-	' 17 : gTickType			= 틱타입
-	' 18 : gMaeMaeGubun		= 매수(BUY), 매도(SELL), 정정/취소
-	' 19 : gAcno				= 계좌번호(8자리)
-	' 20 : gAsno				= 계좌번호(2자리)
-	' 21 : gTotalYN			= 통합증거금여부(Y/N)
-	'==================================================
+	 --==================================================
+	 -- 연결화면 링크값 세팅
+	 --==================================================
+	 -- 0 : gGubun 				= 타이틀구분(단가/수량/금액)
+	 -- 1 : gMarket 			= 시장구분(2자리)
+	 -- 2 : gCode				= 종목코드
+	 -- 3 : gCredit				= 현금/신용구분
+	 -- 4 : g_szCurPrice 		= 현재가
+	 -- 5 : gPrc				= 입력가격
+	 -- 6 : gQty 				= 입력수량
+	 -- 7 : gHighPrice 			= 상한가
+	 -- 8 : gLowPrice 			= 하한가
+	 -- 9 : gOrderGubun 		= 주문구분(시장가/지정가..)
+	 -- 10 : g_szCurrency		= 통화구분
+	 -- 11 : g_szDecimal		= 소수점자리수
+	 -- 12 : gCalcOrderPrice 	= 주문금액(통화)
+	 -- 13 : gCalcOrderPriceWon 	= 주문금액(원화)
+	 -- 14 : gExchangeRate 		= 환율
+	 -- 15 : g_szOrdSize		= 매매단위
+	 -- 16 : gMarketCode		= 거래소코드(4자리)
+	 -- 17 : gTickType			= 틱타입
+	 -- 18 : gMaeMaeGubun		= 매수(BUY), 매도(SELL), 정정/취소
+	 -- 19 : gAcno				= 계좌번호(8자리)
+	 -- 20 : gAsno				= 계좌번호(2자리)
+	 -- 21 : gTotalYN			= 통합증거금여부(Y/N)
+	 --==================================================
 	
 	szData = Form.GetOpenLinkData()
-	arrData = Split(szData,"|")
+	arrData = gf_Split(szData,"|")
 	
-	gGubun 				= arrData(0)
-	gMarket 				= arrData(1)
-	gCode 				= arrData(2)
-	gCredit 				= arrData(3)
-	g_szCurPrice 			= arrData(4)
-	gPrc 				= arrData(5)
-	gQty 				= arrData(6)
-	gHighPrice 			= arrData(7)
-	gLowPrice 			= arrData(8)
-	gOrderGubun 			= arrData(9)
-	g_szCurrency 			= arrData(10)
-	g_szDecimal 			= arrData(11)
-	gCalcOrderPrice		= arrData(12)
-	gCalcOrderPriceWon 	= arrData(13)
-	gExchangeRate 		= arrData(14)
-	g_szOrdSize			= arrData(15)
-	gMarketCode			= arrData(16)
-	gTickType			= arrData(17)
-	gMaeMaeGubun			= arrData(18)
-	gAcno				= arrData(19)
-	gAsno				= arrData(20)
-	gTotalYN				= arrData(21)
+	gGubun 				= arrData[0+1]
+	gMarket 				= arrData[1+1]
+	gCode 				= arrData[2+1]
+	gCredit 				= arrData[3+1]
+	g_szCurPrice 			= arrData[4+1]
+	gPrc 				= arrData[5+1]
+	gQty 				= arrData[6+1]
+	gHighPrice 			= arrData[7+1]
+	gLowPrice 			= arrData[8+1]
+	gOrderGubun 			= arrData[9+1]
+	g_szCurrency 			= arrData[10+1]
+	g_szDecimal 			= arrData[11+1]
+	gCalcOrderPrice		= arrData[12+1]
+	gCalcOrderPriceWon 	= arrData[13+1]
+	gExchangeRate 		= arrData[14+1]
+	g_szOrdSize			= arrData[15+1]
+	gMarketCode			= arrData[16+1]
+	gTickType			= arrData[17+1]
+	gMaeMaeGubun			= arrData[18+1]
+	gAcno				= arrData[19+1]
+	gAsno				= arrData[20+1]
+	gTotalYN				= arrData[21+1]
 	
 	g_szUnit				= GetHogaUnit(gMarketCode, g_szCurPrice, 0) 
 	
-	'==================================================
-	' 시세데이터 조회(매도1호가/현재가/매수1호가 )
-	'==================================================
+	 --==================================================
+	 -- 시세데이터 조회(매도1호가/현재가/매수1호가 )
+	 --==================================================
 	RequestSiseData(gMarket,gCode)
 	
-	'==================================================
-	' 링크데이터 중 시세 데이터 세팅
-	'==================================================
+	 --==================================================
+	 -- 링크데이터 중 시세 데이터 세팅
+	 --==================================================
 	SetSiseData()
 	
-	'==================================================
-	' 타이틀 구분 세팅
-	'==================================================
+	 --==================================================
+	 -- 타이틀 구분 세팅
+	 --==================================================
 	SetTitle(gGubun)
 	
-	'==================================================
-	' 타이틀 구분에 따른 퀵버튼 생성
-	'==================================================
+	 --==================================================
+	 -- 타이틀 구분에 따른 퀵버튼 생성
+	 --==================================================
 	SetMakeQuickButton(gGubun)
 	
-	'==================================================
-	' 타이틀 구분에 따른 포커스 입력창 설정
-	'==================================================
+	 --==================================================
+	 -- 타이틀 구분에 따른 포커스 입력창 설정
+	 --==================================================
 	SetFocusEdit(gGubun)
 	
-	'==================================================
-	' 가격입력창/수량입력창/금액창 초기화
-	'==================================================
+	 --==================================================
+	 -- 가격입력창/수량입력창/금액창 초기화
+	 --==================================================
 	SetInitPrcEdit()
 	SetInitQtyEdit()
 	SetInitOrdPriceLabel()
 	Calc_OrderPrice()
 	
-End Sub
+end
 
-'============================================================================
-' 바탕클릭 이벤트
-'============================================================================
-Sub imgBg_OnClick()
+ --============================================================================
+ -- 바탕클릭 이벤트
+ --============================================================================
+function imgBg_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-' (공통) 가격입력창 가격SET
-'============================================================================
-Function SetPrice(sType,nPrc,nDecimalLen,sCurrency)
+ --============================================================================
+ -- (공통) 가격입력창 가격SET
+ --============================================================================
+function SetPrice(sType,nPrc,nDecimalLen,sCurrency)
 	
-	szChk = Instr(Cstr(nPrc), ".")
-	'lblTitle.caption = szChk .. "//" .. nDecimalLen .. "//" .. nPrc '.. "//".. sResult
-	'================================================================
-	'소수점(dot)이 있는 경우
-	'================================================================
+	szChk = string.find(gf_Tostring(nPrc), ".")
+	 --lblTitle.caption = szChk .. "//" .. nDecimalLen .. "//" .. nPrc '.. "//".. sResult
+	 --================================================================
+	 --소수점(dot)이 있는 경우
+	 --================================================================
 	if szChk > 0 then
 		
-		'------------------------------
-		'소수점영역 길이
-		'------------------------------
-		szCha = CInt(Len(nPrc) - szChk)
+		 --------------------------------
+		 --소수점영역 길이
+		 --------------------------------
+		szCha = gf_Tonumber(string.len(nPrc) - szChk)
 		
-		'-------------------------------------------------------
-		'소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
-		'-------------------------------------------------------
-		if szCha >= Cint(nDecimalLen) then
+		 ---------------------------------------------------------
+		 --소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
+		 ---------------------------------------------------------
+		if szCha >= gf_Tonumber(nDecimalLen) then
 			 
-			 if szCha == Cint(nDecimalLen) then
-				 sResult = FormatNumber(nPrc,nDecimalLen).." " .. sCurrency
+			 if szCha == gf_Tonumber(nDecimalLen) then
+				 sResult = gf_CommaValue(nPrc,nDecimalLen).." " .. sCurrency
 				 edtPrc.caption = sResult
 			 else
-				 exit Function
-			 end if
+				 return
+			 end
 		
-		'-------------------------------------------------------	 
-		' 소수점영역의 길이를 아직 다 안채운 경우
-		'-------------------------------------------------------
+		 ---------------------------------------------------------	 
+		 -- 소수점영역의 길이를 아직 다 안채운 경우
+		 ---------------------------------------------------------
 		else
 			
-			'-------------------------------------------------------------------
-			'자동으로 호가가격이 입력되는 경우(초기값 세팅/ 호가 +,- 버튼 클릭)
-			'국가별 소수점 자리수로 가격을 다시 맞춰준다.
-			'-------------------------------------------------------------------
+			 ---------------------------------------------------------------------
+			 --자동으로 호가가격이 입력되는 경우(초기값 세팅/ 호가 +,- 버튼 클릭)
+			 --국가별 소수점 자리수로 가격을 다시 맞춰준다.
+			 ---------------------------------------------------------------------
 			if sType == "AUTO" then
 				
-				sResult = FormatNumber(nPrc,nDecimalLen).." " .. sCurrency
+				sResult = gf_CommaValue(nPrc,nDecimalLen).." " .. sCurrency
 				edtPrc.caption = sResult
 			
-			'-------------------------------------------------------------------
-			'가격이 수동으로 입력되는 경우(키패드 입력)에는 입력받은대로 표시
-			'-------------------------------------------------------------------
+			 ---------------------------------------------------------------------
+			 --가격이 수동으로 입력되는 경우(키패드 입력)에는 입력받은대로 표시
+			 ---------------------------------------------------------------------
 			else
 				sResult = nPrc.." " .. sCurrency
 				edtPrc.caption = sResult
-			end if
+			end
 			
-		end if
+		end
 	
-	'================================================================
-	' 소수점(dot)이 없는 경우
-	'================================================================
+	 --================================================================
+	 -- 소수점(dot)이 없는 경우
+	 --================================================================
 	else
 	
 		if sType == "AUTO" then
-			sResult = FormatNumber(nPrc,nDecimalLen) .." " .. sCurrency
+			sResult = gf_CommaValue(nPrc,nDecimalLen) .." " .. sCurrency
 			edtPrc.caption = sResult
 		else
-			sResult = FormatNumber(nPrc,0) .." " .. sCurrency
+			sResult = gf_CommaValue(nPrc,0) .." " .. sCurrency
 			edtPrc.caption = sResult
-		end if
+		end
 		
-	end if
+	end
 	
-End Function
-'============================================================================
-' (공통) 가격입력창 가격GET
-'============================================================================
-Function GetPrice()
+end
+ --============================================================================
+ -- (공통) 가격입력창 가격GET
+ --============================================================================
+function GetPrice()
 	
-	sResult = replace(edtPrc.caption, " " .. g_szCurrency , "")
-	sResult = replace(sResult, "," , "")
+	sResult = string.gsub(edtPrc.caption, string.gsub(" " .. g_szCurrency, "([%p])", "%%%1"), "")
+	sResult = string.gsub(sResult, string.gsub(", "([%p])", "%%%1"), " , "")
 	
 	return sResult
 
-End Function
-'============================================================================
-' 타이틀 세팅
-'============================================================================
-Function SetTitle(sGubun)
+end
+ --============================================================================
+ -- 타이틀 세팅
+ --============================================================================
+function SetTitle(sGubun)
 	
-	'-----------------------------------
-	'sGubun 0:단가 / 1:수량 / 2:금액
-	'-----------------------------------
+	 -------------------------------------
+	 --sGubun 0:단가 / 1:수량 / 2:금액
+	 -------------------------------------
 	if sGubun == "0" then
 		lblTitle.caption = "단가 입력"
 	elseif sGubun == "1" then
@@ -436,21 +438,21 @@ Function SetTitle(sGubun)
 		lblTitle.caption = "금액 입력"
 	else
 		lblTitle.caption = "입력"
-	end if
+	end
 	
-End Function
+end
 
-'============================================================================
-' 포커스 에디트 설정
-'============================================================================
-Function SetFocusEdit(sGubun)
+ --============================================================================
+ -- 포커스 에디트 설정
+ --============================================================================
+function SetFocusEdit(sGubun)
 
 	g_szFocusIndex = sGubun
 	g_szFocusEditClear = false
 	
-	'-----------------------------------
-	'sGubun 0:단가 / 1:수량 / 2:금액
-	'-----------------------------------
+	 -------------------------------------
+	 --sGubun 0:단가 / 1:수량 / 2:금액
+	 -------------------------------------
 	if sGubun == "0" then
 	
 		btnPMinus0.visible = true
@@ -465,7 +467,7 @@ Function SetFocusEdit(sGubun)
 		
 		edtPrc.imagefilepth = "input_07_o.9"
 		edtQty.imagefilepth = "input_07_n.9"
-		'imgOrderPrc.imgpath = "input_06_n.9"
+		 --imgOrderPrc.imgpath = "input_06_n.9"
 		
 	elseif sGubun == "1" then
 	
@@ -481,7 +483,7 @@ Function SetFocusEdit(sGubun)
 	
 		edtPrc.imagefilepth = "input_07_n.9"
 		edtQty.imagefilepth = "input_07_o.9"
-		'imgOrderPrc.imgpath = "input_06_n.9"
+		 --imgOrderPrc.imgpath = "input_06_n.9"
 		
 	elseif sGubun == "2" then
 	
@@ -497,71 +499,71 @@ Function SetFocusEdit(sGubun)
 	
 		edtPrc.imagefilepth = "input_07_n.9"
 		edtQty.imagefilepth = "input_07_n.9"
-		'imgOrderPrc.imgpath = "input_06_o.9"
+		 --imgOrderPrc.imgpath = "input_06_o.9"
 		
-	end if
+	end
 	
-End Function
+end
 
 
-'============================================================================
-Sub btnPrc_OnClick()
+ --============================================================================
+function btnPrc_OnClick()
 	SetMakeQuickButton("0")
 	SetFocusEdit("0")
-End Sub
+end
 
-'============================================================================
-Sub btnQty_OnClick()
+ --============================================================================
+function btnQty_OnClick()
 	SetMakeQuickButton("1")
 	SetFocusEdit("1")
-End Sub
+end
 
-'============================================================================
-'Sub btnOrderPrice_OnClick()
-	'SetMakeQuickButton("2")
-	'SetFocusEdit("2")
-'End Sub
+ --============================================================================
+ --Sub btnOrderPrice_OnClick()
+	 --SetMakeQuickButton("2")
+	 --SetFocusEdit("2")
+ --End Sub
 
-'============================================================================
-' 가격입력창 데이터 세팅
-'============================================================================
-Function SetInitPrcEdit()
+ --============================================================================
+ -- 가격입력창 데이터 세팅
+ --============================================================================
+function SetInitPrcEdit()
 
-	'------------------------------------------------------------------------------
-	' 주문구분(gOrderGubun)이 지정가일 경우 넘어온 가격 세팅(없을 경우 현재가 세팅)
-	'------------------------------------------------------------------------------
+	 --------------------------------------------------------------------------------
+	 -- 주문구분(gOrderGubun)이 지정가일 경우 넘어온 가격 세팅(없을 경우 현재가 세팅)
+	 --------------------------------------------------------------------------------
 	if gOrderGubun == "01" or gOrderGubun == "31" or gOrderGubun == "32" or gOrderGubun == "32" or gOrderGubun == "35" or gOrderGubun == "36" then
 	
-		'--------------------------
-		' 링크가격 입력
-		'--------------------------
-		if gPrc <> "" and Cdbl(gPrc) > 0 then
+		 ----------------------------
+		 -- 링크가격 입력
+		 ----------------------------
+		if gPrc ~= "" and gf_Tonumber(gPrc) > 0 then
 			SetPrice("AUTO",gPrc,g_szDecimal,g_szCurrency)
 		else
 			SetPrice("AUTO",g_szCurPrice,g_szDecimal,g_szCurrency)
-		end if
+		end
 	
-	'--------------------------------------------------------------------
-	' 주문구분(gOrderGubun)이 시장가일 경우 가격세팅X/가격입력창 비활성화
-	'--------------------------------------------------------------------
+	 ----------------------------------------------------------------------
+	 -- 주문구분(gOrderGubun)이 시장가일 경우 가격세팅X/가격입력창 비활성화
+	 ----------------------------------------------------------------------
 	elseif gOrderGubun == "05" or gOrderGubun == "33" or gOrderGubun == "34" or gOrderGubun == "37" or gOrderGubun == "38"then
 	
-		'20241128 LES START
+		 --20241128 LES START
 		if gOrderGubun == "05" then
 			edtPrc.hintcaption = "시장가"
 		else
 			
-			'20240715 시장가유형일때는 공란으로
+			 --20240715 시장가유형일때는 공란으로
 			if gMaeMaeGubun == "BUY" then
 				edtPrc.hintcaption = "매수가격"
 			elseif gMaeMaeGubun == "SELL" then
 				edtPrc.hintcaption = "매도가격"
-			elseif gMaeMaeGubun == "MOD" then
+			elseif gMaeMaeGubun == "%" then
 				edtPrc.hintcaption = "정정가격"
-			end if
+			end
 			
-		end if
-		'20241128 LES END
+		end
+		 --20241128 LES END
 		
 		btnPMinus.enable = false
 		btnPMinus0.enable = false
@@ -573,34 +575,34 @@ Function SetInitPrcEdit()
 		edtPrc.enable = false
 		
 	
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-' 수량 입력창 데이터 세팅
-'============================================================================
-Function SetInitQtyEdit()
+ --============================================================================
+ -- 수량 입력창 데이터 세팅
+ --============================================================================
+function SetInitQtyEdit()
 	
-	'--------------------------
-	' 링크수량 입력(수량이 빈값이면 0주로 초기화)
-	'--------------------------
+	 ----------------------------
+	 -- 링크수량 입력(수량이 빈값이면 0주로 초기화)
+	 ----------------------------
 	if gQty == "" then
 		gQty = "0"
-	end if
+	end
 	
 	edtQty.caption = gQty
 	
-	'--------------------------
-	'링크 매매단위 입력
-	'--------------------------
+	 ----------------------------
+	 --링크 매매단위 입력
+	 ----------------------------
 	LabelUnit.caption = g_szOrdSize
 	
 	
-	'--------------------------
-	'정정/취소에서 호출된 경우 수량 변경 불가
-	'--------------------------
-	if gMaeMaeGubun == "MOD" then
+	 ----------------------------
+	 --정정/취소에서 호출된 경우 수량 변경 불가
+	 ----------------------------
+	if gMaeMaeGubun == "%" then
 		
 		btnQMinus0.enable = false
 		btnQMinus.enable = false
@@ -610,93 +612,93 @@ Function SetInitQtyEdit()
 		btnQty.enable = false
 		edtQty.enable = false
 		
-	end if
+	end
 	
-End Function
+end
 
-'============================================================================
-' 주문금액 라벨 데이터 세팅
-'============================================================================
-Function SetInitOrdPriceLabel()
+ --============================================================================
+ -- 주문금액 라벨 데이터 세팅
+ --============================================================================
+function SetInitOrdPriceLabel()
 
-	'--------------------------
-	' 마스킹 처리
-	'--------------------------
-	'if g_szCurrency <> "" then
-	'	sMask = "0,0,,".. " " .. g_szCurrency .. ",0,,"..g_szDecimal..",1,1,2,0"
-	'else
-	'	sMask = "0,0,,,0,,"..g_szDecimal..",1,1,2,0"
-	'end if
+	 ----------------------------
+	 -- 마스킹 처리
+	 ----------------------------
+	 --if g_szCurrency <> "" then
+	 --	sMask = "0,0,,".. " " .. g_szCurrency .. ",0,,"..g_szDecimal..",1,1,2,0"
+	 --else
+	 --	sMask = "0,0,,,0,,"..g_szDecimal..",1,1,2,0"
+	 --end if
 	
-	'lblOrderPrice.mask = sMask
+	 --lblOrderPrice.mask = sMask
 	
-	'--------------------------
-	' 링크주문금액 입력
-	'--------------------------
+	 ----------------------------
+	 -- 링크주문금액 입력
+	 ----------------------------
 	lblOrderPrice.caption = gCalcOrderPrice
 	lblOrderPriceWon.caption = gCalcOrderPriceWon
 
 
-End Function
+end
 
-'============================================================================
-' 거래소 호가단위 설정
-'============================================================================
-Function GetHogaUnit(szMk, szPrc, nGbn) 
+ --============================================================================
+ -- 거래소 호가단위 설정
+ --============================================================================
+function GetHogaUnit(szMk, szPrc, nGbn)
 	
-	'-----------------------------------------------------------------------
-	' 호가단위 초기화
-	'-----------------------------------------------------------------------
-	szOrdPrc = CDbl(szPrc)
+	 -------------------------------------------------------------------------
+	 -- 호가단위 초기화
+	 -------------------------------------------------------------------------
+	szOrdPrc = gf_Tonumber(szPrc)
 	
 	if szOrdPrc == "" then
-		if g_szCurPrice = "" or CDbl(g_szCurPrice) == 0 then
+		if g_szCurPrice == "" or gf_Tonumber(g_szCurPrice) == 0 then
 			szOrdPrc = 0		
 		else
-			szOrdPrc = CDbl(g_szCurPrice)
-		end if	
-	end if
+			szOrdPrc = gf_Tonumber(g_szCurPrice)
+		end
+	end
 	
 	szUnit = "1.000"
 	
-	'-----------------------------------------------------------------------
-	' 틱타입 확인
-	'-----------------------------------------------------------------------
-	szTtype = Cint(gTickType)
+	 -------------------------------------------------------------------------
+	 -- 틱타입 확인
+	 -------------------------------------------------------------------------
+	szTtype = gf_Tonumber(gTickType)
 
 	if szTtype == 0 or szTtype == "" then
 		szTtype = "0"
-	end if
+	end
 	
-	'-----------------------------------------------------------------------
-	' 중국(상해/심천) 호가단위 설정
-	'-----------------------------------------------------------------------
-	if szMk == "0215" then '상해
+	 -------------------------------------------------------------------------
+	 -- 중국(상해/심천) 호가단위 설정
+	 -------------------------------------------------------------------------
+	if szMk == "0215" then --상해
 		
-		'20240613 LES START 틱단위 수정
-		if szTtype = 2 then 'ETF
+		 --20240613 LES START 틱단위 수정
+		if szTtype == 2 then --ETF
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
-		end if
-		'20240613 LES END
+		end
+		 --20240613 LES END
 		
-	elseif szMk == "0214" then '심천
+	elseif szMk == "0214" then --심천
 		
-		'20240613 LES START 틱단위 수정
-		if szTtype = 2 then 'ETF
+		 --20240613 LES START 틱단위 수정
+		if szTtype == 2 then --ETF
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
-		end if
-		'20240613 LES END
+		end
+		 --20240613 LES END
 		
-	'-----------------------------------------------------------------------
-	' 미국(뉴욕/나스닥/아멕스) 호가단위 설정
-	'-----------------------------------------------------------------------
-	elseif szMk == "0321" or szMk == "0537" or szMk == "0066" then '뉴욕, 나스닥, 아멕스
+	 -------------------------------------------------------------------------
+	 -- 미국(뉴욕/나스닥/아멕스) 호가단위 설정
+	 -------------------------------------------------------------------------
+	elseif szMk == "0321" or szMk == "0537" or szMk == "0066" then --뉴욕, 나스닥, 아멕스
 		
-		'20240702 LES START - 1달러미만 종목 0.0001단위
+		 --20240702 LES START - 1달러미만 종목 0.0001단위
 		if szOrdPrc < 1.00 then
 			szUnit = "0.0001" 
 		else
@@ -714,20 +716,20 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				
 			else
 				szUnit = "0.010"
-			end if
-		end if
+			end
+		end
 	
-	'-----------------------------------------------------------------------
-	' 홍콩 호가단위 설정, (홍콩ETF종목 호가단위 변경)
-	'-----------------------------------------------------------------------
-	elseif szMk == "0104" then '홍콩
+	 -------------------------------------------------------------------------
+	 -- 홍콩 호가단위 설정, (홍콩ETF종목 호가단위 변경)
+	 -------------------------------------------------------------------------
+	elseif szMk == "0104" then --홍콩
 		
 		if szTtype == 3 then
 			szUnit = "0.050"
 			
-		'홍콩 ETF종목 호가단위 변경
-		'type = 5 (ETF종목) 추가
-		'20250728 MSH START 홍콩거래소 틱사이즈 변경 및 추가 
+		 --홍콩 ETF종목 호가단위 변경
+		 --type = 5 (ETF종목) 추가
+		 --20250728 MSH START 홍콩거래소 틱사이즈 변경 및 추가 
 		elseif szTtype == 5 then
 			
 			if nGbn == 0 then
@@ -751,7 +753,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "0.500"
 				else
 					szUnit = "1.000"
-				end if
+				end
 			
 			else
 				if szOrdPrc <= 1.00 then
@@ -774,11 +776,11 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "0.500"
 				else
 					szUnit = "1.000"
-				end if
+				end
 			
-			end if
+			end
 			
-		elseif szTtype == 6 then '20250728 MSH 사이즈 6 추가 
+		elseif szTtype == 6 then --20250728 MSH 사이즈 6 추가 
 			
 			if nGbn == 0 then
 				if szOrdPrc < 0.25 then
@@ -793,7 +795,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 20.00 then
 					szUnit = "0.020"
 					
-				elseif szOrdPrc < 50.00 then	
+				elseif szOrdPrc < 50.00 then
 					szUnit = "0.050"					
 		
 				elseif szOrdPrc < 100.00 then
@@ -814,10 +816,10 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000.00 then
 					szUnit = "2.000"
 		
-				else 
+				else
 					szUnit = "5.000"
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 0.25 then
 					szUnit = "0.001"
@@ -831,7 +833,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 20.00 then
 					szUnit = "0.020"
 					
-				elseif szOrdPrc <= 50.00 then	
+				elseif szOrdPrc <= 50.00 then
 					szUnit = "0.050"					
 		
 				elseif szOrdPrc <= 100.00 then
@@ -852,14 +854,14 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 5000.00 then
 					szUnit = "2.000"
 		
-				else 
+				else
 					szUnit = "5.000"
 		
-				end if
+				end
 			
-			end if		
+			end
 		
-		else ' 사이즈 1 
+		else -- 사이즈 1 
 			if nGbn == 0 then
 				if szOrdPrc < 0.25 then
 					szUnit = "0.001"
@@ -870,7 +872,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 20.00 then
 					szUnit = "0.010"
 		
-				elseif szOrdPrc < 50.00 then	
+				elseif szOrdPrc < 50.00 then
 					szUnit = "0.020"					
 		
 				elseif szOrdPrc < 100.00 then
@@ -891,10 +893,10 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000.00 then
 					szUnit = "2.000"
 		
-				else 
+				else
 					szUnit = "5.000"
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 0.25 then
 					szUnit = "0.001"
@@ -905,7 +907,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 20.00 then
 					szUnit = "0.010"
 		
-				elseif szOrdPrc <= 50.00 then	
+				elseif szOrdPrc <= 50.00 then
 					szUnit = "0.020"
 		
 				elseif szOrdPrc <= 100.00 then
@@ -929,17 +931,17 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				else
 					szUnit = "5.000"
 		
-				end if
+				end
 			
-			end if
+			end
 			
-		end if
-		'20250728 MSH END 
+		end
+		 --20250728 MSH END 
 	
-	'-----------------------------------------------------------------------
-	' 해외주식 일본시장(도쿄거래소) 추가
-	'-----------------------------------------------------------------------
-	elseif szMk == "0106" then '도쿄
+	 -------------------------------------------------------------------------
+	 -- 해외주식 일본시장(도쿄거래소) 추가
+	 -------------------------------------------------------------------------
+	elseif szMk == "0106" then --도쿄
 		if szTtype == 3 then
 			if nGbn == 0 then
 				if szOrdPrc < 1000 then
@@ -951,7 +953,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000 then
 					szUnit = "1"
 		
-				elseif szOrdPrc < 10000 then	
+				elseif szOrdPrc < 10000 then
 					szUnit = "1"
 		
 				elseif szOrdPrc < 30000 then
@@ -984,10 +986,10 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 30000000 then
 					szUnit = "5000"
 		
-				else 
+				else
 					szUnit = "10000"
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 1000 then
 					szUnit = "0.1"
@@ -998,7 +1000,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 5000 then
 					szUnit = "1"
 		
-				elseif szOrdPrc <= 10000 then	
+				elseif szOrdPrc <= 10000 then
 					szUnit = "1"
 		
 				elseif szOrdPrc <= 30000 then
@@ -1031,15 +1033,15 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 30000000 then
 					szUnit = "5000"
 		
-				else 
+				else
 					szUnit = "10000"
 		
-				end if
+				end
 			
-			end if	
+			end
 		
-		'20250425 SWJ START
-		'틱타입 4 추가
+		 --20250425 SWJ START
+		 --틱타입 4 추가
 		elseif szTtype == 4 then
 			
 			if nGbn == 0 then
@@ -1052,7 +1054,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000 then
 					szUnit = "1"
 		
-				elseif szOrdPrc < 10000 then	
+				elseif szOrdPrc < 10000 then
 					szUnit = "1"
 		
 				elseif szOrdPrc < 30000 then
@@ -1085,10 +1087,10 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 30000000 then
 					szUnit = "5000"
 		
-				else 
+				else
 					szUnit = "10000"
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 1000 then
 					szUnit = "1"
@@ -1099,7 +1101,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 5000 then
 					szUnit = "1"
 		
-				elseif szOrdPrc <= 10000 then	
+				elseif szOrdPrc <= 10000 then
 					szUnit = "1"
 		
 				elseif szOrdPrc <= 30000 then
@@ -1132,14 +1134,14 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 30000000 then
 					szUnit = "5000"
 		
-				else 
+				else
 					szUnit = "10000"
 		
-				end if
+				end
 			
-			end if	
+			end
 		
-		'20250425 SWJ END
+		 --20250425 SWJ END
 		
 		else
 			if nGbn == 0 then
@@ -1152,7 +1154,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000 then
 					szUnit = "5"
 		
-				elseif szOrdPrc < 10000 then	
+				elseif szOrdPrc < 10000 then
 					szUnit = "10"
 		
 				elseif szOrdPrc < 30000 then
@@ -1185,17 +1187,17 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 30000000 then
 					szUnit = "10000"
 		
-				'20250425 SWJ START
-				elseif szOrdPrc < 50000000 then 
+				 --20250425 SWJ START
+				elseif szOrdPrc < 50000000 then
 					
 					szUnit = "50000"
 				
-				else 
+				else
 					szUnit = "100000"
 				
-				'20250425 SWJ END
+				 --20250425 SWJ END
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 1000 then
 					szUnit = "1"
@@ -1206,7 +1208,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 5000 then
 					szUnit = "5"
 		
-				elseif szOrdPrc <= 10000 then	
+				elseif szOrdPrc <= 10000 then
 					szUnit = "10"
 		
 				elseif szOrdPrc <= 30000 then
@@ -1239,32 +1241,32 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 30000000 then
 					szUnit = "10000"
 		
-				'20250425 SWJ START
-				elseif szOrdPrc <= 50000000 then 
+				 --20250425 SWJ START
+				elseif szOrdPrc <= 50000000 then
 					
 					szUnit = "50000"
 				
-				else 
+				else
 					szUnit = "100000"
 				
-				'20250425 SWJ END
+				 --20250425 SWJ END
 				
-				end if
+				end
 			
-			end if
+			end
 		
-		end if
+		end
 	
-	end if
+	end
 	
 	return szUnit
 	
-End Function
+end
 
-'============================================================================
-' Calc_Price : +, - 버튼클릭시 호가단위로 가격계산
-'============================================================================
-Function Calc_Price(nGbn)
+ --============================================================================
+ -- Calc_Price : +, - 버튼클릭시 호가단위로 가격계산
+ --============================================================================
+function Calc_Price(nGbn)
 
 	szEditPrice = GetPrice()
 	szPrc  = ReSet_Prc(szEditPrice, nGbn)
@@ -1274,317 +1276,317 @@ Function Calc_Price(nGbn)
 	g_szUnit = GetHogaUnit(gMarketCode, szPrc, nGbn)
 	szUnit = g_szUnit
 	
-	if Trim(szPrc) == "" or CDbl(szPrc) == 0 then
-		if g_szCurPrice == "" or CDbl(g_szCurPrice) == 0 then
+	if gf_Trim(szPrc) == "" or gf_Tonumber(szPrc) == 0 then
+		if g_szCurPrice == "" or gf_Tonumber(g_szCurPrice) == 0 then
 			szPrc = 0
 		else
-			szPrc = CDbl(g_szCurPrice)
-		end if
+			szPrc = gf_Tonumber(g_szCurPrice)
+		end
 	else
 		
-		'------------------------------------------------
-		' + 버튼 클릭
-		'------------------------------------------------
-		if nGbn == 0 then							
-			if CDbl(szPrc) >= CDbl(szHigh) then		' 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
-				if szHigh <> "0" then
-					szPrc = CDbl(szHigh)
+		 --------------------------------------------------
+		 -- + 버튼 클릭
+		 --------------------------------------------------
+		if nGbn == 0 then
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+				if szHigh ~= "0" then
+					szPrc = gf_Tonumber(szHigh)
 				else
-					szPrc = CDbl(szPrc) + CDbl(szUnit)
-				end if 
-			elseif CDbl(szPrc) < CDbl(szLow) then	' 하한가보다 낮은가격에서 +버튼 클릭시 하한가로 복귀
-				if szLow <> "0" then
-					szPrc = CDbl(szLow)
+					szPrc = gf_Tonumber(szPrc) + gf_Tonumber(szUnit)
+				end
+			elseif gf_Tonumber(szPrc) < gf_Tonumber(szLow) then -- 하한가보다 낮은가격에서 +버튼 클릭시 하한가로 복귀
+				if szLow ~= "0" then
+					szPrc = gf_Tonumber(szLow)
 				else
-					szPrc = CDbl(szPrc) + CDbl(szUnit)
-				end if 
+					szPrc = gf_Tonumber(szPrc) + gf_Tonumber(szUnit)
+				end
 			else
-				szPrc = CDbl(szPrc) + CDbl(szUnit)
-			end if
+				szPrc = gf_Tonumber(szPrc) + gf_Tonumber(szUnit)
+			end
 		
-		'------------------------------------------------
-		' - 버튼 클릭 
-		'------------------------------------------------
-		elseif nGbn == 1 then						
-			if CDbl(szPrc) > CDbl(szHigh) then		' 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
-				if szHigh <> "0" then
-					szPrc = CDbl(szHigh)
+		 --------------------------------------------------
+		 -- - 버튼 클릭 
+		 --------------------------------------------------
+		elseif nGbn == 1 then
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+				if szHigh ~= "0" then
+					szPrc = gf_Tonumber(szHigh)
 				else
-					szPrc = CDbl(szPrc) - CDbl(szUnit)
-				end if 		
-			elseif CDbl(szPrc) <= CDbl(szLow) then	' 하한가와 같거나 낮은가격에서 -버튼 클릭시 하한가로 복귀
-				if szLow <> "0" then
-					szPrc = CDbl(szLow)
+					szPrc = gf_Tonumber(szPrc) - gf_Tonumber(szUnit)
+				end
+			elseif gf_Tonumber(szPrc) <= gf_Tonumber(szLow) then -- 하한가와 같거나 낮은가격에서 -버튼 클릭시 하한가로 복귀
+				if szLow ~= "0" then
+					szPrc = gf_Tonumber(szLow)
 				else
-					szPrc = CDbl(szPrc) - CDbl(szUnit)
-				end if 
+					szPrc = gf_Tonumber(szPrc) - gf_Tonumber(szUnit)
+				end
 			else
-				szPrc = CDbl(szPrc) - CDbl(szUnit)
-			end if
-		end if
-	end if
+				szPrc = gf_Tonumber(szPrc) - gf_Tonumber(szUnit)
+			end
+		end
+	end
 	
-	if CDbl(szPrc) < 0 then
+	if gf_Tonumber(szPrc) < 0 then
 		szPrc = 0
-	end if
+	end
 	
 	
-	'입력값 자리수 체크
-	if Len(szPrc) > gMaxLen then
+	 --입력값 자리수 체크
+	if string.len(szPrc) > gMaxLen then
 		return
-	end if
+	end
 	
 	SetPrice("AUTO",szPrc,g_szDecimal,g_szCurrency)
 	
 	Calc_OrderPrice()
 	
-End Function
+end
 
-'============================================================================
-' 가격 호가단위 맞추기 
-'============================================================================
-Function ReSet_Prc(szData, nGbn)	
+ --============================================================================
+ -- 가격 호가단위 맞추기 
+ --============================================================================
+function ReSet_Prc(szData, nGbn)
 
 	if nGbn == 0 then
-		nResult = Round(CDbl(szData) Mod CDbl(g_szUnit), CInt(g_szDecimal))
+		nResult = gf_Round(gf_Tonumber(szData) % gf_Tonumber(g_szUnit), gf_Tonumber(g_szDecimal))
 
-		if nResult <> 0 and nResult <> CDbl(g_szUnit) then
-			return CDbl(szData) - nResult
+		if nResult ~= 0 and nResult ~= gf_Tonumber(g_szUnit) then
+			return gf_Tonumber(szData) - nResult
 		else
 			return szData
-		end if
+		end
 	else
-		nResult = Round(CDbl(szData) Mod CDbl(g_szUnit), CInt(g_szDecimal))
+		nResult = gf_Round(gf_Tonumber(szData) % gf_Tonumber(g_szUnit), gf_Tonumber(g_szDecimal))
 	
-		if nResult <> 0 then
-			return CDbl(szData) + (CDbl(g_szUnit) - nResult)
+		if nResult ~= 0 then
+			return gf_Tonumber(szData) + (gf_Tonumber(g_szUnit) - nResult)
 		else
 			return szData
-		end if
-	end if
-End Function
+		end
+	end
+end
 
-'============================================================================
-' 주문금액 가계산
-'============================================================================
-Function Calc_OrderPrice()
+ --============================================================================
+ -- 주문금액 가계산
+ --============================================================================
+function Calc_OrderPrice()
 	
-	nPrc = Cdbl(GetPrice())
-	nQty = Cint(edtQty.caption)
+	nPrc = gf_Tonumber(GetPrice())
+	nQty = gf_Tonumber(edtQty.caption)
 	
-	if nPrc <> "" and nPrc > 0 and nQty <> "" and nQty > 0 then
+	if nPrc ~= "" and nPrc > 0 and nQty ~= "" and nQty > 0 then
 		
 		nOrderPrice = nPrc * nQty
 		
-		if g_szDecimal <> "" then
-			lblOrderPrice.caption = FormatNumber(nOrderPrice,g_szDecimal).." " .. g_szCurrency
+		if g_szDecimal ~= "" then
+			lblOrderPrice.caption = gf_CommaValue(nOrderPrice,g_szDecimal).." " .. g_szCurrency
 		else
-			lblOrderPrice.caption = FormatNumber(nOrderPrice,0).." " .. g_szCurrency
-		end if
+			lblOrderPrice.caption = gf_CommaValue(nOrderPrice,0).." " .. g_szCurrency
+		end
 		
-		nExChangeRate = Cdbl(gExchangeRate)
+		nExChangeRate = gf_Tonumber(gExchangeRate)
 		
-		if nExChangeRate <> "" and nExChangeRate > 0 then
+		if nExChangeRate ~= "" and nExChangeRate > 0 then
 			nOrderPriceWon = nOrderPrice * nExChangeRate
-			nOrderPriceWon = Cint(nOrderPriceWon)
-			lblOrderPriceWon.caption = FormatNumber(nOrderPriceWon,0).."원"
+			nOrderPriceWon = gf_Tonumber(nOrderPriceWon)
+			lblOrderPriceWon.caption = gf_CommaValue(nOrderPriceWon,0).."원"
 		else
 			lblOrderPriceWon.caption = "- " .. "원"
-		end if
+		end
 	
 	else
 	
 		lblOrderPrice.caption = "- " .. g_szCurrency
 		lblOrderPriceWon.caption = "- " .. "원"
 		
-	end if
+	end
 	
-End Function
+end
 
-'============================================================================
-Sub btnPPlus_OnClick()
+ --============================================================================
+function btnPPlus_OnClick()
 	SetMakeQuickButton("0")
-	SetFocusEdit("0") '0:단가 / 1:수량 / 2:금액
+	SetFocusEdit("0")  --0:단가 / 1:수량 / 2:금액
 	Calc_Price(0)
-End Sub
-'============================================================================
-Sub btnPPlus0_OnClick()
+end
+ --============================================================================
+function btnPPlus0_OnClick()
 	SetMakeQuickButton("0")
-	SetFocusEdit("0") '0:단가 / 1:수량 / 2:금액
+	SetFocusEdit("0")  --0:단가 / 1:수량 / 2:금액
 	Calc_Price(0)
-End Sub
-'============================================================================
-Sub btnPMinus_OnClick()
+end
+ --============================================================================
+function btnPMinus_OnClick()
 	SetMakeQuickButton("0")
-	SetFocusEdit("0") '0:단가 / 1:수량 / 2:금액
+	SetFocusEdit("0")  --0:단가 / 1:수량 / 2:금액
 	Calc_Price(1)
-End Sub
-'============================================================================
-Sub btnPMinus0_OnClick()
+end
+ --============================================================================
+function btnPMinus0_OnClick()
 	SetMakeQuickButton("0")
-	SetFocusEdit("0") '0:단가 / 1:수량 / 2:금액
+	SetFocusEdit("0")  --0:단가 / 1:수량 / 2:금액
 	Calc_Price(1)
-End Sub
+end
 
-'============================================================================
-' Calc_Qty : +, - 버튼클릭시 수량 length로 수량단위 계산
-'============================================================================
-Function Calc_Qty(nGbn,nUnit)
+ --============================================================================
+ -- Calc_Qty : +, - 버튼클릭시 수량 length로 수량단위 계산
+ --============================================================================
+function Calc_Qty(nGbn,nUnit)
 	
 	szQty = edtQty.caption
 	
-	'---------------------------------------------------------
-	' (기존요건) 최대입력 가능 수량
-	'---------------------------------------------------------
-	if Trim(szQty) <> "" then
-		if Len(szQty) > gMaxLen then
+	 -----------------------------------------------------------
+	 -- (기존요건) 최대입력 가능 수량
+	 -----------------------------------------------------------
+	if gf_Trim(szQty) ~= "" then
+		if string.len(szQty) > gMaxLen then
 			if nGbn == 0 then
-				Exit Function
-			end if
-		end if
-	end if
+				return
+			end
+		end
+	end
 	
-	'---------------------------------------------------------
-	' 수량이 빈값인 경우 매매단위로 초기화
-	'---------------------------------------------------------
-	if Trim(szQty) == "" then
+	 -----------------------------------------------------------
+	 -- 수량이 빈값인 경우 매매단위로 초기화
+	 -----------------------------------------------------------
+	if gf_Trim(szQty) == "" then
 		if nGbn == 0 then
-			szQty = CDbl(nUnit)
+			szQty = gf_Tonumber(nUnit)
 		else
-			Exit Function
-		end if
+			return
+		end
 	
-	'---------------------------------------------------------
-	' 수량이 빈값이 아닌 경우
-	'---------------------------------------------------------
+	 -----------------------------------------------------------
+	 -- 수량이 빈값이 아닌 경우
+	 -----------------------------------------------------------
 	else
 			
-		'---------------------------------------------------------
-		' [+]버튼 클릭
-		'---------------------------------------------------------
+		 -----------------------------------------------------------
+		 -- [+]버튼 클릭
+		 -----------------------------------------------------------
 		if nGbn == 0 then
-			szQty = CDbl(szQty) + CDbl(nUnit)
-			nResult = CDbl(szQty) Mod CDbl(nUnit)
+			szQty = gf_Tonumber(szQty) + gf_Tonumber(nUnit)
+			nResult = gf_Tonumber(szQty) % gf_Tonumber(nUnit)
 			
-			if nResult <> 0 then
-				szQty = CDbl(szQty) - nResult
-			end if
+			if nResult ~= 0 then
+				szQty = gf_Tonumber(szQty) - nResult
+			end
 			
-		'---------------------------------------------------------
-		' [-]버튼 클릭
-		'---------------------------------------------------------
+		 -----------------------------------------------------------
+		 -- [-]버튼 클릭
+		 -----------------------------------------------------------
 		elseif nGbn == 1 then
 			
-			if CDbl(szQty) == 0 then
-				Exit Function
-			else		
-				szQty = szQty - CDbl(nUnit)
-				nResult = CDbl(szQty) Mod CDbl(nUnit)
+			if gf_Tonumber(szQty) == 0 then
+				return
+			else
+				szQty = szQty - gf_Tonumber(nUnit)
+				nResult = gf_Tonumber(szQty) % gf_Tonumber(nUnit)
 				
-				'20240726
-				if Cdbl(szQty) < 0 then
+				 --20240726
+				if gf_Tonumber(szQty) < 0 then
 					szQty = 0
-				end if
+				end
 				
-			end if
+			end
 			
-		end if
+		end
 		
-	end if
+	end
 	
-	'---------------------------------------------------------
-	' 입력값 자리수 확인
-	'---------------------------------------------------------
-	if Len(szQty) <= gMaxLen then		
-		if CStr(szQty) == "" then
+	 -----------------------------------------------------------
+	 -- 입력값 자리수 확인
+	 -----------------------------------------------------------
+	if string.len(szQty) <= gMaxLen then
+		if gf_Tostring(szQty) == "" then
 			edtQty.caption = ""
 		else
 			edtQty.caption = szQty
-		end if
-	end if
+		end
+	end
 	
 	Calc_OrderPrice()
 	
 	
-End Function
+end
 
-'============================================================================
-Sub btnQPlus_OnClick()
+ --============================================================================
+function btnQPlus_OnClick()
 	SetMakeQuickButton("1")
-	SetFocusEdit("1") '0:단가 / 1:수량 / 2:금액
+	SetFocusEdit("1")  --0:단가 / 1:수량 / 2:금액
 	Calc_Qty(0,g_szOrdSize)
-End Sub
-'============================================================================
-Sub btnQPlus0_OnClick()
+end
+ --============================================================================
+function btnQPlus0_OnClick()
 	SetMakeQuickButton("1")
-	SetFocusEdit("1") '0:단가 / 1:수량 / 2:금액
+	SetFocusEdit("1")  --0:단가 / 1:수량 / 2:금액
 	Calc_Qty(0,g_szOrdSize)
-End Sub
+end
 
-'============================================================================
-Sub btnQMinus_OnClick()
+ --============================================================================
+function btnQMinus_OnClick()
 	SetMakeQuickButton("1")
-	SetFocusEdit("1") '0:단가 / 1:수량 / 2:금액
+	SetFocusEdit("1")  --0:단가 / 1:수량 / 2:금액
 	Calc_Qty(1,g_szOrdSize)
-End Sub
-'============================================================================
-Sub btnQMinus0_OnClick()
+end
+ --============================================================================
+function btnQMinus0_OnClick()
 	SetMakeQuickButton("1")
-	SetFocusEdit("1") '0:단가 / 1:수량 / 2:금액
+	SetFocusEdit("1")  --0:단가 / 1:수량 / 2:금액
 	Calc_Qty(1,g_szOrdSize)
-End Sub
+end
 
-'============================================================================
-Sub btnCancel_OnClick()
+ --============================================================================
+function btnCancel_OnClick()
 	Form.CloseForm()
-End Sub
+end
 
-'============================================================================
-Sub btnOk_OnClick()
+ --============================================================================
+function btnOk_OnClick()
 	
-	'Dim szData
-	'
-	'if g_bNowMkPrc == true then'시장가 클릭한 상태로 나가면 1, 아니면 0
-	'	szData = g_szPrc .."★".. edtQty.caption.."★1".."★"..g_szMk.."★"..g_szInner.."★"..g_szType
-	'else
-	'	szData = g_szPrc .."★".. edtQty.caption.."★0".."★"..g_szMk.."★"..g_szInner.."★"..g_szType
-	'end if
+	 --Dim szData
+	 --
+	 --if g_bNowMkPrc == true then'시장가 클릭한 상태로 나가면 1, 아니면 0
+	 --	szData = g_szPrc .."★".. edtQty.caption.."★1".."★"..g_szMk.."★"..g_szInner.."★"..g_szType
+	 --else
+	 --	szData = g_szPrc .."★".. edtQty.caption.."★0".."★"..g_szMk.."★"..g_szInner.."★"..g_szType
+	 --end if
 	
 	szData = GetPrice() .. "★".. edtQty.caption
 	Form.SendReturnToParent("InputKeyPad", szData)
 	Form.CloseForm()
 	
 	
-End Sub
+end
 
-'============================================================================
-' 타이틀 구분에 따른 퀵버튼 생성
-'============================================================================
-Function SetMakeQuickButton(sGubun)
+ --============================================================================
+ -- 타이틀 구분에 따른 퀵버튼 생성
+ --============================================================================
+function SetMakeQuickButton(sGubun)
 
-	'----------------------------------------------------------------------------
-	' 단가 (단가 퀵버튼의 경우 매도1호가/현재가/매수1호가 로 고정)
-	'----------------------------------------------------------------------------
+	 ------------------------------------------------------------------------------
+	 -- 단가 (단가 퀵버튼의 경우 매도1호가/현재가/매수1호가 로 고정)
+	 ------------------------------------------------------------------------------
 	if sGubun == "0" then
 		
 		contPrc.visible = true
 		contQty.visible = false
 		contOrderPrice.visible = false
 		
-		'단가입력 상태일 경우 00 => .(dot)으로 변환
+		 --단가입력 상태일 경우 00 => .(dot)으로 변환
 		btnPlus00.caption = "."
 	
-	'----------------------------------------------------------------------------
-	' 수량 (매매단위별로 퀵버튼 수량 가변적)
-	'----------------------------------------------------------------------------
+	 ------------------------------------------------------------------------------
+	 -- 수량 (매매단위별로 퀵버튼 수량 가변적)
+	 ------------------------------------------------------------------------------
 	elseif sGubun == "1" then
 	
-		'매매단위 < 10 인 경우 : +10 / +100 / +1000 / 최대가능
-		'매매단위 >= 10 인 경우 : 매매단위*1 / 매매단위*2 / 매매단위*3 / 최대가능
-		if CDbl(g_szOrdSize) >= 10 then
-			contQty.btnQty10.caption = "+"..Cstr(g_szOrdSize * 1) .. "주"
-			contQty.btnQty100.caption = "+"..Cstr(g_szOrdSize * 2) .. "주"
-			contQty.btnQty1000.caption = "+"..Cstr(g_szOrdSize * 3) .. "주"
+		 --매매단위 < 10 인 경우 : +10 / +100 / +1000 / 최대가능
+		 --매매단위 >= 10 인 경우 : 매매단위*1 / 매매단위*2 / 매매단위*3 / 최대가능
+		if gf_Tonumber(g_szOrdSize) >= 10 then
+			contQty.btnQty10.caption = "+"..Gf_Tostring(g_szOrdSize * 1) .. "주"
+			contQty.btnQty100.caption = "+"..Gf_Tostring(g_szOrdSize * 2) .. "주"
+			contQty.btnQty1000.caption = "+"..Gf_Tostring(g_szOrdSize * 3) .. "주"
 			
 			gQty10_Size = g_szOrdSize * 1
 			gQty100_Size = g_szOrdSize * 2
@@ -1594,102 +1596,102 @@ Function SetMakeQuickButton(sGubun)
 			contQty.btnQty10.caption = "+10주"
 			contQty.btnQty100.caption = "+100주"
 			contQty.btnQty1000.caption = "+1000주"
-		end if
+		end
 	
 		contPrc.visible = false
 		contQty.visible = true
 		contOrderPrice.visible = false
 		
-		'수량입력 상태일 경우 .(dot) => 00 으로 변환
+		 --수량입력 상태일 경우 .(dot) => 00 으로 변환
 		btnPlus00.caption = "00"
 	
-	'-------------------
-	'금액
-	'-------------------
+	 ---------------------
+	 --금액
+	 ---------------------
 	elseif sGubun == "2" then
 	
 		contPrc.visible = false
 		contQty.visible = false
 		contOrderPrice.visible = true
 	
-	end if
+	end
 	
-End Function
+end
 
-'============================================================================
-' 키패드 버튼 입력 시 처리
-'============================================================================
-Function InputKeypad(sType, sKeypad)
+ --============================================================================
+ -- 키패드 버튼 입력 시 처리
+ --============================================================================
+function InputKeypad(sType, sKeypad)
 
-	'----------------------------------------------------------------------
-	'sType = "NUM" : 숫자(1~9) 버튼
-	'----------------------------------------------------------------------
-	'sType = "ZERO" : 숫자(0) 버튼
-	'----------------------------------------------------------------------
-	'sType = "DOT" : 소수점(.) 버튼
-	'----------------------------------------------------------------------
-	'sType = "QUICK" : 퀵버튼
-	'
-	'- 단가 : 매도1호가/현재가/매수1호가
-	'- 수량 : +10 / +100 / +1000 or +매매단위*1 / +매매단위*2 / +매매단위*3
-	'- 금액 : +10만 / +100만 / +500만
-	'
-	'----------------------------------------------------------------------
-	'sType = "ABLE" : 가능수량 버튼
-	'----------------------------------------------------------------------
-	'sType = "CLEAR" : 클리어 버튼
-	'----------------------------------------------------------------------
-	'sType = "DELETE" : 삭제버튼
-	'----------------------------------------------------------------------
+	 ------------------------------------------------------------------------
+	 --sType = "NUM" : 숫자(1~9) 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "ZERO" : 숫자(0) 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "DOT" : 소수점(.) 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "QUICK" : 퀵버튼
+	 --
+	 --- 단가 : 매도1호가/현재가/매수1호가
+	 --- 수량 : +10 / +100 / +1000 or +매매단위*1 / +매매단위*2 / +매매단위*3
+	 --- 금액 : +10만 / +100만 / +500만
+	 --
+	 ------------------------------------------------------------------------
+	 --sType = "ABLE" : 가능수량 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "CLEAR" : 클리어 버튼
+	 ------------------------------------------------------------------------
+	 --sType = "DELETE" : 삭제버튼
+	 ------------------------------------------------------------------------
 	
-	'======================================================================
-	' 숫자(1~9) 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 숫자(1~9) 키패드 입력
+	 --======================================================================
 	if sType == "NUM" then
 		
-		'---------------------------------------------------
-		'[단가 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 --[단가 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
 		if g_szFocusIndex == "0" then
 		
 			sData = GetPrice()
 			
-			'---------------------------------------------------
-			'[키패드로 최초 입력 시]
-			'키패드 최초 입력 시에는 입력되어있는 값 클리어
-			'---------------------------------------------------
-			if g_szFocusEditClear <> true then
+			 -----------------------------------------------------
+			 --[키패드로 최초 입력 시]
+			 --키패드 최초 입력 시에는 입력되어있는 값 클리어
+			 -----------------------------------------------------
+			if g_szFocusEditClear ~= true then
 				
 				g_szFocusEditClear = true
 				
 				sData = sKeypad
 				SetPrice("MANAUAL",sData,g_szDecimal,g_szCurrency)
 			
-			'---------------------------------------------------
-			'[키패드로 최초 입력이 아닐시]
-			''최초 클리어 이후에는 입력값 이어붙임
-			'---------------------------------------------------
+			 -----------------------------------------------------
+			 --[키패드로 최초 입력이 아닐시]
+			 --'최초 클리어 이후에는 입력값 이어붙임
+			 -----------------------------------------------------
 			else
 				
-				sData = sData & sKeypad
+				sData = sData .. sKeypad
 				
-				'입력값 자리수 체크
-				if Len(sData) > gMaxLen then
+				 --입력값 자리수 체크
+				if string.len(sData) > gMaxLen then
 					return
-				end if
+				end
 			
 				SetPrice("MANAUAL",sData,g_szDecimal,g_szCurrency)
 				
-			end if
+			end
 			
-		'---------------------------------------------------
-		'[수량 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 --[수량 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
 		elseif g_szFocusIndex == "1" then
 		
 			sData = edtQty.caption
 			
-			if g_szFocusEditClear <> true then
+			if g_szFocusEditClear ~= true then
 				
 				g_szFocusEditClear = true
 				sData = sKeypad
@@ -1697,33 +1699,33 @@ Function InputKeypad(sType, sKeypad)
 				
 			else
 				
-				sData = sData & sKeypad
+				sData = sData .. sKeypad
 			
-				'입력값 자리수 체크
-				if Len(sData) > gMaxLen then
+				 --입력값 자리수 체크
+				if string.len(sData) > gMaxLen then
 					return
-				end if
+				end
 				
 				edtQty.caption = sData
 			
-			end if
+			end
 		
-		end if
+		end
 		
 	
-	'======================================================================
-	' 숫자(0) 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 숫자(0) 키패드 입력
+	 --======================================================================
 	elseif sType == "ZERO" then
 	
-		'---------------------------------------------------
-		'[단가 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 --[단가 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
 		if g_szFocusIndex == "0" then
 			
 			sData = GetPrice()
 			
-			if g_szFocusEditClear <> true then
+			if g_szFocusEditClear ~= true then
 			
 				g_szFocusEditClear = true
 				sData = sKeypad
@@ -1731,26 +1733,26 @@ Function InputKeypad(sType, sKeypad)
 			
 			else
 				
-				sData = sData & sKeypad
+				sData = sData .. sKeypad
 			
-				'입력값 자리수 체크
-				if Len(sData) > gMaxLen then
+				 --입력값 자리수 체크
+				if string.len(sData) > gMaxLen then
 					return
-				end if
+				end
 				
 				SetPrice("MANAUAL",sData,g_szDecimal,g_szCurrency)
 			
-			end if
+			end
 		
 		
-		'---------------------------------------------------
-		'[수량 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 --[수량 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
 		elseif g_szFocusIndex == "1" then
 		
 			sData = edtQty.caption
 		
-			if g_szFocusEditClear <> true then
+			if g_szFocusEditClear ~= true then
 				
 				g_szFocusEditClear = true
 				sData = sKeypad
@@ -1758,67 +1760,67 @@ Function InputKeypad(sType, sKeypad)
 				
 			else
 			
-				'입력값 자리수 체크
-				if Len(sData & sKeypad) > gMaxLen then
+				 --입력값 자리수 체크
+				if string.len(sData & sKeypad) > gMaxLen then
 					return
-				end if
+				end
 				
-				'0이 입력되있는 경우에는 무시
-				if sData <> "0" then
-					sData = sData & sKeypad
+				 --0이 입력되있는 경우에는 무시
+				if sData ~= "0" then
+					sData = sData .. sKeypad
 					edtQty.caption = sData
-				end if
+				end
 			
-			end if
+			end
 		
-		end if
+		end
 	
-	'======================================================================
-	' 소수점(.) 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 소수점(.) 키패드 입력
+	 --======================================================================
 	elseif sType == "DOT" then
 	
-		'---------------------------------------------------
-		'[단가 입력창] 에 포커스가 되어있는 경우에만 동작
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 --[단가 입력창] 에 포커스가 되어있는 경우에만 동작
+		 -----------------------------------------------------
 		if g_szFocusIndex == "0" then
 		
 			sData = GetPrice()
 			
-			'이미 소수점이 입력되어 있는 경우에는 입력 무시
-			if Instr(sData,".") > 0 then
+			 --이미 소수점이 입력되어 있는 경우에는 입력 무시
+			if string.find(sData, ".") > 0 then
 				return
 			else
 				
-				if sData <> "" then
+				if sData ~= "" then
 					
-					sData = sData & sKeypad
+					sData = sData .. sKeypad
 					SetPrice("MANAUAL",sData,g_szDecimal,g_szCurrency)
 				
-				end if
+				end
 				
 			
-			end if
+			end
 		
-		end if
+		end
 		
 	
-	'======================================================================
-	' 퀵입력 버튼 
-	'======================================================================
+	 --======================================================================
+	 -- 퀵입력 버튼 
+	 --======================================================================
 	elseif sType == "QUICK" then
 	
 		if sKeypad == "QTY10" or sKeyPad == "QTY100" or sKeyPad == "QTY1000" then
 			
-			if g_szFocusEditClear <> true then
+			if g_szFocusEditClear ~= true then
 				g_szFocusEditClear = true
-			end if
+			end
 			
 			sData = edtQty.caption
 			
 			if sData == "" then
 				sData = "0"
-			end if
+			end
 			
 			if sKeypad == "QTY10" then
 				nAdd = gQty10_Size
@@ -1826,15 +1828,15 @@ Function InputKeypad(sType, sKeypad)
 				nAdd = gQty100_Size
 			elseif sKeypad == "QTY1000" then
 				nAdd = gQty1000_Size
-			end if
+			end
 			
-			edtQty.caption = CInt(sData) + nAdd
+			edtQty.caption = gf_Tonumber(sData) + nAdd
 			
 		elseif sKeypad == "PRC_MAEDO1" or sKeypad == "PRC_MAESU1" or sKeypad == "PRC_CUR" then
 		
-			if g_szFocusEditClear <> true then
+			if g_szFocusEditClear ~= true then
 				g_szFocusEditClear = true
-			end if
+			end
 			
 			if sKeypad == "PRC_MAEDO1" then
 				sData = tblData.GetCellString(1, 0)
@@ -1842,62 +1844,62 @@ Function InputKeypad(sType, sKeypad)
 				sData = tblData.GetCellString(1, 1)
 			else
 				sData = tblData.GetCellString(1, 2)
-			end if
+			end
 			
 			SetPrice("AUTO",sData,g_szDecimal,g_szCurrency)
 				
-		end if
+		end
 	
 	
-	'======================================================================
-	' 가능수량 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 가능수량 키패드 입력
+	 --======================================================================
 	elseif sType == "ABLE" then
 	
-	'======================================================================
-	' 가능수량 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 가능수량 키패드 입력
+	 --======================================================================
 	elseif sType == "CLEAR" then
 	
-		'---------------------------------------------------
-		'[단가 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 --[단가 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
 		if g_szFocusIndex == "0" then
 			
 			sData = GetPrice()
 			
-			if g_szFocusEditClear <> true then
+			if g_szFocusEditClear ~= true then
 				g_szFocusEditClear = true
-			end if
+			end
 			
 			sData = 0
 			SetPrice("MANAUAL",sData,g_szDecimal,g_szCurrency)
 		
-		'---------------------------------------------------
-		'[수량 입력창] 에 포커스가 되어있는 경우
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 --[수량 입력창] 에 포커스가 되어있는 경우
+		 -----------------------------------------------------
 		elseif g_szFocusIndex == "1" then
 		
 			sData = edtQty.caption
 		
-			if g_szFocusEditClear <> true then
+			if g_szFocusEditClear ~= true then
 				g_szFocusEditClear = true
-			end if
+			end
 			
 			sData = 0
 			edtQty.caption = sData
 			
-		end if
+		end
 		
 		
-	'======================================================================
-	' 삭제(<-) 키패드 입력
-	'======================================================================
+	 --======================================================================
+	 -- 삭제(<-) 키패드 입력
+	 --======================================================================
 	elseif sType == "DELETE" then
 	
 		if g_szFocusIndex == "0" then
 		
-			if g_szFocusEditClear <> true then
+			if g_szFocusEditClear ~= true then
 				
 				g_szFocusEditClear = true
 				sData = 0
@@ -1906,15 +1908,15 @@ Function InputKeypad(sType, sKeypad)
 			else
 				
 				sData = GetPrice()
-				nLen = Len(sData)
-				sData = left(sData ,nLen - 1)
+				nLen = string.len(sData)
+				sData = string.sub(sData, 1, nLen - 1)
 				SetPrice("MANAUAL",sData,g_szDecimal,g_szCurrency)
 			
-			end if
+			end
 		
 		elseif g_szFocusIndex == "1" then
 		
-			if g_szFocusEditClear <> true then
+			if g_szFocusEditClear ~= true then
 			
 				g_szFocusEditClear = true
 				sData = 0
@@ -1923,110 +1925,110 @@ Function InputKeypad(sType, sKeypad)
 			else
 				
 				sData = edtQty.caption
-				nLen = Len(sData)
-				sData = left(sData ,nLen - 1)
+				nLen = string.len(sData)
+				sData = string.sub(sData, 1, nLen - 1)
 				edtQty.caption = sData
 				
-			end if
+			end
 		
-		end if
+		end
 		
 		
-	end if
+	end
 	
 	
-	'입력키패드 입력이 끝난 후 주문금액 계산
+	 --입력키패드 입력이 끝난 후 주문금액 계산
 	Calc_OrderPrice()
 	
-End Function
+end
 
-'============================================================================
-Sub btnPlus1_OnClick()
+ --============================================================================
+function btnPlus1_OnClick()
 	InputKeypad("NUM", "1")
-End Sub
+end
 
-'============================================================================
-Sub btnPlus2_OnClick()
+ --============================================================================
+function btnPlus2_OnClick()
 	InputKeypad("NUM", "2")
-End Sub
+end
 
-'============================================================================
-Sub btnPlus3_OnClick()
+ --============================================================================
+function btnPlus3_OnClick()
 	InputKeypad("NUM", "3")
-End Sub
+end
 
-'============================================================================
-Sub btnPlus4_OnClick()
+ --============================================================================
+function btnPlus4_OnClick()
 	InputKeypad("NUM", "4")
-End Sub
+end
 
-'============================================================================
-Sub btnPlus5_OnClick()
+ --============================================================================
+function btnPlus5_OnClick()
 	InputKeypad("NUM", "5")	
-End Sub
+end
 
-'============================================================================
-Sub btnPlus6_OnClick()
+ --============================================================================
+function btnPlus6_OnClick()
 	InputKeypad("NUM", "6")	
-End Sub
+end
 
-'============================================================================
-Sub btnPlus7_OnClick()
+ --============================================================================
+function btnPlus7_OnClick()
 	InputKeypad("NUM", "7")
-End Sub
+end
 
-'============================================================================
-Sub btnPlus8_OnClick()
+ --============================================================================
+function btnPlus8_OnClick()
 	InputKeypad("NUM", "8")
-End Sub
+end
 
-'============================================================================
-Sub btnPlus9_OnClick()
+ --============================================================================
+function btnPlus9_OnClick()
 	InputKeypad("NUM", "9")
-End Sub
+end
 
-'============================================================================
-Sub btnPlus00_OnClick()
+ --============================================================================
+function btnPlus00_OnClick()
 	
 	if g_szFocusIndex == "0" then
 		InputKeypad("DOT", ".")
 	else
 		InputKeypad("ZERO", "00")
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub btnPlus0_OnClick()
+ --============================================================================
+function btnPlus0_OnClick()
 	InputKeypad("ZERO", "0")
-End Sub
+end
 
-'============================================================================
-Sub btnBack_OnClick()
+ --============================================================================
+function btnBack_OnClick()
 	InputKeypad("DELETE", "")
-End Sub
+end
 
-'============================================================================
-Sub btnClear_OnClick()
+ --============================================================================
+function btnClear_OnClick()
 	InputKeypad("CLEAR", "")
-End Sub
+end
 
-'============================================================================
-Sub contQty_btnQty10_OnClick()
+ --============================================================================
+function contQty_btnQty10_OnClick()
 	InputKeypad("QUICK", "QTY10")
-End Sub
+end
 
-'============================================================================
-Sub contQty_btnQty100_OnClick()
+ --============================================================================
+function contQty_btnQty100_OnClick()
 	InputKeypad("QUICK", "QTY100")
-End Sub
+end
 
-'============================================================================
-Sub contQty_btnQty1000_OnClick()
+ --============================================================================
+function contQty_btnQty1000_OnClick()
 	InputKeypad("QUICK", "QTY1000")
-End Sub
-'============================================================================
-Function RequestSiseData(sMarket,sCode)
+end
+ --============================================================================
+function RequestSiseData(sMarket,sCode)
 	
 	szDelay = Form.GetSharedData("REALTIME_"..sMarket, 0 )
 	
@@ -2036,29 +2038,29 @@ Function RequestSiseData(sMarket,sCode)
 	DATAMANAGER.SetDataValue( 0, "ohhts_6000_002r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , szDelay)
 	DATAMANAGER.RequestTranData("ohhts_6000_002r")
 	
-End Function
+end
 
-'============================================================================
-Function RequestRealSiseData(sMarket,sCode)
+ --============================================================================
+function RequestRealSiseData(sMarket,sCode)
 
-	if sMarket <> "" and sCode <> "" then
+	if sMarket ~= "" and sCode ~= "" then
 		DATAMANAGER.CancelRealData("ohhts_exst_cntg")
 		DATAMANAGER.ClearInputData(1, "ohhts_exst_cntg")
 		
-		DATAMANAGER.SetDataValue(1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , sMarket & "@" & sCode )
+		DATAMANAGER.SetDataValue(1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD" , 0 , sMarket .. "@" .. sCode )
 		DATAMANAGER.RequestRealData("ohhts_exst_cntg")
 		
 		DATAMANAGER.CancelRealData("ohhts_exst_aspr")
 		DATAMANAGER.ClearInputData(1, "ohhts_exst_aspr")
 		
-		DATAMANAGER.SetDataValue(1, "ohhts_exst_aspr", "InBlock1", "FIDXR_ISCD" , 0 , sMarket & "@" & sCode )
+		DATAMANAGER.SetDataValue(1, "ohhts_exst_aspr", "InBlock1", "FIDXR_ISCD" , 0 , sMarket .. "@" .. sCode )
 		DATAMANAGER.RequestRealData("ohhts_exst_aspr")
 		
-	end if
+	end
 	
-End Function
-'============================================================================
-Function RequestDayMarketSiseData(sMarket,sCode)
+end
+ --============================================================================
+function RequestDayMarketSiseData(sMarket,sCode)
 	
 	szDelay = Form.GetSharedData("REALTIME_"..sMarket, 0 )
 	
@@ -2068,28 +2070,28 @@ Function RequestDayMarketSiseData(sMarket,sCode)
 	DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , szDelay)
 	DATAMANAGER.RequestTranData("ohhts_6000_017r")
 	
-End Function
-'============================================================================
-Function RequestDayMarketRealSiseData(sMarket,sCode)
+end
+ --============================================================================
+function RequestDayMarketRealSiseData(sMarket,sCode)
 
-	if sMarket <> "" and sCode <> "" then
+	if sMarket ~= "" and sCode ~= "" then
 		DATAMANAGER.CancelRealData("ohhts_exst_cntd")
 		DATAMANAGER.ClearInputData(1, "ohhts_exst_cntd")
 		
-		DATAMANAGER.SetDataValue(1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , sMarket & "@" & sCode )
+		DATAMANAGER.SetDataValue(1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD" , 0 , sMarket .. "@" .. sCode )
 		DATAMANAGER.RequestRealData("ohhts_exst_cntd")
 		
 		DATAMANAGER.CancelRealData("ohhts_exst_aspr")
 		DATAMANAGER.ClearInputData(1, "ohhts_exst_aspr")
 		
-		DATAMANAGER.SetDataValue(1, "ohhts_exst_aspr", "InBlock1", "FIDXR_ISCD" , 0 , sMarket & "@" & sCode )
+		DATAMANAGER.SetDataValue(1, "ohhts_exst_aspr", "InBlock1", "FIDXR_ISCD" , 0 , sMarket .. "@" .. sCode )
 		DATAMANAGER.RequestRealData("ohhts_exst_aspr")
 		
-	end if
+	end
 
-End Function
-'============================================================================
-Function RequestAfterMarketSiseData(sMarket,sCode)
+end
+ --============================================================================
+function RequestAfterMarketSiseData(sMarket,sCode)
 	
 	szDelay = Form.GetSharedData("REALTIME_"..sMarket, 0 )
 	
@@ -2099,45 +2101,45 @@ Function RequestAfterMarketSiseData(sMarket,sCode)
 	DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , szDelay)
 	DATAMANAGER.RequestTranData("ohhts_6000_020r")
 	
-End Function
-'============================================================================
-Function RequestAfterMarketRealSiseData(sMarket,sCode)
+end
+ --============================================================================
+function RequestAfterMarketRealSiseData(sMarket,sCode)
 
-	if sMarket <> "" and sCode <> "" then
+	if sMarket ~= "" and sCode ~= "" then
 		DATAMANAGER.CancelRealData("ohhts_exst_cnta")
 		DATAMANAGER.ClearInputData(1, "ohhts_exst_cnta")
 		
-		DATAMANAGER.SetDataValue(1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , sMarket & "@" & sCode )
+		DATAMANAGER.SetDataValue(1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD" , 0 , sMarket .. "@" .. sCode )
 		DATAMANAGER.RequestRealData("ohhts_exst_cnta")
 		
 		DATAMANAGER.CancelRealData("ohhts_exst_aspr")
 		DATAMANAGER.ClearInputData(1, "ohhts_exst_aspr")
 		
-		DATAMANAGER.SetDataValue(1, "ohhts_exst_aspr", "InBlock1", "FIDXR_ISCD" , 0 , sMarket & "@" & sCode )
+		DATAMANAGER.SetDataValue(1, "ohhts_exst_aspr", "InBlock1", "FIDXR_ISCD" , 0 , sMarket .. "@" .. sCode )
 		DATAMANAGER.RequestRealData("ohhts_exst_aspr")
 		
-	end if
+	end
 
-End Function
-'============================================================================
-Sub contPrc_btnPrcMaedo1_OnClick()
+end
+ --============================================================================
+function contPrc_btnPrcMaedo1_OnClick()
 	InputKeypad("QUICK", "PRC_MAEDO1")
-End Sub
-'============================================================================
-Sub contPrc_btnPrcCur_OnClick()
+end
+ --============================================================================
+function contPrc_btnPrcCur_OnClick()
 	InputKeypad("QUICK", "PRC_CUR")
-End Sub
-'============================================================================
-Sub contPrc_btnPrcMaesu1_OnClick()
+end
+ --============================================================================
+function contPrc_btnPrcMaesu1_OnClick()
 	InputKeypad("QUICK", "PRC_MAESU1")
-End Sub
-'============================================================================
-Function SetSiseData()
+end
+ --============================================================================
+function SetSiseData()
 
-	if Cdbl(gHighPrice) > 0 and Cdbl(gLowPrice) then
+	if gf_Tonumber(gHighPrice) > 0 and gf_Tonumber(gLowPrice) then
 	
-		tblHigh.SetCellString(0, 1, FormatNumber(gHighPrice,g_szDecimal))
-		tblLow.SetCellString(0, 1, FormatNumber(gLowPrice,g_szDecimal))
+		tblHigh.SetCellString(0, 1, gf_CommaValue(gHighPrice,g_szDecimal))
+		tblLow.SetCellString(0, 1, gf_CommaValue(gLowPrice,g_szDecimal))
 		
 	else
 	
@@ -2147,60 +2149,60 @@ Function SetSiseData()
 		grdPrc.top = 151
 		grdPrc.height = 495
 		
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-Sub tblHigh_OnClick(lRow , lColumn)
+ --============================================================================
+function tblHigh_OnClick(lRow , lColumn)
 	
-	if Check_PrcOrd() <> "시장가" then
+	if Check_PrcOrd() ~= "시장가" then
 		g_szFocusEditClear = false
 		sData = tblHigh.GetCellString(0, 1)
-		sData = replace(sData,",","")
+		sData = string.gsub(sData, string.gsub(", "([%p])", "%%%1"), ","")
 		SetPrice("AUTO",sData,g_szDecimal,g_szCurrency)
 		Calc_OrderPrice()
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub tblLow_OnClick(lRow , lColumn)
+ --============================================================================
+function tblLow_OnClick(lRow , lColumn)
 	
-	if Check_PrcOrd() <> "시장가" then
+	if Check_PrcOrd() ~= "시장가" then
 		g_szFocusEditClear = false
 		sData = tblLow.GetCellString(0, 1)
-		sData = replace(sData,",","")
+		sData = string.gsub(sData, string.gsub(", "([%p])", "%%%1"), ","")
 		SetPrice("AUTO",sData,g_szDecimal,g_szCurrency)
 		Calc_OrderPrice()
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	
-	'==========================================================
-	' 시세데이터 조회(정규장)
-	'==========================================================
+	 --==========================================================
+	 -- 시세데이터 조회(정규장)
+	 --==========================================================
 	if szTranID == "ohhts_6000_002r" then
 		
-		sDayYN = Form.GetSharedData( "&OVRS_DAYMARKET", false )
+		sDayYN = Form.GetSharedData( "..OVRS_DAYMARKET", false )
 		sAfterYN = Form.GetSharedData("OVRS_AFTER_MARKET_ORDER", false )
 		
-		'20241216 LES START
+		 --20241216 LES START
 		
-		'20250804 YSH START
-		'해외주식 장운영 정보 조회방식 변경
-		'sMarketClsCode = Form.GetSharedData("OVRS_MARKET_CLS_CODE", false )
-		sMarketClsCode = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
-		'20250804 YSH END
+		 --20250804 YSH START
+		 --해외주식 장운영 정보 조회방식 변경
+		 --sMarketClsCode = Form.GetSharedData("OVRS_MARKET_CLS_CODE", false )
+		sMarketClsCode = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
+		 --20250804 YSH END
 		
-		'======================================================================
-		' [주간장일 경우] 
-		' 미국종목인 경우에는 주간장 시세조회 서비스 호출 
-		'======================================================================
-		if sDayYN == "Y" and (gMarket == "OQ" or gMarket == "NY" or gMarket == "AX") and (sMarketClsCode <> "000" and sMarketClsCode <> "013" ) then '20241216 LES START - 휴장(000)/휴일(013) 조건추가
+		 --======================================================================
+		 -- [주간장일 경우] 
+		 -- 미국종목인 경우에는 주간장 시세조회 서비스 호출 
+		 --======================================================================
+		if sDayYN == "Y" and (gMarket == "OQ" or gMarket == "NY" or gMarket == "AX") and (sMarketClsCode ~= "000" and sMarketClsCode ~= "013" ) then --20241216 LES START - 휴장(000)/휴일(013) 조건추가
 			
 			RequestDayMarketSiseData(gMarket,gCode)
 			
@@ -2208,401 +2210,401 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			
 			RequestAfterMarketSiseData(gMarket,gCode)
 		
-		'======================================================================
-		' [정규장일 경우]
-		' 입력가격 데이터가 없으면 조회한 현재가 가격창에 넣어줌.
-		'======================================================================
+		 --======================================================================
+		 -- [정규장일 경우]
+		 -- 입력가격 데이터가 없으면 조회한 현재가 가격창에 넣어줌.
+		 --======================================================================
 		else
 			
-			sPrc = Cdbl(DATAMANAGER.GetDataValue(0, "ohhts_6000_002r", "OutBlock1", "FIDX_PRPR" , 0))
+			sPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_002r", "OutBlock1", "FIDX_PRPR" , 0))
 			
-			'--------------------------------------
-			' 현재가 데이터 있을 시,
-			'--------------------------------------
+			 ----------------------------------------
+			 -- 현재가 데이터 있을 시,
+			 ----------------------------------------
 			if sPrc > 0 then
 			
 				if gPrc == "" or gPrc == "0" then
-					if g_szDecimal <> "" and g_szCurrency <> "" then
+					if g_szDecimal ~= "" and g_szCurrency ~= "" then
 						
-						if Check_PrcOrd() <> "시장가" then
-							sTransPrc = FormatNumber(sPrc,g_szDecimal).." " .. g_szCurrency
+						if Check_PrcOrd() ~= "시장가" then
+							sTransPrc = gf_CommaValue(sPrc,g_szDecimal).." " .. g_szCurrency
 							edtPrc.caption = sTransPrc
-						end if
+						end
 					
-					end if
-				end if
+					end
+				end
 				
-				'----------------------------------------------------------------------------------
-				' 현재가 데이터 변경
-				'----------------------------------------------------------------------------------
+				 ------------------------------------------------------------------------------------
+				 -- 현재가 데이터 변경
+				 ------------------------------------------------------------------------------------
 				g_szCurPrice = sPrc
 				tblData.SetCellString(1, 1, sPrc)
 				tblData0.SetCellString(1, 1, sPrc)
 				
-				'----------------------------------------------------------------------------------
-				' 호가리스트 생성
-				'----------------------------------------------------------------------------------
+				 ------------------------------------------------------------------------------------
+				 -- 호가리스트 생성
+				 ------------------------------------------------------------------------------------
 				MakeHogaList(50)
 				
-				'----------------------------------------------------------------------------------
-				' 정규장 실시간 서비스 호출
-				'----------------------------------------------------------------------------------
+				 ------------------------------------------------------------------------------------
+				 -- 정규장 실시간 서비스 호출
+				 ------------------------------------------------------------------------------------
 				RequestRealSiseData(gMarket,gCode)
 			
-			'--------------------------------------
-			' 현재가 데이터 없을 시
-			'--------------------------------------
+			 ----------------------------------------
+			 -- 현재가 데이터 없을 시
+			 ----------------------------------------
 			else
 			
-				'----------------------------------------------------------------------------------
-				' 호가리스트 생성
-				'----------------------------------------------------------------------------------
+				 ------------------------------------------------------------------------------------
+				 -- 호가리스트 생성
+				 ------------------------------------------------------------------------------------
 				MakeHogaList(50)
 				
-				'----------------------------------------------------------------------------------
-				' 정규장 실시간 서비스 호출
-				'----------------------------------------------------------------------------------
+				 ------------------------------------------------------------------------------------
+				 -- 정규장 실시간 서비스 호출
+				 ------------------------------------------------------------------------------------
 				RequestRealSiseData(gMarket,gCode)
 			
-			end if
+			end
 			
 			
 			
-		end if
+		end
 		
 		
-	'==========================================================
-	' 시세데이터 조회(주간장)
-	'==========================================================
+	 --==========================================================
+	 -- 시세데이터 조회(주간장)
+	 --==========================================================
 	elseif szTranID == "ohhts_6000_017r" then
 	
-		sPrc = Cdbl(DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0))
+		sPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0))
 		
-		'----------------------------------------------------------------------------------
-		'주간장 현재가가 있는 경우 현재가 데이터를 변경해주고 호가리스트 생성.
-		'----------------------------------------------------------------------------------
+		 ------------------------------------------------------------------------------------
+		 --주간장 현재가가 있는 경우 현재가 데이터를 변경해주고 호가리스트 생성.
+		 ------------------------------------------------------------------------------------
 		if sPrc > 0 then
 			
-			'---------------------------------------------------------
-			' 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
-			'---------------------------------------------------------
-			if gPrc == "" or Cdbl(gPrc) == 0 then
-				if g_szDecimal <> "" and g_szCurrency <> "" then
+			 -----------------------------------------------------------
+			 -- 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
+			 -----------------------------------------------------------
+			if gPrc == "" or gf_Tonumber(gPrc) == 0 then
+				if g_szDecimal ~= "" and g_szCurrency ~= "" then
 					
-					'----------------------------------------
-					' 주문유형이 시장가가 아닌 경우 
-					'----------------------------------------
-					if Check_PrcOrd() <> "시장가" then
-						sTransPrc = FormatNumber(sPrc,g_szDecimal).." " .. g_szCurrency
+					 ------------------------------------------
+					 -- 주문유형이 시장가가 아닌 경우 
+					 ------------------------------------------
+					if Check_PrcOrd() ~= "시장가" then
+						sTransPrc = gf_CommaValue(sPrc,g_szDecimal).." " .. g_szCurrency
 						edtPrc.caption = sTransPrc
-					end if
+					end
 					
-				end if
-			end if
+				end
+			end
 		
-			'----------------------------------------------------------------------------------
-			' 현재가 데이터 변경
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 현재가 데이터 변경
+			 ------------------------------------------------------------------------------------
 			g_szCurPrice = sPrc
 			tblData.SetCellString(1, 1, sPrc)
 			tblData0.SetCellString(1, 1, sPrc)
 			
-			'----------------------------------------------------------------------------------
-			' 호가리스트 생성
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 호가리스트 생성
+			 ------------------------------------------------------------------------------------
 			MakeHogaList(50)
 			
-			'----------------------------------------------------------------------------------
-			' 주간장 현재가가 있는 경우 주간장 실시간 서비스 호출(현재는 미국종목만 해당 됨)
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 주간장 현재가가 있는 경우 주간장 실시간 서비스 호출(현재는 미국종목만 해당 됨)
+			 ------------------------------------------------------------------------------------
 			RequestDayMarketRealSiseData(gMarket,gCode)
 		
 		
-		'----------------------------------------------------------------------------------
-		'주간장 현재가가 없는 경우 정규장에서 조회한 현재가를 기준으로 호가리스트 생성.
-		'----------------------------------------------------------------------------------
+		 ------------------------------------------------------------------------------------
+		 --주간장 현재가가 없는 경우 정규장에서 조회한 현재가를 기준으로 호가리스트 생성.
+		 ------------------------------------------------------------------------------------
 		else
 		
-			'---------------------------------------------------------
-			' 주간장 현재가가 없는 경우 정규장 현재가 가져와
-			' 입력가격이 없는 경우 자동세팅
-			'---------------------------------------------------------
-			sPrc = Cdbl(tblData0.GetCellString(1, 1))
+			 -----------------------------------------------------------
+			 -- 주간장 현재가가 없는 경우 정규장 현재가 가져와
+			 -- 입력가격이 없는 경우 자동세팅
+			 -----------------------------------------------------------
+			sPrc = gf_Tonumber(tblData0.GetCellString(1, 1))
 			
 			if sPrc > 0 then
 				
-				'---------------------------------------------------------
-				' 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
-				'---------------------------------------------------------
-				if gPrc == "" or Cdbl(gPrc) == 0 then
+				 -----------------------------------------------------------
+				 -- 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
+				 -----------------------------------------------------------
+				if gPrc == "" or gf_Tonumber(gPrc) == 0 then
 				
-					if Check_PrcOrd() <> "시장가" then
-						sTransPrc = FormatNumber(sPrc,g_szDecimal).." " .. g_szCurrency
+					if Check_PrcOrd() ~= "시장가" then
+						sTransPrc = gf_CommaValue(sPrc,g_szDecimal).." " .. g_szCurrency
 						edtPrc.caption = sTransPrc
-					end if
+					end
 					
-				end if
+				end
 			
-			end if
+			end
 			
 			
-			'----------------------------------------------------------------------------------
-			' 호가리스트 생성
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 호가리스트 생성
+			 ------------------------------------------------------------------------------------
 			MakeHogaList(50)
 			
-			'----------------------------------------------------------------------------------
-			' 주간장 현재가가 없는 경우 정규장 실시간 서비스 호출
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 주간장 현재가가 없는 경우 정규장 실시간 서비스 호출
+			 ------------------------------------------------------------------------------------
 			RequestRealSiseData(gMarket,gCode)
 			
 			
-		end if
+		end
 		
-	'==========================================================
-	' 시세데이터 조회(애프터)
-	'==========================================================
+	 --==========================================================
+	 -- 시세데이터 조회(애프터)
+	 --==========================================================
 	elseif szTranID == "ohhts_6000_020r" then
 	
-		sPrc = Cdbl(DATAMANAGER.GetDataValue(0, "ohhts_6000_020r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0))
+		sPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_020r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0))
 		
-		'----------------------------------------------------------------------------------
-		'애프터 현재가가 있는 경우 현재가 데이터를 변경해주고 호가리스트 생성.
-		'----------------------------------------------------------------------------------
+		 ------------------------------------------------------------------------------------
+		 --애프터 현재가가 있는 경우 현재가 데이터를 변경해주고 호가리스트 생성.
+		 ------------------------------------------------------------------------------------
 		if sPrc > 0 then
 			
-			'---------------------------------------------------------
-			' 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
-			'---------------------------------------------------------
-			if gPrc == "" or Cdbl(gPrc) == 0 then
-				if g_szDecimal <> "" and g_szCurrency <> "" then
+			 -----------------------------------------------------------
+			 -- 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
+			 -----------------------------------------------------------
+			if gPrc == "" or gf_Tonumber(gPrc) == 0 then
+				if g_szDecimal ~= "" and g_szCurrency ~= "" then
 					
-					'----------------------------------------
-					' 주문유형이 시장가가 아닌 경우 
-					'----------------------------------------
-					if Check_PrcOrd() <> "시장가" then
-						sTransPrc = FormatNumber(sPrc,g_szDecimal).." " .. g_szCurrency
+					 ------------------------------------------
+					 -- 주문유형이 시장가가 아닌 경우 
+					 ------------------------------------------
+					if Check_PrcOrd() ~= "시장가" then
+						sTransPrc = gf_CommaValue(sPrc,g_szDecimal).." " .. g_szCurrency
 						edtPrc.caption = sTransPrc
-					end if
+					end
 					
-				end if
-			end if
+				end
+			end
 		
-			'----------------------------------------------------------------------------------
-			' 현재가 데이터 변경
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 현재가 데이터 변경
+			 ------------------------------------------------------------------------------------
 			g_szCurPrice = sPrc
 			tblData.SetCellString(1, 1, sPrc)
 			tblData0.SetCellString(1, 1, sPrc)
 			
-			'----------------------------------------------------------------------------------
-			' 호가리스트 생성
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 호가리스트 생성
+			 ------------------------------------------------------------------------------------
 			MakeHogaList(50)
 			
-			'----------------------------------------------------------------------------------
-			' 애프터 현재가가 있는 경우 주간장 실시간 서비스 호출(현재는 미국종목만 해당 됨)
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 애프터 현재가가 있는 경우 주간장 실시간 서비스 호출(현재는 미국종목만 해당 됨)
+			 ------------------------------------------------------------------------------------
 			RequestAfterMarketRealSiseData(gMarket,gCode)
 		
 		
-		'----------------------------------------------------------------------------------
-		'애프터 현재가가 없는 경우 정규장에서 조회한 현재가를 기준으로 호가리스트 생성.
-		'----------------------------------------------------------------------------------
+		 ------------------------------------------------------------------------------------
+		 --애프터 현재가가 없는 경우 정규장에서 조회한 현재가를 기준으로 호가리스트 생성.
+		 ------------------------------------------------------------------------------------
 		else
 		
-			'---------------------------------------------------------
-			' 주간장 현재가가 없는 경우 정규장 현재가 가져와
-			' 입력가격이 없는 경우 자동세팅
-			'---------------------------------------------------------
-			sPrc = Cdbl(tblData0.GetCellString(1, 1))
+			 -----------------------------------------------------------
+			 -- 주간장 현재가가 없는 경우 정규장 현재가 가져와
+			 -- 입력가격이 없는 경우 자동세팅
+			 -----------------------------------------------------------
+			sPrc = gf_Tonumber(tblData0.GetCellString(1, 1))
 			
 			if sPrc > 0 then
 				
-				'---------------------------------------------------------
-				' 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
-				'---------------------------------------------------------
-				if gPrc == "" or Cdbl(gPrc) == 0 then
+				 -----------------------------------------------------------
+				 -- 입력가격이 없는 경우 & 소수점자리수/통화코드가 있는 경우
+				 -----------------------------------------------------------
+				if gPrc == "" or gf_Tonumber(gPrc) == 0 then
 				
-					if Check_PrcOrd() <> "시장가" then
-						sTransPrc = FormatNumber(sPrc,g_szDecimal).." " .. g_szCurrency
+					if Check_PrcOrd() ~= "시장가" then
+						sTransPrc = gf_CommaValue(sPrc,g_szDecimal).." " .. g_szCurrency
 						edtPrc.caption = sTransPrc
-					end if
+					end
 					
-				end if
+				end
 			
-			end if
+			end
 			
 			
-			'----------------------------------------------------------------------------------
-			' 호가리스트 생성
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 호가리스트 생성
+			 ------------------------------------------------------------------------------------
 			MakeHogaList(50)
 			
-			'----------------------------------------------------------------------------------
-			' 애프터 현재가가 없는 경우 정규장 실시간 서비스 호출
-			'----------------------------------------------------------------------------------
+			 ------------------------------------------------------------------------------------
+			 -- 애프터 현재가가 없는 경우 정규장 실시간 서비스 호출
+			 ------------------------------------------------------------------------------------
 			RequestRealSiseData(gMarket,gCode)
 			
 			
-		end if
+		end
 	
-	'-----------------------------------------
-	' 주문가능수량 조회
-	'-----------------------------------------
+	 -------------------------------------------
+	 -- 주문가능수량 조회
+	 -------------------------------------------
 	elseif szTranID == "obtro_oder_264r" then
 		
-		'-----------------------------------------
-		' 매수가능 수량
-		'-----------------------------------------
+		 -------------------------------------------
+		 -- 매수가능 수량
+		 -------------------------------------------
 		if gMaeMaeGubun == "BUY" then
 			
-			'-----------------------------------------
-			' 통합증거금 여부
-			'-----------------------------------------
+			 -------------------------------------------
+			 -- 통합증거금 여부
+			 -------------------------------------------
 			if gTotalYN == "Y" then
 				sAbleQty = DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock1", "INTG_MARG_ODER_ABLE_QTY" , 0)
 			else
 				sAbleQty = DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock1", "ODER_ABLE_QTY" , 0)
-			end if
+			end
 		
-		'-----------------------------------------
-		' 매도가능 수량
-		'-----------------------------------------
+		 -------------------------------------------
+		 -- 매도가능 수량
+		 -------------------------------------------
 		elseif gMaeMaeGubun == "SELL" then
 		
-			'-----------------------------------------
-			' 현금/대출 구분
-			'-----------------------------------------
+			 -------------------------------------------
+			 -- 현금/대출 구분
+			 -------------------------------------------
 			if gCredit == 1 or gCredit == "1" then
 				sAbleQty = DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock1", "LOAN_SELN_RDMP_ABLE_QTY" , 0)
 			else
 				sAbleQty = DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock1", "ODER_ABLE_QTY" , 0)
-			end if
+			end
 		
-		end if
+		end
 		
-		edtQty.caption = Cint(sAbleQty)
+		edtQty.caption = gf_Tonumber(sAbleQty)
 		Calc_OrderPrice()
 	
-	end if
+	end
 	
-End Sub
-'============================================================================
-Function MakeHogaList(nRowCnt)
+end
+ --============================================================================
+function MakeHogaList(nRowCnt)
 
-	'-----------------------------------------------------------
-	'기준가/상한가/하한가
-	'-----------------------------------------------------------
-	sDpr = Cdbl(tblData0.GetCellString(1, 0))
-	sHighPrice = Cdbl(tblHigh.GetCellString(0, 1))
-	sLowPrice = Cdbl(tblLow.GetCellString(0, 1))
+	 -------------------------------------------------------------
+	 --기준가/상한가/하한가
+	 -------------------------------------------------------------
+	sDpr = gf_Tonumber(tblData0.GetCellString(1, 0))
+	sHighPrice = gf_Tonumber(tblHigh.GetCellString(0, 1))
+	sLowPrice = gf_Tonumber(tblLow.GetCellString(0, 1))
 	
-	'-----------------------------------------------------------
-	'현재가(호가리스트 중앙값)
-	'-----------------------------------------------------------
-	Dim nCurPriceIndex
+	 -------------------------------------------------------------
+	 --현재가(호가리스트 중앙값)
+	 -------------------------------------------------------------
+	local nCurPriceIndex
 	nCurPriceIndex = -1
-	sCurPrice = Cdbl(tblData0.GetCellString(1, 1))
+	sCurPrice = gf_Tonumber(tblData0.GetCellString(1, 1))
 	
-	'-----------------------------------------------------------
-	' 현재가가 없으면 호가리스트 생성안함.
-	'-----------------------------------------------------------
+	 -------------------------------------------------------------
+	 -- 현재가가 없으면 호가리스트 생성안함.
+	 -------------------------------------------------------------
 	if sCurPrice == 0 then
-		Exit Function
-	end if
+		return
+	end
 	
-	'-----------------------------------------------------------
-	' 20240715 미국종목 1달러이상인 종목의 현재가가 소수점4자리로
-	' 들어왔을때, 소수점 2자리 단위로 호가리스트 생성하도록 변환
-	'-----------------------------------------------------------
+	 -------------------------------------------------------------
+	 -- 20240715 미국종목 1달러이상인 종목의 현재가가 소수점4자리로
+	 -- 들어왔을때, 소수점 2자리 단위로 호가리스트 생성하도록 변환
+	 -------------------------------------------------------------
 	if gMarket == "OQ" or gMarket == "NY" or gMarket == "AX" then
 	
 		if sCurPrice > 1 then
 			
-			'----------------------------------------------------------------------------
-			'FormatNumber변환 시, 천단위 부호 생기면 Cdbl이 0으로 나오므로 그전에 replace
-			'----------------------------------------------------------------------------
-			sCurPrice = Cdbl(Replace(FormatNumber(sCurPrice,2),",",""))
+			 ------------------------------------------------------------------------------
+			 --FormatNumber변환 시, 천단위 부호 생기면 Cdbl이 0으로 나오므로 그전에 replace
+			 ------------------------------------------------------------------------------
+			sCurPrice = gf_Tonumber(string.gsub(gf_CommaValue(sCurPrice, string.gsub(2), "([%p])", "%%%1"), ",",""))
 			
-		end if
+		end
 		
-	end if
+	end
 	
-	'-----------------------------------------------------------
-	'시/고/저가
-	'-----------------------------------------------------------
-	sOprc = Cdbl(lblOprc.caption)
-	sHprc = Cdbl(lblHprc.caption)
-	sLprc = Cdbl(lblLprc.caption)
+	 -------------------------------------------------------------
+	 --시/고/저가
+	 -------------------------------------------------------------
+	sOprc = gf_Tonumber(lblOprc.caption)
+	sHprc = gf_Tonumber(lblHprc.caption)
+	sLprc = gf_Tonumber(lblLprc.caption)
 
-	'-----------------------------------------------------------
-	' (현재가를 기준으로) 상단호가 생성
-	'-----------------------------------------------------------
-	for i = 0 to nRowCnt - 1
+	 -------------------------------------------------------------
+	 -- (현재가를 기준으로) 상단호가 생성
+	 -------------------------------------------------------------
+	for i = 0, nRowCnt - 1 do
 	
 		sData = sCurPrice + (g_szUnit * (nRowCnt - i))
 		
-		'-------------------------------------------------------------------------------
-		' (생성호가 > 현재가) and (생성호가 < 상한가 or 상한가 == 0) and (생성호가 > 0 )
-		'-------------------------------------------------------------------------------
+		 ---------------------------------------------------------------------------------
+		 -- (생성호가 > 현재가) and (생성호가 < 상한가 or 상한가 == 0) and (생성호가 > 0 )
+		 ---------------------------------------------------------------------------------
 		if sData > sCurPrice and (sData < sHighPrice or sHighPrice == 0) and (sData > 0 ) then
 		
 			grdPrc.AddRow()
-			sTransData = FormatNumber(sData , g_szDecimal)
+			sTransData = gf_CommaValue(sData , g_szDecimal)
 			grdPrc.SetCellData("bd_prc", grdPrc.rowcount - 1, sTransData)
 						
-			sDebi = Round((sData - sDpr) / sDpr * 100,2)
+			sDebi = gf_Round((sData - sDpr) / sDpr * 100,2)
 			grdPrc.SetCellData("bd_debi", grdPrc.rowcount - 1, sDebi)
 			
-			if sDebi > 0 or Cdbl(sData - sDpr) > 0 then
+			if sDebi > 0 or gf_Tonumber(sData - sDpr) > 0 then
 				grdPrc.SetCellFgColor("bd_prc", grdPrc.rowcount - 1 , "1")
-			elseif sDebi < 0 or Cdbl(sData - sDpr) < 0 then
+			elseif sDebi < 0 or gf_Tonumber(sData - sDpr) < 0 then
 				grdPrc.SetCellFgColor("bd_prc", grdPrc.rowcount - 1 , "2")
 			else
 				grdPrc.SetCellFgColor("bd_prc", grdPrc.rowcount - 1 , "3")
-			end if
+			end
 			
-			'-----------------------------------------------------------
-			'현재 생성한 호가행이 현재가인지 체크
-			'-----------------------------------------------------------
-			'if sData == sCurPrice then
-			'	nCurPriceIndex = grdPrc.rowcount - 1
-			'end if
+			 -------------------------------------------------------------
+			 --현재 생성한 호가행이 현재가인지 체크
+			 -------------------------------------------------------------
+			 --if sData == sCurPrice then
+			 --	nCurPriceIndex = grdPrc.rowcount - 1
+			 --end if
 			
-			'-----------------------------------------------------------
-			'현재 생성한 호가행이 시/고/저가인지 체크
-			'시/고/저 값이 모두 동일한 케이스가 있을 수 있으므로, 각각 if문으로 체크
-			'모두 동일한 케이스일때 우선순위는 고 > 저 > 시
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 --현재 생성한 호가행이 시/고/저가인지 체크
+			 --시/고/저 값이 모두 동일한 케이스가 있을 수 있으므로, 각각 if문으로 체크
+			 --모두 동일한 케이스일때 우선순위는 고 > 저 > 시
+			 -------------------------------------------------------------
 			if sData == sOprc then
 				grdPrc.SetCellImage("bd_cell0", grdPrc.rowcount - 1, "hoga_marking01")
 				grdPrc.SetMaintainingRatio("bd_cell0", grdPrc.rowcount - 1, "1")
-			end if
+			end
 			
 			if sData == sLprc then
 				grdPrc.SetCellImage("bd_cell0", grdPrc.rowcount - 1, "hoga_marking03")
 				grdPrc.SetMaintainingRatio("bd_cell0", grdPrc.rowcount - 1, "1")
-			end if
+			end
 			
 			if sData == sHprc then
 				grdPrc.SetCellImage("bd_cell0", grdPrc.rowcount - 1, "hoga_marking02")
 				grdPrc.SetMaintainingRatio("bd_cell0", grdPrc.rowcount - 1, "1")
-			end if
+			end
 			
-		end if
+		end
 		
-	next
+	end
 
-	'-----------------------------------------------------------
-	' 호가리스트 중앙값(현재가) 세팅
-	'-----------------------------------------------------------
+	 -------------------------------------------------------------
+	 -- 호가리스트 중앙값(현재가) 세팅
+	 -------------------------------------------------------------
 	grdPrc.AddRow()
-	sTransCenterData = FormatNumber(sCurPrice,g_szDecimal)
+	sTransCenterData = gf_CommaValue(sCurPrice,g_szDecimal)
 		
 	grdPrc.SetCellData("bd_prc", grdPrc.rowcount - 1, sTransCenterData)
 	
-	sDebi = Round((sCurPrice - sDpr) / sDpr * 100,2)
+	sDebi = gf_Round((sCurPrice - sDpr) / sDpr * 100,2)
 	grdPrc.SetCellData("bd_debi", grdPrc.rowcount - 1, sDebi)
 	
 	if sDebi > 0 then
@@ -2611,194 +2613,195 @@ Function MakeHogaList(nRowCnt)
 		grdPrc.SetCellFgColor("bd_prc", grdPrc.rowcount - 1 , "2")
 	else
 		grdPrc.SetCellFgColor("bd_prc", grdPrc.rowcount - 1 , "3")
-	end if
+	end
 	
-	'-----------------------------------------------------------
-	' 중앙호가(현재가) 인덱스값 설정
-	'-----------------------------------------------------------
-	'if sDpr == sCurPrice then
+	 -------------------------------------------------------------
+	 -- 중앙호가(현재가) 인덱스값 설정
+	 -------------------------------------------------------------
+	 --if sDpr == sCurPrice then
 		nCurPriceIndex = grdPrc.rowcount - 1
-	'end if
+	 --end if
 	
-	'-----------------------------------------------------------
-	'현재 생성한 호가행이 시/고/저가인지 체크
-	'시/고/저 값이 모두 동일한 케이스가 있을 수 있으므로, 각각 if문으로 체크
-	'모두 동일한 케이스일때 우선순위는 고/저/시
-	'-----------------------------------------------------------
+	 -------------------------------------------------------------
+	 --현재 생성한 호가행이 시/고/저가인지 체크
+	 --시/고/저 값이 모두 동일한 케이스가 있을 수 있으므로, 각각 if문으로 체크
+	 --모두 동일한 케이스일때 우선순위는 고/저/시
+	 -------------------------------------------------------------
 	if sCurPrice == sOprc then
 		grdPrc.SetCellImage("bd_cell0", grdPrc.rowcount - 1, "hoga_marking01")
 		grdPrc.SetMaintainingRatio("bd_cell0", grdPrc.rowcount - 1, "1")
-	end if
+	end
 			
 	if sCurPrice == sLprc then
 		grdPrc.SetCellImage("bd_cell0", grdPrc.rowcount - 1, "hoga_marking03")
 		grdPrc.SetMaintainingRatio("bd_cell0", grdPrc.rowcount - 1, "1")
-	end if
+	end
 			
 	if sCurPrice == sHprc then
 		grdPrc.SetCellImage("bd_cell0", grdPrc.rowcount - 1, "hoga_marking02")
 		grdPrc.SetMaintainingRatio("bd_cell0", grdPrc.rowcount - 1, "1")
-	end if
+	end
 	
-	'-----------------------------------------------------------
-	' (현재가를 기준으로) 하단호가 생성
-	'-----------------------------------------------------------
-	for i = nRowCnt + 1 to nRowCnt * 2 
+	 -------------------------------------------------------------
+	 -- (현재가를 기준으로) 하단호가 생성
+	 -------------------------------------------------------------
+	for i = nRowCnt + 1, nRowCnt * 2 do
 		
 		sData = sCurPrice - (g_szUnit * (i - nRowCnt))
 		
-		'-------------------------------------------------------------------------------
-		' (생성호가 < 현재가) and (생성호가 > 하한가 or 하한가 == 0) and (생성호가 > 0 )
-		'-------------------------------------------------------------------------------
+		 ---------------------------------------------------------------------------------
+		 -- (생성호가 < 현재가) and (생성호가 > 하한가 or 하한가 == 0) and (생성호가 > 0 )
+		 ---------------------------------------------------------------------------------
 		if sData < sCurPrice and (sData > sLowPrice or sLowPrice == 0) and (sData > 0) then
 			
 			grdPrc.AddRow()
-			sTransData = FormatNumber(sData , g_szDecimal)
+			sTransData = gf_CommaValue(sData , g_szDecimal)
 			grdPrc.SetCellData("bd_prc", grdPrc.rowcount - 1, sTransData)
 			
-			sDebi = Round((sData - sDpr) / sDpr * 100,2)
+			sDebi = gf_Round((sData - sDpr) / sDpr * 100,2)
 			grdPrc.SetCellData("bd_debi", grdPrc.rowcount - 1, sDebi)
 			
-			if sDebi > 0 or Cdbl(sData - sDpr) > 0 then
+			if sDebi > 0 or gf_Tonumber(sData - sDpr) > 0 then
 				grdPrc.SetCellFgColor("bd_prc", grdPrc.rowcount - 1 , "1")
-			elseif sDebi < 0 or Cdbl(sData - sDpr) < 0 then
+			elseif sDebi < 0 or gf_Tonumber(sData - sDpr) < 0 then
 				grdPrc.SetCellFgColor("bd_prc", grdPrc.rowcount - 1 , "2")
 			else
 				grdPrc.SetCellFgColor("bd_prc", grdPrc.rowcount - 1 , "3")
-			end if
+			end
 			
-			'-----------------------------------------------------------
-			'현재 생성한 호가행이 현재가인지 체크
-			'-----------------------------------------------------------
-			'if sData == sCurPrice then
-			'	nCurPriceIndex = grdPrc.rowcount - 1
-			'end if
+			 -------------------------------------------------------------
+			 --현재 생성한 호가행이 현재가인지 체크
+			 -------------------------------------------------------------
+			 --if sData == sCurPrice then
+			 --	nCurPriceIndex = grdPrc.rowcount - 1
+			 --end if
 			
-			'-----------------------------------------------------------
-			'현재 생성한 호가행이 시/고/저가인지 체크
-			'시/고/저 값이 모두 동일한 케이스가 있을 수 있으므로, 각각 if문으로 체크
-			'모두 동일한 케이스일때 우선순위는 고 > 저 > 시
-			'-----------------------------------------------------------
+			 -------------------------------------------------------------
+			 --현재 생성한 호가행이 시/고/저가인지 체크
+			 --시/고/저 값이 모두 동일한 케이스가 있을 수 있으므로, 각각 if문으로 체크
+			 --모두 동일한 케이스일때 우선순위는 고 > 저 > 시
+			 -------------------------------------------------------------
 			if sData == sOprc then
 				grdPrc.SetCellImage("bd_cell0", grdPrc.rowcount - 1, "hoga_marking01")
 				grdPrc.SetMaintainingRatio("bd_cell0", grdPrc.rowcount - 1, "1")
-			end if
+			end
 			
 			if sData == sLprc then
 				grdPrc.SetCellImage("bd_cell0", grdPrc.rowcount - 1, "hoga_marking03")
 				grdPrc.SetMaintainingRatio("bd_cell0", grdPrc.rowcount - 1, "1")
-			end if
+			end
 			
 			if sData == sHprc then
 				grdPrc.SetCellImage("bd_cell0", grdPrc.rowcount - 1, "hoga_marking02")
 				grdPrc.SetMaintainingRatio("bd_cell0", grdPrc.rowcount - 1, "1")
-			end if
+			end
 		
 			
-		end if
+		end
 		
-	next
+	end
 	
-	'-----------------------------------------------------------
-	' 현재가가 중앙에 표시되도록 위치 이동
-	'-----------------------------------------------------------
+	 -------------------------------------------------------------
+	 -- 현재가가 중앙에 표시되도록 위치 이동
+	 -------------------------------------------------------------
 	if nCurPriceIndex > 0 then
 		grdPrc.toprow = nCurPriceIndex - 5
-	end if
+	end
 	
 
-End Function
+end
 
-'============================================================================
-Sub grdPrc_OnClickUp(lRow, szCellID)
+ --============================================================================
+function grdPrc_OnClickUp(lRow, szCellID)
 	
-	'20241108 LES START => 호가클릭 가격연동 범위 개선
-	'등락률 클릭 시에도 해당 호가 연동
+	 --20241108 LES START => 호가클릭 가격연동 범위 개선
+	 --등락률 클릭 시에도 해당 호가 연동
 	if szCellID == "bd_prc" or szCellID == "bd_debi" then
 		
-		if Check_PrcOrd() <> "시장가" then
+		if Check_PrcOrd() ~= "시장가" then
 			g_szFocusEditClear = false
 			sData = grdPrc.GetCellData("bd_prc", lRow)
-			sData = replace(sData,",","")
+			sData = string.gsub(sData, string.gsub(", "([%p])", "%%%1"), ","")
 			SetPrice("AUTO",sData,g_szDecimal,g_szCurrency)
 			
 			Calc_OrderPrice()
 			
-		end if
+		end
 		
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 주문가능수량 조회
-' 매수 : 통합증거금 여부에 따라 수량 입력(통증:통합증거금 최대가능 수량/ 일반:현금 최대가능수량)
-' 매도 : 매도가능수량 입력
-'============================================================================
-Sub contQty_btnAble_OnClick()
+ --============================================================================
+ -- 주문가능수량 조회
+ -- 매수 : 통합증거금 여부에 따라 수량 입력(통증:통합증거금 최대가능 수량/ 일반:현금 최대가능수량)
+ -- 매도 : 매도가능수량 입력
+ --============================================================================
+function contQty_btnAble_OnClick()
 	
 	
-	'---------------------------------------------------------------------------
-	' IQRY_CLS_CODE
-	'---------------------------------------------------------------------------
-	' : 해당 서비스에서 외화예수금/환전가능 금액들도 조회 가능
-	' : 해당값이 전체(1)일때는 위 데이터도 같이 조회
-	' : 현재화면에서는 예수금/환전가능금액 데이터 불필요하여 수량만 조회되도록
-	' : 일부조회(2) 구분값으로 호출. 매도일때는 상관없음. 알아서 수량만 조회됨
-	'---------------------------------------------------------------------------
+	 -----------------------------------------------------------------------------
+	 -- IQRY_CLS_CODE
+	 -----------------------------------------------------------------------------
+	 -- : 해당 서비스에서 외화예수금/환전가능 금액들도 조회 가능
+	 -- : 해당값이 전체(1)일때는 위 데이터도 같이 조회
+	 -- : 현재화면에서는 예수금/환전가능금액 데이터 불필요하여 수량만 조회되도록
+	 -- : 일부조회(2) 구분값으로 호출. 매도일때는 상관없음. 알아서 수량만 조회됨
+	 -----------------------------------------------------------------------------
 	if gMaeMaegubun == "BUY" then
 	
 		DATAMANAGER.ClearInputData(0, "obtro_oder_264r")
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IQRY_CLS_CODE" 		, 0 , "2") '조회범위(1:전체/2:주문가능수량/금액만) 
+		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IQRY_CLS_CODE" 		, 0 , "2")  --조회범위(1:전체/2:주문가능수량/금액만) 
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ACNO" 				, 0 , gAcno)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ASNO" 				, 0 , gAsno)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "OVRS_STCK_SYMB_ISCD" 	, 0 , gCode)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "OVRS_EXCH_VNDR_IDNO" 	, 0 , gMarketCode)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "SELN_BYOV_CLCD" 		, 0 , "2") '매도(1)/매수(2)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "SELN_BYOV_CLCD" 		, 0 , "2")  --매도(1)/매수(2)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ODER_CRNC_PRC" 		, 0 , GetPrice())
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IF_INTG_MARG_IQRY_YN"	, 0 , "Y")
 		
-		'20241128 LES START
+		 --20241128 LES START
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ODER_CLS_CODE"	, 0 , gOrderGubun)
 		
 
 	elseif gMaeMaegubun == "SELL" then
 	
 		DATAMANAGER.ClearInputData(0, "obtro_oder_264r")
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IQRY_CLS_CODE" 		, 0 , "1") '조회범위(1:전체/2:주문가능수량/금액만)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IQRY_CLS_CODE" 		, 0 , "1")  --조회범위(1:전체/2:주문가능수량/금액만)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ACNO" 				, 0 , gAcno)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ASNO" 				, 0 , gAsno)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "OVRS_STCK_SYMB_ISCD" 	, 0 , gCode)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "OVRS_EXCH_VNDR_IDNO" 	, 0 , gMarketCode)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "SELN_BYOV_CLCD" 		, 0 , "1") '매도(1)/매수(2)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "SELN_BYOV_CLCD" 		, 0 , "1")  --매도(1)/매수(2)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ODER_CRNC_PRC" 		, 0 , GetPrice())
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IF_INTG_MARG_IQRY_YN"	, 0 , "Y")
 		
 		if gCredit == 1 or gCredit == "1" then
 			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "LOAN_DTL_TYPE_CODE" 	, 0 , "0251")
-		end if
+		end
 		
-	end if
+	end
 
 	DATAMANAGER.RequestTranData("obtro_oder_264r")	
 	
-End Sub
+end
 
-'============================================================================
-' Check_PrcOrd 지정가/시장가 구분
-'============================================================================
-Function Check_PrcOrd()
+ --============================================================================
+ -- Check_PrcOrd 지정가/시장가 구분
+ --============================================================================
+function Check_PrcOrd()
 	
-	'시장가/MOO(장개시시장가)/MOC(장마감시장가)/VWAP(수량분할)/TWAP(시간분할)
+	 --시장가/MOO(장개시시장가)/MOC(장마감시장가)/VWAP(수량분할)/TWAP(시간분할)
 	if gOrderGubun == "05" or gOrderGubun == "33" or gOrderGubun == "34" or gOrderGubun == "37" or gOrderGubun == "38" then
 		return "시장가"
 	else
 		return "지정가"
-	end if
+	end
 	
-End Function
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />

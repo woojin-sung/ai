@@ -68,10 +68,10 @@ g_isOrder = "cancel"
 --             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
 -- ****************************************************************************
 -- ===============================================
--- NULL 체크 
+-- nil 체크 
 -- ===============================================
 function isEmpty(sData)
-	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
 		return true
 	else
 		return false
@@ -111,7 +111,7 @@ function Convert_StrToArr(szData, szSeperator)
 	if isEmpty(szSeperator) then
 		-- 단일변수
 		arrData = {}
-		table.insert(arrData, szData)
+		table.Insert(arrData, szData)
 	else
 		-- 다중변수
 		arrData = gf_Split(szData, szSeperator)
@@ -145,15 +145,15 @@ function Form_OnFormInit()
 	arrLinkData = Convert_StrToArr(sLinkData, "`")
 	nArrCnt = #arrLinkData
 	if nArrCnt >= 9 then
-		g_sAcnt		= arrLinkData[1]
-		g_sItemCode	= arrLinkData[2]
-		g_sItemName	= arrLinkData[3]
-		g_sCond1		= arrLinkData[4]
-		g_sCond2		= arrLinkData[5]
-		g_sOrdType		= arrLinkData[6]
-		g_sOrdPrc		= arrLinkData[7]
-		g_sOrdQty		= arrLinkData[8]
-		g_sEndDate		= arrLinkData[9]
+		g_sAcnt		= arrLinkData[1+1]
+		g_sItemCode	= arrLinkData[2+1]
+		g_sItemName	= arrLinkData[3+1]
+		g_sCond1		= arrLinkData[4+1]
+		g_sCond2		= arrLinkData[5+1]
+		g_sOrdType		= arrLinkData[6+1]
+		g_sOrdPrc		= arrLinkData[7+1]
+		g_sOrdQty		= arrLinkData[8+1]
+		g_sEndDate		= arrLinkData[9+1]
 		DisplaySet_BuyInfo()
 		return
 	end
@@ -183,5 +183,6 @@ end
 function Form_OnFormClose()
 	Form.SendReturnToParent("ORDER_CONFIRM_CHECK" , g_isOrder)
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

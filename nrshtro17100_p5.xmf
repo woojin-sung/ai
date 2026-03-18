@@ -137,7 +137,7 @@ function Init_Content(szGbn)
 		szData = g_arrContent[nArrIdx]
 		if g_arrContent_Check[nArrIdx] == "1" then
 			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Select)
-		else 
+		else
 			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Normal)
 		end
 		contBg.Pannel0.SetCellValue( "lbl0", i, szData)	
@@ -150,7 +150,7 @@ function Init_Content(szGbn)
 		szData = g_arrContent[nArrIdx]
 		if g_arrContent_Check[nArrIdx] == "1" then
 			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Select)
-		else 
+		else
 			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Normal)
 		end
 		contBg.Pannel0.SetCellValue( "lbl1", i, szData)	
@@ -162,7 +162,7 @@ function Init_Content(szGbn)
 		szData = g_arrContent[nArrIdx]
 		if g_arrContent_Check[nArrIdx] == "1" then
 			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Select)
-		else 
+		else
 			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Normal)
 		end
 		contBg.Pannel0.SetCellValue( "lbl2", i, szData)	
@@ -195,7 +195,7 @@ function Init_Content(szGbn)
 		end
 		if g_arrContent2_Check[nArrIdx] == "1" then
 			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Select)
-		else 
+		else
 			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Normal)
 		end
 		contBg.Pannel1.SetCellValue( "lbl0", i, szData)	
@@ -218,7 +218,7 @@ function Init_Content(szGbn)
 		end
 		if g_arrContent2_Check[nArrIdx] == "1" then
 			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Select)
-		else 
+		else
 			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Normal)
 		end
 		contBg.Pannel1.SetCellValue( "lbl1", i, szData)	
@@ -240,7 +240,7 @@ function Init_Content(szGbn)
 		end
 		if g_arrContent2_Check[nArrIdx] == "1" then
 			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Select)
-		else 
+		else
 			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Normal)
 		end
 		contBg.Pannel1.SetCellValue( "lbl2", i, szData)	
@@ -561,18 +561,18 @@ function Form_OnFormInit()
 	szArrData = gf_Split(szData, "★")
 	nArrCnt = #szArrData
 	if nArrCnt > 3 then
-		g_szLinkGbn = szArrData[1]
-		g_szDupSel_1 = szArrData[2]
-		g_szDupSel_2 = szArrData[3]
-		szContData = szArrData[4]
-		szContData2 = szArrData[5]
+		g_szLinkGbn = szArrData[1+1]
+		g_szDupSel_1 = szArrData[2+1]
+		g_szDupSel_2 = szArrData[3+1]
+		szContData = szArrData[4+1]
+		szContData2 = szArrData[5+1]
 		szSavaData1 = ""
 		szSavaData2 = ""
 		if #szArrData > 4 then
-			szSavaData1 = szArrData[6]
+			szSavaData1 = szArrData[6+1]
 		end
 		if #szArrData > 5 then
-			szSavaData2 = szArrData[7]
+			szSavaData2 = szArrData[7+1]
 		end
 		if g_szDupSel_1 == "1" then
 			szContData = "전체`" .. szContData
@@ -581,7 +581,7 @@ function Form_OnFormInit()
 		nArrCnt = #g_arrContent
 		g_arrContent_Check = {}
 		for i = 0, nArrCnt-1 do
-			if szSavaData1 == g_arrContent[i] then --instr(szSavaData1, g_arrContent(i)) > 0 then
+			if szSavaData1 == g_arrContent[i] then --string.find(szSavaData1, g_arrContent(i)) > 0 then
 				g_arrContent_Check[i] = "1"
 			else
 				g_arrContent_Check[i] = "0"
@@ -594,7 +594,7 @@ function Form_OnFormInit()
 		nArrCnt = #g_arrContent2
 		g_arrContent2_Check = {}
 		for i = 0, nArrCnt-1 do
-			if szSavaData2 == g_arrContent2[i] then --instr(szSavaData2, g_arrContent2(i)) > 0 then
+			if szSavaData2 == g_arrContent2[i] then --string.find(szSavaData2, g_arrContent2(i)) > 0 then
 				g_arrContent2_Check[i] = "1"
 			else
 				g_arrContent2_Check[i] = "0"
@@ -636,14 +636,15 @@ end
 function contBg_btnCancel_OnClick()
 	Clear_Content("0")
 	Clear_Content("1")
-	g_arrContent_Check[0] = "1"
+	g_arrContent_Check[0+1] = "1"
 	contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl0", 0, g_szBtnImg_Select)
-	g_arrContent2_Check[0] = "1"
+	g_arrContent2_Check[0+1] = "1"
 	contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl0", 0, g_szBtnImg_Select)
 end
 -- =============================================================================
 function imgBg_OnClick()
 	Form.CloseForm()
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

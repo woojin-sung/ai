@@ -211,10 +211,10 @@ g_isClickable = true
 --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
 --****************************************************************************
 --===============================================
--- NULL 체크 
+-- nil 체크 
 --===============================================
 function isEmpty(sData)
-	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
 		return true
 	else
 		return false
@@ -261,7 +261,7 @@ function Convert_StrToArr(szData, szSeperator)
 	if isEmpty(szSeperator) then
 		-- 단일변수
 		arrData = {}
-		table.insert(arrData, szData)
+		table.Insert(arrData, szData)
 	else
 		-- 다중변수
 		arrData = gf_Split(szData, szSeperator)
@@ -274,7 +274,7 @@ end
 --===============================================
 -- 조회데이터 없는 경우 가이드문구 표시
 --===============================================
-function DisplaySet_EmptyNotice(isShow) 
+function DisplaySet_EmptyNotice(isShow)
 	if isShow == true then
 		imgNotice.visible = true
 		LabelGuideText2.visible = true
@@ -302,47 +302,47 @@ function Expand_List()
 	for i = 0, nCnt-1 do
 		
 		cont0.pnl0.SetCardWHAt(i,nHeight)
-		cont0.pnl0.setPropCardCell("height", "Image4", i , nHeight)
+		cont0.pnl0.SetPropCardCell("height", "Image4", i , nHeight)
 		
 		if g_nViewMode == 1 then
-			cont0.pnl0.setPropCardCell("width", "lblItemInfo", i , 125 )
+			cont0.pnl0.SetPropCardCell("width", "lblItemInfo", i , 125 )
 			
-			cont0.pnl0.setPropCardCell("visible", "lblData4", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle1", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle2", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle3", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle5", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle6", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblData7", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblData2", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblData3", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblData5", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblData6", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblData4", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle1", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle2", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle3", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle5", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle6", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblData7", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblData2", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblData3", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblData5", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblData6", i , false )
 			
-			cont0.pnl0.setPropCardCell("top", "lblTitle0", i , 46 )
-			cont0.pnl0.setPropCardCell("top", "lblData0", i , 46 )
+			cont0.pnl0.SetPropCardCell("top", "lblTitle0", i , 46 )
+			cont0.pnl0.SetPropCardCell("top", "lblData0", i , 46 )
 			
-			cont0.pnl0.setPropCardCell("height", "Image7", i , 35 )
+			cont0.pnl0.SetPropCardCell("height", "Image7", i , 35 )
 			
 		else
-			cont0.pnl0.setPropCardCell("width", "lblItemInfo", i , 215 )
+			cont0.pnl0.SetPropCardCell("width", "lblItemInfo", i , 215 )
 			
-			cont0.pnl0.setPropCardCell("visible", "lblData4", i , false )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle1", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle2", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle3", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle5", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblTitle6", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblData7", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblData2", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblData3", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblData5", i , true )
-			cont0.pnl0.setPropCardCell("visible", "lblData6", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblData4", i , false )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle1", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle2", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle3", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle5", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblTitle6", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblData7", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblData2", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblData3", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblData5", i , true )
+			cont0.pnl0.SetPropCardCell("visible", "lblData6", i , true )
 			
-			cont0.pnl0.setPropCardCell("top", "lblTitle0", i , 70)
-			cont0.pnl0.setPropCardCell("top", "lblData0", i , 70 )
+			cont0.pnl0.SetPropCardCell("top", "lblTitle0", i , 70)
+			cont0.pnl0.SetPropCardCell("top", "lblData0", i , 70 )
 			
-			cont0.pnl0.setPropCardCell("height", "Image7", i , 58 )
+			cont0.pnl0.SetPropCardCell("height", "Image7", i , 58 )
 		end
 	end
 
@@ -351,34 +351,34 @@ end
 --===============================================
 -- REST API_등록된 감시조건 갯수조회 (최대 50건)
 --===============================================
-function AutoRule_SelectCount() 
+function AutoRule_SelectCount()
 	g_sStep = "SELECT_COUNT"
 	
-	sAcno 	= g_sAcno --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno --Form.GetTopCtlProp("act0","sequence")
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	Form.makeRequestData("accountNumber", sAcno)
-	Form.makeRequestData("accountSeqNumber", sAsno)
-	Form.makeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
-	Form.makeRequestData("dataTargetType", "2")		-- 국내/해외 구분(1:국내, 2:해외)
+	Form.MakeRequestData("accountNumber", sAcno)
+	Form.MakeRequestData("accountSeqNumber", sAsno)
+	Form.MakeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
+	Form.MakeRequestData("dataTargetType", "2")		-- 국내/해외 구분(1:국내, 2:해외)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
 	
-	Form.requestRestAPI(sUrl.."api/v1/rule/select-valid-count", "SELL_"..g_sStep)
+	Form.RequestRestAPI(sUrl.."api/v1/rule/select-valid-count", "SELL_"..g_sStep)
 end
 
 --===============================================
 -- REST API_등록된 감시조건 조회 (최대 50건)
 --===============================================
-function AutoRule_SelectByAccount() 
+function AutoRule_SelectByAccount()
 	g_sStep = "SELECT_BY_ACCOUNT"
 	
 	-------------------------------
@@ -388,124 +388,124 @@ function AutoRule_SelectByAccount()
 	cont0.pnl0.rowcount = 0
 	cont0.lblInfo.caption = ""
 	
-	sAcno 	= g_sAcno --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno --Form.GetTopCtlProp("act0","sequence")
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	Form.makeRequestData("accountNumber", sAcno)
-	Form.makeRequestData("accountSeqNumber", sAsno)
-	Form.makeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
-	Form.makeRequestData("dataTargetType", "2")		-- 국내/해외 구분(1:국내, 2:해외)
-	Form.makeRequestData("pageInfo", "50")			-- 조회 데이터 최대갯수
+	Form.MakeRequestData("accountNumber", sAcno)
+	Form.MakeRequestData("accountSeqNumber", sAsno)
+	Form.MakeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
+	Form.MakeRequestData("dataTargetType", "2")		-- 국내/해외 구분(1:국내, 2:해외)
+	Form.MakeRequestData("pageInfo", "50")			-- 조회 데이터 최대갯수
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
 	
-	Form.requestRestAPI(sUrl.."api/v1/rule/select-by-account", "SELL_"..g_sStep)
+	Form.RequestRestAPI(sUrl.."api/v1/rule/select-by-account", "SELL_"..g_sStep)
 end
 
 --===============================================
 -- REST API_등록된 감시조건 조회 (최대 50건)
 --===============================================
-function AutoRule_SelectByAccount_Next() 
+function AutoRule_SelectByAccount_Next()
 	g_sStep = "SELECT_BY_ACCOUNT_NEXT"
 	
-	sAcno 	= g_sAcno --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno --Form.GetTopCtlProp("act0","sequence")
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	Form.makeRequestData("accountNumber", sAcno)
-	Form.makeRequestData("accountSeqNumber", sAsno)
-	Form.makeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
-	Form.makeRequestData("dataTargetType", "2")		-- 국내/해외 구분(1:국내, 2:해외)
-	Form.makeRequestData("pageInfo", "50")			-- 조회 데이터 최대갯수
+	Form.MakeRequestData("accountNumber", sAcno)
+	Form.MakeRequestData("accountSeqNumber", sAsno)
+	Form.MakeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
+	Form.MakeRequestData("dataTargetType", "2")		-- 국내/해외 구분(1:국내, 2:해외)
+	Form.MakeRequestData("pageInfo", "50")			-- 조회 데이터 최대갯수
 	
 	if isEmpty(g_sNextKey) == false then
-		Form.makeRequestData("nextOrderConditionId", g_sNextKey)
+		Form.MakeRequestData("nextOrderConditionId", g_sNextKey)
 	end
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
 	
-	Form.requestRestAPI(sUrl.."api/v1/rule/select-by-account", "SELL_"..g_sStep)
+	Form.RequestRestAPI(sUrl.."api/v1/rule/select-by-account", "SELL_"..g_sStep)
 end
 
 --===============================================
 -- REST API_조건 단건 삭제
 --===============================================
-function AutoRule_Delete(nIdx) 
+function AutoRule_Delete(nIdx)
 	g_sStep = "DELETE"
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	sCondID = cont0.pnl0.getPropCardCell("caption"		,"orderConditionId"	,nIdx)
-	Form.makeRequestData("orderConditionId", sCondID)
+	sCondID = cont0.pnl0.GetPropCardCell("caption"		,"orderConditionId"	,nIdx)
+	Form.MakeRequestData("orderConditionId", sCondID)
 	
-	Form.makeRequestData("conditionStatusCode", "99")	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
+	Form.MakeRequestData("conditionStatusCode", "99")	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
 	
-	Form.requestRestAPI(sUrl.."api/v1/rule/update-status", "SELL_"..g_sStep)
+	Form.RequestRestAPI(sUrl.."api/v1/rule/update-status", "SELL_"..g_sStep)
 end
 
 --===============================================
 -- REST API_조건 전체 삭제
 --===============================================
-function AutoRule_AllDelete() 
+function AutoRule_AllDelete()
 	g_sStep = "ALL_DELETE"
 	
-	sAcno 	= g_sAcno --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno --Form.GetTopCtlProp("act0","sequence")
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	Form.makeRequestData("accountNumber", sAcno)
-	Form.makeRequestData("accountSeqNumber", sAsno)
-	Form.makeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
-	Form.makeRequestData("conditionStatusCode", "99")	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
+	Form.MakeRequestData("accountNumber", sAcno)
+	Form.MakeRequestData("accountSeqNumber", sAsno)
+	Form.MakeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
+	Form.MakeRequestData("conditionStatusCode", "99")	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
 
-	Form.requestRestAPI(sUrl.."api/v1/rule/bulk-update-status", "SELL_"..g_sStep)
+	Form.RequestRestAPI(sUrl.."api/v1/rule/bulk-update-status", "SELL_"..g_sStep)
 end
 
 
 --===============================================
 -- REST API_조건 단건 감시여부 업데이트
 --===============================================
-function AutoRule_UpdateStatus(nIdx) 
+function AutoRule_UpdateStatus(nIdx)
 	g_sStep = "UPDATE_STATUS"
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	sCondID = cont0.pnl0.getPropCardCell("caption"		,"orderConditionId"		,nIdx)
-	sStatus = cont0.pnl0.getPropCardCell("caption"		,"conditionStatusCode"	,nIdx)
+	sCondID = cont0.pnl0.GetPropCardCell("caption"		,"orderConditionId"		,nIdx)
+	sStatus = cont0.pnl0.GetPropCardCell("caption"		,"conditionStatusCode"	,nIdx)
 	
-	Form.makeRequestData("orderConditionId", sCondID)
+	Form.MakeRequestData("orderConditionId", sCondID)
 	
 	if sStatus == "01" then
 		sStatus = "02" 
@@ -513,100 +513,100 @@ function AutoRule_UpdateStatus(nIdx)
 		sStatus = "01" 
 	end
 	
-	Form.makeRequestData("conditionStatusCode", sStatus)	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
+	Form.MakeRequestData("conditionStatusCode", sStatus)	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
 	
-	Form.requestRestAPI(sUrl.."api/v1/rule/update-status", "SELL_"..g_sStep)
+	Form.RequestRestAPI(sUrl.."api/v1/rule/update-status", "SELL_"..g_sStep)
 end
 
 --===============================================
 -- REST API_조건 전체실행
 --===============================================
-function AutoRule_AllUpdateStatus() 
+function AutoRule_AllUpdateStatus()
 	g_sStep = "ALL_UPDATE_STATUS"
 	
-	sAcno 	= g_sAcno --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno --Form.GetTopCtlProp("act0","sequence")
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	Form.makeRequestData("accountNumber", sAcno)
-	Form.makeRequestData("accountSeqNumber", sAsno)
-	Form.makeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
-	Form.makeRequestData("conditionStatusCode", "02")	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
+	Form.MakeRequestData("accountNumber", sAcno)
+	Form.MakeRequestData("accountSeqNumber", sAsno)
+	Form.MakeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
+	Form.MakeRequestData("conditionStatusCode", "02")	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
 	
-	Form.requestRestAPI(sUrl.."api/v1/rule/bulk-update-status", "SELL_"..g_sStep)
+	Form.RequestRestAPI(sUrl.."api/v1/rule/bulk-update-status", "SELL_"..g_sStep)
 end
 
 --===============================================
 -- REST API_조건 전체실행
 --===============================================
-function AutoRule_AllUpdateStatus_Stop() 
+function AutoRule_AllUpdateStatus_Stop()
 	g_sStep = "ALL_UPDATE_STATUS_STOP"
 	
-	sAcno 	= g_sAcno --Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno --Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno --Form.GetTopCtlProp("act0","total")
+	sAsno 	= g_sAsno --Form.GetTopCtlProp("act0","sequence")
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	Form.makeRequestData("accountNumber", sAcno)
-	Form.makeRequestData("accountSeqNumber", sAsno)
-	Form.makeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
-	Form.makeRequestData("conditionStatusCode", "01")	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
+	Form.MakeRequestData("accountNumber", sAcno)
+	Form.MakeRequestData("accountSeqNumber", sAsno)
+	Form.MakeRequestData("tradeType", "1")			-- 매도/매수 구분(1:매도, 2:매수)
+	Form.MakeRequestData("conditionStatusCode", "01")	-- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
 	
-	Form.requestRestAPI(sUrl.."api/v1/rule/bulk-update-status", "SELL_"..g_sStep)
+	Form.RequestRestAPI(sUrl.."api/v1/rule/bulk-update-status", "SELL_"..g_sStep)
 end
 
 --===============================================
 -- REST API_토큰발급
 --===============================================
-function IssueToken() 
+function IssueToken()
 	g_sStep = "ISSUE_TOKEN"
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
-	sData1  = Form.GetSharedData("&USER_ID", false )
-	sData2  = Form.GetSharedData("&MCI_SESSION_KEY", false )
-	sData3  = Form.GetSharedData("&SEMI_SSO_KEY", false )
+	sData0  = Form.GetSharedData("..MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("..USER_ID", false )
+	sData2  = Form.GetSharedData("..MCI_SESSION_KEY", false )
+	sData3  = Form.GetSharedData("..SEMI_SSO_KEY", false )
 	
-	Form.makeRequestData("channelClsCode", 	sData0)
-	Form.makeRequestData("userId", 			sData1)
-	Form.makeRequestData("sessionKey", 		sData2)
-	Form.makeRequestData("semiSsoKey", 		sData3)
+	Form.MakeRequestData("channelClsCode", 	sData0)
+	Form.MakeRequestData("userId", 			sData1)
+	Form.MakeRequestData("sessionKey", 		sData2)
+	Form.MakeRequestData("semiSsoKey", 		sData3)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
 	
-	Form.requestRestAPI(sUrl.."auth/issue-token", "SELL_"..g_sStep)
+	Form.RequestRestAPI(sUrl.."auth/issue-token", "SELL_"..g_sStep)
 end
 
 
@@ -614,39 +614,39 @@ end
 -- 조건 상세팝업 오픈 (추후 데이터 정리예정)
 --===============================================
 function Open_Info()
-	sLinkData = cont0.pnl0.getPropCardCell("caption", "orderConditionId",		g_nClickIdx)
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "registrationDate",		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "accountNumber",			g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "accountSeqNumber", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "stockExchangeCode", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "stockCode", 			g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "stockKoreaName", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "tradeType", 			g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceTypeprofit", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceTypeNameprofit", 	g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceTypeValueprofit", 	g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceprofit", 			g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceTypepreserve", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceTypeNamepreserve", 	g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceTypeValuepreserve",	g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "pricepreserve", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceTypestopLoss", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceTypeNamestopLoss", 	g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "priceTypeValuestopLoss", 	g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "pricestopLoss", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "orderPaymentType", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "orderClsType", 			g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "orderClsTypeNm", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "orderPriceType", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "tickValue", 			g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "orderPrice", 			g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "orderQty", 			g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "expirationDate", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "conditionStatusCode", 	g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "conditionStatusName", 	g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "basePriceClsType", 		g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "basePriceClsTypeName", 	g_nClickIdx) 
-	sLinkData = sLinkData .. "`" .. cont0.pnl0.getPropCardCell("caption", "basePrice", 			g_nClickIdx) 
+	sLinkData = cont0.pnl0.GetPropCardCell("caption", "orderConditionId",		g_nClickIdx)
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "registrationDate",		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "accountNumber",			g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "accountSeqNumber", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "stockExchangeCode", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "stockCode", 			g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "stockKoreaName", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "tradeType", 			g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceTypeprofit", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceTypeNameprofit", 	g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceTypeValueprofit", 	g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceprofit", 			g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceTypepreserve", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceTypeNamepreserve", 	g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceTypeValuepreserve",	g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "pricepreserve", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceTypestopLoss", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceTypeNamestopLoss", 	g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "priceTypeValuestopLoss", 	g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "pricestopLoss", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "orderPaymentType", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "orderClsType", 			g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "orderClsTypeNm", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "orderPriceType", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "tickValue", 			g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "orderPrice", 			g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "orderQty", 			g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "expirationDate", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "conditionStatusCode", 	g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "conditionStatusName", 	g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "basePriceClsType", 		g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "basePriceClsTypeName", 	g_nClickIdx) 
+	sLinkData = sLinkData .. "`" .. cont0.pnl0.GetPropCardCell("caption", "basePrice", 			g_nClickIdx) 
      
 	Form.OpenPopup("nrshtro17100_p3" , sLinkData , "")
 
@@ -663,45 +663,45 @@ function Set_Info(nIdx, orderConditionId, registrationDate, accountNumber, accou
 				orderPaymentType,orderClsType,orderClsTypeNm,orderPriceType,tickValue,orderPrice,orderQty,expirationDate, 
 				conditionStatusCode, conditionStatusName)
 	
-	cont0.pnl0.setPropCardCell("caption", "orderConditionId",		nIdx, orderConditionId)
-	cont0.pnl0.setPropCardCell("caption", "registrationDate",		nIdx, registrationDate)
-	cont0.pnl0.setPropCardCell("caption", "accountNumber",		nIdx, accountNumber)
-	cont0.pnl0.setPropCardCell("caption", "accountSeqNumber", 		nIdx, accountSeqNumber)
-	cont0.pnl0.setPropCardCell("caption", "stockExchangeCode", 	nIdx, stockExchangeCode)
-	cont0.pnl0.setPropCardCell("caption", "stockCode", 			nIdx, stockCode)
-	cont0.pnl0.setPropCardCell("caption", "stockKoreaName", 		nIdx, stockKoreaName)
-	cont0.pnl0.setPropCardCell("caption", "tradeType", 			nIdx, tradeType)	
+	cont0.pnl0.SetPropCardCell("caption", "orderConditionId",		nIdx, orderConditionId)
+	cont0.pnl0.SetPropCardCell("caption", "registrationDate",		nIdx, registrationDate)
+	cont0.pnl0.SetPropCardCell("caption", "accountNumber",		nIdx, accountNumber)
+	cont0.pnl0.SetPropCardCell("caption", "accountSeqNumber", 		nIdx, accountSeqNumber)
+	cont0.pnl0.SetPropCardCell("caption", "stockExchangeCode", 	nIdx, stockExchangeCode)
+	cont0.pnl0.SetPropCardCell("caption", "stockCode", 			nIdx, stockCode)
+	cont0.pnl0.SetPropCardCell("caption", "stockKoreaName", 		nIdx, stockKoreaName)
+	cont0.pnl0.SetPropCardCell("caption", "tradeType", 			nIdx, tradeType)	
 	
-	cont0.pnl0.setPropCardCell("caption", "basePriceClsType", 		nIdx, basePriceClsType)	
-	cont0.pnl0.setPropCardCell("caption", "basePriceClsTypeName", 	nIdx, basePriceClsTypeName)
-	cont0.pnl0.setPropCardCell("caption", "basePrice", 			nIdx, basePrice)
+	cont0.pnl0.SetPropCardCell("caption", "basePriceClsType", 		nIdx, basePriceClsType)	
+	cont0.pnl0.SetPropCardCell("caption", "basePriceClsTypeName", 	nIdx, basePriceClsTypeName)
+	cont0.pnl0.SetPropCardCell("caption", "basePrice", 			nIdx, basePrice)
 	
-	cont0.pnl0.setPropCardCell("caption", "priceTypeprofit", 		nIdx, priceTypeprofit)
-	cont0.pnl0.setPropCardCell("caption", "priceTypeNameprofit", 	nIdx, priceTypeNameprofit)
-	cont0.pnl0.setPropCardCell("caption", "priceTypeValueprofit", 	nIdx, priceTypeValueprofit)
-	cont0.pnl0.setPropCardCell("caption", "priceprofit", 		nIdx, priceprofit)
+	cont0.pnl0.SetPropCardCell("caption", "priceTypeprofit", 		nIdx, priceTypeprofit)
+	cont0.pnl0.SetPropCardCell("caption", "priceTypeNameprofit", 	nIdx, priceTypeNameprofit)
+	cont0.pnl0.SetPropCardCell("caption", "priceTypeValueprofit", 	nIdx, priceTypeValueprofit)
+	cont0.pnl0.SetPropCardCell("caption", "priceprofit", 		nIdx, priceprofit)
 	
-	cont0.pnl0.setPropCardCell("caption", "priceTypepreserve", 	nIdx, priceTypepreserve)
-	cont0.pnl0.setPropCardCell("caption", "priceTypeNamepreserve", 	nIdx, priceTypeNamepreserve)
-	cont0.pnl0.setPropCardCell("caption", "priceTypeValuepreserve", nIdx, priceTypeValuepreserve)
-	cont0.pnl0.setPropCardCell("caption", "pricepreserve", 		nIdx, pricepreserve)
+	cont0.pnl0.SetPropCardCell("caption", "priceTypepreserve", 	nIdx, priceTypepreserve)
+	cont0.pnl0.SetPropCardCell("caption", "priceTypeNamepreserve", 	nIdx, priceTypeNamepreserve)
+	cont0.pnl0.SetPropCardCell("caption", "priceTypeValuepreserve", nIdx, priceTypeValuepreserve)
+	cont0.pnl0.SetPropCardCell("caption", "pricepreserve", 		nIdx, pricepreserve)
 	
-	cont0.pnl0.setPropCardCell("caption", "priceTypestopLoss", 	nIdx, priceTypestopLoss)
-	cont0.pnl0.setPropCardCell("caption", "priceTypeNamestopLoss", 	nIdx, priceTypeNamestopLoss)
-	cont0.pnl0.setPropCardCell("caption", "priceTypeValuestopLoss", nIdx, priceTypeValuestopLoss)
-	cont0.pnl0.setPropCardCell("caption", "pricestopLoss", 		nIdx, pricestopLoss)
+	cont0.pnl0.SetPropCardCell("caption", "priceTypestopLoss", 	nIdx, priceTypestopLoss)
+	cont0.pnl0.SetPropCardCell("caption", "priceTypeNamestopLoss", 	nIdx, priceTypeNamestopLoss)
+	cont0.pnl0.SetPropCardCell("caption", "priceTypeValuestopLoss", nIdx, priceTypeValuestopLoss)
+	cont0.pnl0.SetPropCardCell("caption", "pricestopLoss", 		nIdx, pricestopLoss)
 	
-	cont0.pnl0.setPropCardCell("caption", "orderPaymentType", 		nIdx, orderPaymentType)
-	cont0.pnl0.setPropCardCell("caption", "orderClsType", 		nIdx, orderClsType)
-	cont0.pnl0.setPropCardCell("caption", "orderClsTypeNm", 		nIdx, orderClsTypeNm)
-	cont0.pnl0.setPropCardCell("caption", "orderPriceType", 		nIdx, orderPriceType)
-	cont0.pnl0.setPropCardCell("caption", "tickValue", 			nIdx, tickValue)
-	cont0.pnl0.setPropCardCell("caption", "orderPrice", 			nIdx, orderPrice)
-	cont0.pnl0.setPropCardCell("caption", "orderQty", 			nIdx, orderQty)
-	cont0.pnl0.setPropCardCell("caption", "expirationDate", 		nIdx, expirationDate)
+	cont0.pnl0.SetPropCardCell("caption", "orderPaymentType", 		nIdx, orderPaymentType)
+	cont0.pnl0.SetPropCardCell("caption", "orderClsType", 		nIdx, orderClsType)
+	cont0.pnl0.SetPropCardCell("caption", "orderClsTypeNm", 		nIdx, orderClsTypeNm)
+	cont0.pnl0.SetPropCardCell("caption", "orderPriceType", 		nIdx, orderPriceType)
+	cont0.pnl0.SetPropCardCell("caption", "tickValue", 			nIdx, tickValue)
+	cont0.pnl0.SetPropCardCell("caption", "orderPrice", 			nIdx, orderPrice)
+	cont0.pnl0.SetPropCardCell("caption", "orderQty", 			nIdx, orderQty)
+	cont0.pnl0.SetPropCardCell("caption", "expirationDate", 		nIdx, expirationDate)
 	
-	cont0.pnl0.setPropCardCell("caption", "conditionStatusCode", 	nIdx, conditionStatusCode)
-	cont0.pnl0.setPropCardCell("caption", "conditionStatusName", 	nIdx, conditionStatusName)
+	cont0.pnl0.SetPropCardCell("caption", "conditionStatusCode", 	nIdx, conditionStatusCode)
+	cont0.pnl0.SetPropCardCell("caption", "conditionStatusName", 	nIdx, conditionStatusName)
 end
 
 --==============================================
@@ -710,29 +710,21 @@ end
 --==============================================
 function Transform_Exid2(sValue)
 	if sValue == "HKS" then
-		Transform_Exid2 = "HK"
-		return
+		return "HK"
 	elseif sValue == "SHS" then
-		Transform_Exid2 = "SH"
-		return
+		return "SH"
 	elseif sValue == "SZS" then
-		Transform_Exid2 = "SZ"
-		return
+		return "SZ"
 	elseif sValue == "NYS" then
-		Transform_Exid2 = "NY"
-		return
+		return "NY"
 	elseif sValue == "AMX" then
-		Transform_Exid2 = "AX"
-		return
+		return "AX"
 	elseif sValue == "NAS" then
-		Transform_Exid2 = "OQ"
-		return
+		return "OQ"
 	elseif sValue == "TSE" then
-		Transform_Exid2 = "JP"
-		return
+		return "JP"
 	else
-		Transform_Exid2 = sValue
-		return
+		return sValue
 	end
 end
 
@@ -750,25 +742,25 @@ function DisplaySet_Pannel(nIdx, stockExchangeCode, stockKoreaName, stockCode,
 	sTicker = Form.GetEnvData("common.ticker_text")
 	sExch = Transform_Exid2(stockExchangeCode)
 	
-	cont0.pnl0.setPropCardCell("maxlinecnt"	,"lblItemInfo"	,nIdx	,"1^0" )
-	cont0.pnl0.setPropCardCell("paddinginfo"		,"lblItemInfo"	,nIdx	,"5,0,0,0" )
+	cont0.pnl0.SetPropCardCell("maxlinecnt"	,"lblItemInfo"	,nIdx	,"1^0" )
+	cont0.pnl0.SetPropCardCell("paddinginfo"		,"lblItemInfo"	,nIdx	,"5,0,0,0" )
 	
 	if sExch == "AX" or sExch == "NY" or sExch == "OQ" then
 		if sTicker == "1" then
-			cont0.pnl0.setPropCardCell("caption"		,"lblItemInfo"	,nIdx	,stockKoreaName )
+			cont0.pnl0.SetPropCardCell("caption"		,"lblItemInfo"	,nIdx	,stockKoreaName )
 		elseif sTicker == "2" then
-			cont0.pnl0.setPropCardCell("caption"		,"lblItemInfo"	,nIdx	,stockCode)
+			cont0.pnl0.SetPropCardCell("caption"		,"lblItemInfo"	,nIdx	,stockCode)
 		else
 			sName = stockKoreaName
 			
-			if Form.getItemCodeInfo(sExch.."@"..stockCode, "etfyn") == "Y" then 
+			if Form.GetItemCodeInfo(sExch.."@"..stockCode, "etfyn") == "Y" then
 				sName = stockCode
 			end
 			
-			cont0.pnl0.setPropCardCell("caption"		,"lblItemInfo"	,nIdx	,sName)
+			cont0.pnl0.SetPropCardCell("caption"		,"lblItemInfo"	,nIdx	,sName)
 		end
 	else
-		cont0.pnl0.setPropCardCell("caption"		,"lblItemInfo"	,nIdx	,stockKoreaName )
+		cont0.pnl0.SetPropCardCell("caption"		,"lblItemInfo"	,nIdx	,stockKoreaName )
 	end
 	
 	sData1 = ""	
@@ -794,56 +786,56 @@ function DisplaySet_Pannel(nIdx, stockExchangeCode, stockKoreaName, stockCode,
 		sData1 = sData1 .. "손실(" .. gf_CommaValue(pricestopLoss, 4) .. ")"
 	end
 
-	cont0.pnl0.setPropCardCell("caption"		,"lblData0"	,nIdx	,sData1)
+	cont0.pnl0.SetPropCardCell("caption"		,"lblData0"	,nIdx	,sData1)
 	
 	
 	if orderClsType == "05" or orderClsType == "34" then
-		cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"-")
+		cont0.pnl0.SetPropCardCell("caption"		,"lblData2"	,nIdx	,"-")
 	else
 		if orderPriceType == "09" then
-			cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,gf_CommaValue(orderPrice,4))
+			cont0.pnl0.SetPropCardCell("caption"		,"lblData2"	,nIdx	,gf_CommaValue(orderPrice,4))
 		elseif orderPriceType == "01" then
 			if gf_Tonumber(tickValue) > 0 then
-				cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"현재가" .. " +" .. tickValue.."틱")
+				cont0.pnl0.SetPropCardCell("caption"		,"lblData2"	,nIdx	,"현재가" .. " +" .. tickValue.."틱")
 			elseif gf_Tonumber(tickValue) < 0 then
-				cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"현재가" .. " " .. tickValue.."틱")
+				cont0.pnl0.SetPropCardCell("caption"		,"lblData2"	,nIdx	,"현재가" .. " " .. tickValue.."틱")
 			elseif gf_Tonumber(tickValue) == 0 then
-				cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"현재가")
+				cont0.pnl0.SetPropCardCell("caption"		,"lblData2"	,nIdx	,"현재가")
 			end
 			
 		elseif orderPriceType == "02" then
-			cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"시가")
+			cont0.pnl0.SetPropCardCell("caption"		,"lblData2"	,nIdx	,"시가")
 		elseif orderPriceType == "03" then
-			cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"고가")
+			cont0.pnl0.SetPropCardCell("caption"		,"lblData2"	,nIdx	,"고가")
 		elseif orderPriceType == "04" then
-			cont0.pnl0.setPropCardCell("caption"		,"lblData2"	,nIdx	,"저가")
+			cont0.pnl0.SetPropCardCell("caption"		,"lblData2"	,nIdx	,"저가")
 		end
 	end
 	
-	cont0.pnl0.setPropCardCell("caption"		,"lblData3"	,nIdx	,orderQty)
-	cont0.pnl0.setPropCardCell("caption"		,"lblData5"	,nIdx	,orderClsTypeNm)
+	cont0.pnl0.SetPropCardCell("caption"		,"lblData3"	,nIdx	,orderQty)
+	cont0.pnl0.SetPropCardCell("caption"		,"lblData5"	,nIdx	,orderClsTypeNm)
 
-	cont0.pnl0.setPropCardCell("caption"		,"lblData7"	,nIdx	,basePrice)
+	cont0.pnl0.SetPropCardCell("caption"		,"lblData7"	,nIdx	,basePrice)
 	
 	sData4 = string.gsub(expirationDate, "-", "")
 	sDate = string.sub(sData4, 3,4) .. "." .. string.sub(sData4, 5,6) .. "." .. string.sub(sData4, 7,8)
-	cont0.pnl0.setPropCardCell("caption"		,"lblData6"	,nIdx	,sDate)
-	cont0.pnl0.setPropCardCell("caption"		,"lblData4"	,nIdx	,sDate.." 까지")
+	cont0.pnl0.SetPropCardCell("caption"		,"lblData6"	,nIdx	,sDate)
+	cont0.pnl0.SetPropCardCell("caption"		,"lblData4"	,nIdx	,sDate.." 까지")
 	
-	cont0.pnl0.setPropCardCell("maintainratio"		,"Image5"	,nIdx	,"1" )
-	cont0.pnl0.setPropCardCell("imgpath"		,"Image5"	,nIdx	,"icon_remove" )
+	cont0.pnl0.SetPropCardCell("maintainratio"		,"Image5"	,nIdx	,"1" )
+	cont0.pnl0.SetPropCardCell("imgpath"		,"Image5"	,nIdx	,"icon_remove" )
 	
-	cont0.pnl0.setPropCardCell("maintainratio"		,"Image3"	,nIdx	,"1" )
+	cont0.pnl0.SetPropCardCell("maintainratio"		,"Image3"	,nIdx	,"1" )
 	
 	if conditionStatusCode == "02" then
-		cont0.pnl0.setPropCardCell("imgpath"		,"Image3"	,nIdx	,"icon_watch_play" )
-		cont0.pnl0.setPropCardCell("fgcolor"		,"lblData1"	,nIdx	,"290")
+		cont0.pnl0.SetPropCardCell("imgpath"		,"Image3"	,nIdx	,"icon_watch_play" )
+		cont0.pnl0.SetPropCardCell("fgcolor"		,"lblData1"	,nIdx	,"290")
 	else
-		cont0.pnl0.setPropCardCell("imgpath"		,"Image3"	,nIdx	,"icon_watch_pause" )
-		cont0.pnl0.setPropCardCell("fgcolor"		,"lblData1"	,nIdx	,"4")
+		cont0.pnl0.SetPropCardCell("imgpath"		,"Image3"	,nIdx	,"icon_watch_pause" )
+		cont0.pnl0.SetPropCardCell("fgcolor"		,"lblData1"	,nIdx	,"4")
 	end
 	
-	cont0.pnl0.setPropCardCell("caption"		,"lblData1"	,nIdx	,conditionStatusName)
+	cont0.pnl0.SetPropCardCell("caption"		,"lblData1"	,nIdx	,conditionStatusName)
 	
 end
 
@@ -855,7 +847,7 @@ end
 --============================================================================
 function Form_OnFormInitBefore()
 	imgNotice.maintainratio = "1"
-	LabelGuideText1.changeTextAttr(0, 7, 291, 0, true)
+	LabelGuideText1.ChangeTextAttr(0, 7, 291, 0, true)
 	
 	cont0.Label2.paddinginfo = "0,0,0,0"
 	cont0.Label2.maxlinecnt = "1"
@@ -894,8 +886,8 @@ end
 --============================================================================
 function Form_OnFormInit()
 	--(iOS전용) 판넬컨트롤 렌더링 오류 수정
-	cont0.pnl0.setDataNormal(true)
-	cont0.pnl0.setNotUseRecycleView(true)
+	cont0.pnl0.SetDataNormal(true)
+	cont0.pnl0.SetNotUseRecycleView(true)
 	
 	btnReg.enable = false
 	
@@ -916,7 +908,7 @@ end
 function cont0_Image0_OnClick()
 	nCnt = 0
 	for i = 0, gf_Tonumber(cont0.pnl0.rowcount) - 1 do
-		sStatus = cont0.pnl0.getPropCardCell("caption"		,"conditionStatusCode"	,i)
+		sStatus = cont0.pnl0.GetPropCardCell("caption"		,"conditionStatusCode"	,i)
 
 		if sStatus == "01" or sStatus == "02" then
 			nCnt = nCnt + 1
@@ -1045,19 +1037,19 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			nArrCnt = #arrData
 			
 			if nArrCnt > 2 then
-				g_sAcno = arrData[0]
-				g_sAsno = arrData[1]
-				g_sAccName = arrData[2]
+				g_sAcno = arrData[0+1]
+				g_sAsno = arrData[1+1]
+				g_sAccName = arrData[2+1]
 				
 				btnReg.enable = true
 			end
 			
 			if nArrCnt > 3 then
-				g_sPwd = arrData[3]
+				g_sPwd = arrData[3+1]
 			end
 		end
 		
---		Form.setDelayEvent(1, 0.2)
+--		Form.SetDelayEvent(1, 0.2)
 		AutoRule_SelectByAccount() 
 	end
 
@@ -1070,19 +1062,19 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			nArrCnt = #arrData
 			
 			if nArrCnt > 2 then
-				g_sAcno = arrData[0]
-				g_sAsno = arrData[1]
-				g_sAccName = arrData[2]
+				g_sAcno = arrData[0+1]
+				g_sAsno = arrData[1+1]
+				g_sAccName = arrData[2+1]
 				
 				btnReg.enable = true
 			end
 			
 			if nArrCnt > 3 then
-				g_sPwd = arrData[3]
+				g_sPwd = arrData[3+1]
 			end
 		end
 		
---		Form.setDelayEvent(1, 0.2)
+--		Form.SetDelayEvent(1, 0.2)
 		AutoRule_SelectByAccount() 
 	end
 
@@ -1095,19 +1087,19 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			nArrCnt = #arrData
 			
 			if nArrCnt > 2 then
-				g_sAcno = arrData[0]
-				g_sAsno = arrData[1]
-				g_sAccName = arrData[2]
+				g_sAcno = arrData[0+1]
+				g_sAsno = arrData[1+1]
+				g_sAccName = arrData[2+1]
 				
 				btnReg.enable = true
 			end
 			
 			if nArrCnt > 3 then
-				g_sPwd = arrData[3]
+				g_sPwd = arrData[3+1]
 			end
 		end
 		
---		Form.setDelayEvent(1, 0.2)
+--		Form.SetDelayEvent(1, 0.2)
 		AutoRule_SelectByAccount() 
 	end
 
@@ -1120,19 +1112,19 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			nArrCnt = #arrData
 			
 			if nArrCnt > 2 then
-				g_sAcno = arrData[0]
-				g_sAsno = arrData[1]
-				g_sAccName = arrData[2]
+				g_sAcno = arrData[0+1]
+				g_sAsno = arrData[1+1]
+				g_sAccName = arrData[2+1]
 				
 				btnReg.enable = true
 			end
 			
 			if nArrCnt > 3 then
-				g_sPwd = arrData[3]
+				g_sPwd = arrData[3+1]
 			end
 		end
 		
---		Form.setDelayEvent(1, 0.2)
+--		Form.SetDelayEvent(1, 0.2)
 		AutoRule_SelectByAccount() 
 	end
 
@@ -1145,16 +1137,16 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		sStep = string.gsub(sEventName, "RESTAPI_RETURN_SELL_", "") --g_sStep
 		g_sStep = ""
 		
---		if sParam <> "SUCCESS" then
---			oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParam2)
+--		if sParam ~= "SUCCESS" then
+--			oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", sParam2)
 --			
 --			if isEmpty(oError) == false then
---				errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+--				errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
 --
 --				if errorCode == "INVALID_TOKEN" then
 --					g_sStep_Prev = sStep
 --					IssueToken() 
---					Exit Sub 
+--					return 
 --				end
 --			end
 --		end
@@ -1169,17 +1161,17 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			------------------------------------------
 			if sParam == "SUCCESS" then
 			
-				data = Form.responseRestAPI("JSONOBJ", 0, "data", sParam2)
+				data = Form.ResponseRestAPI("JSONOBJ", 0, "data", sParam2)
 				
-				accessToken = Form.responseRestAPI("DATA", 0, "accessToken", data)
-				refreshToken = Form.responseRestAPI("DATA", 0, "refreshToken", data)
+				accessToken = Form.ResponseRestAPI("DATA", 0, "accessToken", data)
+				refreshToken = Form.ResponseRestAPI("DATA", 0, "refreshToken", data)
 				
 				if isEmpty(accessToken) == false then
-					Form.SetSharedData("&REST_API_TOKEN", " Bearer " .. accessToken )
+					Form.SetSharedData("..REST_API_TOKEN", " Bearer " .. accessToken )
 				end
 				
 				if isEmpty(refreshToken) == false then
-					Form.SetSharedData("&REST_API_REFRESH_TOKEN", " Bearer " .. refreshToken )
+					Form.SetSharedData("..REST_API_REFRESH_TOKEN", " Bearer " .. refreshToken )
 				end
 				
 				if g_sStep_Prev == "SELECT_BY_ACCOUNT" then
@@ -1225,21 +1217,21 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 				----------------------
 				-- 응답데이터(전체)
 				----------------------
-				oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParam2)	
+				oData = Form.ResponseRestAPI("JSONOBJ", 0, "data", sParam2)	
 				
 				----------------------
 				-- ROW COUNT
 				----------------------
-				nDataCnt = Form.responseRestAPI("DATA", 0, "dataCount", oData)
+				nDataCnt = Form.ResponseRestAPI("DATA", 0, "dataCount", oData)
 				
 				g_nTotalCnt = nDataCnt
 				----------------------
 				-- NEXT KEY
 				----------------------
-				shasNext = Form.responseRestAPI("DATA", 0, "hasNext", oData)
+				shasNext = Form.ResponseRestAPI("DATA", 0, "hasNext", oData)
 				
 				if shasNext == true or shasNext == "true" or shasNext == "1" then
-					g_sNextKey = Form.responseRestAPI("DATA", 0, "nextOrderConditionId", oData)
+					g_sNextKey = Form.ResponseRestAPI("DATA", 0, "nextOrderConditionId", oData)
 				else
 					g_sNextKey = ""
 				end
@@ -1249,77 +1241,77 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 						----------------------
 						-- ROW DATA
 						----------------------
-						oListData = Form.responseRestAPI("JSONLIST", i, "data", oData)
+						oListData = Form.ResponseRestAPI("JSONLIST", i, "data", oData)
 						
 						----------------------
 						-- 등록내역 기본정보
 						----------------------
-						orderConditionId 		= Form.responseRestAPI("DATA", 0, "orderConditionId", 	oListData)			
-						registrationDate 		= Form.responseRestAPI("DATA", 0, "registrationDate", 	oListData)
-						accountNumber			= Form.responseRestAPI("DATA", 0, "accountNumber", 		oListData)
-						accountSeqNumber		= Form.responseRestAPI("DATA", 0, "accountSeqNumber", 	oListData)
-						stockExchangeCode		= Form.responseRestAPI("DATA", 0, "stockExchangeCode", 	oListData)
-						stockCode				= Form.responseRestAPI("DATA", 0, "stockCode", 			oListData)
-						stockKoreaName			= Form.responseRestAPI("DATA", 0, "stockKoreaName", 		oListData)
-						tradeType				= Form.responseRestAPI("DATA", 0, "tradeType", 			oListData)
+						orderConditionId 		= Form.ResponseRestAPI("DATA", 0, "orderConditionId", 	oListData)			
+						registrationDate 		= Form.ResponseRestAPI("DATA", 0, "registrationDate", 	oListData)
+						accountNumber			= Form.ResponseRestAPI("DATA", 0, "accountNumber", 		oListData)
+						accountSeqNumber		= Form.ResponseRestAPI("DATA", 0, "accountSeqNumber", 	oListData)
+						stockExchangeCode		= Form.ResponseRestAPI("DATA", 0, "stockExchangeCode", 	oListData)
+						stockCode				= Form.ResponseRestAPI("DATA", 0, "stockCode", 			oListData)
+						stockKoreaName			= Form.ResponseRestAPI("DATA", 0, "stockKoreaName", 		oListData)
+						tradeType				= Form.ResponseRestAPI("DATA", 0, "tradeType", 			oListData)
 						
 						----------------------
 						-- 매도 감시조건
 						----------------------
-						sellCondition			= Form.responseRestAPI("JSONOBJ", 0, "sellCondition", 	oListData)
+						sellCondition			= Form.ResponseRestAPI("JSONOBJ", 0, "sellCondition", 	oListData)
 						
 						----------------------
 						-- 기준가 조건
 						----------------------
-						basePriceClsType		= Form.responseRestAPI("DATA", 0, "basePriceClsType", 		sellCondition)
-						basePriceClsTypeName		= Form.responseRestAPI("DATA", 0, "basePriceClsTypeName", 		sellCondition)
-						basePrice				= Form.responseRestAPI("DATA", 0, "basePrice", 				sellCondition)
+						basePriceClsType		= Form.ResponseRestAPI("DATA", 0, "basePriceClsType", 		sellCondition)
+						basePriceClsTypeName		= Form.ResponseRestAPI("DATA", 0, "basePriceClsTypeName", 		sellCondition)
+						basePrice				= Form.ResponseRestAPI("DATA", 0, "basePrice", 				sellCondition)
 						
-						profitRealization		= Form.responseRestAPI("JSONOBJ", 0, "profitRealization", 		sellCondition)
-						profitPreservation		= Form.responseRestAPI("JSONOBJ", 0, "profitPreservation",		sellCondition)
-						stopLoss				= Form.responseRestAPI("JSONOBJ", 0, "stopLoss", 			sellCondition)
+						profitRealization		= Form.ResponseRestAPI("JSONOBJ", 0, "profitRealization", 		sellCondition)
+						profitPreservation		= Form.ResponseRestAPI("JSONOBJ", 0, "profitPreservation",		sellCondition)
+						stopLoss				= Form.ResponseRestAPI("JSONOBJ", 0, "stopLoss", 			sellCondition)
 						
 						----------------------
 						-- 이익실현 조건
 						----------------------
-						priceTypeprofit			= Form.responseRestAPI("DATA", 0, "priceType", 			profitRealization)
-						priceTypeNameprofit		= Form.responseRestAPI("DATA", 0, "priceTypeName", 		profitRealization)
-						priceTypeValueprofit		= Form.responseRestAPI("DATA", 0, "priceTypeValue", 		profitRealization)
-						priceprofit			= Form.responseRestAPI("DATA", 0, "price", 			profitRealization)
+						priceTypeprofit			= Form.ResponseRestAPI("DATA", 0, "priceType", 			profitRealization)
+						priceTypeNameprofit		= Form.ResponseRestAPI("DATA", 0, "priceTypeName", 		profitRealization)
+						priceTypeValueprofit		= Form.ResponseRestAPI("DATA", 0, "priceTypeValue", 		profitRealization)
+						priceprofit			= Form.ResponseRestAPI("DATA", 0, "price", 			profitRealization)
 						
 						----------------------
 						-- 이익보존 조건
 						----------------------
-						priceTypepreserve		= Form.responseRestAPI("DATA", 0, "priceType", 			profitPreservation)
-						priceTypeNamepreserve	= Form.responseRestAPI("DATA", 0, "priceTypeName", 		profitPreservation)
-						priceTypeValuepreserve	= Form.responseRestAPI("DATA", 0, "priceTypeValue", 		profitPreservation)
-						pricepreserve			= Form.responseRestAPI("DATA", 0, "price", 			profitPreservation)
+						priceTypepreserve		= Form.ResponseRestAPI("DATA", 0, "priceType", 			profitPreservation)
+						priceTypeNamepreserve	= Form.ResponseRestAPI("DATA", 0, "priceTypeName", 		profitPreservation)
+						priceTypeValuepreserve	= Form.ResponseRestAPI("DATA", 0, "priceTypeValue", 		profitPreservation)
+						pricepreserve			= Form.ResponseRestAPI("DATA", 0, "price", 			profitPreservation)
 						
 						----------------------
 						-- 손실제한 조건
 						----------------------
-						priceTypestopLoss		= Form.responseRestAPI("DATA", 0, "priceType", 			stopLoss)
-						priceTypeNamestopLoss	= Form.responseRestAPI("DATA", 0, "priceTypeName", 		stopLoss)
-						priceTypeValuestopLoss	= Form.responseRestAPI("DATA", 0, "priceTypeValue", 		stopLoss)
-						pricestopLoss 			= Form.responseRestAPI("DATA", 0, "price", 			stopLoss)
+						priceTypestopLoss		= Form.ResponseRestAPI("DATA", 0, "priceType", 			stopLoss)
+						priceTypeNamestopLoss	= Form.ResponseRestAPI("DATA", 0, "priceTypeName", 		stopLoss)
+						priceTypeValuestopLoss	= Form.ResponseRestAPI("DATA", 0, "priceTypeValue", 		stopLoss)
+						pricestopLoss 			= Form.ResponseRestAPI("DATA", 0, "price", 			stopLoss)
 						
 						----------------------
 						-- 주문 조건
 						----------------------
-						orderPaymentType		= Form.responseRestAPI("DATA", 0, "orderPaymentType", 	oListData)
-						orderClsType			= Form.responseRestAPI("DATA", 0, "orderClsType", 		oListData)
-						orderClsTypeNm			= Form.responseRestAPI("DATA", 0, "orderClsTypeNm", 		oListData)
-						orderPriceType			= Form.responseRestAPI("DATA", 0, "orderPriceType", 		oListData)
-						tickValue				= Form.responseRestAPI("DATA", 0, "tickValue", 			oListData)
-						orderPrice				= Form.responseRestAPI("DATA", 0, "orderPrice", 		oListData)
-						orderQty				= Form.responseRestAPI("DATA", 0, "orderQty", 			oListData)
-						expirationDate			= Form.responseRestAPI("DATA", 0, "expirationDate", 		oListData)
+						orderPaymentType		= Form.ResponseRestAPI("DATA", 0, "orderPaymentType", 	oListData)
+						orderClsType			= Form.ResponseRestAPI("DATA", 0, "orderClsType", 		oListData)
+						orderClsTypeNm			= Form.ResponseRestAPI("DATA", 0, "orderClsTypeNm", 		oListData)
+						orderPriceType			= Form.ResponseRestAPI("DATA", 0, "orderPriceType", 		oListData)
+						tickValue				= Form.ResponseRestAPI("DATA", 0, "tickValue", 			oListData)
+						orderPrice				= Form.ResponseRestAPI("DATA", 0, "orderPrice", 		oListData)
+						orderQty				= Form.ResponseRestAPI("DATA", 0, "orderQty", 			oListData)
+						expirationDate			= Form.ResponseRestAPI("DATA", 0, "expirationDate", 		oListData)
 						
 						----------------------
 						-- 감시 실행여부
 						----------------------
-						conditionStatusCode		= Form.responseRestAPI("DATA", 0, "conditionStatusCode", 	oListData)
-						conditionStatusName		= Form.responseRestAPI("DATA", 0, "conditionStatusName", 	oListData)
+						conditionStatusCode		= Form.ResponseRestAPI("DATA", 0, "conditionStatusCode", 	oListData)
+						conditionStatusName		= Form.ResponseRestAPI("DATA", 0, "conditionStatusName", 	oListData)
 						
 						----------------------
 						-- ADD ROW
@@ -1360,7 +1352,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			------------------------------------------
 			-- 실패(ERROR or EXCEPTION)
 			------------------------------------------
-			else	
+			else
 				Form.ShowAlert("알림", g_sCommonErrorMsg)
 			end
 
@@ -1389,7 +1381,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		------------------------------------
 		-- 조건 단건 감시여부 변경
 		------------------------------------
-		elseif sStep == "UPDATE_STATUS"  then	
+		elseif sStep == "UPDATE_STATUS" then
 		
 			------------------------------------------
 			-- 성공
@@ -1399,77 +1391,77 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 				----------------------
 				-- 응답데이터(전체)
 				----------------------
-				oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParam2)
+				oData = Form.ResponseRestAPI("JSONOBJ", 0, "data", sParam2)
 				
 				----------------------
 				-- 등록내역 기본정보
 				----------------------
-				orderConditionId 		= Form.responseRestAPI("DATA", 0, "orderConditionId", 	oData)			
-				registrationDate 		= Form.responseRestAPI("DATA", 0, "registrationDate", 	oData)
-				accountNumber			= Form.responseRestAPI("DATA", 0, "accountNumber", 		oData)
-				accountSeqNumber		= Form.responseRestAPI("DATA", 0, "accountSeqNumber", 	oData)
-				stockExchangeCode		= Form.responseRestAPI("DATA", 0, "stockExchangeCode", 	oData)
-				stockCode				= Form.responseRestAPI("DATA", 0, "stockCode", 			oData)
-				stockKoreaName			= Form.responseRestAPI("DATA", 0, "stockKoreaName", 		oData)
-				tradeType				= Form.responseRestAPI("DATA", 0, "tradeType", 			oData)
+				orderConditionId 		= Form.ResponseRestAPI("DATA", 0, "orderConditionId", 	oData)			
+				registrationDate 		= Form.ResponseRestAPI("DATA", 0, "registrationDate", 	oData)
+				accountNumber			= Form.ResponseRestAPI("DATA", 0, "accountNumber", 		oData)
+				accountSeqNumber		= Form.ResponseRestAPI("DATA", 0, "accountSeqNumber", 	oData)
+				stockExchangeCode		= Form.ResponseRestAPI("DATA", 0, "stockExchangeCode", 	oData)
+				stockCode				= Form.ResponseRestAPI("DATA", 0, "stockCode", 			oData)
+				stockKoreaName			= Form.ResponseRestAPI("DATA", 0, "stockKoreaName", 		oData)
+				tradeType				= Form.ResponseRestAPI("DATA", 0, "tradeType", 			oData)
 				
 				----------------------
 				-- 매도 감시조건
 				----------------------
-				sellCondition			= Form.responseRestAPI("JSONOBJ", 0, "sellCondition", 	oData)
+				sellCondition			= Form.ResponseRestAPI("JSONOBJ", 0, "sellCondition", 	oData)
 				
 				----------------------
 				-- 기준가 조건
 				----------------------
-				basePriceClsType		= Form.responseRestAPI("DATA", 0, "basePriceClsType", 		sellCondition)
-				basePriceClsTypeName		= Form.responseRestAPI("DATA", 0, "basePriceClsTypeName", 		sellCondition)
-				basePrice				= Form.responseRestAPI("DATA", 0, "basePrice", 				sellCondition)
+				basePriceClsType		= Form.ResponseRestAPI("DATA", 0, "basePriceClsType", 		sellCondition)
+				basePriceClsTypeName		= Form.ResponseRestAPI("DATA", 0, "basePriceClsTypeName", 		sellCondition)
+				basePrice				= Form.ResponseRestAPI("DATA", 0, "basePrice", 				sellCondition)
 				
-				profitRealization		= Form.responseRestAPI("JSONOBJ", 0, "profitRealization", 		sellCondition)
-				profitPreservation		= Form.responseRestAPI("JSONOBJ", 0, "profitPreservation",		sellCondition)
-				stopLoss				= Form.responseRestAPI("JSONOBJ", 0, "stopLoss", 			sellCondition)
+				profitRealization		= Form.ResponseRestAPI("JSONOBJ", 0, "profitRealization", 		sellCondition)
+				profitPreservation		= Form.ResponseRestAPI("JSONOBJ", 0, "profitPreservation",		sellCondition)
+				stopLoss				= Form.ResponseRestAPI("JSONOBJ", 0, "stopLoss", 			sellCondition)
 				
 				----------------------
 				-- 이익실현 조건
 				----------------------
-				priceTypeprofit			= Form.responseRestAPI("DATA", 0, "priceType", 			profitRealization)
-				priceTypeNameprofit		= Form.responseRestAPI("DATA", 0, "priceTypeName", 		profitRealization)
-				priceTypeValueprofit		= Form.responseRestAPI("DATA", 0, "priceTypeValue", 		profitRealization)
-				priceprofit			= Form.responseRestAPI("DATA", 0, "price", 			profitRealization)
+				priceTypeprofit			= Form.ResponseRestAPI("DATA", 0, "priceType", 			profitRealization)
+				priceTypeNameprofit		= Form.ResponseRestAPI("DATA", 0, "priceTypeName", 		profitRealization)
+				priceTypeValueprofit		= Form.ResponseRestAPI("DATA", 0, "priceTypeValue", 		profitRealization)
+				priceprofit			= Form.ResponseRestAPI("DATA", 0, "price", 			profitRealization)
 				
 				----------------------
 				-- 이익보존 조건
 				----------------------
-				priceTypepreserve		= Form.responseRestAPI("DATA", 0, "priceType", 			profitPreservation)
-				priceTypeNamepreserve	= Form.responseRestAPI("DATA", 0, "priceTypeName", 		profitPreservation)
-				priceTypeValuepreserve	= Form.responseRestAPI("DATA", 0, "priceTypeValue", 		profitPreservation)
-				pricepreserve			= Form.responseRestAPI("DATA", 0, "price", 			profitPreservation)
+				priceTypepreserve		= Form.ResponseRestAPI("DATA", 0, "priceType", 			profitPreservation)
+				priceTypeNamepreserve	= Form.ResponseRestAPI("DATA", 0, "priceTypeName", 		profitPreservation)
+				priceTypeValuepreserve	= Form.ResponseRestAPI("DATA", 0, "priceTypeValue", 		profitPreservation)
+				pricepreserve			= Form.ResponseRestAPI("DATA", 0, "price", 			profitPreservation)
 				
 				----------------------
 				-- 손실제한 조건
 				----------------------
-				priceTypestopLoss		= Form.responseRestAPI("DATA", 0, "priceType", 			stopLoss)
-				priceTypeNamestopLoss	= Form.responseRestAPI("DATA", 0, "priceTypeName", 		stopLoss)
-				priceTypeValuestopLoss	= Form.responseRestAPI("DATA", 0, "priceTypeValue", 		stopLoss)
-				pricestopLoss 			= Form.responseRestAPI("DATA", 0, "price", 			stopLoss)
+				priceTypestopLoss		= Form.ResponseRestAPI("DATA", 0, "priceType", 			stopLoss)
+				priceTypeNamestopLoss	= Form.ResponseRestAPI("DATA", 0, "priceTypeName", 		stopLoss)
+				priceTypeValuestopLoss	= Form.ResponseRestAPI("DATA", 0, "priceTypeValue", 		stopLoss)
+				pricestopLoss 			= Form.ResponseRestAPI("DATA", 0, "price", 			stopLoss)
 				
 				----------------------
 				-- 주문 조건
 				----------------------
-				orderPaymentType		= Form.responseRestAPI("DATA", 0, "orderPaymentType", 	oData)
-				orderClsType			= Form.responseRestAPI("DATA", 0, "orderClsType", 		oData)
-				orderClsTypeNm			= Form.responseRestAPI("DATA", 0, "orderClsTypeNm", 		oData)
-				orderPriceType			= Form.responseRestAPI("DATA", 0, "orderPriceType", 		oData)
-				tickValue				= Form.responseRestAPI("DATA", 0, "tickValue", 			oData)
-				orderPrice				= Form.responseRestAPI("DATA", 0, "orderPrice", 		oData)
-				orderQty				= Form.responseRestAPI("DATA", 0, "orderQty", 			oData)
-				expirationDate			= Form.responseRestAPI("DATA", 0, "expirationDate", 		oData)
+				orderPaymentType		= Form.ResponseRestAPI("DATA", 0, "orderPaymentType", 	oData)
+				orderClsType			= Form.ResponseRestAPI("DATA", 0, "orderClsType", 		oData)
+				orderClsTypeNm			= Form.ResponseRestAPI("DATA", 0, "orderClsTypeNm", 		oData)
+				orderPriceType			= Form.ResponseRestAPI("DATA", 0, "orderPriceType", 		oData)
+				tickValue				= Form.ResponseRestAPI("DATA", 0, "tickValue", 			oData)
+				orderPrice				= Form.ResponseRestAPI("DATA", 0, "orderPrice", 		oData)
+				orderQty				= Form.ResponseRestAPI("DATA", 0, "orderQty", 			oData)
+				expirationDate			= Form.ResponseRestAPI("DATA", 0, "expirationDate", 		oData)
 				
 				----------------------
 				-- 감시 실행여부
 				----------------------
-				conditionStatusCode		= Form.responseRestAPI("DATA", 0, "conditionStatusCode", 	oData)
-				conditionStatusName		= Form.responseRestAPI("DATA", 0, "conditionStatusName", 	oData)
+				conditionStatusCode		= Form.ResponseRestAPI("DATA", 0, "conditionStatusCode", 	oData)
+				conditionStatusName		= Form.ResponseRestAPI("DATA", 0, "conditionStatusName", 	oData)
 				
 				
 				----------------------
@@ -1513,11 +1505,11 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			else
 				g_isClickable = true
 				
-				oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParam2)
+				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", sParam2)
 			
 				if isEmpty(oError) == false then
-					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
 					
 					if errorCode == "UNMODIFIABLE_STATUS" then
 						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
@@ -1544,12 +1536,12 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 				----------------------
 				-- 응답데이터(전체)
 				----------------------
-				oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParam2)	
+				oData = Form.ResponseRestAPI("JSONOBJ", 0, "data", sParam2)	
 				
 				----------------------
 				-- ROW COUNT
 				----------------------
-				nDataCnt = Form.responseCntRestAPI("data", sParam2)
+				nDataCnt = Form.ResponseCntRestAPI("data", sParam2)
 				
 				if gf_Tonumber(nDataCnt) > 0 then
 		
@@ -1557,77 +1549,77 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 						----------------------
 						-- ROW DATA
 						----------------------
-						oListData = Form.responseRestAPI("JSONLIST", i, "data", sParam2)
+						oListData = Form.ResponseRestAPI("JSONLIST", i, "data", sParam2)
 
 						----------------------
 						-- 등록내역 기본정보
 						----------------------
-						orderConditionId 		= Form.responseRestAPI("DATA", 0, "orderConditionId", 	oListData)			
-						registrationDate 		= Form.responseRestAPI("DATA", 0, "registrationDate", 	oListData)
-						accountNumber			= Form.responseRestAPI("DATA", 0, "accountNumber", 		oListData)
-						accountSeqNumber		= Form.responseRestAPI("DATA", 0, "accountSeqNumber", 	oListData)
-						stockExchangeCode		= Form.responseRestAPI("DATA", 0, "stockExchangeCode", 	oListData)
-						stockCode				= Form.responseRestAPI("DATA", 0, "stockCode", 			oListData)
-						stockKoreaName			= Form.responseRestAPI("DATA", 0, "stockKoreaName", 		oListData)
-						tradeType				= Form.responseRestAPI("DATA", 0, "tradeType", 			oListData)
+						orderConditionId 		= Form.ResponseRestAPI("DATA", 0, "orderConditionId", 	oListData)			
+						registrationDate 		= Form.ResponseRestAPI("DATA", 0, "registrationDate", 	oListData)
+						accountNumber			= Form.ResponseRestAPI("DATA", 0, "accountNumber", 		oListData)
+						accountSeqNumber		= Form.ResponseRestAPI("DATA", 0, "accountSeqNumber", 	oListData)
+						stockExchangeCode		= Form.ResponseRestAPI("DATA", 0, "stockExchangeCode", 	oListData)
+						stockCode				= Form.ResponseRestAPI("DATA", 0, "stockCode", 			oListData)
+						stockKoreaName			= Form.ResponseRestAPI("DATA", 0, "stockKoreaName", 		oListData)
+						tradeType				= Form.ResponseRestAPI("DATA", 0, "tradeType", 			oListData)
 						
 						----------------------
 						-- 매도 감시조건
 						----------------------
-						sellCondition			= Form.responseRestAPI("JSONOBJ", 0, "sellCondition", 	oListData)
+						sellCondition			= Form.ResponseRestAPI("JSONOBJ", 0, "sellCondition", 	oListData)
 						
 						----------------------
 						-- 기준가 조건
 						----------------------
-						basePriceClsType		= Form.responseRestAPI("DATA", 0, "basePriceClsType", 		sellCondition)
-						basePriceClsTypeName		= Form.responseRestAPI("DATA", 0, "basePriceClsTypeName", 		sellCondition)
-						basePrice				= Form.responseRestAPI("DATA", 0, "basePrice", 				sellCondition)
+						basePriceClsType		= Form.ResponseRestAPI("DATA", 0, "basePriceClsType", 		sellCondition)
+						basePriceClsTypeName		= Form.ResponseRestAPI("DATA", 0, "basePriceClsTypeName", 		sellCondition)
+						basePrice				= Form.ResponseRestAPI("DATA", 0, "basePrice", 				sellCondition)
 						
-						profitRealization		= Form.responseRestAPI("JSONOBJ", 0, "profitRealization", 		sellCondition)
-						profitPreservation		= Form.responseRestAPI("JSONOBJ", 0, "profitPreservation",		sellCondition)
-						stopLoss				= Form.responseRestAPI("JSONOBJ", 0, "stopLoss", 			sellCondition)
+						profitRealization		= Form.ResponseRestAPI("JSONOBJ", 0, "profitRealization", 		sellCondition)
+						profitPreservation		= Form.ResponseRestAPI("JSONOBJ", 0, "profitPreservation",		sellCondition)
+						stopLoss				= Form.ResponseRestAPI("JSONOBJ", 0, "stopLoss", 			sellCondition)
 						
 						----------------------
 						-- 이익실현 조건
 						----------------------
-						priceTypeprofit			= Form.responseRestAPI("DATA", 0, "priceType", 			profitRealization)
-						priceTypeNameprofit		= Form.responseRestAPI("DATA", 0, "priceTypeName", 		profitRealization)
-						priceTypeValueprofit		= Form.responseRestAPI("DATA", 0, "priceTypeValue", 		profitRealization)
-						priceprofit			= Form.responseRestAPI("DATA", 0, "price", 			profitRealization)
+						priceTypeprofit			= Form.ResponseRestAPI("DATA", 0, "priceType", 			profitRealization)
+						priceTypeNameprofit		= Form.ResponseRestAPI("DATA", 0, "priceTypeName", 		profitRealization)
+						priceTypeValueprofit		= Form.ResponseRestAPI("DATA", 0, "priceTypeValue", 		profitRealization)
+						priceprofit			= Form.ResponseRestAPI("DATA", 0, "price", 			profitRealization)
 						
 						----------------------
 						-- 이익보존 조건
 						----------------------
-						priceTypepreserve		= Form.responseRestAPI("DATA", 0, "priceType", 			profitPreservation)
-						priceTypeNamepreserve	= Form.responseRestAPI("DATA", 0, "priceTypeName", 		profitPreservation)
-						priceTypeValuepreserve	= Form.responseRestAPI("DATA", 0, "priceTypeValue", 		profitPreservation)
-						pricepreserve			= Form.responseRestAPI("DATA", 0, "price", 			profitPreservation)
+						priceTypepreserve		= Form.ResponseRestAPI("DATA", 0, "priceType", 			profitPreservation)
+						priceTypeNamepreserve	= Form.ResponseRestAPI("DATA", 0, "priceTypeName", 		profitPreservation)
+						priceTypeValuepreserve	= Form.ResponseRestAPI("DATA", 0, "priceTypeValue", 		profitPreservation)
+						pricepreserve			= Form.ResponseRestAPI("DATA", 0, "price", 			profitPreservation)
 						
 						----------------------
 						-- 손실제한 조건
 						----------------------
-						priceTypestopLoss		= Form.responseRestAPI("DATA", 0, "priceType", 			stopLoss)
-						priceTypeNamestopLoss	= Form.responseRestAPI("DATA", 0, "priceTypeName", 		stopLoss)
-						priceTypeValuestopLoss	= Form.responseRestAPI("DATA", 0, "priceTypeValue", 		stopLoss)
-						pricestopLoss 			= Form.responseRestAPI("DATA", 0, "price", 			stopLoss)
+						priceTypestopLoss		= Form.ResponseRestAPI("DATA", 0, "priceType", 			stopLoss)
+						priceTypeNamestopLoss	= Form.ResponseRestAPI("DATA", 0, "priceTypeName", 		stopLoss)
+						priceTypeValuestopLoss	= Form.ResponseRestAPI("DATA", 0, "priceTypeValue", 		stopLoss)
+						pricestopLoss 			= Form.ResponseRestAPI("DATA", 0, "price", 			stopLoss)
 						
 						----------------------
 						-- 주문 조건
 						----------------------
-						orderPaymentType		= Form.responseRestAPI("DATA", 0, "orderPaymentType", 	oListData)
-						orderClsType			= Form.responseRestAPI("DATA", 0, "orderClsType", 		oListData)
-						orderClsTypeNm			= Form.responseRestAPI("DATA", 0, "orderClsTypeNm", 		oListData)
-						orderPriceType			= Form.responseRestAPI("DATA", 0, "orderPriceType", 		oListData)
-						tickValue				= Form.responseRestAPI("DATA", 0, "tickValue", 			oListData)
-						orderPrice				= Form.responseRestAPI("DATA", 0, "orderPrice", 		oListData)
-						orderQty				= Form.responseRestAPI("DATA", 0, "orderQty", 			oListData)
-						expirationDate			= Form.responseRestAPI("DATA", 0, "expirationDate", 		oListData)
+						orderPaymentType		= Form.ResponseRestAPI("DATA", 0, "orderPaymentType", 	oListData)
+						orderClsType			= Form.ResponseRestAPI("DATA", 0, "orderClsType", 		oListData)
+						orderClsTypeNm			= Form.ResponseRestAPI("DATA", 0, "orderClsTypeNm", 		oListData)
+						orderPriceType			= Form.ResponseRestAPI("DATA", 0, "orderPriceType", 		oListData)
+						tickValue				= Form.ResponseRestAPI("DATA", 0, "tickValue", 			oListData)
+						orderPrice				= Form.ResponseRestAPI("DATA", 0, "orderPrice", 		oListData)
+						orderQty				= Form.ResponseRestAPI("DATA", 0, "orderQty", 			oListData)
+						expirationDate			= Form.ResponseRestAPI("DATA", 0, "expirationDate", 		oListData)
 						
 						----------------------
 						-- 감시 실행여부
 						----------------------
-						conditionStatusCode		= Form.responseRestAPI("DATA", 0, "conditionStatusCode", 	oListData)
-						conditionStatusName		= Form.responseRestAPI("DATA", 0, "conditionStatusName", 	oListData)
+						conditionStatusCode		= Form.ResponseRestAPI("DATA", 0, "conditionStatusCode", 	oListData)
+						conditionStatusName		= Form.ResponseRestAPI("DATA", 0, "conditionStatusName", 	oListData)
 						
 						
 						----------------------
@@ -1636,7 +1628,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 						nRowCnt = gf_Tonumber(cont0.pnl0.rowcount)
 						nIdx = ""
 						for j = 0, nRowCnt - 1 do
-							sPnlCondId = cont0.pnl0.getPropCardCell("caption"		,"orderConditionId"	,j)
+							sPnlCondId = cont0.pnl0.GetPropCardCell("caption"		,"orderConditionId"	,j)
 							if orderConditionId == sPnlCondId then
 								nIdx = j
 								break
@@ -1684,11 +1676,11 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			-- 실패(ERROR or EXCEPTION)
 			------------------------------------------
 			else
-				oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParam2)
+				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", sParam2)
 			
 				if isEmpty(oError) == false then
-					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
 					
 					if errorCode == "UNMODIFIABLE_STATUS" then
 						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
@@ -1703,16 +1695,16 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		------------------------------------
 		-- 조건 단건 삭제
 		------------------------------------
-		elseif sStep == "DELETE"  then
+		elseif sStep == "DELETE" then
 --			AutoRule_SelectByAccount() 
 			------------------------------------------
 			-- 성공
 			------------------------------------------
 			if sParam == "SUCCESS" then
-				status = Form.responseRestAPI("DATA", 0, "status", sParam2)
+				status = Form.ResponseRestAPI("DATA", 0, "status", sParam2)
 
 				if status == "00" then
-					sStatCode = cont0.pnl0.getPropCardCell("caption", "conditionStatusCode", 	g_nClickIdx)
+					sStatCode = cont0.pnl0.GetPropCardCell("caption", "conditionStatusCode", 	g_nClickIdx)
 			
 					if sStatCode == "02" then
 						g_nRunCnt = g_nRunCnt - 1
@@ -1748,11 +1740,11 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			-- 실패(ERROR or EXCEPTION)
 			------------------------------------------
 			else
-				oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParam2)
+				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", sParam2)
 			
 				if isEmpty(oError) == false then
-					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
 					
 					if errorCode == "UNMODIFIABLE_STATUS" then
 						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
@@ -1770,7 +1762,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		------------------------------------
 		-- 조건 전체 삭제
 		------------------------------------
-		elseif sStep == "ALL_DELETE"  then
+		elseif sStep == "ALL_DELETE" then
 			------------------------------------------
 			-- 성공
 			------------------------------------------
@@ -1780,11 +1772,11 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			-- 실패(ERROR or EXCEPTION)
 			------------------------------------------
 			else
-				oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParam2)
+				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", sParam2)
 			
 				if isEmpty(oError) == false then
-					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
 					
 					if errorCode == "UNMODIFIABLE_STATUS" then
 						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
@@ -1799,17 +1791,17 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		------------------------------------
 		-- 조건등록 가능갯수
 		------------------------------------
-		elseif sStep == "SELECT_COUNT"  then
+		elseif sStep == "SELECT_COUNT" then
 			------------------------------------------
 			-- 성공
 			------------------------------------------
 			if sParam == "SUCCESS" then
-				status = Form.responseRestAPI("DATA", 0, "status", sParam2)
+				status = Form.ResponseRestAPI("DATA", 0, "status", sParam2)
 
 				if status == "00" then
-					oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParam2)
+					oData = Form.ResponseRestAPI("JSONOBJ", 0, "data", sParam2)
 					
-					validCount = Form.responseRestAPI("DATA", 0, "validCount", 	oData)	
+					validCount = Form.ResponseRestAPI("DATA", 0, "validCount", 	oData)	
 					
 					if gf_Tonumber(validCount) >= 50 then
 						Form.ShowAlert("알림", "자동 감시 주문은\n50개 까지만 등록 가능해요.")
@@ -1822,15 +1814,15 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			-- 실패(ERROR or EXCEPTION)
 			------------------------------------------
 			else
---				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+--				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
 --			
 --				if isEmpty(oError) == false then
---					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
---					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+--					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+--					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
 --					
 --					if errorCode == "UNMODIFIABLE_STATUS" then
 --						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
---						Exit Sub 
+--						return 
 --					end
 --				end
 
@@ -1850,20 +1842,20 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			nArrCnt = #arrData
 			
 			if nArrCnt > 1 then
-				sRet = arrData[0]
-				g_sPwd = arrData[1]
+				sRet = arrData[0+1]
+				g_sPwd = arrData[1+1]
 			else
 				sRet = sParam
 			end
 		end
 		
 		if sRet == "SUCCESS" then
-			sAcno 	= g_sAcno --Form.getTopCtlProp("act0","total")
-			sAsno 	= g_sAsno --Form.getTopCtlProp("act0","sequence")
+			sAcno 	= g_sAcno --Form.GetTopCtlProp("act0","total")
+			sAsno 	= g_sAsno --Form.GetTopCtlProp("act0","sequence")
 			
-			sAcntNm 	= g_sAccName --Form.getTopCtlProp("act0","accountname")
+			sAcntNm 	= g_sAccName --Form.GetTopCtlProp("act0","accountname")
 			
-			sPwd 	= g_sPwd	--Form.getTopCtlProp("edtPwd","caption")
+			sPwd 	= g_sPwd	--Form.GetTopCtlProp("edtPwd","caption")
 			
 			sLinkData = "0"
 			sLinkData = sLinkData .. "`" .. sAcno
@@ -1904,35 +1896,35 @@ end
 function Form_OnPopupReturn(sKeyName, sRet)
 
 	--(iOS전용) 판넬컨트롤 렌더링 오류 수정
-	cont0.pnl0.setDataNormal(true)
+	cont0.pnl0.SetDataNormal(true)
 	
 	------------------------------------
 	-- 조건 등록 성공 -> 전체 재조회
 	------------------------------------	
 	if sKeyName == "COMPLETE_ORDER" then
 		g_nClickIdx = 0
---		Form.setDelayEvent(1, 0.5)
+--		Form.SetDelayEvent(1, 0.5)
 		AutoRule_SelectByAccount() 
 
 	------------------------------------
 	-- 조건 변경 성공 -> 전체 재조회
 	------------------------------------	
 	elseif sKeyName == "COMPLETE_MODIFY" then
---		Form.setDelayEvent(1, 0.5)
+--		Form.SetDelayEvent(1, 0.5)
 		AutoRule_SelectByAccount() 
 		
 	------------------------------------
 	-- 조건 삭제 -> 전체 재조회
 	------------------------------------	
 	elseif sKeyName == "INFO_DELETE" then
---		Form.setDelayEvent(1, 0.5)
+--		Form.SetDelayEvent(1, 0.5)
 		AutoRule_SelectByAccount() 
 
 	------------------------------------
 	-- 조건 삭제 -> 전체 재조회
 	------------------------------------	
 	elseif sKeyName == "DELETE_ITEM" then
---		Form.setDelayEvent(2, 0.5)
+--		Form.SetDelayEvent(2, 0.5)
 		AutoRule_Delete(g_nClickIdx)
 		
 	------------------------------------
@@ -1942,25 +1934,25 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		g_isModify = true
 		g_sModifyInfo = sRet
 		
-		Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+		Form.TriggerEvent("#", "CHECK_ACCT_PWD", "")
 		
 	------------------------------------
 	-- 조건 변경 -> 전체 재조회
 	------------------------------------
 	elseif sKeyName == "INFO_CHANGE" then
---		Form.setDelayEvent(1, 0.5)
+--		Form.SetDelayEvent(1, 0.5)
 		AutoRule_SelectByAccount() 
 	
 	------------------------------------
 	-- 잔고데이터 리턴 -> 조건설정 화면으로 이동
 	------------------------------------
 	elseif sKeyName == "RETURN_JANGO" then
-		sAcno 	= g_sAcno --Form.getTopCtlProp("act0","total")
-		sAsno 	= g_sAsno --Form.getTopCtlProp("act0","sequence")
+		sAcno 	= g_sAcno --Form.GetTopCtlProp("act0","total")
+		sAsno 	= g_sAsno --Form.GetTopCtlProp("act0","sequence")
 		
-		sAcntNm 	= g_sAccName --Form.getTopCtlProp("act0","accountname")
+		sAcntNm 	= g_sAccName --Form.GetTopCtlProp("act0","accountname")
 		
-		sPwd 	= g_sPwd	--Form.getTopCtlProp("edtPwd","caption")
+		sPwd 	= g_sPwd	--Form.GetTopCtlProp("edtPwd","caption")
 		
 		sLinkData = "0"
 		sLinkData = sLinkData .. "`" .. sAcno
@@ -1976,7 +1968,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	elseif sKeyName == "CHECK_AGREE" then
 		if sRet == "ok" then
 		
-			--Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+			--Form.TriggerEvent("#", "CHECK_ACCT_PWD", "")
 			DATAMANAGER.RequestTranData("obtro_oder_135a")
 		end
 	end
@@ -2020,12 +2012,12 @@ end
 --============================================================================
 function DATAMANAGER_OnSendTranBefore(szTranID)
 	if szTranID == "obtro_oder_135a" then
-		sCsno = Form.GetSharedData("&CUST_NUM", false)
-		sDate = Form.GetSharedData("&HOST_DATE", false)
-		sMediaCode = Form.GetSharedData("&MEDIA_CODE", false)
+		sCsno = Form.GetSharedData("..CUST_NUM", false)
+		sDate = Form.GetSharedData("..HOST_DATE", false)
+		sMediaCode = Form.GetSharedData("..MEDIA_CODE", false)
 		
-		sAcno 	= g_sAcno --Form.getTopCtlProp("act0","total")
-		sAsno 	= g_sAsno --Form.getTopCtlProp("act0","sequence")
+		sAcno 	= g_sAcno --Form.GetTopCtlProp("act0","total")
+		sAsno 	= g_sAsno --Form.GetTopCtlProp("act0","sequence")
 		
 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "BSWR_CLCD" , 0 , "U1")
 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "CSNO" , 0 , sCsno)
@@ -2038,7 +2030,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		
 	elseif szTranID == "obtro_oder_133r" then
 		
-		sCsno		= Form.GetSharedData("&CUST_NUM", false)
+		sCsno		= Form.GetSharedData("..CUST_NUM", false)
 		
 		DATAMANAGER.SetDataValue(0, "obtro_oder_133r", "InBlock1", "BSWR_CLCD" , 0 , 		"U1")
 		DATAMANAGER.SetDataValue(0, "obtro_oder_133r", "InBlock1", "CSNO" , 0 , 		sCsno)
@@ -2049,13 +2041,13 @@ end
 --============================================================================
 function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if szTranID == "obtro_oder_135a" then
-		Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+		Form.TriggerEvent("#", "CHECK_ACCT_PWD", "")
 		
 	elseif szTranID == "obtro_oder_133r" then
 		sYN = DATAMANAGER.GetDataValue(0, "obtro_oder_133r", "OutBlock1", "AGRM_YN" , 0)
 		
 		if sYN == "Y" then
-			Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+			Form.TriggerEvent("#", "CHECK_ACCT_PWD", "")
 		else
 			Form.OpenPopup("nrshtro17100_p11" , "" , "")
 		end
@@ -2066,7 +2058,7 @@ end
 function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
 	
-	if	string.len(gf_Trim(szSubMsg))	>	0	then
+	if string.string.len(gf_Trim(szSubMsg))	>	0 then
 		Form.ShowAlert("알림", szErrMsg .. "(" .. szSubMsg .. ")")
 	else
 		Form.ShowAlert("알림", szErrMsg )
@@ -2079,7 +2071,8 @@ function cont0_pnl0_OnScrollEnd()
 		AutoRule_SelectByAccount_Next()
 	end
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_135a" trcode="obtro_oder_135a" compress="1" encryption="1" inputcheck="1" />

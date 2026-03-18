@@ -52,7 +52,6 @@
 		<TABORDER_INFO horz="" vert="" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="23561" _ulen="22405" >
-
 -- --------------------------------------------------------------
 -- 공통함수 import
 -- --------------------------------------------------------------
@@ -84,7 +83,7 @@ g_sFocusEditClear = false
 
 -- ... existing code ...
 function isEmpty(sData)
-    if gf_Trim(sData) == "" or sData == nil or trim(sData) == "null" then
+    if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
         return true
     else
         return false
@@ -96,7 +95,7 @@ end
 function truncateToDecimalPlaces(nVal, nDeimalPlaces)
     nVal = gf_Tonumber(nVal)
     nFactor = 10 ^ nDeimalPlaces
-    szNumStr = FormatNumber(nVal*nFactor,12,0,0,0,1)
+    szNumStr = gf_CommaValue(nVal*nFactor,12,0,0,0,1)
     nDecimalIdx = string.find(szNumStr, "%.")
     
     nTotalData = 0
@@ -128,10 +127,10 @@ function Convert_StrToArr(szData, szSeperator)
     if isEmpty(szSeperator) then
         -- 단일변수
         arrData = {}
-        table.insert(arrData, szData)
+        table.Insert(arrData, szData)
     else
         -- 다중변수
-        arrData = Split(szData, szSeperator)
+        arrData = gf_Split(szData, szSeperator)
     end
     
     return arrData
@@ -145,21 +144,21 @@ function Check_NumDigits(sType, sValue)
         return true
     end
     
-    sValue = trim(replace(sValue, "+", ""))
-    sValue = trim(replace(sValue, "-", ""))
+    sValue = gf_Trim(string.gsub(sValue, string.gsub("+", "([%p])", "%%%1"), ""))
+    sValue = gf_Trim(string.gsub(sValue, string.gsub("-", "([%p])", "%%%1"), ""))
     
     if isEmpty(sValue) == true then
         return true
     end
     
-    local arrValue = Split(sValue, ".")
+    local arrValue = gf_Split(sValue, ".")
     local nArrCnt = #arrValue
     
-    local sInteger = arrValue[1]
+    local sInteger = arrValue[1+1]
     local sDecimal = ""
     
     if nArrCnt >= 2 then
-        sDecimal = arrValue[2]
+        sDecimal = arrValue[2+1]
     end
     
     if sType == "I" then
@@ -167,7 +166,7 @@ function Check_NumDigits(sType, sValue)
             return true
         end
         
-        local nTextLen = Form.getLen(sInteger)
+        local nTextLen = Form.GetLen(sInteger)
         
         if gf_Tonumber(nTextLen) <= gf_Tonumber(g_sInteger) then
             return true
@@ -180,7 +179,7 @@ function Check_NumDigits(sType, sValue)
             return true
         end
         
-        local nTextLen = Form.getLen(sDecimal)
+        local nTextLen = Form.GetLen(sDecimal)
         
         if gf_Tonumber(nTextLen) <= gf_Tonumber(g_sDecimal) then
             return true
@@ -192,7 +191,7 @@ end
 
 -- ... existing code ...
 
-function Init_Control() 
+function Init_Control()
     local sTitle = "입력"
     
     if g_sOrdGbn == "0" then
@@ -253,7 +252,7 @@ function Init_Control()
     
     Label2.caption = sTitle
     if isEmpty(g_sInputData) == false then
-        --		if  g_sProcGbn <> "2" then
+        --		if  g_sProcGbn ~= "2" then
         Image0.visible = true
         --		end
         SetPrice("AUTO", g_sInputData, g_sDecimal, g_sPostFix)
@@ -269,7 +268,7 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
         Label1.fgcolor = "333"
     end
     
-    local sChk = Instr(gf_Tostring(nPrc), ".")
+    local sChk = string.find(gf_Tostring(nPrc), ".")
     
     --================================================================
     --소수점(dot)이 있는 경우
@@ -279,15 +278,15 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
         --------------------------------
         --소수점영역 길이
         --------------------------------
-        local sCha = CInt(Len(nPrc) - sChk)
+        local sCha = gf_Tonumber(string.len(nPrc) - sChk)
         
         ---------------------------------------------------------
         --소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
         ---------------------------------------------------------
-        if sCha >= Cint(nDecimalLen) then
+        if sCha >= gf_Tonumber(nDecimalLen) then
              
-            if sCha >= Cint(nDecimalLen) then
-                local sResult = FormatNumber(nPrc, nDecimalLen).." " .. sPostFix
+            if sCha >= gf_Tonumber(nDecimalLen) then
+                local sResult = gf_CommaValue(nPrc, nDecimalLen).." " .. sPostFix
                 Label1.caption = sResult
             else
                 return
@@ -304,7 +303,7 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
             ---------------------------------------------------------------------
             if sType == "AUTO" then
                 
-                local sResult = FormatNumber(nPrc,nDecimalLen).." " .. sPostFix
+                local sResult = gf_CommaValue(nPrc,nDecimalLen).." " .. sPostFix
                 Label1.caption = sResult
                 
             ---------------------------------------------------------------------
@@ -322,10 +321,10 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
     --================================================================
     else
         if sType == "AUTO" then
-            local sResult = FormatNumber(nPrc,nDecimalLen) .." " .. sPostFix
+            local sResult = gf_CommaValue(nPrc,nDecimalLen) .." " .. sPostFix
             Label1.caption = sResult
         else
-            local sResult = FormatNumber(nPrc,0) .." " .. sPostFix
+            local sResult = gf_CommaValue(nPrc,0) .." " .. sPostFix
             Label1.caption = sResult
         end
         
@@ -413,30 +412,30 @@ function InputKeypad(sType, sKeypad)
         --		
         --			sData = g_sInputData
         --			
-        --			if g_sFocusEditClear <> true then
+        --			if g_sFocusEditClear ~= true then
         --				
         --				g_sFocusEditClear = true
         --				sData = sKeypad
         --				g_sInputData = sData
-        --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+        --				Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
         --				
         --			else
         --				if gf_Tonumber(sData) == 0 then
         --					sData = sKeypad
         --				else
-        --					sData = sData & sKeypad
+        --					sData = sData .. sKeypad
         --				end
         --				
         --				if Check_NumDigits("I", sData) == false then
-        --					Exit Function
+        --					return
         --				end
         --				
         --				if Check_NumDigits("D", sData) == false then
-        --					Exit Function
+        --					return
         --				end
         --				
         --				g_sInputData = sData
-        --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+        --				Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
         --			
         --			end
         --		
@@ -494,27 +493,27 @@ function InputKeypad(sType, sKeypad)
         --		
         --			sData = g_sInputData
         --		
-        --			if g_sFocusEditClear <> true then
+        --			if g_sFocusEditClear ~= true then
         --				
         --				g_sFocusEditClear = true
         --				sData = sKeypad
         --				g_sInputData = sData
-        --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+        --				Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
         --				
         --			else
-        --				if Check_NumDigits("I", sData & sKeypad) == false then
-        --					Exit Function
+        --				if Check_NumDigits("I", sData .. sKeypad) == false then
+        --					return
         --				end
         --				
-        --				if Check_NumDigits("D", sData & sKeypad) == false then
-        --					Exit Function
+        --				if Check_NumDigits("D", sData .. sKeypad) == false then
+        --					return
         --				end
         --			
-        --				'0이 입력되있는 경우에는 무시
-        --				if sData <> "0" then
-        --					sData = sData & sKeypad
+        --				 --0이 입력되있는 경우에는 무시
+        --				if sData ~= "0" then
+        --					sData = sData .. sKeypad
         --					g_sInputData = sData
-        --					Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+        --					Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
         --				end
         --			
         --			end
@@ -583,7 +582,7 @@ function InputKeypad(sType, sKeypad)
         --		
         --			sData = g_sInputData
         --		
-        --			if g_sFocusEditClear <> true then
+        --			if g_sFocusEditClear ~= true then
         --				g_sFocusEditClear = true
         --			end
         --			
@@ -610,7 +609,7 @@ function InputKeypad(sType, sKeypad)
         else
 			
             local sData = g_sInputData
-            local nLen = Len(sData)
+            local nLen = string.len(sData)
             sData = string.sub(sData , 1, nLen)
             g_sInputData = sData
             
@@ -621,7 +620,7 @@ function InputKeypad(sType, sKeypad)
 		
         --		elseif g_sProcGbn == "1" then
         --		
-        --			if g_sFocusEditClear <> true then
+        --			if g_sFocusEditClear ~= true then
         --			
         --				g_sFocusEditClear = true
         --				g_sInputData = ""
@@ -629,10 +628,10 @@ function InputKeypad(sType, sKeypad)
         --				
         --			else
         --				sData = g_sInputData
-        --				nLen = Len(sData)
-        --				sData = left(sData ,nLen - 1)
+        --				nLen = string.len(sData)
+        --				sData = string.sub(sData, 1, nLen - 1)
         --				g_sInputData = sData
-        --				Label1.caption = FormatNumber(sData,0) .. " " ..  g_sPostFix
+        --				Label1.caption = gf_CommaValue(sData,0) .. " " ..  g_sPostFix
         --				
         --			end
         --		end
@@ -642,7 +641,7 @@ function InputKeypad(sType, sKeypad)
         Label1.caption = "입력해 주세요."
         Image0.visible = false
     else
-        --		if  g_sProcGbn <> "2" then
+        --		if  g_sProcGbn ~= "2" then
         Image0.visible = true
         --		end
     end
@@ -658,13 +657,13 @@ function Form_OnFormInit()
     local nArrCnt = #arrLinkData
     
     if nArrCnt > 5 then
-        g_sOrdGbn		= arrLinkData[1]
-        g_sProcGbn		= arrLinkData[2]
-        g_sInputData	= arrLinkData[3]
-        g_sInteger		= arrLinkData[4]
-        g_sDecimal		= arrLinkData[5]
-        g_sPostFix		= arrLinkData[6]
-        g_sRetKey		= arrLinkData[7]
+        g_sOrdGbn		= arrLinkData[1+1]
+        g_sProcGbn		= arrLinkData[2+1]
+        g_sInputData	= arrLinkData[3+1]
+        g_sInteger		= arrLinkData[4+1]
+        g_sDecimal		= arrLinkData[5+1]
+        g_sPostFix		= arrLinkData[6+1]
+        g_sRetKey		= arrLinkData[7+1]
         
         Init_Control()
     end
@@ -727,7 +726,7 @@ end
 -- ... existing code ...
 
 function cont0_btnPlus00_OnClick()
-    if g_sProcGbn == "0" or g_sProcGbn == "2"  then
+    if g_sProcGbn == "0" or g_sProcGbn == "2" then
         InputKeypad("DOT", ".")
     else
         InputKeypad("ZERO", "00")
@@ -831,8 +830,8 @@ end
 -- ... existing code ...
 
 function cont1_btnPlus_OnClick()
-    if instr(g_sInputData, "-") > 0 then
-        g_sInputData = replace(g_sInputData, "-", "") 
+    if string.find(g_sInputData, "-") > 0 then
+        g_sInputData = string.gsub(g_sInputData, string.gsub("-", "([%p])", "%%%1"), "") 
     end
     
     SetPrice("MANUAL", g_sInputData, g_sDecimal, g_sPostFix)
@@ -841,7 +840,7 @@ end
 -- ... existing code ...
 
 function cont1_btnMinus_OnClick()
-    if instr(g_sInputData, "-") == 0 and gf_Tonumber(g_sInputData) > 0 then
+    if string.find(g_sInputData, "-") == 0 and gf_Tonumber(g_sInputData) > 0 then
         g_sInputData = "-" .. g_sInputData
     end
 
@@ -868,5 +867,6 @@ function imgBg_OnClick()
 end
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

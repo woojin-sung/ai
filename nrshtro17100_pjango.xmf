@@ -652,10 +652,10 @@ local g_sLinkData
 --             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
 -- ****************************************************************************
 -- ===============================================
--- NULL 체크 
+-- nil 체크 
 -- ===============================================
 function isEmpty(sData)
-	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
 		return true
 	else
 		return false
@@ -695,7 +695,7 @@ function Convert_StrToArr(szData, szSeperator)
 	if isEmpty(szSeperator) then
 		-- 단일변수
 		arrData = {}
-		table.insert(arrData, szData)
+		table.Insert(arrData, szData)
 	else
 		-- 다중변수
 		arrData = gf_Split(szData, szSeperator)
@@ -703,7 +703,7 @@ function Convert_StrToArr(szData, szSeperator)
 	return arrData
 end
 function Transform_Exid(sValue)
-	if sValue == "0537" then -- 나스닥
+	if sValue == "0537" then -- 나스닥 end
 		return "OQ"
 	elseif sValue == "0321" then -- 뉴욕
 		return "NY"
@@ -725,10 +725,10 @@ function Init_Control()
 	-- --------------------------------------------------
 	-- 폼탭 헤더 생성
 	-- --------------------------------------------------
-	cont0.fmtabMain.setTabHeaderImage("img_bgcircle_black.9" , "img_bgcircle_line.9" , 6) --활성화/비활성화/여백
-	cont0.fmtabMain.setTabHeaderFgColor("28" , "321") 								 --활성화/비활성화 폰트색상
-	cont0.fmtabMain.insertPage( cont0.fmtabMain.tabcount, "page1", "page1", "empty", "0", "전체")
-	cont0.fmtabMain.insertPage( cont0.fmtabMain.tabcount, "page2", "page2", "empty", "0", "현금")
+	cont0.fmtabMain.SetTabHeaderImage("img_bgcircle_black.9" , "img_bgcircle_line.9" , 6) --활성화/비활성화/여백
+	cont0.fmtabMain.SetTabHeaderFgColor("28" , "321") 								 --활성화/비활성화 폰트색상
+	cont0.fmtabMain.InsertPage( cont0.fmtabMain.tabcount, "page1", "page1", "empty", "0", "전체")
+	cont0.fmtabMain.InsertPage( cont0.fmtabMain.tabcount, "page2", "page2", "empty", "0", "현금")
 	cont0.fmtabMain.currenttab = 0
 	cont0.grd0.SetCellMaxLineCount("bd_cell01", 2)
 end
@@ -746,9 +746,9 @@ function Form_OnFormInit()
 		cont0.chk0.chksilence = sChk
 	end
 	if nArrCnt >= 3 then
-		g_sGbn = arrLinkData[1]
-		g_sAcno = arrLinkData[2]
-		g_sAsno = arrLinkData[3]
+		g_sGbn = arrLinkData[1+1]
+		g_sAcno = arrLinkData[2+1]
+		g_sAsno = arrLinkData[3+1]
 		DATAMANAGER.RequestTranData("obtro_oder_267r")
 		return
 	end
@@ -765,10 +765,10 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.ClearInputData(0, "obtro_oder_267r")
 		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "ACNO" 		  , 0 , g_sAcno)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "ASNO" 		  , 0 , g_sAsno)
-		sUserID = Form.GetSharedData("&USER_ID", false)
+		sUserID = Form.GetSharedData("..USER_ID", false)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "ELFN_ID" 	  , 0 , sUserID)
 		szChk0 = "N"
-		if cont0.chk0.checkstate == "1" or gf_Tonumber(cont0.chk0.checkstate) == 1 then --비용포함
+		if cont0.chk0.checkstate == "1" or gf_Tonumber(cont0.chk0.checkstate) == 1 then --비용포함 end
 			szChk0 = "Y"
 		else
 			szChk0 = "N"
@@ -790,7 +790,7 @@ end
 function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	if szTranID == "obtro_oder_267r" then
 		for i = 0, cont0.grd0.rowcount-1 do
-			cont0.grd0.setCellFgColor("bd_cell51", i, g_szTxtColor_Grey)
+			cont0.grd0.SetCellFgColor("bd_cell51", i, g_szTxtColor_Grey)
 			stnd_exrt		= string.gsub(cont0.grd0.GetCellData("bd_cell15", i), ",", "")	--기준환율
 			szItemCd		= cont0.grd0.GetCellData("bd_cell16", i)	--종목코드
 			exch			= cont0.grd0.GetCellData("bd_cell72", i)	--거래소구분코드
@@ -813,13 +813,13 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 				-- 20241023_01 HWG START : 소수점잔고 표기오류 개선
 				arrData = gf_Split(tostring(nOwnQty), ".")
 				arrData2 = gf_Split(tostring(nAbleQty), ".")
-				nOwnQty = gf_CommaValue(arrData[1], 0)
-				nAbleQty = gf_CommaValue(arrData2[1], 0)
+				nOwnQty = gf_CommaValue(arrData[1+1], 0)
+				nAbleQty = gf_CommaValue(arrData2[1+1], 0)
 				if #arrData > 1 then
-					nOwnQty = nOwnQty .. "." .. arrData[2]
+					nOwnQty = nOwnQty .. "." .. arrData[2+1]
 				end
 				if #arrData2 > 1 then
-					nAbleQty = nAbleQty .. "." .. arrData2[2]
+					nAbleQty = nAbleQty .. "." .. arrData2[2+1]
 				end
 				-- 20241023_01 HWG END
 				cont0.grd0.SetCellData("bd_cell11", i, "소수점")
@@ -889,52 +889,52 @@ function cont0_chk0_OnChange(sCheckState)
 end
 -- =============================================================================
 function Form_OnFormInitBefore()
-	cont0.grd0.setSortCellID("th_cell01", "bd_cell01")
-	cont0.grd0.setSortCellID("th_cell04", "bd_cell04")
-	cont0.grd0.setSortCellID("th_cell05", "bd_cell05")
-	cont0.grd0.setSortCellID("th_cell06", "bd_cell06")
-	cont0.grd0.setSortCellID("th_cell07", "bd_cell07")
-	cont0.grd0.setSortCellID("th_cell08", "bd_cell08")
-	cont0.grd0.setSortCellID("th_cell09", "bd_cell09")
-	cont0.grd0.setSortCellID("th_cell10", "bd_cell10")
-	cont0.grd0.setSortCellID("th_cell11", "bd_cell11")
-	cont0.grd0.setSortCellID("th_cell12", "bd_cell12")
-	cont0.grd0.setSortCellID("th_cell13", "bd_cell13")
-	cont0.grd0.setSortCellID("th_cell14", "bd_cell14")
-	cont0.grd0.setSortCellID("th_cell15", "bd_cell15")
-	cont0.grd0.setSortCellID("th_cell16", "bd_cell16")
-	cont0.grd0.setSortCellID("th_cell17", "bd_cell17")
-	cont0.grd0.setSortCellID("th_cell18", "bd_cell18")
-	cont0.grd0.setSortCellID("th_cell19", "bd_cell19")
-	cont0.grd0.setSortCellID("th_cell20", "bd_cell20")
-	cont0.grd0.setSortCellID("th_cell21", "bd_cell21")
-	cont0.grd0.setSortCellID("th_cell22", "bd_cell22")
-	cont0.grd0.setSortCellID("th_cell23", "bd_cell23")
-	cont0.grd0.setSortCellID("th_cell24", "bd_cell24")
-	cont0.grd0.setSortCellID("th_cell25", "bd_cell25")
-	cont0.grd0.setSortCellID("th_cell51", "bd_cell53")
-	cont0.grd0.setSortCellID("th_cell52", "bd_cell1")
-	cont0.grd0.setSortCellID("th_cell54", "bd_cell54")
-	cont0.grd0.setSortCellID("th_cell55", "bd_cell55")
-	cont0.grd0.setSortCellID("th_cell56", "bd_cell56")
-	cont0.grd0.setSortCellID("th_cell57", "bd_cell57")
-	cont0.grd0.setSortCellID("th_cell58", "bd_cell58")
-	cont0.grd0.setSortCellID("th_cell59", "bd_cell59")
-	cont0.grd0.setSortCellID("th_cell60", "bd_cell60")
-	cont0.grd0.setSortCellID("th_cell61", "bd_cell61")
-	cont0.grd0.setSortCellID("th_cell62", "bd_cell62")
-	cont0.grd0.setSortCellID("th_cell63", "bd_cell63")
-	cont0.grd0.setSortCellID("th_cell64", "bd_cell64")
-	cont0.grd0.setSortCellID("th_cell66", "bd_cell66")
-	cont0.grd0.setSortCellID("th_cell67", "bd_cell67")
-	cont0.grd0.setSortCellID("th_cell68", "bd_cell68")
-	cont0.grd0.setSortCellID("th_cell69", "bd_cell69")
-	cont0.grd0.setSortCellID("th_cell70", "bd_cell70")
-	cont0.grd0.setSortCellID("th_cell71", "bd_cell71")
-	cont0.grd0.setSortCellID("th_cell72", "bd_cell72")
-	cont0.grd0.setSortCellID("th_cell73", "bd_cell73")
-	cont0.grd0.setSortCellID("th_cell74", "bd_cell74")
-	cont0.grd0.setSortCellID("th_cell75", "bd_cell75")
+	cont0.grd0.SetSortCellID("th_cell01", "bd_cell01")
+	cont0.grd0.SetSortCellID("th_cell04", "bd_cell04")
+	cont0.grd0.SetSortCellID("th_cell05", "bd_cell05")
+	cont0.grd0.SetSortCellID("th_cell06", "bd_cell06")
+	cont0.grd0.SetSortCellID("th_cell07", "bd_cell07")
+	cont0.grd0.SetSortCellID("th_cell08", "bd_cell08")
+	cont0.grd0.SetSortCellID("th_cell09", "bd_cell09")
+	cont0.grd0.SetSortCellID("th_cell10", "bd_cell10")
+	cont0.grd0.SetSortCellID("th_cell11", "bd_cell11")
+	cont0.grd0.SetSortCellID("th_cell12", "bd_cell12")
+	cont0.grd0.SetSortCellID("th_cell13", "bd_cell13")
+	cont0.grd0.SetSortCellID("th_cell14", "bd_cell14")
+	cont0.grd0.SetSortCellID("th_cell15", "bd_cell15")
+	cont0.grd0.SetSortCellID("th_cell16", "bd_cell16")
+	cont0.grd0.SetSortCellID("th_cell17", "bd_cell17")
+	cont0.grd0.SetSortCellID("th_cell18", "bd_cell18")
+	cont0.grd0.SetSortCellID("th_cell19", "bd_cell19")
+	cont0.grd0.SetSortCellID("th_cell20", "bd_cell20")
+	cont0.grd0.SetSortCellID("th_cell21", "bd_cell21")
+	cont0.grd0.SetSortCellID("th_cell22", "bd_cell22")
+	cont0.grd0.SetSortCellID("th_cell23", "bd_cell23")
+	cont0.grd0.SetSortCellID("th_cell24", "bd_cell24")
+	cont0.grd0.SetSortCellID("th_cell25", "bd_cell25")
+	cont0.grd0.SetSortCellID("th_cell51", "bd_cell53")
+	cont0.grd0.SetSortCellID("th_cell52", "bd_cell1")
+	cont0.grd0.SetSortCellID("th_cell54", "bd_cell54")
+	cont0.grd0.SetSortCellID("th_cell55", "bd_cell55")
+	cont0.grd0.SetSortCellID("th_cell56", "bd_cell56")
+	cont0.grd0.SetSortCellID("th_cell57", "bd_cell57")
+	cont0.grd0.SetSortCellID("th_cell58", "bd_cell58")
+	cont0.grd0.SetSortCellID("th_cell59", "bd_cell59")
+	cont0.grd0.SetSortCellID("th_cell60", "bd_cell60")
+	cont0.grd0.SetSortCellID("th_cell61", "bd_cell61")
+	cont0.grd0.SetSortCellID("th_cell62", "bd_cell62")
+	cont0.grd0.SetSortCellID("th_cell63", "bd_cell63")
+	cont0.grd0.SetSortCellID("th_cell64", "bd_cell64")
+	cont0.grd0.SetSortCellID("th_cell66", "bd_cell66")
+	cont0.grd0.SetSortCellID("th_cell67", "bd_cell67")
+	cont0.grd0.SetSortCellID("th_cell68", "bd_cell68")
+	cont0.grd0.SetSortCellID("th_cell69", "bd_cell69")
+	cont0.grd0.SetSortCellID("th_cell70", "bd_cell70")
+	cont0.grd0.SetSortCellID("th_cell71", "bd_cell71")
+	cont0.grd0.SetSortCellID("th_cell72", "bd_cell72")
+	cont0.grd0.SetSortCellID("th_cell73", "bd_cell73")
+	cont0.grd0.SetSortCellID("th_cell74", "bd_cell74")
+	cont0.grd0.SetSortCellID("th_cell75", "bd_cell75")
 	cont0.imgNoData.maintainratio = "1"
 end
 -- =============================================================================
@@ -963,7 +963,8 @@ function cont0_grd0_OnClickUp(lRow, szCellID)
 	Form.SendReturnToParent("RETURN_JANGO" , sLinkData)
 	Form.CloseForm()
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_267r" trcode="obtro_oder_267r" compress="1" encryption="1" inputcheck="1" />
