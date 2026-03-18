@@ -1230,7 +1230,6 @@ function Form_OnPopupReturn(sKeyName, sRet)
 end
 
 function Return_OrderCode(sCode)
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if sCode == "전체" then
 			return ""
 			
@@ -1246,7 +1245,6 @@ function Return_OrderCode(sCode)
 end
 
 function Return_OrderText(sCode)
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if sCode == "" then
 			return "전체"
 			
@@ -1262,7 +1260,6 @@ function Return_OrderText(sCode)
 end
 
 function Return_ResultCode(sCode)
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if sCode == "전체" or sCode == "전체(종료포함)" then
 			return ""
 			
@@ -1290,7 +1287,6 @@ function Return_ResultCode(sCode)
 end
 
 function Return_ResultText(sCode)
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if sCode == "" then
 			return "전체"
 			

@@ -2273,7 +2273,6 @@ function Check_OrdType()
 	local szIdx
 	szIdx = gf_Tostring(cmbType.currentindex)
 	
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if szIdx == "0" then
 			return "01"  --지정가
 		elseif szIdx == "1" then
@@ -2305,7 +2304,6 @@ function Check_OrdCond()
 	local szIdx
 	szIdx = Check_OrdType()
 	
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if szIdx == "01" then
 			return "0"  --지정가
 		elseif szIdx == "05" then
@@ -2338,7 +2336,6 @@ function Check_OrdName()
 	local szIdx
 	szIdx = Check_OrdType()
 	
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if szIdx == "01" then
 			return "보통(지정가)"
 		elseif szIdx == "05" then

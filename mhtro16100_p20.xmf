@@ -246,7 +246,6 @@ function Change_optionNationTable(nIndex)
 	 --0:전체일경우 첫번째인덱스만 Y 나머지 다 N처리
 	 --그외 : 선택한 인덱스값 변경처리(Y->N, N->Y)
 	 -----------------------------------------------
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if nIndex == 0 then
 			
 			for i = 0, #optionNationTable - 1 do
