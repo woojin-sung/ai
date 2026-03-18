@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문_실행내역 필터" version="2" writer="함원규" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" transmode="0" ly_vert="0,0,375,755,1" />
+	<CONTROL_INFO>
+		<IMAGE name="imgBg" autosize="1" imgpath="alpha128" ly_vert="0,0,375,755,1" />
+		<CONTAINER name="contBg" scrollpos="" ly_vert="0,280,375,477,1" >
+			<CONTROL_INFO>
+				<IMAGE name="imgContBg" autosize="1" imgpath="popup_bg.9" ly_vert="0,0,375,755,1" />
+				<LABEL name="lblTitle" caption="검색" fontstyle="01" halign="1" valign="0" ly_vert="0,20,375,22,1" />
+				<LABEL name="lblGuideLine" transmode="0" ly_vert="20,56,335,1,1" />
+				<BUTTON name="btnCancel" fgcolor="100:102102102" btnimage="btn_21.9" ly_vert="-1,416,189,60,1" />
+				<BUTTON name="btnOk" btnimage="btn_20.9" ly_vert="187,416,188,60,1" />
+				<LABEL name="lblSubTitle0" caption="매매 구분" fontstyle="01" valign="0" ly_vert="20,76,200,22,1" />
+				<PANNEL name="Pannel0" activecard="card0" ly_vert="20,102,335,83,1" scroll_ly_vert="20,102,335,83,1" >
+					<CONTROL_INFO>
+						<LABEL name="lbl0" fontsize="-2" halign="1" click="1" ly_vert="0,0,105,44,1" />
+						<LABEL name="lbl1" fontsize="-2" halign="1" click="1" ly_vert="115,0,105,44,1" />
+						<LABEL name="lbl2" fontsize="-2" halign="1" click="1" ly_vert="230,0,105,44,1" />
+						<TABORDER_INFO horz="" vert="" />
+					</CONTROL_INFO>
+					<CARD_LIST>
+						<CARD_INFO name="card0" cardhw="44, -1" gap="10" >
+							<CELL name="lbl0" />
+							<CELL name="lbl1" />
+							<CELL name="lbl2" />
+						</CARD_INFO>
+					</CARD_LIST>
+				</PANNEL>
+				<PANNEL name="Pannel1" activecard="card0" ly_vert="20,230,335,174,1" scroll_ly_vert="20,230,335,174,1" >
+					<CONTROL_INFO>
+						<LABEL name="lbl0" fontsize="-2" halign="1" multiline="1" click="1" ly_vert="0,0,105,44,1" />
+						<LABEL name="lbl1" fontsize="-2" halign="1" multiline="1" click="1" ly_vert="115,0,105,44,1" />
+						<LABEL name="lbl2" fontsize="-2" halign="1" multiline="1" click="1" ly_vert="230,0,105,44,1" />
+						<TABORDER_INFO horz="" vert="" />
+					</CONTROL_INFO>
+					<CARD_LIST>
+						<CARD_INFO name="card0" cardhw="44, -1" gap="10" >
+							<CELL name="lbl0" />
+							<CELL name="lbl1" />
+							<CELL name="lbl2" />
+						</CARD_INFO>
+					</CARD_LIST>
+				</PANNEL>
+				<LABEL name="lblSubTitle1" caption="처리 결과 구분" fontstyle="01" valign="0" ly_vert="20,204,200,22,1" />
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="18551" _ulen="18073" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+-- ****************************************************************************
+--                G  L  O  B  A  L       V  A  R  I  A  B  L  E
+-- ****************************************************************************
+local g_szTxtColor_Normal 
+g_szTxtColor_Normal = "334"
+local g_szTxtColor_Grey 
+g_szTxtColor_Grey = "333"
+local g_szTxtColor_White 
+g_szTxtColor_White = "338"
+local g_szLineColor_Title 
+g_szLineColor_Title = "334"
+local g_nForm_Height  
+g_nForm_Height = 755
+local g_nContBg_Title_Height  
+g_nContBg_Title_Height= 100
+local g_nBottomBtn_Height 
+g_nBottomBtn_Height= 60
+local g_nPannel_Row_Height 
+g_nPannel_Row_Height= 36
+local g_nPannel_Row_Gap
+g_nPannel_Row_Gap= 10
+local g_nCommonMargin 
+g_nCommonMargin= 20
+local g_nContBtn_Height 
+g_nContBtn_Height= 0
+local g_nContList_Height 
+g_nContList_Height= 0
+local g_nContBg_Height
+g_nContBg_Height = 0
+local g_szBtnImg_Normal
+g_szBtnImg_Normal = "btn_41_n.9"
+local g_szBtnImg_Select
+g_szBtnImg_Select = "btn_line2_o.9"
+local g_arrContent
+local g_arrContent_Check 
+local g_arrContent2
+local g_arrContent2_Check
+local g_szLinkGbn, g_szDupSel_1, g_szDupSel_2
+local g_nPannel0_Height
+g_nPannel0_Height = 0
+local g_nPannel1_Height
+g_nPannel1_Height = 0
+-- ****************************************************************************
+--             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+-- ****************************************************************************
+-- ===============================================
+-- 컨트롤 초기설정
+-- ===============================================
+function Init_Control()
+	contBg.btnCancel.caption = "초기화"
+	contBg.btnOK.caption = "검색"
+	contBg.lblGuideLine.bgcolor = g_szLineColor_Title
+	contBg.lblSubTitle0.paddinginfo = "0,0,0,0"
+	contBg.lblSubTitle1.paddinginfo = "0,0,0,0"
+end
+-- ===============================================
+-- 컨트롤 초기설정
+-- ===============================================
+function DisplaySetting_Content()
+	nTotalHeight = 102 + g_nPannel0_Height + 45 + g_nPannel1_Height + 10 + 60
+	contBg.top = 755 - nTotalHeight
+	contBg.height = nTotalHeight+5
+	contBg.lblSubTitle1.top = 102 + g_nPannel0_Height + 19
+	contBg.Pannel1.top = 102 + g_nPannel0_Height + 19 + 26
+	contBg.btnCancel.top = 102 + g_nPannel0_Height + 19 + 26 + g_nPannel1_Height + 10 + 1
+	contBg.btnOk.top = 102 + g_nPannel0_Height + 19 + 26 + g_nPannel1_Height + 10 + 1
+end
+-- ===============================================
+-- 컨트롤 초기설정
+-- ===============================================
+function Init_Content(szGbn)
+	nArrCnt = #g_arrContent
+	nPannelRowCnt = gf_Tonumber(nArrCnt / 3)
+	if (nArrCnt % 3) > 0 then
+		nPannelRowCnt = nPannelRowCnt + 1
+	end 
+	contBg.Pannel0.rowcount = nPannelRowCnt
+	g_nPannel0_Height = (44 * nPannelRowCnt) + (10 * (nPannelRowCnt-1)) + 1
+	contBg.Pannel0.height = g_nPannel0_Height
+	nArrIdx = 0
+	szData = ""
+	for i = 0, nPannelRowCnt - 1 do
+		szData = g_arrContent[nArrIdx]
+		if g_arrContent_Check[nArrIdx] == "1" then
+			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Select)
+		else 
+			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Normal)
+		end
+		contBg.Pannel0.SetCellValue( "lbl0", i, szData)	
+		nArrIdx = nArrIdx + 1
+		if nArrIdx > nArrCnt - 1 then
+			contBg.Pannel0.SetCellVisible("lbl1",i,false)
+			contBg.Pannel0.SetCellVisible("lbl2",i,false)
+			break
+		end
+		szData = g_arrContent[nArrIdx]
+		if g_arrContent_Check[nArrIdx] == "1" then
+			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Select)
+		else 
+			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Normal)
+		end
+		contBg.Pannel0.SetCellValue( "lbl1", i, szData)	
+		nArrIdx = nArrIdx + 1
+		if nArrIdx > nArrCnt - 1 then
+			contBg.Pannel0.SetCellVisible("lbl2",i,false)
+			break
+		end
+		szData = g_arrContent[nArrIdx]
+		if g_arrContent_Check[nArrIdx] == "1" then
+			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Select)
+		else 
+			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Normal)
+		end
+		contBg.Pannel0.SetCellValue( "lbl2", i, szData)	
+		nArrIdx = nArrIdx + 1
+		if nArrIdx > nArrCnt - 1 then
+			break
+		end
+	end
+	nArrCnt = #g_arrContent2
+	nPannelRowCnt = gf_Tonumber(nArrCnt / 3)
+	if (nArrCnt % 3) > 0 then
+		nPannelRowCnt = nPannelRowCnt + 1
+	end 
+	contBg.Pannel1.rowcount = nPannelRowCnt
+	g_nPannel1_Height = (44 * nPannelRowCnt) + (10 * (nPannelRowCnt-1)) + 1
+	contBg.Pannel1.height = g_nPannel1_Height
+	nArrIdx = 0
+	szData = ""
+	for i = 0, nPannelRowCnt - 1 do
+		szData = g_arrContent2[nArrIdx]
+		if szData == "전체(종료제외)" or szData == "감시종료(주문미실행)" then
+			if szData == "전체(종료제외)" then
+				szData = "전체\n(종료제외)"
+			elseif szData == "감시종료(주문미실행)" then
+				szData = "감시종료\n(주문미실행)"
+			end
+			contBg.Pannel1.SetPropCardCell("maxlinecnt", "lbl0", i, "2")
+		else
+			contBg.Pannel1.SetPropCardCell("maxlinecnt", "lbl0", i, "1")
+		end
+		if g_arrContent2_Check[nArrIdx] == "1" then
+			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Select)
+		else 
+			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Normal)
+		end
+		contBg.Pannel1.SetCellValue( "lbl0", i, szData)	
+		nArrIdx = nArrIdx + 1
+		if nArrIdx > nArrCnt - 1 then
+			contBg.Pannel0.SetCellVisible("lbl1",i,false)
+			contBg.Pannel0.SetCellVisible("lbl2",i,false)
+			break
+		end
+		szData = g_arrContent2[nArrIdx]
+		if szData == "전체(종료제외)" or szData == "감시종료(주문미실행)" then
+			if szData == "전체(종료제외)" then
+				szData = "전체\n(종료제외)"
+			elseif szData == "감시종료(주문미실행)" then
+				szData = "감시종료\n(주문미실행)"
+			end
+			contBg.Pannel1.SetPropCardCell("maxlinecnt", "lbl1", i, "2")
+		else
+			contBg.Pannel1.SetPropCardCell("maxlinecnt", "lbl1", i, "1")
+		end
+		if g_arrContent2_Check[nArrIdx] == "1" then
+			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Select)
+		else 
+			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Normal)
+		end
+		contBg.Pannel1.SetCellValue( "lbl1", i, szData)	
+		nArrIdx = nArrIdx + 1
+		if nArrIdx > nArrCnt - 1 then
+			contBg.Pannel0.SetCellVisible("lbl2",i,false)
+			break
+		end
+		szData = g_arrContent2[nArrIdx]
+		if szData == "전체(종료제외)" or szData == "감시종료(주문미실행)" then
+			if szData == "전체(종료제외)" then
+				szData = "전체\n(종료제외)"
+			elseif szData == "감시종료(주문미실행)" then
+				szData = "감시종료\n(주문미실행)"
+			end
+			contBg.Pannel1.SetPropCardCell("maxlinecnt", "lbl2", i, "2")
+		else
+			contBg.Pannel1.SetPropCardCell("maxlinecnt", "lbl2", i, "1")
+		end
+		if g_arrContent2_Check[nArrIdx] == "1" then
+			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Select)
+		else 
+			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Normal)
+		end
+		contBg.Pannel1.SetCellValue( "lbl2", i, szData)	
+		nArrIdx = nArrIdx + 1
+		if nArrIdx > nArrCnt - 1 then
+			break
+		end
+	end
+	DisplaySetting_Content()
+end
+function Clear_Content(szGbn)
+	if szGbn == "0" then
+		nArrCnt = #g_arrContent
+		nPannelRowCnt = gf_Tonumber(nArrCnt / 3)
+		if (nArrCnt % 3) > 0 then
+			nPannelRowCnt = nPannelRowCnt + 1
+		end 
+		nArrIdx = 0
+		for i = 0, nPannelRowCnt - 1 do
+			g_arrContent_Check[nArrIdx] = "0"
+			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Normal)
+			nArrIdx = nArrIdx + 1
+			if nArrIdx > nArrCnt - 1 then
+				break
+			end
+			g_arrContent_Check[nArrIdx] = "0"
+			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Normal)
+			nArrIdx = nArrIdx + 1
+			if nArrIdx > nArrCnt - 1 then
+				break
+			end
+			g_arrContent_Check[nArrIdx] = "0"
+			contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Normal)
+			nArrIdx = nArrIdx + 1
+			if nArrIdx > nArrCnt - 1 then
+				break
+			end
+		end
+	elseif szGbn == "1" then
+		nArrCnt = #g_arrContent2
+		nPannelRowCnt = gf_Tonumber(nArrCnt / 3)
+		if (nArrCnt % 3) > 0 then
+			nPannelRowCnt = nPannelRowCnt + 1
+		end 
+		nArrIdx = 0
+		for i = 0, nPannelRowCnt - 1 do
+			g_arrContent2_Check[nArrIdx] = "0"
+			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl0", i, g_szBtnImg_Normal)
+			nArrIdx = nArrIdx + 1
+			if nArrIdx > nArrCnt - 1 then
+				break
+			end
+			g_arrContent2_Check[nArrIdx] = "0"
+			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl1", i, g_szBtnImg_Normal)
+			nArrIdx = nArrIdx + 1
+			if nArrIdx > nArrCnt - 1 then
+				break
+			end
+			g_arrContent2_Check[nArrIdx] = "0"
+			contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl2", i, g_szBtnImg_Normal)
+			nArrIdx = nArrIdx + 1
+			if nArrIdx > nArrCnt - 1 then
+				break
+			end
+		end
+	end
+end
+function DisplaySetting_Pannel0(nRowIdx, szCtlName)
+	nCnt = nRowIdx * 3
+	if szCtlName == "lbl0" then
+		nCnt = gf_Tonumber(nCnt) + 0
+	elseif szCtlName == "lbl1" then
+		nCnt = gf_Tonumber(nCnt) + 1
+	elseif szCtlName == "lbl2" then
+		nCnt = gf_Tonumber(nCnt) + 2
+	end
+	if g_arrContent_Check[nCnt] == "1" then
+		g_arrContent_Check[nCnt] = "0"
+		contBg.Pannel0.SetPropCardCell("imagefilepth", szCtlName, nRowIdx, g_szBtnImg_Normal)
+	else
+		Clear_Content("0")
+		g_arrContent_Check[nCnt] = "1"
+		contBg.Pannel0.SetPropCardCell("imagefilepth", szCtlName, nRowIdx, g_szBtnImg_Select)
+	end
+end
+function DisplaySetting_Pannel1(nRowIdx, szCtlName)
+	nCnt = nRowIdx * 3
+	if szCtlName == "lbl0" then
+		nCnt = gf_Tonumber(nCnt) + 0
+	elseif szCtlName == "lbl1" then
+		nCnt = gf_Tonumber(nCnt) + 1
+	elseif szCtlName == "lbl2" then
+		nCnt = gf_Tonumber(nCnt) + 2
+	end
+	if g_arrContent2_Check[nCnt] == "1" then
+		g_arrContent2_Check[nCnt] = "0"
+		contBg.Pannel1.SetPropCardCell("imagefilepth", szCtlName, nRowIdx, g_szBtnImg_Normal)
+	else
+		Clear_Content("1")
+		g_arrContent2_Check[nCnt] = "1"
+		contBg.Pannel1.SetPropCardCell("imagefilepth", szCtlName, nRowIdx, g_szBtnImg_Select)
+	end
+end
+-- ===============================================
+-- 배열 -> 문자열 변환
+-- ===============================================
+function Convert_ArrToString(arrData, szSeperator)
+	szResult = ""
+	if arrData == nil then
+		return szResult
+	end
+	if szSeperator == nil or szSeperator == "" then
+		return szResult
+	end 	
+	szArrCnt = #arrData
+	for i = 0, szArrCnt - 1 do
+		if i ~= 0 then
+			szResult = szResult .. szSeperator 
+		end
+		szResult = szResult .. arrData[i] 
+	end
+	return szResult
+end
+-- ===============================================
+-- 배열 -> 문자열 변환(체크항목)
+-- ===============================================
+function Convert_ChkArrToString(arrData, arrChkData, szSeperator)
+	szResult = ""
+	if arrData == nil then
+		return szResult
+	end
+	if arrChkData == nil then
+		return szResult
+	end
+	if szSeperator == nil or szSeperator == "" then
+		return szResult
+	end 	
+	szArrCnt = #arrData
+	for i = 0, szArrCnt - 1 do
+		if arrChkData[i] == "1" then
+			if szResult ~= "" then
+				szResult = szResult .. szSeperator 
+			end
+			szResult = szResult .. arrData[i] 
+		end
+	end
+	return szResult
+end
+-- ===============================================
+-- 배열 -> 문자열 변환
+-- ===============================================
+function Convert_ArrToString(arrData, szSeperator)
+	szResult = ""
+	if arrData == nil then
+		return szResult
+	end
+	if szSeperator == nil or szSeperator == "" then
+		return szResult
+	end 	
+	szArrCnt = #arrData
+	for i = 0, szArrCnt - 1 do
+		if i ~= 0 then
+			szResult = szResult .. szSeperator 
+		end
+		szResult = szResult .. arrData[i] 
+	end
+	return szResult
+end
+-- ===============================================
+-- 배열 -> 문자열 변환(체크항목)
+-- ===============================================
+function Convert_ChkArrToString(arrData, arrChkData, szSeperator)
+	szResult = ""
+	if arrData == nil then
+		return szResult
+	end
+	if arrChkData == nil then
+		return szResult
+	end
+	if szSeperator == nil or szSeperator == "" then
+		return szResult
+	end 	
+	szArrCnt = #arrData
+	for i = 0, szArrCnt - 1 do
+		if arrChkData[i] == "1" then
+			if szResult ~= "" then
+				szResult = szResult .. szSeperator 
+			end
+			szResult = szResult .. arrData[i] 
+		end
+	end
+	return szResult
+end
+-- ===============================================
+-- 문자열 -> 배열 변환
+-- ===============================================
+function Convert_StringToArr(szData, szSeperator)
+	szArrData = ""
+	if szData ~= nil and szData ~= "" then
+		szArrData = gf_Split(szData, szSeperator)
+	end
+	return szArrData
+end
+-- ===============================================
+-- 배열 데이터 확인
+-- ===============================================
+function Contains_Array(arrData, szData)
+	if arrData == nil or arrData == "" then
+		return false
+	end
+	if szData == nil or szData == "" then
+		return false
+	end
+	nArrCnt = #arrData
+	for i = 0, nArrCnt-1 do
+		szArrData = arrData[i]
+		if szArrData == szData then
+			return true
+		end
+	end 
+	return false
+end
+-- ===============================================
+-- 체크배열 초기화
+-- ===============================================
+function Clear_ChkArray(arrData)
+	if arrData == nil or arrData == "" then
+		return false
+	end
+	if szData == nil or szData == "" then
+		return false
+	end
+	nArrCnt = #arrData
+	for i = 0, nArrCnt-1 do
+		arrData[i] = "0"	
+	end 
+end
+-- ===============================================
+-- 체크배열 전체선택
+-- ===============================================
+function All_ChkArray(arrData)
+	if arrData == nil or arrData == "" then
+		return false
+	end
+	if szData == nil or szData == "" then
+		return false
+	end
+	nArrCnt = #arrData
+	for i = 0, nArrCnt-1 do
+		arrData[i] = "1"	
+	end 
+end
+-- ===============================================
+-- 배열 인덱스 추출
+-- ===============================================
+function Return_ArrayIndex(arrData, szData)
+	nReturn = -1
+	if arrData == nil or arrData == "" then
+		return nReturn
+	end
+	if szData == nil or szData == "" then
+		return nReturn
+	end
+	nArrCnt = #arrData
+	for i = 0, nArrCnt-1 do
+		if arrData[i] == szData then
+			nReturn = i
+			break
+		end	
+	end 
+	return nReturn
+end
+-- Function Return_AllChkYN(arrData)
+--	if arrData == nil or arrData == "" then
+--		return "N"
+--	end
+--	
+--	nArrCnt = #arrData
+--	for i = 1, nArrCnt-1 do
+--		if arrData[i] == "0" then
+--			return "N"
+--		end	
+--	next 
+--	
+--	return "Y"
+--End Function
+--
+--Function Return_ClearChkYN(arrData)
+--	if arrData == nil or arrData == "" then
+--		return "N"
+--	end
+--	
+--	nArrCnt = #arrData
+--	for i = 1, nArrCnt-1 do
+--		if arrData[i] == "1" then
+--			return "N"
+--		end	
+--	next 
+--	
+--	return "Y"
+--End Function
+-- ****************************************************************************
+--                C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+-- ****************************************************************************
+-- ===============================================
+-- Form_OnFormInitBefore
+-- ===============================================
+function Form_OnFormInitBefore()
+end
+-- ===============================================
+-- Form_OnFormInit
+-- ===============================================
+function Form_OnFormInit()
+	szData = Form.GetOpenLinkData()
+	if szData == nil or gf_Trim(szData) == "" then
+		return
+	end
+	szArrData = gf_Split(szData, "★")
+	nArrCnt = #szArrData
+	if nArrCnt > 3 then
+		g_szLinkGbn = szArrData[1]
+		g_szDupSel_1 = szArrData[2]
+		g_szDupSel_2 = szArrData[3]
+		szContData = szArrData[4]
+		szContData2 = szArrData[5]
+		szSavaData1 = ""
+		szSavaData2 = ""
+		if #szArrData > 4 then
+			szSavaData1 = szArrData[6]
+		end
+		if #szArrData > 5 then
+			szSavaData2 = szArrData[7]
+		end
+		if g_szDupSel_1 == "1" then
+			szContData = "전체`" .. szContData
+		end
+		g_arrContent = Convert_StringToArr(szContData, "`")
+		nArrCnt = #g_arrContent
+		g_arrContent_Check = {}
+		for i = 0, nArrCnt-1 do
+			if szSavaData1 == g_arrContent[i] then --instr(szSavaData1, g_arrContent(i)) > 0 then
+				g_arrContent_Check[i] = "1"
+			else
+				g_arrContent_Check[i] = "0"
+			end
+		end
+		if g_szDupSel_2 == "1" then
+			szContData2 = "전체`" .. szContData2
+		end
+		g_arrContent2 = Convert_StringToArr(szContData2, "`")
+		nArrCnt = #g_arrContent2
+		g_arrContent2_Check = {}
+		for i = 0, nArrCnt-1 do
+			if szSavaData2 == g_arrContent2[i] then --instr(szSavaData2, g_arrContent2(i)) > 0 then
+				g_arrContent2_Check[i] = "1"
+			else
+				g_arrContent2_Check[i] = "0"
+			end
+		end
+	end
+	Init_Control()
+	Init_Content()
+end
+-- =============================================================================
+function contBg_Pannel0_OnClick(nIndex, sCellID)
+	if sCellID == "" then
+		return
+	end
+	if contBg.Pannel0.GetCellValue(sCellID, nIndex) == "" then
+		return
+	end
+	DisplaySetting_Pannel0(nIndex, sCellID)
+end
+-- =============================================================================
+function contBg_Pannel1_OnClick(nIndex, sCellID)
+	if sCellID == "" then
+		return
+	end
+	if contBg.Pannel1.GetCellValue(sCellID, nIndex) == "" then
+		return
+	end
+	DisplaySetting_Pannel1(nIndex, sCellID)
+end
+-- =============================================================================
+function contBg_btnOk_OnClick()
+	szContent0 = Convert_ChkArrToString(g_arrContent, g_arrContent_Check, "`")
+	szContent1 = Convert_ChkArrToString(g_arrContent2, g_arrContent2_Check, "`")
+	szReturnData = szContent0 .. "★" .. szContent1
+	Form.SendReturnToParent("17100_RETURN_DATA_"..g_szLinkGbn, szReturnData)
+	Form.CloseForm()
+end
+-- =============================================================================
+function contBg_btnCancel_OnClick()
+	Clear_Content("0")
+	Clear_Content("1")
+	g_arrContent_Check[0] = "1"
+	contBg.Pannel0.SetPropCardCell("imagefilepth", "lbl0", 0, g_szBtnImg_Select)
+	g_arrContent2_Check[0] = "1"
+	contBg.Pannel1.SetPropCardCell("imagefilepth", "lbl0", 0, g_szBtnImg_Select)
+end
+-- =============================================================================
+function imgBg_OnClick()
+	Form.CloseForm()
+end
+	</SCRIPT_INFO>
+</ROOT>

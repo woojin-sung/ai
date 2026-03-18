@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="매도설정 안내" version="3" writer="함원규" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,800,1" />
+	<CONTROL_INFO>
+		<LABEL name="lbl0" fgcolor="334:034034034" caption="3. 손실제한이란?" fontstyle="01" ly_vert="10,0,355,32,1" />
+		<LABEL name="lblInfo0" fgcolor="333:115118124" bgcolor="029:255212175" fontsize="-2" valign="0" multiline="1" ly_vert="10,40,355,60,1" />
+		<LABEL name="lblSubInfo0" fgcolor="333:115118124" bgcolor="029:255212175" fontsize="-2" halign="1" valign="0" multiline="1" ly_vert="10,258,355,42,1" />
+		<IMAGE name="img0" autosize="1" ly_vert="0,90,375,150,1" />
+		<IMAGE name="img1" autosize="1" ly_vert="0,390,375,120,1" />
+		<LABEL name="lblDiv0" bgcolor="272:246246246" transmode="0" ly_vert="20,326,335,1,1" />
+		<LABEL name="lbl1" fgcolor="334:034034034" caption="          설정방법 알아보기" fontstyle="01" halign="1" ly_vert="0,350,375,30,1" />
+		<IMAGE name="imgicon0" autosize="1" imgpath="icon_book" ly_vert="100,350,35,30,1" />
+		<LABEL name="lblSubInfo1" fgcolor="334:034034034" bgcolor="029:255212175" fontsize="-2" valign="0" multiline="1" ly_vert="10,550,355,42,1" />
+		<LABEL name="lblSubInfo2" fgcolor="334:034034034" bgcolor="029:255212175" fontsize="-2" valign="0" multiline="1" ly_vert="10,580,355,42,1" />
+		<LABEL name="lblGuide0" fgcolor="334:034034034" caption="ㆍ" fontsize="-2" fontstyle="01" halign="1" valign="0" ly_vert="25,610,10,10,1" />
+		<LABEL name="lblSubInfo3" fgcolor="334:034034034" bgcolor="029:255212175" fontsize="-2" valign="0" multiline="1" ly_vert="30,610,333,42,1" />
+		<LABEL name="lblGuide1" fgcolor="334:034034034" caption="ㆍ" fontsize="-2" fontstyle="01" halign="1" valign="0" ly_vert="25,630,10,10,1" />
+		<LABEL name="lblSubInfo4" fgcolor="334:034034034" bgcolor="029:255212175" fontsize="-2" valign="0" multiline="1" ly_vert="30,630,333,42,1" />
+		<LABEL name="lblGuide2" fgcolor="334:034034034" caption="ㆍ" fontsize="-2" fontstyle="01" halign="1" valign="0" ly_vert="25,650,10,10,1" />
+		<LABEL name="lblSubInfo5" fgcolor="334:034034034" bgcolor="029:255212175" fontsize="-2" valign="0" multiline="1" ly_vert="30,650,333,42,1" />
+		<LABEL name="lblSubInfo6" fgcolor="333:115118124" bgcolor="029:255212175" fontsize="-2" valign="0" multiline="1" ly_vert="30,670,343,42,1" />
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="5571" _ulen="5176" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+
+--===========================================================================
+--===========================================================================
+local g_sTheme
+g_sTheme = Form.GetEnvData("common.theme")
+local g_sOsType
+g_sOsType = Form.GetSharedData("&OS_TYPE", false )
+local nextTop
+nextTop = 0
+--============================================================================
+function Form_OnFormInitBefore()
+	img0.maintainratio = "1"
+	img1.maintainratio = "1"
+	imgicon0.maintainratio = "1"
+end
+--============================================================================
+function Form_OnFormInit()
+	if g_sTheme == "white" then
+		img0.imgpath = "guide_tab3_img1_l"
+		img1.imgpath = "guide_tab3_img2_l"
+	else
+		img0.imgpath = "guide_tab3_img1_d"
+		img1.imgpath = "guide_tab3_img2_d"
+	end
+	sText = "주가가 손실제한 범위로 정한 가격에 도달 시 감시가 실행되어 설정한 주문 방법으로 매도 주문이 실행돼요."
+	--	nLen = gf_Tonumber(Form.getLen("하락하여, 손실 범위로 정한 손실제한가격에 도달 시"))
+	--	nStart = gf_Tonumber(Form.getLen("주가가 기준가 대비 "))
+	lblInfo0.sizeAutoFit()
+	lblInfo0.caption = sText
+	--	lblInfo0.changeTextAttr(nStart, nLen, 291, -2, true)
+end
+--============================================================================
+function lblInfo0_OnSizeAutoFit()
+	--	nH = cint(lblInfo0.height2)
+	nH = 0
+	if g_sOsType == "2" then
+		nH = gf_Tonumber(lblInfo0.height)
+	else
+		nH = gf_Tonumber(lblInfo0.height2)
+	end
+	nextTop = 40 + nH + 10
+	img0.top = nextTop
+	nextTop = nextTop + 150 + 20
+	lblSubInfo0.top = nextTop
+	sText = "예) 주가가 $450(손실제한가격) 도달 시 설정한 주문 조건으로 주문이 실행돼요."
+	lblSubInfo0.sizeAutoFit()
+	lblSubInfo0.caption = sText
+end
+--============================================================================
+function lblSubInfo0_OnSizeAutoFit()
+	--	nH = cint(lblSubInfo0.height2)
+	nH = 0
+	if g_sOsType == "2" then
+		nH = gf_Tonumber(lblSubInfo0.height)
+	else
+		nH = gf_Tonumber(lblSubInfo0.height2)
+	end
+	nextTop = nextTop + nH + 30
+	lblDiv0.top = nextTop
+	nextTop = nextTop + 30
+	imgicon0.top = nextTop
+	lbl1.top = nextTop
+	nextTop = nextTop + 50
+	img1.top = nextTop
+	nextTop = nextTop + 120 + 20
+	lblSubInfo1.top = nextTop
+	sText = "① 기준가를 선택해요.(이익실현 입력 시 기준가는 동일)"
+	lblSubInfo1.sizeAutoFit()
+	lblSubInfo1.caption = sText
+end
+--============================================================================
+function lblSubInfo1_OnSizeAutoFit()
+	--	nH = cint(lblSubInfo1.height2)
+	nH = 0
+	if g_sOsType == "2" then
+		nH = gf_Tonumber(lblSubInfo1.height)
+	else
+		nH = gf_Tonumber(lblSubInfo1.height2)
+	end
+	nextTop = nextTop + nH + 8
+	lblSubInfo2.top = nextTop
+	sText = "② 손실 제한 조건(가격)을 입력해요."
+	lblSubInfo2.sizeAutoFit()
+	lblSubInfo2.caption = sText
+end
+--============================================================================
+function lblSubInfo2_OnSizeAutoFit()
+	--	nH = cint(lblSubInfo2.height2)
+	nH = 0
+	if g_sOsType == "2" then
+		nH = gf_Tonumber(lblSubInfo2.height)
+	else
+		nH = gf_Tonumber(lblSubInfo2.height2)
+	end
+	nextTop = nextTop + nH + 3
+	if g_sOsType == "2" then
+		lblGuide0.top = nextTop
+	else
+		lblGuide0.top = nextTop + 2
+	end
+	lblSubInfo3.top = nextTop
+	sText = "단위 ($, %, 틱) 선택 후 조건을 입력해요."
+	lblSubInfo3.sizeAutoFit()
+	lblSubInfo3.caption = sText
+end
+--============================================================================
+function lblSubInfo3_OnSizeAutoFit()
+	--	nH = cint(lblSubInfo3.height2)
+	nH = 0
+	if g_sOsType == "2" then
+		nH = gf_Tonumber(lblSubInfo3.height)
+	else
+		nH = gf_Tonumber(lblSubInfo3.height2)
+	end
+	nextTop = nextTop + nH + 3
+	if g_sOsType == "2" then
+		lblGuide1.top = nextTop
+	else
+		lblGuide1.top = nextTop + 2
+	end
+	lblSubInfo4.top = nextTop
+	sText = "기준가 보다 낮은 가격으로 입력해요."
+	lblSubInfo4.sizeAutoFit()
+	lblSubInfo4.caption = sText
+end
+--============================================================================
+function lblSubInfo4_OnSizeAutoFit()
+	--	nH = cint(lblSubInfo4.height2)
+	nH = 0
+	if g_sOsType == "2" then
+		nH = gf_Tonumber(lblSubInfo4.height)
+	else
+		nH = gf_Tonumber(lblSubInfo4.height2)
+	end
+	nextTop = nextTop + nH + 3
+	if g_sOsType == "2" then
+		lblGuide2.top = nextTop
+	else
+		lblGuide2.top = nextTop + 2
+	end
+	lblSubInfo5.top = nextTop
+	sText = "'%, 틱' 입력 시 감시가격이 자동 조회돼요."
+	lblSubInfo5.sizeAutoFit()
+	lblSubInfo5.caption = sText
+end
+--============================================================================
+function lblSubInfo5_OnSizeAutoFit()
+	--	nH = cint(lblSubInfo5.height2)
+	nH = 0
+	if g_sOsType == "2" then
+		nH = gf_Tonumber(lblSubInfo5.height)
+	else
+		nH = gf_Tonumber(lblSubInfo5.height2)
+	end
+	nextTop = nextTop + nH + 3
+	lblSubInfo6.top = nextTop
+	sText = "% 선택 시 감시가격 = 기준가 - (기준가×감시조건%)"
+	lblSubInfo6.sizeAutoFit()
+	lblSubInfo6.caption = sText
+end
+--============================================================================
+function lblSubInfo6_OnSizeAutoFit()
+	--	nH = cint(lblSubInfo6.height2)
+	nH = 0
+	if g_sOsType == "2" then
+		nH = gf_Tonumber(lblSubInfo6.height)
+	else
+		nH = gf_Tonumber(lblSubInfo6.height2)
+	end
+	nextTop = nextTop + nH + 20
+	Form.triggerEvent("#", "MID_3_SIZE", nextTop)
+end
+	</SCRIPT_INFO>
+</ROOT>

@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문_동의안내" version="2" writer="함원규" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,755,1" />
+	<CONTROL_INFO>
+		<IMAGE name="imgAlpha" autosize="1" imgpath="alpha" ly_vert="0,0,375,755,1" />
+		<IMAGE name="imgBg" autosize="1" ly_vert="0,0,375,1154,1" />
+		<LABEL name="lblTitle" fontsize="3" ly_vert="20,0,283,47,1" />
+		<IMAGE name="imgClose" autosize="1" ly_vert="320,14,39,18,1" />
+		<PANNEL name="Pannel0" activecard="card0" ly_vert="0,100,375,540,1" scroll_ly_vert="0,100,375,540,1" >
+			<CONTROL_INFO>
+				<IMAGE name="imgGuide0" autosize="1" ly_vert="0,0,375,100,1" />
+				<LABEL name="lblGuide" fontsize="-2" fontstyle="01" halign="1" valign="0" ly_vert="20,0,10,50,1" />
+				<LABEL name="lblInfo" bgcolor="029:255212175" fontsize="-2" valign="0" multiline="1" ly_vert="35,0,310,630,1" />
+				<LABEL name="lblDiv" transmode="0" ly_vert="0,0,375,10,1" />
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+			<CARD_LIST>
+				<CARD_INFO name="card0" cardhw="70, -1" >
+					<CELL name="lblGuide" />
+					<CELL name="lblInfo" />
+					<CELL name="imgGuide0" />
+					<CELL name="lblDiv" />
+				</CARD_INFO>
+			</CARD_LIST>
+		</PANNEL>
+		<LABEL name="lblTemp280" fontsize="-2" multiline="1" ly_vert="1000,0,280,700,1" />
+		<LABEL name="lblTemp295" fontsize="-2" valign="0" multiline="1" ly_vert="1000,0,295,700,1" />
+		<LABEL name="lblTemp310" fontsize="-2" valign="0" multiline="1" ly_vert="1000,0,310,700,1" />
+		<LABEL name="lblTemp335" valign="0" multiline="1" ly_vert="1000,0,325,700,1" />
+		<BUTTON name="btnOk" enable="0" caption="모두 확인하고, 동의합니다." btnimage="btn_20.9" ly_vert="0,696,375,60,1" />
+		<LABEL name="lblTitle0" caption="자동 감시 주문 이용을 위해" fontsize="1" fontstyle="01" ly_vert="10,45,283,32,1" />
+		<LABEL name="lblTitle1" caption="위험고지 및 유의사항을 꼭 확인해주세요.
+" fontsize="1" fontstyle="01" ly_vert="10,65,330,32,1" />
+		<CHKBUTTON name="ChkButton0" chkbtnimage="checkmenu_o" unchkbtnimage="checkmenu_n" ly_vert="20,658,20,20,1" />
+		<LABEL name="Label0" fgcolor="333:115118124" caption="확인하고 동의 버튼을 누르시면 유의사항 및 
+면책고지에 동의하신것으로 봅니다." fontsize="-2" multiline="1" click="1" ly_vert="40,643,320,50,1" />
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="37453" _ulen="30683" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+
+-- ****************************************************************************
+--                G  L  O  B  A  L       V  A  R  I  A  B  L  E
+-- ****************************************************************************
+-- -----------------------------------------------
+-- OS TYPE
+-- -----------------------------------------------
+local g_szOsType
+g_szOsType = Form.GetSharedData("&OS_TYPE", false)
+
+-- -----------------------------------------------
+-- 설정 글자크기
+-- -----------------------------------------------
+local g_szTextSize
+g_szTextSize = Form.getEnvData("common.textsize")
+
+-- -----------------------------------------------
+-- 공통 이미지
+-- -----------------------------------------------
+local g_szBgImg
+g_szBgImg = "popup_bg.9"
+
+local g_szCloseImg  
+g_szCloseImg = "icon_close"
+
+-- -----------------------------------------------
+-- 컬러코드
+-- -----------------------------------------------
+-- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal 
+g_szTxtColor_Normal 	= "334"
+
+-- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey 
+g_szTxtColor_Grey 	= "333"
+
+-- 기본 텍스트 컬러 (흰색)
+local g_szTxtColor_White 
+g_szTxtColor_White 	= "338"
+
+-- 빨강
+local g_szTxtColor_Red 
+g_szTxtColor_Red = "290"
+
+-- 파랑
+local g_szTxtColor_Blue 
+g_szTxtColor_Blue = "291"
+
+-- -----------------------------------------------
+-- 기타 전역변수
+-- -----------------------------------------------
+local g_szTitle
+
+
+-- ****************************************************************************
+--             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+-- ****************************************************************************
+
+function DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
+	
+	-- 글머리 기호
+	Pannel0.setPropCardCell("paddinginfo" 	,"lblGuide", nIdx, "0,1,0,0")
+	Pannel0.setPropCardCell("fgcolor" 		,"lblGuide", nIdx, szFgColor)
+	
+	-- 본문
+	Pannel0.setPropCardCell("paddinginfo" ,"lblInfo",nIdx,"0,0,0,0")
+	Pannel0.setPropCardCell("fgcolor" ,"lblInfo",nIdx,szFgColor)
+	
+	-- 이미지
+	Pannel0.setPropCardCell("maintainratio" ,"imgGuide0",nIdx, "1")
+	
+	-- 구분라인
+	Pannel0.setPropCardCell("bgcolor" ,"lblDiv",nIdx, szFgColor)
+	
+	-- ---------------------------------------------------------------
+	-- 들여쓰기 단계
+	-- ---------------------------------------------------------------
+	local szCtlNm = ""
+	local nWidth = ""
+	
+	-- 0단계(기본) : 글머리 20 / 본문 35 (310)
+	if nDepth == 0 then
+		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "20")
+		
+		-- 글머리 유무 체크
+		if szHead == "" then
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "20")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "335")
+			szCtlNm = "lblTemp335"
+		else
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+			szCtlNm = "lblTemp310"
+		end if
+		
+	-- 1단계 : 글머리 35 / 본문 50 (295) 
+	elseif nDepth == 1 then
+		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "35")
+		
+		-- 글머리 유무 체크
+		if szHead == "" then
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+			szCtlNm = "lblTemp310"
+		else
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "50")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "295")
+			szCtlNm = "lblTemp295"
+		end if
+		
+	-- 2단계 : 글며리 50 / 본문 75 (280)
+	elseif nDepth == 2 then
+		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "50")
+		
+		-- 글머리 유무 체크
+		if szHead == "" then
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "50")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "295")
+			szCtlNm = "lblTemp295"
+		else
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "75")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "280")
+			szCtlNm = "lblTemp280"
+		end if
+		
+	else
+		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "20")
+		Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
+		Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+		szCtlNm = "lblTemp310"
+	end if
+	
+	-- ---------------------------------------------------------------
+	
+	-- ---------------------------------------------------------------
+	-- 폰트스타일 (사이즈 / 볼드 / 글자색)
+	-- ---------------------------------------------------------------
+	Pannel0.setPropCardCell("fontsize" ,"lblGuide",nIdx, szSize)
+	Pannel0.setPropCardCell("fontsize" ,"lblInfo",nIdx, szSize)
+--	Form.SetCtlProp(szCtlNm, "fontsize", szSize)
+	
+
+	Pannel0.setPropCardCell("fontbold" ,"lblGuide",nIdx, szBold)
+	Pannel0.setPropCardCell("fontbold" ,"lblInfo",nIdx, szBold)
+--	Form.SetCtlProp(szCtlNm, "fontbold", szBold)
+	
+	Pannel0.setPropCardCell("fgcolor" ,"lblGuide",nIdx, szFgColor)
+	Pannel0.setPropCardCell("fgcolor" ,"lblInfo",nIdx, szFgColor)
+	-- ---------------------------------------------------------------
+	
+	local nHeight = 0
+	-- ---------------------------------------------------------------
+	-- 데이터 세팅
+	-- ---------------------------------------------------------------
+	-- 텍스트
+	if szType == "0" then
+		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, szHead)
+		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, szText)
+		
+		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+		
+		local nLineCnt = 1
+		if szCtlNm == "lblTemp335" then
+			lblTemp335.caption = szText
+			nLineCnt = lblTemp335.linecnt
+		elseif szCtlNm == "lblTemp310" then
+			lblTemp310.caption = szText
+			nLineCnt = lblTemp310.linecnt
+		elseif szCtlNm == "lblTemp295" then
+			lblTemp295.caption = szText
+			nLineCnt = lblTemp295.linecnt
+		elseif szCtlNm == "lblTemp280" then
+			lblTemp280.caption = szText
+			nLineCnt = lblTemp280.linecnt
+		end if
+		
+		nHeight = Resize_LineH(szText, gf_Tonumber(szSize), nLineCnt)
+		Pannel0.SetCardWHAt(nIdx, nHeight)
+		
+	-- 이미지
+	elseif szType == "1" then
+		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		
+		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+		
+	-- 구분선(Divide)
+	elseif szType == "2" then
+		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		
+		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "20")
+		Pannel0.setPropCardCell("width" ,"lblDiv",nIdx, "335")
+		
+	-- 초기화	
+	else
+		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		
+		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+	end if
+	-- ---------------------------------------------------------------
+	
+	Pannel0.setPropCardCell("highlight" ,"lblInfo", nIdx, "REMOVE")
+--	nLen = Form.getLen(szText)
+--	Pannel0.setPropCardCell("textattr" ,"lblInfo", nIdx, "0^"&nLen&"^"&szFgColor&"^"&szSize&"^"&szBold)
+	return nHeight
+end
+
+function Resize_LineH(szText, nFontSize, nLineCnt)
+	local nResult = 0
+	local nLineHeigth = 16 + 2
+	local nGap = 0 
+	
+	if g_szOsType == "2" then
+		nGap = 2
+	else
+		nGap = 1
+	end if
+	
+	nResult = (nLineHeigth + (gf_Tonumber(g_szTextSize) * nGap)) * nLineCnt + 10
+	
+	return nResult
+end
+
+-- ===============================================
+-- 컨트롤 초기설정
+-- ===============================================
+function Init_Control()
+	-- -----------------------------------------------
+	-- 배경이미지 초기화
+	-- -----------------------------------------------
+	imgBg.imgpath = g_szBgImg
+	
+	-- -----------------------------------------------
+	-- 타이틀 초기화
+	-- -----------------------------------------------
+	lblTitle.paddinginfo = "0,0,0,0"
+	g_szTitle = "미국주식 자동감시주문 유의사항 "
+	lblTitle.caption = g_szTitle
+	
+	-- -----------------------------------------------
+	-- 닫기 버튼 초기화
+	-- -----------------------------------------------
+	imgClose.SetMaintainingRatio("3")
+	imgClose.imgpath = g_szCloseImg
+	
+	-- -----------------------------------------------
+	-- 유의사항 본문내용 초기화
+	-- -----------------------------------------------
+	local szInfo10
+	if g_szOsType == "2" then
+		szInfo10 = "1. 자동감시주문이란?      "
+	else
+		szInfo10 = "1. 자동감시주문이란?"
+	end if
+	
+	local szInfo11 = "사용자가 원하는 종목에 대해 감시 조건과 주문설정을 저장하고 감시를 시작하면 유효기간 동안 당사 시스템에서 감시가 진행되며 감시조건이 충족하는 시점에 자동으로 주문을 실행하는 기능입니다."
+	
+	local szInfo20
+	if g_szOsType == "2" then
+		szInfo20 = "2. 위험고지    "
+	else
+		szInfo20 = "2. 위험고지"
+	end if
+	
+	local szInfo21 = "자동감시주문은 투자 수익을 보장하지 않으며, 투자 손실을 초래 할 수 있습니다."
+	local szInfo22 = "자동감시주문은 주문을 접수 처리해 드리는 기능으로 체결을 약속 드리지 않으며, 시장의 급격한 변화에 대응하여 반응하는 주문이 아니기 때문에 시장의 급격한 변화에 대응하기 어렵습니다."
+	local szInfo23 = "자동감시주문에 대한 감시 기능 및 감시 방식에 대한 충분한 이해와 숙지 없이 거래를 하실 경우 손실을 초래할 수 있고, 이로 이한 모든 손실은 고객님께 귀속됨을 유의하시기 바랍니다."
+	local szInfo24 = "사용 전 반드시 유의사항 필독 후 충분히 이해하시어 매매 시 착오가 발생하지 않도록 유념하시기 바랍니다."
+	
+	local szInfo30
+	if g_szOsType == "2" then
+		szInfo30 = "3. 이용 신청 및 주문 방식       "
+	else
+		szInfo30 = "3. 이용 신청 및 주문 방식"
+	end if
+	
+	local szInfo31 = "자동감시주문을 이용하기 위해서는‘미국주식 자동감시주문 유의사항’에 동의 후 이용이 가능합니다."
+	local szInfo32 = "감시조건, 주문조건, 유효기간을 입력하여 설정합니다."
+	local szInfo33 = "감시조건 등록 후 반드시 감시 실행 버튼을 클릭해야지만 감시가 시작되며, 조건 설정만으로는 감시가 실행되지 않습니다."
+	local szInfo34 = "감시 시작과 동시 설정한 감시 조건에 도달하면 주문이 바로 실행 되오니 감시내역, 실행내역, 주문체결내역을 확인하시기 바랍니다."
+	local szInfo35 = "감시를 시작하면 로그인 상태와 상관없이 사용자가 저장한 감시조건에 도달 한 경우 별도 확인 없이 당사의 감시시스템에서 자동으로 주문을 전송합니다."
+	local szInfo36 = "자동감시주문의 감시시작 및 중단은 사용자만 실행 할 수 있습니다."
+	
+	local szInfo40
+	if g_szOsType == "2" then
+		szInfo40 = "4. 감시 설정 및 감시 시간       "
+	else
+		szInfo40 = "4. 감시 설정 및 감시 시간"
+	end if
+	
+	local szInfo41 = "감시 조건 설정 가능 시간 : 24시간"
+	local szInfo42 = "(단, 당사 시스템 점검 시간 제외)"
+	local szInfo43 = "감시 설정 가능 개수 : 매수/ 매도 각 50개"
+	local szInfo44 = "감시 유효 기간"
+	local szInfo45 = "최대 90일 (달력 일자 기준/ 휴일, 공휴일 포함)"
+	local szInfo46 = "유효기간 만료 시 종료일은 해당 시장의 정규장 마감 시간을 기준으로 종료되며 감시조건은 자동으로 중지됩니다."
+	local szInfo47 = "ex) 종료일이 5월 12일 인 경우 한국시간으로 5월13일 06:00(서머타임05:00)에 종료"
+	local szInfo48 = "감시 및 주문 가능 시간 "
+	local szInfo49 = "거래소 정규장 거래 시에만 작동"
+	local szInfo410 = "미국 (뉴욕, 나스닥, 아멕스) : 23:30~06:00 (서머타임 22:30~05:00)"
+	
+	local szInfo50
+	if g_szOsType == "2" then
+		szInfo50 = "5. 주문 가능 종목     "
+	else
+		szInfo50 = "5. 주문 가능 종목"
+	end if
+	
+	local szInfo51 = "미국 거래소 (뉴욕, 나스닥, 아멕스)의 주식, ETF, ETN 종목만 가능합니다."
+	local szInfo52 = "ETF, ETN 종목은 ETP 거래 신청 후 이용 가능하며 해외(주식/ETP) 거래신청화면에서 신청 가능 합니다."
+	local szInfo53 = "소수점, 대출 잔고, 일부PTP종목, OTC장외시장 종목은 설정이 불가합니다."
+	local szInfo54 = "신규상장 등으로 전일종가가 없는 경우, 전일종가 또는 직전 체결가가 2달러 미만인 종목은 시장가 주문이 불가합니다."
+	
+	local szInfo60
+	if g_szOsType == "2" then
+		szInfo60 = "6. 자동감시주문 유의사항       "
+	else
+		szInfo60 = "6. 자동감시주문 유의사항"
+	end if
+	
+	local szInfo61 = "감시조건 등록 시에는 주문가능금액(예수금), 주문가능수량 등을 체크하지 않고 등록됩니다."
+	local szInfo62 = "감시조건에 도달하여 실제 주문이 실행되는 시점에 예수금, 주문가능수량 부족 등의 문제로 주문이 거부 될 수 있으므로 반드시 감시내역과 주문내역을 확인하시기 바랍니다."
+	local szInfo63 = "주문가능금액은 외화예수금으로 주문 가능하며, 통합증거금 서비스 신청 계좌는 통합주문가능금액으로 주문됩니다."
+	local szInfo64 = "매수 감시 조건으로는 현재가, 시가, 고가, 저가, 전일종가대비, 등락률(전일종가대비)이 있으며 시가, 고가, 저가는 당일 정규장 기준으로 감시가 실행 됩니다."
+	local szInfo65 = "매도 감시 조건으로는 이익실현, 이익보존, 손실제한이 있으며 조건을 모두 설정하거나, 1개 조건도 설정이 가능합니다. (단, 이익보존은 이익실현 조건 설정 시에만 설정이 가능합니다.)"
+	local szInfo66 = "매도 감시 조건의 기준가는 이익청산(이익실현,이익보존), 손절매(손익제한) 가격을 설정하기 위한 기준가격 입니다."
+	local szInfo67 = "기준가를 평균단가로 설정한 경우 평균단가는 조건 설정 시점의 평균매입단가로 설정이 되며, 설정 후 해당 종목의 평균단가가 변동된 경우 자동으로 반영되지 않습니다. 변동된 평균단가로 설정을 원하는 경우 조건수정 또는 삭제 후 재설정하여 사용하시기 바랍니다."
+	local szInfo68 = "감시 설정 후 계좌 비밀번호를 변경 한 경우 주문 실행 시 거부 처리되므로 계좌비밀번호 변경 후 반드시 감시 조건을 삭제 후 재설정 하시기 바랍니다."
+	local szInfo69 = "감시 유효 기간이 종료 되거나, 감시 조건에 도달하여 주문이 실행된 경우(체결 여부와 상관 없음) 자동감시주문이 종료되어 감시내역에서 삭제되므로 실행내역을 확인해 주시기 바라며 같은 조건 주문이 필요한 경우에는 신규 설정을 해주시기 바랍니다."
+	local szInfo610 = "감시에 의한 자동주문 실행 후 부분 체결에 의한 잔량 상황은 고려하지 않습니다."
+	local szInfo611 = "상세 주문체결내역은 ‘해외주식체결내역’ 에서 확인하시기 바랍니다."
+	local szInfo612 = "시스템 오류 및 종목 정보 오류 시 해당 감시 조건은 감시내역에서 삭제될 수 있으므로 감시내역, 실행내역, 주문체결 여부를 수시로 확인하시기 바랍니다."
+	local szInfo613 = "감시 조건 변경 시, 실행 중인 감시 종목은 중지 처리되며 변경된 조건으로 감시 실행을 원하는 경우 감시 작동을 재 실행 해주시기 바랍니다."
+	local szInfo614 = "거래정지, 권리 (권리락, 배당락, 액면분할, 액면병합, 증자, 감자 등) 발생, 종목정보변경 (ISIN코드, Tiker, 거래소 변경, 재상장 등), 상장폐지, OTC 종목으로 전환, 전일 종가 대비 기준가격이 변동된 경우 감시가 중지 처리 되며 정규장 마감 후 감시내역에서 삭제되므로 실행내역에서 종료 여부를 확인하시기 바랍니다."
+	local szInfo615 = "감시 중지 CASE에 해당 하더라도 시장 급변에 의해 매도될 수 있음을 유의하시기 바랍니다."
+	local szInfo616 = "감시 조건에 도달하였으나 주문 실행 시점에 주문가능금액 부족, 주문가능수량 부족(보유잔고가 청산되어 주문가능수량이 없는 경우 포함), 주문금액이 개인 15억 / 법인 20억을 초과하는 주문, 조건 설정 후 비밀번호가 변경된 경우, 사고/질권설정 등 계좌상태가 정상이 아닌 경우 등 주문 실행이 불가한 경우 자동주문 실행이 거부 처리 되오니 실행내역 및 주문 체결 여부를 수시로 확인하시기 바랍니다."
+	local szInfo617 = "감시 조건에 도달하여 주문 실행 후 브로커 거부(브로커의 수량 및 주문 가격 제한 범위에 벗어난 주문, 호가단위 불일치, MOC/LOC 장마감 10분 이후 주문 등) 및 거래소 매매 체결 시스템에서 거부가 발생 할 수 있습니다."
+	local szInfo618 = "해외 현지 거래소 휴일 및 기타 사유로 인하여 거래소 거래가 정지될 경우, 정지된 시간 이후 낸 주문에 대해 주문이 거부 될 수 있습니다."
+	local szInfo619 = "시세급변에 따라 감시시작과 동시에 감시조건에 만족되어 주문이 실행 될 수 있습니다."
+	local szInfo620 = "시세 급변 및 주문폭주 시 체결 전송 지연, 시세 누락 등 으로 인하여 주문 미처리 및 미체결등의 오류가 발생 하거나 지연될 수 있습니다. 또한 원하지 않은 호가에 주문 처리될 수 있습니다."
+	local szInfo621 = "시세 급변 및 주문 폭주 시 감시에 의한 이익실현, 이익보존, 손실제한 주문 미체결 건이 현재가보다 높거나 낮을 경우 주문 체결이 되지 않을 수 있습니다."
+	local szInfo622 = "감시조건을 만족했을때 미리 설정한 주문가격에 따라 다시 현재 시세를 조회하므로 시세급변 시에는 감시조건을 만족한 가격과 시차가 생길 수 있습니다."
+	local szInfo623 = "사용자 PC상태, 통신회선상태, 해당 거래소 주문접수 상태 및 체결지연상태, 시세정보의 전송지연 등으로 인하여 주문 미처리등의 오류가 발생할 수 있습니다."
+	local szInfo624 = "당사는 전산 부하를 방지하기 위해 자동주문의 조건입력 횟수나 이용할 수 있는 고객 자격 등을 회사 내부 기준에 의해 제한할 수도 있습니다."
+	local szInfo625 = "자동주문시스템에 장애 등이 발생하여 주문 불가 상황이 지속될 경우 전체 등록 조건을 모두 임의 해지 할 수 있습니다."
+	local szInfo626 = "고객 의사가 아닌 감시 중지 처리 및 자동주문 전송이 실패한 경우 PUSH 및 알림톡으로 안내 드리며 알림을 원치 않는 경우 환경설정 > 알림 > 푸시알리미 > 자동감시주문 알림설정에서 off 로 변경 가능 합니다."
+	
+	local szInfo70
+	if g_szOsType == "2" then
+		szInfo70 = "7. 면책사항    "
+	else
+		szInfo70 = "7. 면책사항"
+	end if
+	
+	local szInfo71 = "아래의 사유로 인한 자동주문 미처리, 주문처리지연, 오류 매매 등으로 사용자가 입은 손해에 대하여 당사는 사용자에게 어떠한 책임도 지지 않으므로 양해하여 주시기 바랍니다."
+	local szInfo72 = "당사 전산시스템에 장애가 발생되어 자동주문 시스템의 감시 및 주문 집행이 불가능한 경우"
+	local szInfo73 = "사용자의 사용상 잘못이나 부주의로 인한 오작동, 프로그램 오류 입력 또는 사용자의 전산기기, 전산단말기의 하자로 인한 오작동 등 이용자 측에 귀책사유가 있는 경우"
+	local szInfo74 = "해외거래소 장애 등으로 인한 시세, 호가 등의 전송지연, 전송불능, 오류 정보의 제공 기타의 하자로 인한 경우"
+	local szInfo75 = "예상할 수 없는 시장 상황에 따라 시세 급변 및 대량주문이 동시에 발생할 경우 당사 시스템 용량 한계 초과 시 일부 주문 전송 누락 또는 지연되는 경우"
+	local szInfo76 = "통신사업자 등의 전산망 내지 회선 장애 등의 사유가 발생한 경우"
+	local szInfo77 = "회사의 책임 영역 밖에서 발생하거나 현재의 전산기술로 제어 불가능한 사고"
+	local szInfo78 = "해킹 등 컴퓨터 범죄로 인한 장애 또는 오류 "
+	local szInfo79 = "사용자의 자동주문시스템 사용 방법 미숙지"
+	local szInfo710 = "기타 이에 준하는 사유로 회사에 귀책사유가 없는 경우"
+	
+	-- ==================================================================================================================================================
+	local nHeight = 0
+	
+	-- ------------------------------------------------------------------------------------------
+	-- DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
+	-- szType 설명
+	-- - "0" : 텍스트 
+	-- - "1" : 이미지
+	-- - "2" : 가이드 라인
+	-- - "empty" : 공백
+	-- ------------------------------------------------------------------------------------------
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo10, "0", "1", g_szTxtColor_Normal)
+	Pannel0.SetCardWHAt(nIdx, nHeight + 5)
+	Pannel0.setPropCardCell("highlight" ,"lblInfo", nIdx, "332")
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo11, "-2", "0", g_szTxtColor_Normal)
+	Pannel0.setPropCardCell("top" ,"lblGuide", nIdx, 10)
+	Pannel0.setPropCardCell("top" ,"lblInfo", nIdx, 10)
+	Pannel0.setPropCardCell("maintainratio" ,"imgGuide0", nIdx, "0")
+	Pannel0.setPropCardCell("width" ,"imgGuide0", nIdx, "345")
+	Pannel0.setPropCardCell("left" ,"imgGuide0", nIdx, "15")
+	Pannel0.setPropCardCell("imgpath" ,"imgGuide0", nIdx, "bg_infobox.9")
+	Pannel0.setPropCardCell("height" ,"imgGuide0", nIdx, nHeight+10)
+	Pannel0.SetCardWHAt(nIdx, nHeight + 25)
+	
+	-- ------------------------------------------------------------------------------------------
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo20, "0", "1", g_szTxtColor_Normal)
+	Pannel0.SetCardWHAt(nIdx, nHeight + 5)
+	Pannel0.setPropCardCell("highlight" ,"lblInfo", nIdx, "332")
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo21, "-2", "0", g_szTxtColor_Normal)
+	Pannel0.setPropCardCell("top" ,"lblGuide", nIdx, 10)
+	Pannel0.setPropCardCell("top" ,"lblInfo", nIdx, 10)
+	Pannel0.setPropCardCell("maintainratio" ,"imgGuide0", nIdx, "0")
+	Pannel0.setPropCardCell("width" ,"imgGuide0", nIdx, "345")
+	Pannel0.setPropCardCell("left" ,"imgGuide0", nIdx, "15")
+	Pannel0.setPropCardCell("imgpath" ,"imgGuide0", nIdx, "bg_infobox.9")
+	Pannel0.setPropCardCell("height" ,"imgGuide0", nIdx, nHeight + 15)
+	Pannel0.SetCardWHAt(nIdx, nHeight + 10)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo22, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo23, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo24, "-2", "0", g_szTxtColor_Normal)
+	
+	if g_szOsType == "2" then
+		Pannel0.setPropCardCell("height" ,"imgGuide0", nIdx, nHeight + 20 )
+		Pannel0.SetCardWHAt(nIdx, nHeight + 40)
+	else
+		Pannel0.setPropCardCell("height" ,"imgGuide0", nIdx, nHeight )
+		Pannel0.SetCardWHAt(nIdx, nHeight + 20)
+	end if
+	
+	-- ------------------------------------------------------------------------------------------
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo30, "0", "1", g_szTxtColor_Normal)
+	Pannel0.setPropCardCell("highlight" ,"lblInfo", nIdx, "332")
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo31, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo32, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo33, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo34, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo35, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo36, "-2", "0", g_szTxtColor_Normal)
+	
+	-- ------------------------------------------------------------------------------------------
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo40, "0", "1", g_szTxtColor_Normal)
+	Pannel0.setPropCardCell("highlight" ,"lblInfo", nIdx, "332")
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo41, "-2", "0", g_szTxtColor_Normal)
+	Pannel0.SetCardWHAt(nIdx,nHeight-10) 
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 1, "", szInfo42, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo43, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo44, "-2", "0", g_szTxtColor_Normal)
+	Pannel0.SetCardWHAt(nIdx,nHeight-10) 
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo45, "-2", "0", g_szTxtColor_Normal)
+	Pannel0.SetCardWHAt(nIdx,nHeight-10) 
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo46, "-2", "0", g_szTxtColor_Normal)
+	Pannel0.SetCardWHAt(nIdx,nHeight-10) 
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 2, "", szInfo47, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo48, "-2", "0", g_szTxtColor_Normal)
+	Pannel0.SetCardWHAt(nIdx,nHeight-10) 
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo49, "-2", "0", g_szTxtColor_Normal)
+	Pannel0.SetCardWHAt(nIdx,nHeight-10) 
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 1, "-", szInfo410, "-2", "0", g_szTxtColor_Normal)
+	
+	-- ------------------------------------------------------------------------------------------
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo50, "0", "1", g_szTxtColor_Normal)
+	Pannel0.setPropCardCell("highlight" ,"lblInfo", nIdx, "332")
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo51, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo52, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo53, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo54, "-2", "0", g_szTxtColor_Normal)
+	
+	-- ------------------------------------------------------------------------------------------
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo60, "0", "1", g_szTxtColor_Normal)
+	Pannel0.setPropCardCell("highlight" ,"lblInfo", nIdx, "332")
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo61, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo62, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo63, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo64, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo65, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo66, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo67, "-2", "0", g_szTxtColor_Normal)
+	
+	if g_szOsType == "2" then
+		Pannel0.SetCardWHAt(nIdx, nHeight + 10)
+	end if
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo68, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo69, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo610, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo611, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo612, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo613, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo614, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo615, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo616, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo617, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo618, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo619, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo620, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo621, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo622, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo623, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo624, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo625, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo626, "-2", "0", g_szTxtColor_Normal)
+	
+	-- ------------------------------------------------------------------------------------------
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo70, "0", "1", g_szTxtColor_Normal)
+	Pannel0.setPropCardCell("highlight" ,"lblInfo", nIdx, "332")
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo71, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo72, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo73, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo74, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo75, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo76, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo77, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo78, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo79, "-2", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "ㆍ", szInfo710, "-2", "0", g_szTxtColor_Normal)
+end
+
+-- ****************************************************************************
+--                C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+-- ****************************************************************************
+
+-- ===============================================
+-- Form_OnFormInit
+-- ===============================================
+function Form_OnFormInit()
+	-- -----------------------------------------------
+	-- 패딩값 초기화 (위치변경 X)
+	-- -----------------------------------------------
+	lblTemp335.paddinginfo = "0,0,0,0"
+	lblTemp310.paddinginfo = "0,0,0,0"
+	lblTemp295.paddinginfo = "0,0,0,0"
+	lblTemp280.paddinginfo = "0,0,0,0"
+	Pannel0.setNotUseRecycleView(true)
+	
+	-- ------------------------------------------------------------------------------
+	-- 라벨컨트롤 라인수 체크 시 OS별 동작 타이밍 다름
+	-- iOS : 즉시 라인수 체크 가능
+	-- 안드로이드 : 지연처리 후 라인수 체크 가능(컨트롤 생성 타이밍 때문으로 보임)
+	-- ------------------------------------------------------------------------------
+	if g_szOsType == "2" then
+		Init_Control()
+	else
+		Form.setDelayEvent(1, 0.1)
+	end if
+end
+
+-- ===============================================
+-- Form_OnDelayEvent(1회 실행)
+-- ===============================================
+function Form_OnDelayEvent(nID)
+	if gf_Tonumber(nID) == 1 then
+		Init_Control()
+	end if
+end
+
+-- ===============================================
+-- imgInfo_OnClick
+-- ===============================================
+function imgClose_OnClick()
+	Form.CloseForm()
+end
+
+-- ===============================================
+-- imgAlpha_OnClick
+-- ===============================================
+function imgAlpha_OnClick()
+	Form.CloseForm()
+end
+
+-- ===============================================
+-- imgAlpha_OnClick
+-- ===============================================
+function btnOk_OnClick()
+	Form.SendReturnToParent("CHECK_AGREE" , "ok")
+	Form.CloseForm()
+end
+
+-- ============================================================================
+
+function ChkButton0_OnChange(sCheckState)
+	if gf_Tonumber(sCheckState) == 1 then
+		btnOk.enable = true
+	else
+		btnOk.enable = false
+	end if
+end
+
+-- ============================================================================
+
+function Label0_OnClick()
+	local nStat = gf_Tonumber(ChkButton0.checkstate)
+	if gf_Tonumber(nStat) == 0 then
+		ChkButton0.chksilence = "1"
+		btnOk.enable = true
+	else
+		ChkButton0.chksilence = "0"
+		btnOk.enable = false
+	end if
+end
+
+-- ''============================================================================
+-- Sub DATAMANAGER_OnSendTranBefore(szTranID)
+-- 	if szTranID == "obtro_oder_135a" then
+-- 		sCsno = Form.GetSharedData("&CUST_NUM", false)
+-- 		sDate = Form.GetSharedData("&HOST_DATE", false)
+-- 		sMediaCode = Form.GetSharedData("&MEDIA_CODE", false)
+-- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "BSWR_CLCD" , 0 , "09")
+-- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "CSNO" , 0 , sCsno)
+-- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "PROS_CLS_CODE" , 0 ,"" )
+-- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "ACNO" , 0 , "")
+-- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "ASNO" , 0 , "")
+-- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "AGRM_YN" , 0 , "Y")
+-- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "AGRM_DATE" , 0 , sDate)
+-- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "CHAN_TYPE_CLS_CODE" , 0 , sMediaCode)
+-- 	
+-- 	end if
+-- End Sub
+--
+-- ''============================================================================
+-- Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+-- 	
+-- End Sub
+--
+-- ''============================================================================
+-- Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+-- 	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
+-- 	
+-- 	if	gf_Tonumber(trim(szSubMsg))	>	0	then
+-- 		Form.ShowAlert("알림", szErrMsg & "(" & szSubMsg & ")")
+-- 	else
+-- 		Form.ShowAlert("알림", szErrMsg )
+-- 	end if
+-- End Sub
+	</SCRIPT_INFO>
+</ROOT>
