@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="16061" scrname="해외주식_예약내역_필터" version="3" writer="이은섭" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" transmode="0" ly_vert="0,0,375,647,1" />
+	<CONTROL_INFO>
+		<BUTTON name="BtnBackGround" btnimage="alpha.png" ly_vert="0,0,375,647,1" />
+		<IMAGE name="imgBG" autosize="1" imgpath="popup_bg.9" ly_vert="0,207,375,503,1" />
+		<LABEL name="LabelTitle" caption="선택해주세요." fontsize="2" fontstyle="01" halign="1" ly_vert="20,227,335,30,1" />
+		<BUTTON name="btnReset" caption="초기화" fgcolor="004:000000000" btnimage="btn_21.9" ly_vert="0,592,187,60,1" />
+		<BUTTON name="btnOk" caption="검색" btnimage="btn_20.9" ly_vert="187,592,190,60,1" />
+		<CONTAINER name="cont0" scrollpos="" ly_vert="0,277,375,125,1" >
+			<CONTROL_INFO>
+				<LABEL name="Label0" caption="예약 유형" fontstyle="01" paddinginfo="1,0,0,0" ly_vert="18,0,200,20,1" />
+				<RADIOGROUP name="RadioOrderClsCode" fontsize="-2" buttonshape="1" buttonsnumber="5" initselectionuse="1" initselection="0" ly_vert="20,30,335,80,1" >
+					<RADIO_INFO>
+						<RADIO no="0" text="전체" radioimage="input_06.9.png" transfervalue="0" selforecolor="005:000000000" position="0,0,105,35" ly_vert="0,0,105,35,0" />
+						<RADIO no="1" text="일반예약" radioimage="input_06.9.png" transfervalue="1" selforecolor="005:000000000" position="115,0,105,35" ly_vert="115,0,105,35,0" />
+						<RADIO no="2" text="기간잔량" radioimage="input_06.9.png" transfervalue="2" selforecolor="005:000000000" position="0,45,105,35" ly_vert="0,45,105,35,0" />
+						<RADIO no="3" text="기간예약" radioimage="input_06.9.png" transfervalue="3" selforecolor="005:000000000" position="115,45,105,35" ly_vert="115,45,105,35,0" />
+						<RADIO no="4" text="특정일주문" radioimage="input_06.9.png" transfervalue="4" selforecolor="005:000000000" position="230,45,105,35" ly_vert="230,45,105,35,0" />
+					</RADIO_INFO>
+				</RADIOGROUP>
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<CONTAINER name="cont1" scrollpos="" ly_vert="0,402,375,105,1" >
+			<CONTROL_INFO>
+				<LABEL name="Label0" caption="처리 구분" fontstyle="01" paddinginfo="1,0,0,0" ly_vert="18,0,200,20,1" />
+				<IMAGE name="imgAll" autosize="1" imgpath="btn_line2_n.9" ly_vert="18,30,105,35,1" />
+				<LABEL name="LabelAll" caption="전체" fontsize="-2" halign="1" autosize="2" click="1" ly_vert="18,30,105,35,1" />
+				<IMAGE name="img1" autosize="1" imgpath="btn_line2_n.9" ly_vert="133,30,105,35,1" />
+				<LABEL name="Label1" caption="전체
+(취소 제외)" fontsize="-2" halign="1" multiline="1" click="1" ly_vert="133,30,105,35,1" />
+				<IMAGE name="img2" autosize="1" imgpath="btn_line2_n.9" ly_vert="248,30,105,35,1" />
+				<LABEL name="Label2" caption="예약" fontsize="-2" halign="1" click="1" ly_vert="248,30,105,35,1" />
+				<LABEL name="Label3" fgcolor="146:124124124" fontsize="-2" paddinginfo="1,0,0,0" ly_vert="18,70,339,20,1" />
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<CONTAINER name="cont2" scrollpos="" ly_vert="0,507,375,80,1" >
+			<CONTROL_INFO>
+				<LABEL name="Label0" caption="매매 구분" fontstyle="01" paddinginfo="1,0,0,0" ly_vert="18,0,200,20,1" />
+				<RADIOGROUP name="OrdGubun" fontsize="-2" buttonshape="1" buttonsnumber="3" initselectionuse="1" initselection="0" ly_vert="18,30,335,35,1" >
+					<RADIO_INFO>
+						<RADIO no="0" text="전체" radioimage="input_06.9.png" transfervalue="0" selforecolor="005:000000000" position="0,0,105,35" ly_vert="0,0,105,35,0" />
+						<RADIO no="1" text="매도" radioimage="input_06.9.png" transfervalue="1" selforecolor="005:000000000" position="230,0,105,35" ly_vert="230,0,105,35,0" />
+						<RADIO no="2" text="매수" radioimage="input_06.9.png" transfervalue="2" selforecolor="005:000000000" position="115,0,105,35" ly_vert="115,0,105,35,0" />
+					</RADIO_INFO>
+				</RADIOGROUP>
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="4971" _ulen="4661" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- v0001 강경완 : 조회 조건 추가 [T2502130001]
+ --============================================================================
+
+local g_orderClsCode --검색 예약유형 0:전체 1:일반예약 2:기간잔량 3:기간예약 4:특정일 (기본값 0)
+local g_idntClcd --검색 처리구분 0:전체 1:전체(취소제외) 2:예약 (기본값 2)
+local g_selnByovClcd --검색 매매구분 0:전체 1:매도 2:매수 (기본값 0)
+
+local g_osType
+
+ --============================================================================
+function Form_OnFormInit()
+	g_osType = Form.GetSharedData("&OS_TYPE", false)
+	
+	cont0.RadioOrderClsCode.currentindex = "0"
+	cont2.OrdGubun.currentindex = "0"
+	initIdntClcd()
+
+	szLinkData = Form.GetOpenLinkData()
+	
+	if szLinkData ~= "" then
+	
+		arrData = gf_Split(szLinkData,"★")
+		
+		g_orderClsCode = arrData[0+1]
+		g_idntClcd = arrData[1+1]
+		g_selnByovClcd = arrData[2+1]
+		
+		cont0.RadioOrderClsCode.currentindex = g_orderClsCode
+		
+		if g_idntClcd == "0" then
+			Form.SetCtlProp("cont1.imgAll", "imgpath", "btn_line2_o.9")
+			Form.SetCtlProp("cont1.LabelAll", "fgcolor", 4)
+		else
+			Form.SetCtlProp("cont1.img" .. g_idntClcd, "imgpath", "btn_line2_o.9")
+			Form.SetCtlProp("cont1.Label" .. g_idntClcd, "fgcolor", 4)
+		end
+		
+		cont2.OrdGubun.currentindex = g_selnByovClcd
+	
+	else
+		Form.SetCtlProp("cont1.img2", "imgpath", "btn_line2_o.9")
+		Form.SetCtlProp("cont1.Label2", "fgcolor", 4)
+		
+		g_orderClsCode = "0"
+		g_idntClcd = "2"
+		g_selnByovClcd = "0"
+	end
+	
+	setInfoCaption()
+
+end
+ --============================================================================
+function BtnBackGround_OnClick()
+	Form.CloseForm()
+end
+
+ --============================================================================
+ -- 초기화 버튼 클릭이벤트
+ --============================================================================
+function btnReset_OnClick()
+
+	cont0.RadioOrderClsCode.currentindex = "0"
+	cont2.OrdGubun.currentindex = "0"
+	initIdntClcd()
+	
+	Form.SetCtlProp("cont1.img2", "imgpath", "btn_line2_o.9")
+	Form.SetCtlProp("cont1.Label2", "fgcolor", 4)
+	
+	g_orderClsCode = "0"
+	g_idntClcd = "2"
+	g_selnByovClcd = "0"
+	
+	setInfoCaption()
+end
+
+ --============================================================================
+ -- 검색버튼 클릭이벤트(조회조건 설정 리턴)
+ --============================================================================
+function btnOk_OnClick()
+	Form.SendReturnToParent("mhtro16061_p8" , g_orderClsCode  .. "★" ..  g_idntClcd .. "★" .. g_selnByovClcd)
+	Form.CloseForm()
+end
+
+ --============================================================================
+function initIdntClcd()
+	Form.SetCtlProp("cont1.imgAll", "imgpath", "btn_line2_n.9")
+	Form.SetCtlProp("cont1.img1", "imgpath", "btn_line2_n.9")
+	Form.SetCtlProp("cont1.img2", "imgpath", "btn_line2_n.9")
+	
+	if g_osType == "1" then
+		Form.SetCtlProp("cont1.LabelAll", "fgcolor", 146)
+		Form.SetCtlProp("cont1.Label1", "fgcolor", 146)
+		Form.SetCtlProp("cont1.Label2", "fgcolor", 146)
+	end
+end
+
+ --============================================================================
+function cont0_RadioOrderClsCode_OnClick(nIndex)
+	g_orderClsCode = nIndex
+end
+
+ --============================================================================
+function cont1_LabelAll_OnClick()
+	initIdntClcd()
+	Form.SetCtlProp("cont1.imgAll", "imgpath", "btn_line2_o.9")
+	Form.SetCtlProp("cont1.LabelAll", "fgcolor", 4)
+	g_idntClcd = "0"
+	
+	setInfoCaption()
+end
+
+ --============================================================================
+function cont1_Label1_OnClick()
+	initIdntClcd()
+	Form.SetCtlProp("cont1.img1", "imgpath", "btn_line2_o.9")
+	Form.SetCtlProp("cont1.Label1", "fgcolor", 4)
+	g_idntClcd = "1"
+	
+	setInfoCaption()
+end
+
+ --============================================================================
+function cont1_Label2_OnClick()
+	initIdntClcd()
+	Form.SetCtlProp("cont1.img2", "imgpath", "btn_line2_o.9")
+	Form.SetCtlProp("cont1.Label2", "fgcolor", 4)
+	g_idntClcd = "2"
+	
+	setInfoCaption()
+end
+
+ --============================================================================
+function cont2_OrdGubun_OnClick(nIndex)
+	g_selnByovClcd = nIndex
+end
+
+
+ --============================================================================
+function setInfoCaption()
+	-- SELECT CASE 변환 (수동 보정 필요)
+		if g_idntClcd == "0" then
+			cont1.Label3.caption = "예약(미발주), 발주 완료, 취소 내역이 모두 조회돼요."
+		elseif g_idntClcd == "1" then
+			cont1.Label3.caption = "취소를 제외한 모든 내역이 조회돼요."
+		elseif g_idntClcd == "2" then
+			cont1.Label3.caption = "진행 중인 예약 내역만 조회돼요."
+	end
+	
+end
+	</SCRIPT_INFO>
+</ROOT>

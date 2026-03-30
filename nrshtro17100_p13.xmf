@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문_시장가 유의사항" version="2" writer="아이티젠" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,755,1" />
+	<CONTROL_INFO>
+		<IMAGE name="Image0" autosize="1" imgpath="pop_header.9" ly_vert="0,0,375,55,1" />
+		<BUTTON name="btnOK" caption="확인" btnimage="btn_20.9" ly_vert="187,696,190,60,1" />
+		<LABEL name="Label10" caption="매수 시장가 유의사항" bgcolor="064:239059036" fontsize="5" halign="1" ly_vert="0,0,375,55,1" />
+		<CONTAINER name="Container0" vscroll="1" scrollpos="" ly_vert="0,55,375,525,1" >
+			<CONTROL_INFO>
+				<TABLE name="Table0" outlinecolor="038:255255255" colcount="2" rowcount="28" outline="0000" designorder="1" ly_vert="15,10,345,514,1" >
+					<COL_INFO ly_vert_width="10,335" />
+					<ROW_INFO ly_vert_height="21,11,21,21,21,11,21,20,21,11,21,21,11,21,21,21,20,11,21,21,11,21,21,20,21,11,21,20" />
+					<CELL_INFO>
+						<CELL cell_ly="0,0,0,0" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,0,1,0" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,1,0,1" fgcolor="061:239059036" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,1,1,1" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,2,0,2" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,2,1,2" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,3,0,3" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,3,1,3" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,4,0,4" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,4,1,4" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,5,0,5" fgcolor="049:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,5,1,5" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,6,0,6" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,6,1,6" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,7,0,7" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,7,1,7" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,8,0,8" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,8,1,8" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,9,0,9" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,9,1,9" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,10,0,10" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,10,1,10" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,11,0,11" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,11,1,11" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,12,0,12" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,12,1,12" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,13,0,13" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,13,1,13" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,14,0,14" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,14,1,14" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,15,0,15" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,15,1,15" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,16,0,16" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" impidxs="" />
+						<CELL cell_ly="1,16,1,16" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,17,0,17" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,17,1,17" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,18,0,18" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,18,1,18" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,19,0,19" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,19,1,19" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,20,0,20" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,20,1,20" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,21,0,21" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,21,1,21" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,22,0,22" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,22,1,22" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,23,0,23" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" impidxs="" />
+						<CELL cell_ly="1,23,1,23" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,24,0,24" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,24,1,24" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,25,0,25" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,25,1,25" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,26,0,26" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,26,1,26" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,27,0,27" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" impidxs="" />
+						<CELL cell_ly="1,27,1,27" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+					</CELL_INFO>
+				</TABLE>
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<IMAGE name="imgClose" margin="5,7,5,7" imgpath="icon_close" ly_vert="330,13,30,30,1" />
+		<BUTTON name="btnClose" caption="다시보지않기" fgcolor="334:034034034" btnimage="btn_27.9" ly_vert="-2,696,190,60,1" />
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="606" _ulen="606" >
+--============================================================================
+function Form_OnFormInitBefore()
+	imgClose.setMaintainingRatio("1")
+end
+
+--============================================================================
+function btnOK_OnClick()
+	Form.CloseForm()
+end
+--============================================================================
+function imgClose_OnClick()
+	Form.CloseForm()
+end
+--============================================================================
+function btnClose_OnClick()
+	Form.SetEnvData(0, "OrdNotice_17100_p13", "1")
+	Form.CloseForm()
+end
+
+	</SCRIPT_INFO>
+</ROOT>

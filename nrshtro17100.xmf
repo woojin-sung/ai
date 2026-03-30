@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문" version="3" writer="함원규" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,706,1" />
+	<CONTROL_INFO>
+		<IMAGE name="imgBack" autosize="1" imgpath="icon_main_01" ly_vert="6,11,39,24,1" />
+		<LABEL name="lblTitle" caption="미국주식 자동 감시 주문" fontsize="3" ly_vert="47,0,283,47,1" />
+		<IMAGE name="imgInfo" autosize="1" imgpath="icon_notice" ly_vert="317,13,39,20,1" />
+		<FORMTAB name="fmtabSearch" tabcount="3" tabwidthtype="2" tabheadheight="47" ly_vert="0,100,376,607,1" >
+			<PAGE name="page0" caption="자동매도" linkfile="nrshtro17100_t1" loadingtype="1" />
+			<PAGE name="page1" caption="자동매수" linkfile="nrshtro17100_t2" loadingtype="1" />
+			<PAGE name="page2" caption="실행내역" linkfile="nrshtro17100_t3" loadingtype="1" />
+		</FORMTAB>
+		<ACCOUNT name="act0" bgcolor="052:255255255" itemcodetype="100,200" accpwdctl="edtPwd" reqinput="1" finaceexcept="1" cmaexcept="1" benefitexcept="1" ly_vert="10,57,355,40,1" />
+		<EDIT name="edtPwd" visible="0" password="2" imetype="0" leadheight="0" ly_vert="260,60,100,32,0" />
+		<IMAGE name="Image0" autosize="1" imgpath="img_btn_top.9" ly_vert="257,8,70,30,1" />
+		<BUTTON name="btnOrderList" caption="주문내역" fgcolor="000:255255255" fontsize="-2" btnimage="alpha" ly_vert="257,8,70,30,1" />
+		<BUTTON name="Button0" btnimage="alpha" ly_vert="1000,0,375,706,1" />
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="23732" _ulen="22582" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+
+-- ****************************************************************************
+--                G  L  O  B  A  L       V  A  R  I  A  B  L  E
+-- ****************************************************************************
+local g_sStep = "" -- REST API 통신 인덱스
+
+local g_isRefresh = false
+
+local g_isChangeTab = false
+
+local g_sOSType = Form.GetSharedData("&OS_TYPE", false)
+
+local g_isForeigner = false
+
+local g_isIssueToken_Main = false
+
+-- ****************************************************************************
+--             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+-- ****************************************************************************
+
+-- ===============================================
+-- NULL 체크 
+-- ===============================================
+function IsEmpty(sData)
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+		return true
+	else
+		return false
+	end
+end
+
+-- ===============================================
+-- 숫자 소수점 절사 함수
+-- ===============================================
+function TruncateToDecimalPlaces(nVal, nDeimalPlaces)
+	nVal = gf_Tonumber(nVal)
+	nFactor = 10 ^ nDeimalPlaces
+	szNumStr = FormatNumber(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = InStr(szNumStr, ".")
+	
+	nTotalData = 0
+	if gf_Tonumber(nDecimalIdx) > 0 then
+		nTotalData = gf_Tonumber(left(szNumStr, gf_Tonumber(nDecimalIdx)-1))
+	else
+		nTotalData = gf_Tonumber(szNumStr)
+	end
+	
+	return nTotalData / nFactor
+end
+
+-- ===============================================
+-- (NonNull) 문자열 -> 배열 변환함수
+-- ===============================================
+function Convert_StrToArr(szData, szSeperator)
+
+	local arrData
+	
+	-- --------------------------------------------
+	-- 링크데이터 값 체크
+	-- --------------------------------------------
+	if IsEmpty(szData) then
+		arrData = {}
+		return arrData
+	end
+	
+	-- --------------------------------------------
+	-- 구분자 값 체크
+	-- --------------------------------------------
+	if IsEmpty(szSeperator) then
+		-- 단일변수
+		arrData = {}
+		table.insert(arrData, szData)
+	else
+		-- 다중변수
+		arrData = gf_Split(szData, szSeperator)
+	end
+	
+	return arrData
+
+end
+
+-- ===============================================
+-- REST API_토큰발급
+-- ===============================================
+function IssueToken() 
+	g_sStep = "ISSUE_TOKEN"
+	
+	Form.ReleaseRequestData()
+	
+	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("&USER_ID", false )
+	sData2  = Form.GetSharedData("&MCI_SESSION_KEY", false )
+	sData3  = Form.GetSharedData("&SEMI_SSO_KEY", false )
+	
+	Form.MakeRequestData("channelClsCode", 	sData0)
+	Form.MakeRequestData("userId", 			sData1)
+	Form.MakeRequestData("sessionKey", 		sData2)
+	Form.MakeRequestData("semiSsoKey", 		sData3)
+	
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	if sDev == "1" then	--개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end
+	
+	Form.RequestRestAPI(sUrl.."auth/issue-token", "")
+end
+
+-- ===============================================
+-- REST API_토큰발급
+-- ===============================================
+function RefreshToken() 
+	g_sStep = "ISSUE_TOKEN"
+	
+	Form.ReleaseRequestData()
+	
+	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("&USER_ID", false )
+	sData2  = Form.GetSharedData("&REST_API_REFRESH_TOKEN", false )
+	
+	Form.MakeRequestData("channelClsCode", 	sData0)
+	Form.MakeRequestData("userId", 			sData1)
+	Form.MakeRequestData("refreshToken", 	sData2)
+
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	if sDev == "1" then	--개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end
+	
+	Form.RequestRestAPI(sUrl.."auth/refresh-token", "")
+end
+
+-- ****************************************************************************
+--                C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+-- ****************************************************************************
+
+-- ===============================================
+-- Form_OnDelayEvent(1회 실행)
+-- ===============================================
+function Form_OnDelayEvent(nID)
+	
+	--최초진입 or 재로그인
+	if gf_Tonumber(nID) == 1 then
+		-- ----------------------------------
+		-- 1. 내국인 체크
+		-- ----------------------------------
+		DATAMANAGER.RequestTranData("obcsb_acif_002r")
+		
+	--실시간 해제 시 재등록
+	elseif gf_Tonumber(nID) == 2 then
+		-- ----------------------------------
+		-- 1. SEMI SSO 키 MCI 등록
+		-- ----------------------------------
+		DATAMANAGER.RequestRealData("ohhts_semi_ssor")
+		
+	elseif gf_Tonumber(nID) == 3 then
+		-- ----------------------------------
+		-- 2. 자동감시주문 서버 TOKEN 발급
+		-- ----------------------------------
+		IssueToken() 
+		
+	elseif gf_Tonumber(nID) == 4 then	
+		Button0.left = 1000
+	end
+end
+
+
+-- =============================================================================
+-- Form_OnFormInitBefore
+-- =============================================================================
+function Form_OnFormInitBefore()
+	imgBack.maintainratio = "2"
+	imgInfo.maintainratio = "3"
+	
+	lblTitle.paddinginfo = "0,0,0,0"
+	
+end
+
+-- =============================================================================
+-- Form_OnFormInit
+-- =============================================================================
+function Form_OnFormInit()
+--	Button0.left = 0
+	
+	sLinkData = Form.GetOpenLinkData()
+
+	-- ------------------------------------------------------------------------
+	--탭 변경 이벤트 미처리용 플래그 (currenttabpageid 프로퍼티 설정)
+	--(AOS) OnTabChanged 이벤트 발생
+	--(iOS) OnTabChanged 이벤트 미발생(직접 탭 클릭할 떄만 이벤트 발생함)
+	--직접 클릭할 때 만 이벤트 처리
+	-- ------------------------------------------------------------------------
+	if g_sOSType == "1" then
+		g_isChangeTab = true
+	end
+	
+	if sLinkData == "1" then
+		fmtabSearch.currenttabpageid = "page1"
+	elseif sLinkData == "0" then
+		fmtabSearch.currenttabpageid = "page0"
+	elseif sLinkData == "2" then
+		fmtabSearch.currenttabpageid = "page2"
+	else
+		arrData = ""
+		isChange = false
+		
+		if IsEmpty(sLinkData) == false then
+			
+			arrData = Convert_StrToArr(sLinkData, "★")
+			
+			nArrCnt = #arrData
+			if nArrCnt > 0 then
+				if trim(arrData[1]) == "기타" then
+					if nArrCnt > 2 then
+						sGbn = trim(arrData[3])
+						
+						if sGbn == "OS" then
+							fmtabSearch.currenttabpageid = "page0"
+							isChange = true
+						elseif sGbn == "OB" then
+							fmtabSearch.currenttabpageid = "page1"
+							isChange = true
+						elseif sGbn == "OF" then
+							fmtabSearch.currenttabpageid = "page2"
+							isChange = true
+						end
+					end
+				end
+			end
+		end
+		
+		if isChange == false then
+			sPageID = Form.GetEnvData("17100_FORMTAB_PAGEID")
+			
+			if IsEmpty(sPageID) == false then
+				fmtabSearch.currenttabpageid = sPageID
+			else
+				if g_sOSType == "1" then
+					g_isChangeTab = false
+				end
+			end
+		end
+	end
+	
+	if fmtabSearch.currenttabpageid == "page2" then
+		btnOrderList.caption = "주문내역"
+--		btnOrderList.visible = true
+	else
+		btnOrderList.caption = "현재가"
+--		btnOrderList.visible = false
+	end
+	
+	Form.SetEnvData(1, "17100_FORMTAB_PAGEID", fmtabSearch.currenttabpageid)
+	
+	-- ------------------------------------------------------------------------
+	-- 고객정보조회(내국인/외국인)
+	-- ------------------------------------------------------------------------
+	Form.SetDelayEvent(1, 0.2)
+end
+
+-- =============================================================================
+-- fmtabSearch_OnTabChanged
+-- =============================================================================
+function fmtabSearch_OnTabChanged(nCurrentTab)
+--	Button0.left = 0
+
+	if fmtabSearch.currenttabpageid == "page2" then
+		btnOrderList.caption = "주문내역"
+--		btnOrderList.visible = true
+	else
+		btnOrderList.caption = "현재가"
+--		btnOrderList.visible = false
+	end
+	
+	--탭 변경 이벤트 미처리용 (AOS)
+	if g_sOSType == "1" and g_isChangeTab == true then
+		g_isChangeTab = false
+		return
+	end
+	
+	Form.SetEnvData(1, "17100_FORMTAB_PAGEID", fmtabSearch.currenttabpageid)
+	
+	-- --------------------------------
+	-- 탭 변경 트리거
+	-- --------------------------------
+	sLinkData = act0.total .. "`" .. act0.sequence .. "`" .. act0.accountname .. "`" .. edtPwd.caption 
+	Form.TriggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "TAB_CHANGE", sLinkData)
+	
+--	Form.SetDelayEvent(4, 0.2)
+end
+
+-- =============================================================================
+-- act0_ChangeAccount
+-- =============================================================================
+function act0_ChangeAccount()
+--	Button0.left = 0
+	-- --------------------------------
+	-- 계좌변경 트리거
+	-- --------------------------------
+	sLinkData = act0.total .. "`" .. act0.sequence .. "`" .. act0.accountname .. "`" .. edtPwd.caption 
+	Form.TriggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "ACCT_CHANGE", sLinkData)
+	
+--	Form.SetDelayEvent(4, 0.2)
+end
+
+-- =============================================================================
+-- Form_OnTriggerEvent
+-- =============================================================================
+function Form_OnTriggerEvent(sEventName, sParam, sParam2)
+	
+--	Form.ShowAlert("TEST", sEventName .. "|" .. sParam)
+	-- --------------------------------
+	-- 자동 토큰 발급
+	-- --------------------------------
+	if sEventName ==  "ISSUE_TOKEN_MAIN" then
+		-- ----------------------------------------
+		-- 성공
+		-- ----------------------------------------
+		if sParam == "SUCCESS" then
+			sAccessToken = Form.GetSharedData("&REST_API_TOKEN", false)
+			
+			if IsEmpty(sAccessToken) == true then
+				-- ----------------------------------
+				-- 1. SEMI SSO 키 MCI 등록
+				-- ----------------------------------
+				DATAMANAGER.RequestRealData("ohhts_semi_ssor")
+				
+				-- ----------------------------------
+				-- 2. 자동감시주문 서버 TOKEN 발급
+				-- ----------------------------------
+				Form.SetDelayEvent(3, 0.2)
+			else
+				-- --------------------------------
+				-- 데이터 조회 
+				-- --------------------------------
+				sLinkData = act0.total .. "`" .. act0.sequence .. "`" .. act0.accountname .. "`" .. edtPwd.caption 
+				Form.TriggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "TOKEN_SUCCESS", sLinkData)
+				
+				-- --------------------------------
+				-- 데이터 재조회 실시간 등록
+				-- --------------------------------
+				DATAMANAGER.RequestRealData("ohhts_cntg_auto")
+			end
+		else
+			-- ----------------------------------
+			-- 1. SEMI SSO 키 MCI 등록
+			-- ----------------------------------
+			DATAMANAGER.RequestRealData("ohhts_semi_ssor")
+			
+			-- ----------------------------------
+			-- 2. 자동감시주문 서버 TOKEN 발급
+			-- ----------------------------------
+			Form.SetDelayEvent(3, 0.2)
+		end
+		
+	-- --------------------------------
+	-- REST API 응답
+	-- --------------------------------
+	elseif sEventName ==  "RESTAPI_RETURN" then
+		sStep = g_sStep
+		g_sStep = ""
+		
+		-- ----------------------------------------
+		-- 서버 검증용 토큰 발급
+		-- ----------------------------------------
+		if sStep == "ISSUE_TOKEN" then
+		
+			-- ----------------------------------------
+			-- 성공
+			-- ----------------------------------------
+			if sParam == "SUCCESS" then
+			
+				data = Form.ResponseRestAPI("JSONOBJ", 0, "data", sParam2)
+				
+				accessToken = Form.ResponseRestAPI("DATA", 0, "accessToken", data)
+				refreshToken = Form.ResponseRestAPI("DATA", 0, "refreshToken", data)
+				
+				if IsEmpty(accessToken) == false then
+					Form.SetSharedData("&REST_API_TOKEN", " Bearer " .. accessToken )
+				end
+				
+				if IsEmpty(refreshToken) == false then
+					Form.SetSharedData("&REST_API_REFRESH_TOKEN", " Bearer " .. refreshToken )
+				end
+				
+				-- --------------------------------
+				-- 토큰 발급 성공 트리거
+				-- --------------------------------
+				sLinkData = act0.total .. "`" .. act0.sequence .. "`" .. act0.accountname .. "`" .. edtPwd.caption 
+				Form.TriggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "TOKEN_SUCCESS", sLinkData)
+				
+				DATAMANAGER.RequestRealData("ohhts_cntg_auto")
+				
+			-- ----------------------------------------
+			-- 실패(ERROR or EXCEPTION)
+			-- ----------------------------------------
+			else
+				Form.MsgBox("알림", "현재 자동감시주문 실행이 불가합니다.\n고객지원센터에 문의해주세요.", "CLOSE_FORM", 6)
+			end
+		end
+		
+--		Form.SetDelayEvent(4, 0.2)
+--		Button0.left = 1000
+	-- --------------------------------
+	-- 계좌 비밀번호 체크 요청
+	-- --------------------------------
+	elseif sEventName == "CHECK_ACCT_PWD" then
+		sSavePwd = Form.GetEnvData("order.save_orderpwd")
+		
+		if sSavePwd == "1" and IsEmpty(edtPwd.caption) == false then
+			-- --------------------------------
+			-- 비밀번호 검증 성공
+			-- --------------------------------
+			Form.TriggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "ACCT_PWD_CHECK", "SUCCESS`" .. edtPwd.caption )
+			return
+		end
+		
+		Form.OpenPopupAnimation("pwdcheckpopup", act0.caption ,"","2")
+	end
+end
+
+-- =============================================================================
+-- Form_OnPopupReturn
+-- =============================================================================
+function Form_OnPopupReturn(sKeyName, sRet)
+	-- --------------------------------
+	-- 비밀번호 입력 (직접 / 주문자동)
+	-- --------------------------------
+	if sKeyName == "CORRECT_PWD" then
+		
+		-- --------------------------------
+		-- 비밀번호 입력 완료
+		-- --------------------------------
+		if sRet ~= "" then
+			local szAcnt
+			
+			tData = gf_Split(sRet, "★")
+			
+			if #tData > 0 then
+				edtPwd.pwdlen = tData[2]
+				edtPwd.caption = tData[1]
+			end
+			
+		-- --------------------------------
+		-- 비밀번호 입력 취소
+		-- --------------------------------
+		else
+			sSavePwd = Form.GetEnvData("order.save_orderpwd")
+			
+			if sSavePwd == "0" then
+				edtPwd.caption = ""
+			else
+				-- -------------------------------------------------------------
+				-- 저장기능이 켜져있는 경우는 저장된 비밀번호가 있을 수 있음
+				-- 계좌리스트를 뒤져서 한번 계좌를 넣어준다
+				-- -------------------------------------------------------------
+				szCurAcc = act0.caption
+				nCnt = gf_Tonumber(act0.accountcount)
+				for i = 1, gf_Tonumber - 1 do
+					szCompAcc = act0.getAccountByIndex(i)
+					
+					if szCurAcc == szCompAcc then
+						act0.currentindex = i
+						break
+					end
+				end
+			end
+			
+		end 
+		
+		-- --------------------------------
+		-- 비밀번호 입력 체크
+		-- --------------------------------
+		if IsEmpty(edtPwd.caption) == true then
+			-- --------------------------------
+			-- 비밀번호 검증 실패 
+			-- --------------------------------
+			Form.TriggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "ACCT_PWD_CHECK", "FAIL")
+			return
+		end
+		
+		-- --------------------------------
+		-- 비밀번호 검증 성공
+		-- --------------------------------
+		Form.TriggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "ACCT_PWD_CHECK", "SUCCESS`" .. edtPwd.caption)
+	
+	end
+end
+
+-- =============================================================================
+-- imgBack_OnClick
+-- =============================================================================
+function imgBack_OnClick()
+	Form.OpenPrevScreen()
+end
+
+-- =============================================================================
+-- btnOrderList_OnClick
+-- =============================================================================
+function btnOrderList_OnClick()
+	if fmtabSearch.currenttabpageid == "page2" then
+		Form.OpenScreen("16074" , "")
+	else
+		Form.OpenScreen("16000" , "")
+	end
+	
+end
+
+-- =============================================================================
+-- btnOrderList_OnClick
+-- =============================================================================
+function imgInfo_OnClick()
+	Form.OpenPopup("nrshtro17100_p12" , "", "")
+end
+
+-- =============================================================================
+-- DATAMANAGER_OnSendRealBefore
+-- =============================================================================
+function DATAMANAGER_OnSendRealBefore(szTranID)
+	if szTranID == "ohhts_semi_ssor" then
+		sSemiSSO = Form.GetSharedData("&SEMI_SSO_KEY", false)
+		DATAMANAGER.SetDataValue(1,"ohhts_semi_ssor", "InBlock1", "FID_MCI_LOGN_KEY", 0 , sSemiSSO)
+		
+	elseif szTranID == "ohhts_cntg_auto" then
+		sCsno = Form.GetSharedData("&CUST_NUM", false)
+		DATAMANAGER.SetDataValue(1, "ohhts_cntg_auto", "InBlock1", "FIDR_CSNO", 0 , sCsno)
+	end
+end
+
+-- =============================================================================
+-- DATAMANAGER_OnSendTranBefore
+-- =============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	if szTranID == "obcsb_acif_002r" then
+		DATAMANAGER.ClearInputData(0, "obcsb_acif_002r")
+		
+		DATAMANAGER.SetDataValue(0, "obcsb_acif_002r", "InBlock1", "PROS_CLS_CODE", 0 , 1)
+		DATAMANAGER.SetDataValue(0, "obcsb_acif_002r", "InBlock1", "ACNO", 0 , act0.total)
+	end
+end
+
+-- =============================================================================
+-- DATAMANAGER_OnReceiveTranComplete
+-- =============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	-- ----------------
+	-- 내국인 체크
+	-- ----------------
+	if szTranID == "obcsb_acif_002r" then
+		sCode = DATAMANAGER.GetDataMsgCode("obcsb_acif_002r")
+		
+		if sCode == "5820" then
+			if g_isForeigner == false then
+				g_isForeigner = true
+				-- ----------------------------------------
+				-- 외국인인 경우 거래불가
+				-- ----------------------------------------
+				Form.MsgBox("알림", "주문 가능한 계좌가 없어요.", "CHECK_FOREIGNER", 6)
+				return
+			end
+		end
+		
+		-- --------------------------------------
+		-- 1 : 내국인, 2 : 외국인
+		-- --------------------------------------
+		sNtfrClsCode = DATAMANAGER.GetDataValue(0, "obcsb_acif_002r", "OutBlock1", "NTFR_CLS_CODE", 0)
+		
+		if sNtfrClsCode == "1" then
+			
+			sAccessToken = Form.GetSharedData("&REST_API_TOKEN", false)
+			if IsEmpty(sAccessToken) == true then
+				-- ----------------------------------
+				-- 1. SEMI SSO 키 MCI 등록
+				-- ----------------------------------
+				DATAMANAGER.RequestRealData("ohhts_semi_ssor")
+				
+				-- ----------------------------------
+				-- 2. 자동감시주문 서버 TOKEN 발급
+				-- ----------------------------------
+				Form.SetDelayEvent(3, 0.2)
+			else
+--				Form.SetDelayEvent(4, 0.2)
+				
+				-- --------------------------------
+				-- 데이터 조회 
+				-- --------------------------------
+				sLinkData = act0.total .. "`" .. act0.sequence .. "`" .. act0.accountname .. "`" .. edtPwd.caption 
+				Form.triggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "TOKEN_SUCCESS", sLinkData)
+				
+				-- --------------------------------
+				-- 데이터 재조회 실시간 등록
+				-- --------------------------------
+				DATAMANAGER.RequestRealData("ohhts_cntg_auto")
+			end
+			
+		else
+			if g_isForeigner == false then
+				g_isForeigner = true
+				-- ----------------------------------------
+				-- 외국인인 경우 거래불가
+				-- ----------------------------------------
+				Form.MsgBox("알림", "해외주식거래는 거주 내국인만\n가능해요.", "CHECK_FOREIGNER", 6)
+				return
+			end
+		end
+	end
+end
+
+-- =============================================================================
+-- DATAMANAGER_OnReceiveRealComplete
+-- =============================================================================
+function DATAMANAGER_OnReceiveRealComplete(szTranID)
+	if szTranID == "ohhts_cntg_auto" then
+		sAcno = DATAMANAGER.GetDataValue(1, "ohhts_cntg_auto", "OutBlock1", "FIDR_ACNO", 0)				-- 계좌번호
+		sAsno = DATAMANAGER.GetDataValue(1, "ohhts_cntg_auto", "OutBlock1", "FIDR_ASNO", 0)				-- 계좌 일련번호
+		sSellBuy = DATAMANAGER.GetDataValue(1, "ohhts_cntg_auto", "OutBlock1", "FIDR_SELN_SHNU_CLS_CODE", 0)	-- 1:매도 2:매수
+		sDmab = DATAMANAGER.GetDataValue(1, "ohhts_cntg_auto", "OutBlock1", "FIDR_DMAB_CLS_CODE", 0)		-- 1:국내 2:미국
+		sEvnt = DATAMANAGER.GetDataValue(1, "ohhts_cntg_auto", "OutBlock1", "FIDR_EVNT_CLS_CODE", 0)		-- 01:조건상태 변경
+		
+--		Button0.left = 0
+		-- 조건상태 변경 & 해외(미국)
+		if sEvnt == "01" and sDmab == "2"  then
+			sAcnoTmp = act0.total
+			sAsnoTmp = act0.sequence
+			
+			-- 계좌번호 체크
+			if sAcno == sAcnoTmp and sAsno == sAsnoTmp then
+				sLinkData = act0.total .. "`" .. act0.sequence .. "`" .. act0.accountname .. "`" .. edtPwd.caption 
+				-- 매도
+				if sSellBuy == "1" and fmtabSearch.currenttabpageid == "page0" then
+					Form.TriggerEvent("fmtabSearch.page0", "REFRESH_LIST", sLinkData)
+				-- 매수
+				elseif sSellBuy == "2" and fmtabSearch.currenttabpageid == "page1" then
+					Form.TriggerEvent("fmtabSearch.page1", "REFRESH_LIST", sLinkData)
+				
+				elseif fmtabSearch.currenttabpageid == "page2" then
+					Form.TriggerEvent("fmtabSearch.page2", "REFRESH_LIST", sLinkData)
+				
+				end
+			end
+		end
+		
+--		Form.SetDelayEvent(4, 0.2)
+	end
+end
+
+-- =============================================================================
+-- DATAMANAGER_OnReceiveTranError
+-- =============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
+	
+--	Form.SetDelayEvent(4, 0.2)
+	
+	if len(trim(szSubMsg))	>	0	then
+		Form.MsgBox("알림", szErrMsg .. "\n(" .. szSubMsg .. ")", "CHECK_FOREIGNER", 6)
+	else
+		Form.MsgBox("알림", szErrMsg, "CHECK_FOREIGNER", 6)
+	end	
+end
+
+-- =============================================================================
+function Form_OnMsgBoxClose(sKeyName, sRet)
+	if sKeyName == "CHECK_FOREIGNER" then
+		Form.OpenStartScreen()
+	end
+end
+
+-- =============================================================================
+function Form_OnRefresh()
+	Form.SetDelayEvent(1, 0.2)
+end
+
+-- =============================================================================
+function Form_OnLinkData(sKey, sValue)
+	if sKey == "&LOGIN_AUTH" then
+		if gf_Tonumber(sValue) > 1 then
+			--Form.SetDelayEvent(1, 0.2)
+		else
+			Form.OpenStartScreen()
+		end
+	elseif sKey == "17100_PWD_CHANGE" then
+		-- --------------------------------
+		-- 비밀번호 입력 완료
+		-- --------------------------------
+		if sValue ~= "" then
+			local szAcnt
+			
+			tData = gf_Split(sValue, "★")
+			
+			if UBOUND(tData) > 0 then
+				edtPwd.pwdlen = tData[2]
+				edtPwd.caption = tData[1]
+			end
+		end
+	end
+end
+	</SCRIPT_INFO>
+	<DATAIO_INFO>
+		<TRID_INFO>
+			<TRAN tranid="ohhts_semi_ssor" trcode="ohhts_semi_ssor" />
+			<TRAN tranid="ohhts_cntg_auto" trcode="ohhts_cntg_auto" />
+			<TRAN tranid="obcsb_acif_002r" trcode="obcsb_acif_002r" compress="1" encryption="1" inputcheck="1" />
+		</TRID_INFO>
+		<TRIO_INFO>
+			<TRAN name="ohhts_semi_ssor" title="MCI Semi SSO 실시간" realdata="1" keylength="32" dessvr="1" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="59" _ulen="51" >
+FID_MCI_LOGN_KEY^FIDMCI로그인키^32^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_cntg_auto" title="자동감시주문 변경알림" realdata="1" keylength="10" dessvr="3" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="50" _ulen="42" >
+FIDR_CSNO^FIDR고객번호^10^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="343" _ulen="271" >
+FIDR_CSNO^FIDR고객번호^10^0^0^0^0^0^0^0^
+FIDR_ACNO^FIDR계좌번호^8^0^0^0^0^0^0^0^
+FIDR_ASNO^FIDR계좌일련번호^2^0^0^0^0^0^0^0^
+FIDR_SELN_SHNU_CLS_CODE^FIDR매도매수구분코드^1^0^0^0^0^0^0^0^
+FIDR_DMAB_CLS_CODE^FIDR국내외구분코드^1^0^0^0^0^0^0^0^
+FIDR_EVNT_CLS_CODE^FIDR이벤트구분코드^2^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obcsb_acif_002r" title="고객정보조회(NEW)" realdata="0" dessvr="9" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="141" _ulen="109" >
+PROS_CLS_CODE^처리 구분 코드^1^0^0^0^0^0^0^0^
+ACNO^계좌번호^8^0^0^0^0^0^0^0^
+ACNT_PWD^계좌 비밀번호^68^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="2495" _ulen="1917" >
+CSNO^고객번호^10^0^0^0^0^0^0^0^
+CUST_CNFR_YN^고객 확인 여부^1^0^0^0^0^0^0^0^
+CUST_FULL_NAME^고객 풀 명^100^0^0^0^0^0^0^0^
+CUST_ABWR_NAME^고객 약어 명^40^0^0^0^0^0^0^0^
+CUST_ENG_NAME^고객 영문 명^40^0^0^0^0^0^0^0^
+RCNO_TYPE_CODE^실명확인번호 유형 코드^2^0^0^0^0^0^0^0^
+INMR_CLS_CODE^소득자 구분 코드^3^0^0^0^0^0^0^0^
+RLNM_ASCT_NO^실명 조합 번호^20^0^0^0^0^0^0^0^
+NTFR_CLS_CODE^내외국인 구분 코드^1^0^0^0^0^0^0^0^
+RSDT_CLS_CODE^거주자 구분 코드^1^0^0^0^0^0^0^0^
+NTNT_CTCD^국적 국가코드^3^0^0^0^0^0^0^0^
+CUST_CLS_CODE^고객 구분 코드^1^0^0^0^0^0^0^0^
+CUST_DETL_CLS_CODE^고객 세부 구분 코드^2^0^0^0^0^0^0^0^
+RSDC_NTNL_TXRT_CODE^거주 국가 세율 코드^2^0^0^0^0^0^0^0^
+PSPR_NO^여권 번호^10^0^0^0^0^0^0^0^
+CONO^법인등록번호^13^0^0^0^0^0^0^0^
+SLCN_CLS_CODE^양력 구분 코드^1^0^0^0^0^0^0^0^
+BRDT^생년월일^8^0^0^0^0^0^0^0^
+WDNG_DATE^결혼 일자^8^0^0^0^0^0^0^0^
+MARG_LEVY_CLS_CODE^증거금징수구분코드^1^0^0^0^0^0^0^0^
+RNMC_CLS_CODE^실명확인 구분 코드^2^0^0^0^0^0^0^0^
+CNSG_YN^수탁 여부^1^0^0^0^0^0^0^0^
+RCNO^실명확인번호^13^0^0^0^0^0^0^0^
+KYC_INVT_RCMD_CLS_CODE^KYC 투자 권유 구분 코드^1^0^0^0^0^0^0^0^
+KYC_INVT_INCL_GRAD_CODE^KYC 투자 성향 등급 코드^2^0^0^0^0^0^0^0^
+KYC_SPCL_INVR_YN^KYC 전문 투자자 여부^1^0^0^0^0^0^0^0^
+KYC_SPCL_INVR_RGNO^KYC 전문 투자자 등록번호^20^0^0^0^0^0^0^0^
+MTRT_DATE^만기 일자^8^0^0^0^0^0^0^0^
+SSTS_YN^공매도 여부^1^0^0^0^0^0^0^0^
+GNDR_CLS_CODE^성별 구분 코드^1^0^0^0^0^0^0^0^
+KYC_VALD_PRD_MTRT_DATE^KYC 유효 기간 만기 일자^8^0^0^0^0^0^0^0^
+CNSG_RFUS_REAS_CODE^수탁 거부 사유 코드^3^0^0^0^0^0^0^0^
+STA_DATE^시작 일자^8^0^0^0^0^0^0^0^
+FIN_DATE^종료 일자^8^0^0^0^0^0^0^0^
+BRTH_CTCD^출생국가코드^3^0^0^0^0^0^0^0^
+AMRC_YN^미국인여부^1^0^0^0^0^0^0^0^
+AML_BSTP_LRDV_CODE^AML업종대분류코드^2^0^0^0^0^0^0^0^
+AML_BSTP_SMDV_CODE^AML업종소분류코드^5^0^0^0^0^0^0^0^
+GIIN^GIIN^20^0^0^0^0^0^0^0^
+LSTN_YN^상장여부^1^0^0^0^0^0^0^0^
+DSTC_DATE^파기일자^8^0^0^0^0^0^0^0^
+OVRS_TXPM_CHD_YN^해외납세자여부^1^0^0^0^0^0^0^0^
+RCNO_PIP^실명확인번호PIP^68^0^0^0^0^0^0^0^
+FRGN_IDNT_CLCD^외국인식별구분코드^1^0^0^0^0^0^0^0^
+FRGN_IDNO^외국인식별번호^20^0^0^0^0^0^0^0^
+ASCT_PSPR_NO_PIP^조합여권번호PIP^68^0^0^0^0^0^0^0^
+MDAF_RLNM_ASCT_NO^변경후실명조합번호^20^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+			</TRAN>
+		</TRIO_INFO>
+	</DATAIO_INFO>
+</ROOT>

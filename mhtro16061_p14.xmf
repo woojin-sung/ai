@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="16100" scrname="해외주식_예약주문_시장가유의사항" version="3" writer="아이티젠" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,647,1" />
+	<CONTROL_INFO>
+		<IMAGE name="Image0" autosize="1" imgpath="pop_header.9" ly_vert="0,0,375,55,1" />
+		<BUTTON name="btnOK" caption="확인" btnimage="btn_20.9" ly_vert="187,587,190,60,1" />
+		<LABEL name="Label10" caption="매수 시장가 유의사항" bgcolor="064:239059036" fontsize="5" halign="1" ly_vert="0,0,375,55,1" />
+		<CONTAINER name="Container0" vscroll="1" scrollpos="" ly_vert="0,55,375,525,1" >
+			<CONTROL_INFO>
+				<TABLE name="Table0" outlinecolor="038:255255255" colcount="2" rowcount="28" outline="0000" designorder="1" ly_vert="15,10,345,514,1" >
+					<COL_INFO ly_vert_width="10,335" />
+					<ROW_INFO ly_vert_height="21,11,21,21,21,11,21,20,21,11,21,21,11,21,21,21,20,11,21,21,11,21,21,20,21,11,21,20" />
+					<CELL_INFO>
+						<CELL cell_ly="0,0,0,0" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" text="·" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,0,1,0" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="시장가 주문은 정규장에서만 유효한 주문입니다." fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,1,0,1" fgcolor="061:239059036" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,1,1,1" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,2,0,2" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" text="·" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,2,1,2" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="시장가 매수는 직전 체결가의 +10% 가격으로 주문하고," fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,3,0,3" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,3,1,3" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="직전 체결가가 없을 경우 전일 종가기준 보다 10% 높은" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,4,0,4" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,4,1,4" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="가격을 산정하여 지정가로 주문합니다." fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,5,0,5" fgcolor="049:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,5,1,5" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,6,0,6" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" text="·" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,6,1,6" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="시장가 매수의 경우 신규 상장 등으로 전일 종가가" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,7,0,7" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,7,1,7" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="없거나 전일 종가 또는 직전체결가가 2불미만인 종목인" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,8,0,8" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,8,1,8" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="경우 주문 불가합니다." fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,9,0,9" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,9,1,9" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,10,0,10" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" text="·" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,10,1,10" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="시장가 매수 주문시 유사 시장가로 주문이 발주되어" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,11,0,11" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,11,1,11" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="체결이 되지 않는 경우가 발생 할 수 있음을 유의바랍니다." fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,12,0,12" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,12,1,12" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,13,0,13" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" text="·" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,13,1,13" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="매수 호가 차이가 크거나, 잔량이 적은 경우" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,14,0,14" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,14,1,14" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="브로커의 리스크관리제도로 주문이 거부되거나 또는" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,15,0,15" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,15,1,15" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="투자자가 의도한 가격보다 불리한 가격으로 체결될 수" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,16,0,16" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" impidxs="" />
+						<CELL cell_ly="1,16,1,16" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="있습니다." fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,17,0,17" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,17,1,17" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,18,0,18" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" text="·" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,18,1,18" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="현지 거래소 및 중개사의 사정으로 체결이 지연 또는" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,19,0,19" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,19,1,19" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="체결되지 않을 수 있습니다." fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,20,0,20" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,20,1,20" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,21,0,21" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" text="·" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,21,1,21" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="예약주문으로 미국주식 시장가 매수 주문을 접수하는" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,22,0,22" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,22,1,22" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="경우 실제 주문하는 가격은 장 시작후에 정해지므로 " fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,23,0,23" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" impidxs="" />
+						<CELL cell_ly="1,23,1,23" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="장 시작 기준으로 주문 가능 금액이 주문 수량 대비" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,24,0,24" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,24,1,24" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" text="충분하지 않는 경우 증거금 부족으로 거부될 수 있습니다." fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,25,0,25" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" impidxs="" />
+						<CELL cell_ly="1,25,1,25" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,26,0,26" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" fontsize="5" fontstyle="01" impidxs="" />
+						<CELL cell_ly="1,26,1,26" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+						<CELL cell_ly="0,27,0,27" fgcolor="004:000000000" bgcolor="038:255255255" line="0,0" impidxs="" />
+						<CELL cell_ly="1,27,1,27" fgcolor="004:000000000" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" paddinginfo="5,0,0,0" impidxs="" />
+					</CELL_INFO>
+				</TABLE>
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<IMAGE name="imgClose" margin="5,7,5,7" imgpath="icon_close" ly_vert="330,13,30,30,1" />
+		<BUTTON name="btnClose" caption="다시보지않기" fgcolor="334:034034034" btnimage="btn_27.9" ly_vert="-2,587,190,60,1" />
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="608" _ulen="608" >
+ --============================================================================
+function Form_OnFormInitBefore()
+	imgClose.SetMaintainingRatio("1")
+end
+
+ --============================================================================
+function btnOK_OnClick()
+	Form.CloseForm()
+end
+ --============================================================================
+function imgClose_OnClick()
+	Form.CloseForm()
+end
+ --============================================================================
+function btnClose_OnClick()
+	Form.SetEnvData(0, "OrdNotice_16061_p14", "1")
+	Form.CloseForm()
+end
+	</SCRIPT_INFO>
+</ROOT>

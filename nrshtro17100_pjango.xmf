@@ -1,0 +1,1041 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문_잔고팝업" version="2" writer="함원규" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" transmode="0" ly_vert="0,0,375,755,1" />
+	<CONTROL_INFO>
+		<IMAGE name="imgBg" autosize="1" imgpath="alpha128" ly_vert="0,0,375,755,1" />
+		<CONTAINER name="cont0" scrollpos="" ly_vert="0,90,375,665,1" >
+			<CONTROL_INFO>
+				<IMAGE name="imgMain" autosize="1" imgpath="popup_bg.9" ly_vert="0,0,375,670,1" />
+				<LABEL name="lblTitleComm" caption="매도 가능 종목" bgcolor="092:185046046" fontsize="2" fontstyle="01" halign="1" paddinginfo="1,0,0,0" ly_vert="0,0,375,60,1" />
+				<FORMTAB name="fmtabMain" fontsize="-2" tabcount="0" tabwidthtype="2" tabheadheight="32" ly_vert="1000,60,170,32,1" />
+				<CHKBUTTON name="chk0" fontsize="-2" chkcaption="비용포함" unchkcaption="비용포함" chkbtnimage="checkmenu_o" unchkbtnimage="checkmenu_n" ly_vert="10,60,120,32,1" />
+				<GRID name="grd0" resize="0001" colcount="23" ly_vert="10,100,355,500,1" ver="1" itemcodeid="" >
+					<CONTROL_INFO>
+						<LABEL name="bd_cell01" fontsize="-1" valign="2" multiline="1" paddinginfo="10,5,0,0" />
+						<LABEL name="th_cell01" caption="종목명" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="bd_cell04" fontsize="-1" halign="2" valign="2" />
+						<LABEL name="bd_cell06" fontsize="-1" mask="0,0,,,0,,2,1,1,0,0,0" halign="2" valign="2" />
+						<LABEL name="bd_cell07" fontsize="-1" mask="0,0,,,0,,2,1,1,0,0,0" halign="2" valign="2" />
+						<LABEL name="bd_cell10" fontsize="-1" halign="2" valign="2" />
+						<LABEL name="bd_cell51" fontsize="-1" valign="0" />
+						<LABEL name="bd_cell54" fontsize="-1" halign="2" valign="0" />
+						<LABEL name="bd_cell56" fontsize="-1" plusminuscolor="1" mask="0,0,,%,0,,2,1,1,0,0,0" halign="2" valign="0" />
+						<LABEL name="bd_cell57" fontsize="-1" mask="0,0,,,0,,2,1,1,0,0,0" halign="2" valign="0" />
+						<LABEL name="bd_cell11" fontsize="-1" halign="2" valign="2" />
+						<LABEL name="bd_cell60" fontsize="-1" halign="2" valign="0" />
+						<LABEL name="th_cell51" caption="구분" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="th_cell08" caption="대출일" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="th_cell11" caption="구분" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="th_cell04" caption="보유수량" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="th_cell54" caption="매도가능" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="th_cell06" caption="평가손익" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="th_cell56" caption="손익률(%)" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="th_cell07" caption="평가금액" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="th_cell57" caption="매입금액" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="th_cell12" caption="매수수수료" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="th_cell62" caption="매도수수료(추정)" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="th_cell10" caption="거래소" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="th_cell60" caption="국가" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="bd_cell15" fontsize="-1" halign="2" />
+						<LABEL name="th_cell15" caption="평가환율" fontsize="-2" halign="1" />
+						<LABEL name="th_cell58" caption="만기일" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="bd_cell16" fontsize="-1" halign="2" />
+						<LABEL name="bd_cell17" fontsize="-1" halign="2" valign="0" />
+						<LABEL name="th_cell16" caption="종목코드" halign="1" valign="2" />
+						<LABEL name="th_cell17" caption="보유수량" halign="1" valign="0" />
+						<LABEL name="bd_cell18" halign="2" />
+						<LABEL name="bd_cell19" halign="2" valign="0" />
+						<LABEL name="th_cell18" caption="소수점여부" fontsize="-2" halign="1" valign="2" />
+						<LABEL name="th_cell19" caption="마켓코드" halign="1" valign="0" />
+						<LABEL name="bd_cell20" halign="2" />
+						<LABEL name="bd_cell21" halign="2" />
+						<LABEL name="th_cell20" caption="종가" halign="1" />
+						<LABEL name="th_cell21" caption="투자정보" halign="1" valign="0" />
+						<LABEL name="th_cell09" caption="대출금액(원)" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="th_cell59" caption="대출구분" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="bd_cell24" halign="2" />
+						<LABEL name="bd_cell25" halign="2" />
+						<LABEL name="th_cell24" caption="만기일지" halign="1" />
+						<LABEL name="th_cell25" caption="대출번호" halign="1" />
+						<LABEL name="bd_cell26" fontsize="-2" mask="0,0,,,0,,4,1,1,0,0,0" halign="2" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell26" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="bd_cell61" fontsize="-1" halign="2" valign="0" />
+						<LABEL name="th_cell61" caption="통화" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="bd_cell30" mask="0,0,0,,0,,-1,0,0,1,0,0" halign="2" ly_vert="0,0,100,20,1" />
+						<LABEL name="bd_cell31" mask="0,0,0,,0,,-1,0,0,1,0,0" halign="2" ly_vert="0,0,100,20,1" />
+						<LABEL name="bd_cell28" fontsize="-2" halign="2" ly_vert="0,0,100,20,1" />
+						<LABEL name="bd_cell29" halign="2" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell28" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell29" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell30" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell31" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="bd_cell14" fontsize="-1" mask="0,0,,,0,,2,1,1,0,0,0" halign="2" valign="2" />
+						<LABEL name="th_cell64" caption="이자(추정)" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="bd_cell64" fontsize="-1" mask="0,0,,,0,,2,1,1,0,0,0" halign="2" valign="0" />
+						<LABEL name="th_cell14" caption="매수수수료" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="bd_cell34" fontsize="-2" valign="0" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell52" caption="종목코드" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="bd_cell05" fontsize="-1" mask="0,0,,,0,,4,1,1,0,0,0" halign="2" valign="2" />
+						<LABEL name="bd_cell55" fontsize="-1" mask="0,0,,,0,,4,1,1,0,0,0" halign="2" valign="0" />
+						<LABEL name="th_cell05" caption="현재가" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="th_cell55" caption="평균단가" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="th_cell63" caption="이자(추정)" fontsize="-3" halign="1" valign="0" />
+						<LABEL name="th_cell13" caption="제세금(추정)" fontsize="-3" halign="1" valign="2" />
+						<LABEL name="bd_cell12" fontsize="-1" mask="0,0,,,0,,2,1,1,0,0,0" halign="2" valign="2" />
+						<LABEL name="bd_cell62" fontsize="-1" mask="0,0,,,0,,2,1,1,0,0,0" halign="2" valign="0" />
+						<LABEL name="bd_cell13" fontsize="-1" mask="0,0,,,0,,2,1,1,0,0,0" halign="2" valign="2" />
+						<LABEL name="bd_cell63" fontsize="-1" mask="0,0,,,0,,2,1,1,0,0,0" halign="2" valign="0" />
+						<LABEL name="bd_cell08" fontsize="-1" mask="1,0,,,1,####-##-##,0,1,1,0,0,0" halign="1" valign="2" />
+						<LABEL name="bd_cell58" fontsize="-1" mask="1,0,,,1,####-##-##,0,1,1,0,0,0" halign="1" valign="0" />
+						<LABEL name="bd_cell59" fontsize="-1" halign="2" valign="0" />
+						<LABEL name="bd_cell09" fontsize="-1" mask="0,1,,,0,,0,1,1,0,0,0" halign="2" valign="2" />
+						<LABEL name="bd_cell39" halign="2" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell39" caption="종목코드" fontsize="-2" halign="1" valign="2" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell40" caption="구분" fontsize="-2" halign="1" valign="0" ly_vert="0,0,100,20,1" />
+						<LABEL name="bd_cell40" halign="2" ly_vert="0,0,100,20,1" />
+						<LABEL name="bd_cell53" fontsize="-1" halign="2" />
+						<LABEL name="bd_cell66" halign="2" />
+						<LABEL name="bd_cell67" halign="2" />
+						<LABEL name="bd_cell68" halign="2" />
+						<LABEL name="bd_cell69" halign="2" />
+						<LABEL name="th_cell66" caption="거래소코드" halign="1" />
+						<LABEL name="th_cell67" caption="매도가능" halign="1" />
+						<LABEL name="th_cell68" caption="잔고구분" halign="1" />
+						<LABEL name="th_cell69" caption="대출상세" halign="1" />
+						<LABEL name="bd_cell70" halign="2" />
+						<LABEL name="bd_cell71" mask="0,0,,,0,,0,0,0,0,0,0" halign="2" />
+						<LABEL name="th_cell70" caption="원장종목" halign="1" />
+						<LABEL name="th_cell2" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="bd_cell22" halign="2" />
+						<LABEL name="bd_cell72" halign="2" />
+						<LABEL name="th_cell0" caption="온라인" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell1" halign="1" />
+						<LABEL name="bd_cell23" halign="2" />
+						<LABEL name="bd_cell73" halign="2" />
+						<LABEL name="bd_cell74" halign="2" />
+						<LABEL name="bd_cell75" halign="2" />
+						<LABEL name="th_cell3" caption="대출코드" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell4" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell5" caption="만기일지" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell6" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell7" caption="대출번호" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell8" halign="1" ly_vert="0,0,100,20,1" />
+						<LABEL name="th_cell71" halign="1" />
+						<LABEL name="th_cell22" caption="온라인" halign="1" />
+						<LABEL name="th_cell72" halign="1" />
+						<LABEL name="th_cell23" caption="대출코드" halign="1" />
+						<LABEL name="th_cell73" halign="1" />
+						<LABEL name="th_cell74" halign="1" />
+						<LABEL name="th_cell75" halign="1" />
+						<LABEL name="bd_cell0" halign="2" />
+						<LABEL name="bd_cell1" halign="2" />
+						<TABORDER_INFO horz="" vert="" />
+					</CONTROL_INFO>
+					<DEFAULTINFO frozencol="1" useblockclr="0" initrowcount="0" cursorstyle="1" border="0100" inlinecolor="025:255255255" />
+					<COLINFO ly_vert_width="115,80,80,90,90,80,110,90,70,110,110,110,90,71,70,70,70,70,70,70,70,70,70" ly_vert_visible="0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,2,2,2,2,2,2,2,2" >
+						<COLUMN colcount="4" >
+							<SUBCOLINFO ly_vert_width="45,70,0,0" ly_vert_visible="0,0,0,0" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell01" cell_ly="0,0,3,0" line="1,0" sortinfocellid="bd_cell01" />
+									<CELL name="th_cell51" cell_ly="0,1,0,1" line="0,1" sortinfocellid="bd_cell51" />
+									<CELL name="th_cell52" cell_ly="1,1,2,1" />
+									<CELL name="th_cell1" cell_ly="3,1,3,1" line="1,0" sortinfocellid="bd_cell1" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell01" cell_ly="0,0,2,0" line="0,0" import="0,1,4" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell0" cell_ly="3,0,3,0" line="0,0" import="0,1,-1" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell51" cell_ly="0,1,1,1" line="0,1" import="0,1,31" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell53" cell_ly="2,1,2,1" line="0,0" import="0,1,29" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell1" cell_ly="3,1,3,1" line="0,0" import="0,1,31" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="80" ly_vert_visible="0" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell04" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell04" />
+									<CELL name="th_cell54" cell_ly="0,1,0,1" sortinfocellid="bd_cell54" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell04" cell_ly="0,0,0,0" line="0,0" import="0,1,-1" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell54" cell_ly="0,1,0,1" line="0,1" import="0,1,-1" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="80" ly_vert_visible="0" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell05" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell05" />
+									<CELL name="th_cell55" cell_ly="0,1,0,1" sortinfocellid="bd_cell55" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell05" cell_ly="0,0,0,0" line="0,0" import="0,1,10" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell55" cell_ly="0,1,0,1" line="0,1" import="0,1,9" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="90" ly_vert_visible="0" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell06" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell06" />
+									<CELL name="th_cell56" cell_ly="0,1,0,1" sortinfocellid="bd_cell56" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell06" cell_ly="0,0,0,0" line="0,0" import="0,1,12" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell56" cell_ly="0,1,0,1" line="0,1" import="0,1,13" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="90" ly_vert_visible="0" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell07" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell07" />
+									<CELL name="th_cell57" cell_ly="0,1,0,1" sortinfocellid="bd_cell57" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell07" cell_ly="0,0,0,0" line="0,0" import="0,1,11" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell57" cell_ly="0,1,0,1" line="0,1" import="0,1,8" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="80" ly_vert_visible="0" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell08" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell08" />
+									<CELL name="th_cell58" cell_ly="0,1,0,1" sortinfocellid="bd_cell58" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell08" cell_ly="0,0,0,0" line="0,0" import="0,1,20" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell58" cell_ly="0,1,0,1" line="0,1" import="0,1,23" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="110" ly_vert_visible="0" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell09" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell09" />
+									<CELL name="th_cell59" cell_ly="0,1,0,1" sortinfocellid="bd_cell59" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell09" cell_ly="0,0,0,0" line="0,0" import="0,1,24" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell59" cell_ly="0,1,0,1" line="0,1" import="0,1,-1" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="90" ly_vert_visible="0" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell10" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell10" />
+									<CELL name="th_cell60" cell_ly="0,1,0,1" sortinfocellid="bd_cell60" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell10" cell_ly="0,0,0,0" line="0,0" import="0,1,19" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell60" cell_ly="0,1,0,1" line="0,1" import="0,1,-1" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="0" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell11" cell_ly="0,0,0,0" line="0,0" sortinfocellid="bd_cell11" />
+									<CELL name="th_cell61" cell_ly="0,1,0,1" line="0,1" sortinfocellid="bd_cell61" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell11" cell_ly="0,0,0,0" line="0,0" import="0,1,-1" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell61" cell_ly="0,1,0,1" line="0,1" import="0,1,2" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="110" ly_vert_visible="1" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell12" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell12" />
+									<CELL name="th_cell62" cell_ly="0,1,0,1" sortinfocellid="bd_cell62" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell12" cell_ly="0,0,0,0" line="0,0" import="0,1,25" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell62" cell_ly="0,1,0,1" line="0,1" import="0,1,26" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="110" ly_vert_visible="1" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell13" cell_ly="0,0,0,0" line="0,0" sortinfocellid="bd_cell13" />
+									<CELL name="th_cell63" cell_ly="0,1,0,1" line="0,1" sortinfocellid="bd_cell63" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell13" cell_ly="0,0,0,0" line="0,0" import="0,1,27" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell63" cell_ly="0,1,0,1" line="0,1" import="0,1,28" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="110" ly_vert_visible="1" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell14" cell_ly="0,0,0,0" line="0,0" sortinfocellid="bd_cell14" />
+									<CELL name="th_cell64" cell_ly="0,1,0,1" line="0,1" sortinfocellid="bd_cell64" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell14" cell_ly="0,0,0,0" line="0,0" import="0,1,25" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell64" cell_ly="0,1,0,1" line="0,1" import="0,1,28" sort="2,1,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="90" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell15" cell_ly="0,0,0,1" line="1,0" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell15" cell_ly="0,0,0,1" line="0,1" import="0,1,15" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="71" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell16" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell16" />
+									<CELL name="th_cell66" cell_ly="0,1,0,1" sortinfocellid="bd_cell66" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell16" cell_ly="0,0,0,0" line="0,0" import="0,1,31" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell66" cell_ly="0,1,0,1" line="0,0" import="0,1,32" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell17" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell17" />
+									<CELL name="th_cell67" cell_ly="0,1,0,1" sortinfocellid="bd_cell67" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell17" cell_ly="0,0,0,0" line="0,0" import="0,1,5" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell67" cell_ly="0,1,0,1" line="0,0" import="0,1,7" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell18" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell18" />
+									<CELL name="th_cell68" cell_ly="0,1,0,1" sortinfocellid="bd_cell68" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell18" cell_ly="0,0,0,0" line="0,0" import="0,1,0" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell68" cell_ly="0,1,0,1" line="0,0" import="0,1,29" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell19" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell19" />
+									<CELL name="th_cell69" cell_ly="0,1,0,1" sortinfocellid="bd_cell69" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell19" cell_ly="0,0,0,0" line="0,0" import="0,1,1" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell69" cell_ly="0,1,0,1" line="0,0" import="0,1,22" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell20" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell20" />
+									<CELL name="th_cell70" cell_ly="0,1,0,1" sortinfocellid="bd_cell70" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell20" cell_ly="0,0,0,0" line="0,0" import="0,1,36" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell70" cell_ly="0,1,0,1" line="0,0" import="0,1,3" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell21" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell21" />
+									<CELL name="th_cell71" cell_ly="0,1,0,1" sortinfocellid="bd_cell71" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell21" cell_ly="0,0,0,0" line="0,0" import="0,1,-1" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell71" cell_ly="0,1,0,1" line="0,0" import="0,1,35" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell22" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell22" />
+									<CELL name="th_cell72" cell_ly="0,1,0,1" sortinfocellid="bd_cell72" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell22" cell_ly="0,0,0,0" line="0,0" import="0,1,34" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell72" cell_ly="0,1,0,1" line="0,0" import="0,1,30" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell23" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell23" />
+									<CELL name="th_cell73" cell_ly="0,1,0,1" sortinfocellid="bd_cell73" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell23" cell_ly="0,0,0,0" line="0,0" import="0,1,22" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell73" cell_ly="0,1,0,1" line="0,0" import="0,1,-1" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell24" cell_ly="0,0,0,0" line="1,0" sortinfocellid="bd_cell24" />
+									<CELL name="th_cell74" cell_ly="0,1,0,1" sortinfocellid="bd_cell74" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell24" cell_ly="0,0,0,0" line="0,0" import="0,1,20" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell74" cell_ly="0,1,0,1" line="0,0" import="0,1,-1" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+						<COLUMN colcount="1" >
+							<SUBCOLINFO ly_vert_width="70" ly_vert_visible="2" />
+							<TOPHEADER rowcount="2" >
+								<ROWINFO ly_vert_height="22,19" />
+								<CELLINFO>
+									<CELL name="th_cell25" cell_ly="0,0,0,0" line="0,0" sortinfocellid="bd_cell25" />
+									<CELL name="th_cell75" cell_ly="0,1,0,1" line="0,1" sortinfocellid="bd_cell75" />
+								</CELLINFO>
+							</TOPHEADER>
+							<BODY rowcount="2" impblkcnt="1" >
+								<ROWINFO ly_vert_height="28,32" />
+								<CELLINFO>
+									<CELL name="bd_cell25" cell_ly="0,0,0,0" line="0,0" import="0,1,21" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+									<CELL name="bd_cell75" cell_ly="0,1,0,1" line="0,0" import="0,1,-1" sort="2,0,0" >
+										<STATECOMP_INFO desttype="1" />
+									</CELL>
+								</CELLINFO>
+							</BODY>
+						</COLUMN>
+					</COLINFO>
+					<UPDATETR_INFO/>
+					<UPDATEBC_INFO realtrtype="2" keycellid="bd_cell21" rangecellid="bd_cell01" hlcolorcellid="bd_cell01" />
+				</GRID>
+				<LABEL name="Label0" fgcolor="333:115118124" caption="해외주식 잔고 조회 시, 매입 금액의 소수점 자리수 표기에 따라 단가가 변경될 수 있습니다." fontsize="-2" multiline="1" paddinginfo="1,0,0,0" ly_vert="10,610,355,50,1" />
+				<IMAGE name="imgNoData" visible="0" autosize="1" imgpath="icon_notice_3" ly_vert="162,280,50,50,0" />
+				<LABEL name="lblNoData" visible="0" fgcolor="146:124124124" caption="보유 잔고가 없어요" fontsize="-2" halign="1" ly_vert="20,330,335,30,0" />
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="14475" _ulen="13833" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+-- ****************************************************************************
+--                G  L  O  B  A  L       V  A  R  I  A  B  L  E
+-- ****************************************************************************
+local g_sAcno
+local g_sAsno
+local g_sPwd
+local g_sAcntNm
+local g_sLinkData
+-- ****************************************************************************
+--             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+-- ****************************************************************************
+-- ===============================================
+-- NULL 체크 
+-- ===============================================
+function isEmpty(sData)
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+		return true
+	else
+		return false
+	end
+end
+-- ===============================================
+-- 숫자 소수점 절사 함수
+-- ===============================================
+function truncateToDecimalPlaces(nVal, nDeimalPlaces)
+	nVal = gf_Tonumber(nVal)
+	nFactor = 10 ^ nDeimalPlaces
+	szNumStr = gf_CommaValue(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = string.find(szNumStr, "%.")
+	nTotalData = 0
+	if gf_Tonumber(nDecimalIdx) > 0 then
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, gf_Tonumber(nDecimalIdx)-1))
+	else
+		nTotalData = gf_Tonumber(szNumStr)
+	end
+	return nTotalData / nFactor
+end
+-- ===============================================
+-- (NonNull) 문자열 -> 배열 변환함수
+-- ===============================================
+function Convert_StrToArr(szData, szSeperator)
+	local arrData
+	-- --------------------------------------------
+	-- 링크데이터 값 체크
+	-- --------------------------------------------
+	if isEmpty(szData) then
+		arrData = {}
+		return arrData
+	end
+	-- --------------------------------------------
+	-- 구분자 값 체크
+	-- --------------------------------------------
+	if isEmpty(szSeperator) then
+		-- 단일변수
+		arrData = {}
+		table.insert(arrData, szData)
+	else
+		-- 다중변수
+		arrData = gf_Split(szData, szSeperator)
+	end
+	return arrData
+end
+function Transform_Exid(sValue)
+	if sValue == "0537" then -- 나스닥
+		return "OQ"
+	elseif sValue == "0321" then -- 뉴욕
+		return "NY"
+	elseif sValue == "0066" then -- 아멕스
+		return "AX"
+	elseif sValue == "0215" then -- 상해
+		return "SH"
+	elseif sValue == "0214" then -- 심천
+		return "SZ"
+	elseif sValue == "0104" then -- 홍콩
+		return "HK"
+	elseif sValue == "0106" then -- 일본
+		return "JP"
+	else
+		return ""
+	end
+end
+function Init_Control()
+	-- --------------------------------------------------
+	-- 폼탭 헤더 생성
+	-- --------------------------------------------------
+	cont0.fmtabMain.setTabHeaderImage("img_bgcircle_black.9" , "img_bgcircle_line.9" , 6) --활성화/비활성화/여백
+	cont0.fmtabMain.setTabHeaderFgColor("28" , "321") 								 --활성화/비활성화 폰트색상
+	cont0.fmtabMain.insertPage( cont0.fmtabMain.tabcount, "page1", "page1", "empty", "0", "전체")
+	cont0.fmtabMain.insertPage( cont0.fmtabMain.tabcount, "page2", "page2", "empty", "0", "현금")
+	cont0.fmtabMain.currenttab = 0
+	cont0.grd0.SetCellMaxLineCount("bd_cell01", 2)
+end
+-- ****************************************************************************
+--                C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+-- ****************************************************************************
+-- =============================================================================
+function Form_OnFormInit()
+	Init_Control()
+	g_sLinkData = Form.GetOpenLinkData()
+	arrLinkData = Convert_StrToArr(g_sLinkData, "`")
+	nArrCnt = #arrLinkData
+	sChk = Form.GetEnvData("17100_PJANGO_CHK")
+	if isEmpty(sChk) == false then
+		cont0.chk0.chksilence = sChk
+	end
+	if nArrCnt >= 3 then
+		g_sGbn = arrLinkData[1]
+		g_sAcno = arrLinkData[2]
+		g_sAsno = arrLinkData[3]
+		DATAMANAGER.RequestTranData("obtro_oder_267r")
+		return
+	end
+end
+-- =============================================================================
+function imgBg_OnClick()
+	Form.CloseForm()
+end
+-- =============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	if szTranID == "obtro_oder_267r" then
+		cont0.imgNoData.visible = false
+		cont0.lblNoData.visible = false
+		DATAMANAGER.ClearInputData(0, "obtro_oder_267r")
+		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "ACNO" 		  , 0 , g_sAcno)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "ASNO" 		  , 0 , g_sAsno)
+		sUserID = Form.GetSharedData("&USER_ID", false)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "ELFN_ID" 	  , 0 , sUserID)
+		szChk0 = "N"
+		if cont0.chk0.checkstate == "1" or gf_Tonumber(cont0.chk0.checkstate) == 1 then --비용포함
+			szChk0 = "Y"
+		else
+			szChk0 = "N"
+		end
+		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "FEE_INCU_YN"	  		, 0 , szChk0)	--비용포함
+		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "DYTM_TR_CLPR_APLY_YN"	, 0 , "Y") 	--주간시세 적용여부(YN)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "IQRY_CLS_CODE" 		, 0 , "1") 	--대출합산 적용여부(1:개별, 2:합산)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "PROS_CLS" 			, 0 , "1") 	--원화 적용여부(1:외화, 2:원화)
+		-- -----------------------------------------------------------------
+		-- 자동감시 주문은 미국종목만 대상으로 함 (추후 국가 추가될 수 있음)
+		-- -----------------------------------------------------------------
+		sCrcd = "840"
+		DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "UI_IQRY_COND_CNTT" 		, 0 , sCrcd) 	--적용 통화코드
+		nTab = gf_Tonumber(cont0.fmtabMain.currenttab)
+		DATAMANAGER.SetDataValue(0,  "obtro_oder_267r", "InBlock1", "RMND_CLCD"		, 0 , "3") 	--적용 통화코드
+	end
+end
+-- =============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	if szTranID == "obtro_oder_267r" then
+		for i = 0, cont0.grd0.rowcount-1 do
+			cont0.grd0.setCellFgColor("bd_cell51", i, g_szTxtColor_Grey)
+			stnd_exrt		= string.gsub(cont0.grd0.GetCellData("bd_cell15", i), ",", "")	--기준환율
+			szItemCd		= cont0.grd0.GetCellData("bd_cell16", i)	--종목코드
+			exch			= cont0.grd0.GetCellData("bd_cell72", i)	--거래소구분코드
+			vltn_prls_amt 	= string.gsub(cont0.grd0.GetCellData("bd_cell06", i), ",", "")	--평가손익
+			byov_amt 		= string.gsub(cont0.grd0.GetCellData("bd_cell9", i) , ",", "")
+			psnt_prc		= string.gsub(cont0.grd0.GetCellData("bd_cell10", i), ",", "")
+			nation		= cont0.grd0.GetCellData("bd_cell12", i)
+			vltn_amt		= string.gsub(cont0.grd0.GetCellData("bd_cell8", i), ",", "")
+			byov_prc		= string.gsub(cont0.grd0.GetCellData("bd_cell11", i), ",", "")
+			local sType, nOwnQty, nAbleQty
+			sTemp = cont0.grd0.GetCellData("bd_cell16", i)
+			sType = cont0.grd0.GetCellData("bd_cell18", i)
+			nOwnQty = gf_Tonumber(cont0.grd0.GetCellData("bd_cell17", i))
+			nAbleQty = gf_Tonumber(cont0.grd0.GetCellData("bd_cell67", i))
+			if sType == "1" then
+				nOwnQty = gf_CommaValue(nOwnQty, 0)
+				nAbleQty = gf_CommaValue(nAbleQty, 0)
+				cont0.grd0.SetCellData("bd_cell11", i, "일반")
+			elseif sType == "2" then
+				-- 20241023_01 HWG START : 소수점잔고 표기오류 개선
+				arrData = gf_Split(tostring(nOwnQty), ".")
+				arrData2 = gf_Split(tostring(nAbleQty), ".")
+				nOwnQty = gf_CommaValue(arrData[1], 0)
+				nAbleQty = gf_CommaValue(arrData2[1], 0)
+				if #arrData > 1 then
+					nOwnQty = nOwnQty .. "." .. arrData[2]
+				end
+				if #arrData2 > 1 then
+					nAbleQty = nAbleQty .. "." .. arrData2[2]
+				end
+				-- 20241023_01 HWG END
+				cont0.grd0.SetCellData("bd_cell11", i, "소수점")
+				cont0.grd0.SetCellData("bd_cell51", i, "소수점 | " .. sTemp )
+			end
+			cont0.grd0.SetCellData("bd_cell04", i, nOwnQty)
+			cont0.grd0.SetCellData("bd_cell54", i, nAbleQty)
+			sType = cont0.grd0.GetCellData("bd_cell53", i)
+			if sType == "01" then
+				cont0.grd0.SetCellData("bd_cell51", i, "현금 | " .. sTemp )
+			elseif sType == "02" then
+				cont0.grd0.SetCellData("bd_cell51", i, "대출 | " .. sTemp )
+			end
+			if gf_Tonumber(vltn_prls_amt) > 0 then
+				cont0.grd0.SetCellFgColor("bd_cell06", i, "10")
+			elseif gf_Tonumber(vltn_prls_amt) < 0 then
+				cont0.grd0.SetCellFgColor("bd_cell06", i, "11")
+			else
+				cont0.grd0.SetCellFgColor("bd_cell06", i, "4")
+			end
+			szKorExch = Form.GetMetaData("해외주식거래국가코드", exch)
+			cont0.grd0.SetCellData("bd_cell60", i, szKorExch)
+			loan_type = Form.GetMetaData("대출상세유형코드", cont0.grd0.GetCellData("bd_cell69", i))
+			cont0.grd0.SetCellData("bd_cell59", i, loan_type)
+			-- 20240919_01 HWG START : 종합잔고 텍스트 색상조정
+			tmp_prc = string.gsub(cont0.grd0.GetCellData("bd_cell05", i), ",", "")
+			tmp_clpr = string.gsub(cont0.grd0.GetCellData("bd_cell20", i), ",", "")
+			-- 20240919_01 HWG END
+			if gf_Tonumber(tmp_prc) > gf_Tonumber(tmp_clpr) then
+				cont0.grd0.SetCellFgColor("bd_cell05", i, "10")
+			elseif gf_Tonumber(tmp_prc) < gf_Tonumber(tmp_clpr) then
+				cont0.grd0.SetCellFgColor("bd_cell05", i, "11")
+			else
+				cont0.grd0.SetCellFgColor("bd_cell05", i, "4")
+			end
+			szItemCode = cont0.grd0.GetCellData("bd_cell16", i)
+			szExchCode = string.sub(cont0.grd0.GetCellData("bd_cell70", i), -2)
+			cont0.grd0.SetCellData("bd_cell21", i, szExchCode.."@"..szItemCode)
+		end
+		if DATAMANAGER.IsMoreNextData("obtro_oder_267r") == true then
+			DATAMANAGER.RequestNextData("obtro_oder_267r")
+		else
+			if gf_Tonumber(cont0.grd0.rowcount) == 0 then
+				cont0.imgNoData.visible = true
+				cont0.lblNoData.visible = true
+			else
+				cont0.imgNoData.visible = false
+				cont0.lblNoData.visible = false
+			end
+		end
+	end
+end
+-- =============================================================================
+-- Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+--	if szTranID == "obtro_oder_267r" then
+--	
+--	end
+-- End Sub
+-- =============================================================================
+function cont0_fmtabMain_OnTabChanged(nCurrentTab)
+	DATAMANAGER.RequestTranData("obtro_oder_267r")
+end
+-- =============================================================================
+function cont0_chk0_OnChange(sCheckState)
+	Form.SetEnvData(1, "17100_PJANGO_CHK", sCheckState)
+	DATAMANAGER.RequestTranData("obtro_oder_267r")
+end
+-- =============================================================================
+function Form_OnFormInitBefore()
+	cont0.grd0.setSortCellID("th_cell01", "bd_cell01")
+	cont0.grd0.setSortCellID("th_cell04", "bd_cell04")
+	cont0.grd0.setSortCellID("th_cell05", "bd_cell05")
+	cont0.grd0.setSortCellID("th_cell06", "bd_cell06")
+	cont0.grd0.setSortCellID("th_cell07", "bd_cell07")
+	cont0.grd0.setSortCellID("th_cell08", "bd_cell08")
+	cont0.grd0.setSortCellID("th_cell09", "bd_cell09")
+	cont0.grd0.setSortCellID("th_cell10", "bd_cell10")
+	cont0.grd0.setSortCellID("th_cell11", "bd_cell11")
+	cont0.grd0.setSortCellID("th_cell12", "bd_cell12")
+	cont0.grd0.setSortCellID("th_cell13", "bd_cell13")
+	cont0.grd0.setSortCellID("th_cell14", "bd_cell14")
+	cont0.grd0.setSortCellID("th_cell15", "bd_cell15")
+	cont0.grd0.setSortCellID("th_cell16", "bd_cell16")
+	cont0.grd0.setSortCellID("th_cell17", "bd_cell17")
+	cont0.grd0.setSortCellID("th_cell18", "bd_cell18")
+	cont0.grd0.setSortCellID("th_cell19", "bd_cell19")
+	cont0.grd0.setSortCellID("th_cell20", "bd_cell20")
+	cont0.grd0.setSortCellID("th_cell21", "bd_cell21")
+	cont0.grd0.setSortCellID("th_cell22", "bd_cell22")
+	cont0.grd0.setSortCellID("th_cell23", "bd_cell23")
+	cont0.grd0.setSortCellID("th_cell24", "bd_cell24")
+	cont0.grd0.setSortCellID("th_cell25", "bd_cell25")
+	cont0.grd0.setSortCellID("th_cell51", "bd_cell53")
+	cont0.grd0.setSortCellID("th_cell52", "bd_cell1")
+	cont0.grd0.setSortCellID("th_cell54", "bd_cell54")
+	cont0.grd0.setSortCellID("th_cell55", "bd_cell55")
+	cont0.grd0.setSortCellID("th_cell56", "bd_cell56")
+	cont0.grd0.setSortCellID("th_cell57", "bd_cell57")
+	cont0.grd0.setSortCellID("th_cell58", "bd_cell58")
+	cont0.grd0.setSortCellID("th_cell59", "bd_cell59")
+	cont0.grd0.setSortCellID("th_cell60", "bd_cell60")
+	cont0.grd0.setSortCellID("th_cell61", "bd_cell61")
+	cont0.grd0.setSortCellID("th_cell62", "bd_cell62")
+	cont0.grd0.setSortCellID("th_cell63", "bd_cell63")
+	cont0.grd0.setSortCellID("th_cell64", "bd_cell64")
+	cont0.grd0.setSortCellID("th_cell66", "bd_cell66")
+	cont0.grd0.setSortCellID("th_cell67", "bd_cell67")
+	cont0.grd0.setSortCellID("th_cell68", "bd_cell68")
+	cont0.grd0.setSortCellID("th_cell69", "bd_cell69")
+	cont0.grd0.setSortCellID("th_cell70", "bd_cell70")
+	cont0.grd0.setSortCellID("th_cell71", "bd_cell71")
+	cont0.grd0.setSortCellID("th_cell72", "bd_cell72")
+	cont0.grd0.setSortCellID("th_cell73", "bd_cell73")
+	cont0.grd0.setSortCellID("th_cell74", "bd_cell74")
+	cont0.grd0.setSortCellID("th_cell75", "bd_cell75")
+	cont0.imgNoData.maintainratio = "1"
+end
+-- =============================================================================
+function cont0_grd0_OnClickUp(lRow, szCellID)
+	sType = cont0.grd0.GetCellData("bd_cell18", lRow)
+	if sType == "2" then
+		Form.ShowAlert("알림", "소수점 잔고는 자동 주문이\n불가해요.")
+		return
+	end
+	sType = cont0.grd0.GetCellData("bd_cell53", lRow)
+	if sType == "02" then
+		Form.ShowAlert("알림", "대출 잔고는 자동 주문이\n불가해요.")
+		return
+	end
+	sVndrCode 	= cont0.grd0.GetCellData("bd_cell66", lRow)
+	szOffChk = Transform_Exid(sVndrCode)
+	if szOffChk == "" then
+		Form.ShowAlert("알림", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요")
+		return
+	end
+	szNowCode = cont0.grd0.GetCellData("bd_cell21", lRow)			--종목코드
+	szExchCd = string.sub(cont0.grd0.GetCellData("bd_cell70", lRow), -2) 	--거래소코드
+	szAvrgPrc = cont0.grd0.GetCellData("bd_cell55", lRow)			--평균단가
+	sLinkData = szNowCode
+	sLinkData = sLinkData .. "`" .. szExchCd  .. "`" .. szAvrgPrc
+	Form.SendReturnToParent("RETURN_JANGO" , sLinkData)
+	Form.CloseForm()
+end
+	</SCRIPT_INFO>
+	<DATAIO_INFO>
+		<TRID_INFO>
+			<TRAN tranid="obtro_oder_267r" trcode="obtro_oder_267r" compress="1" encryption="1" inputcheck="1" />
+		</TRID_INFO>
+		<TRIO_INFO>
+			<TRAN name="obtro_oder_267r" title="해외주식 종합잔고 조회_주식잔?" realdata="0" dessvr="9" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="490" _ulen="372" >
+ACNO^계좌번호^8^0^0^0^0^0^0^0^
+ASNO^계좌일련번호^2^0^0^0^0^0^0^0^
+ACNT_PWD^계좌비밀번호^68^0^0^0^0^0^0^0^
+FEE_INCU_YN^수수료포함여부^1^0^0^0^0^0^0^0^
+ELFN_ID^전자금융ID^20^0^0^0^0^0^0^0^
+DYTM_TR_CLPR_APLY_YN^주간거래종가적용여부^1^0^0^0^0^0^0^0^
+IQRY_CLS_CODE^조회구분코드^1^0^0^0^0^0^0^0^
+PROS_CLS^처리구분^1^0^0^0^0^0^0^0^
+UI_IQRY_COND_CNTT^UI조회조건내용^400^0^0^0^0^0^0^0^
+RMND_CLCD^잔고구분코드^1^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" occurs="30" inout="out" _len="2216" _ulen="1666" >
+RMND_CLCD^잔고구분코드^1^0^0^0^0^0^0^0^
+OVRS_STCK_MRKT_TR_CLS_CODE^해외주식시장거래구분코드^2^0^0^0^0^0^0^0^
+CRCD^통화코드^3^0^0^0^0^0^0^0^
+ISCD^종목코드^12^0^0^0^0^0^0^0^
+KOR_ISNM^한글종목명^100^0^0^0^0^0^0^0^
+RMND_DQTY^잔고소수점수량^24^10^7^0^0^0^0^0.10^
+STCK_STLM_DQTY^주식결제소수점수량^24^10^7^0^0^0^0^0.10^
+ODER_ABLE_DQTY^주문가능소수점수량^24^10^7^0^0^0^0^0.10^
+BYOV_CAMT^매수통화금액^20^4^7^0^0^0^0^0.4^
+OVRS_STCK_ODER_PRC^해외주식주문가격^20^8^7^0^0^0^0^0.8^
+CLPR^종가^20^6^7^0^0^0^0^0.6^
+VLTN_CAMT^평가통화금액^20^4^7^0^0^0^0^0.4^
+VLTN_PRLS_CAMT^평가손익통화금액^20^4^7^0^0^0^0^0.4^
+VLTN_PRLS_ERT^평가손익수익률^14^5^7^0^0^0^0^0.5^
+RGPL_STUP_QTY^질권설정수량^19^0^7^0^0^0^0^0^
+DEAL_STND_EXRT^매매기준환율^11^4^7^0^0^0^0^0.4^
+BYNG_EXRT^매입환율^11^4^7^0^0^0^0^0.4^
+SELN_CNTG_DQTY^매도체결소수점수량^24^10^7^0^0^0^0^0.10^
+BYOV_CNTG_DQTY^매수체결소수점수량^24^10^7^0^0^0^0^0.10^
+EXCH_KOR_NAME^거래소한글명^40^0^0^0^0^0^0^0^
+LOAN_DATE^대출일자^8^0^0^0^0^0^0^0^
+LOAN_SRNO^대출일련번호^11^0^7^0^0^0^0^0^
+LOAN_DTL_TYPE_CODE^대출상세유형코드^4^0^0^0^0^0^0^0^
+LOAN_MTRT_DATE^대출만기일자^8^0^0^0^0^0^0^0^
+CRDT_GVNG_AMT^신용공여금액^19^0^7^0^0^0^0^0^
+ANTC_BYOV_CFEE^예상매수통화수수료^20^4^7^0^0^0^0^0.4^
+ANTC_SELN_CFEE^예상매도통화수수료^20^4^7^0^0^0^0^0.4^
+ACPL_TR_CTAX^현지거래통화세금^20^4^7^0^0^0^0^0.4^
+CRDT_INT_AMT^신용이자금액^23^3^7^0^0^0^0^0.3^
+UI_RMND_CLCD^UI잔고구분코드^2^0^0^0^0^0^0^0^
+OVRS_STCK_TR_CTCD^해외주식거래국가코드^3^0^0^0^0^0^0^0^
+OVRS_STCK_SYMB_ISCD^해외주식심볼종목코드^12^0^0^0^0^0^0^0^
+OVRS_EXCH_VNDR_IDNO^해외거래소벤더식별번호^6^0^0^0^0^0^0^0^
+DCPN_LOEQ_CIPH^소수점이하자릿수^5^0^7^0^0^0^0^0^
+ONLN_YN^온라인여부^1^0^0^0^0^0^0^0^
+PSNT_PRC^현재가격^20^6^7^0^0^0^0^0.6^
+UI_PRDY_CLPR^UI전일종가^20^6^7^0^0^0^0^0.6^
+PRDY_VRSS_RSFL_CRNC_PRC^전일대비등락통화가격^20^8^7^0^0^0^0^0.8^
+FED_PRLS_AMT^환차손익금액^19^0^7^0^0^0^0^0^
+DEAL_PRLS_AMT^매매손익금액^19^0^7^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="NextBlock1" inout="next" _len="321" _ulen="241" >
+LOAN_DTL_TYPE_CODE^대출상세유형코드^4^0^0^0^0^0^0^0^
+OVRS_STCK_MRKT_TR_CLS_CODE^해외주식시장거래구분코드^2^0^0^0^0^0^0^0^
+ISCD^종목코드^12^0^0^0^0^0^0^0^
+LOAN_DATE^대출일자^8^0^0^0^0^0^0^0^
+LOAN_SRNO^대출일련번호^11^0^7^0^0^0^0^0^
+RMND_CLCD^잔고구분코드^1^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+			</TRAN>
+		</TRIO_INFO>
+	</DATAIO_INFO>
+</ROOT>

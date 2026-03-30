@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="16061" scrname="해외주식_예약처리결과_필터" version="3" writer="이은섭" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" transmode="0" ly_vert="0,0,375,647,1" />
+	<CONTROL_INFO>
+		<BUTTON name="BtnBackGround" btnimage="alpha.png" ly_vert="0,0,375,647,1" />
+		<IMAGE name="imgBG" autosize="1" imgpath="popup_bg.9" ly_vert="0,357,375,640,1" />
+		<LABEL name="LabelTitle" caption="선택해주세요." fontsize="2" fontstyle="01" halign="1" ly_vert="20,377,335,30,1" />
+		<BUTTON name="btnReset" caption="초기화" fgcolor="004:000000000" btnimage="btn_21.9" ly_vert="0,592,187,60,1" />
+		<BUTTON name="btnOk" caption="검색" btnimage="btn_20.9" ly_vert="187,592,190,60,1" />
+		<CONTAINER name="cont0" scrollpos="" ly_vert="0,427,375,80,1" >
+			<CONTROL_INFO>
+				<LABEL name="Label0" caption="주문 처리 결과" fontstyle="01" paddinginfo="1,0,0,0" ly_vert="18,0,200,20,1" />
+				<RADIOGROUP name="RadioRsltCls" fontsize="-2" buttonshape="1" buttonsnumber="3" initselectionuse="1" initselection="0" ly_vert="20,30,335,35,1" >
+					<RADIO_INFO>
+						<RADIO no="0" text="전체" radioimage="input_06.9.png" transfervalue="%" selforecolor="005:000000000" position="0,0,105,35" ly_vert="0,0,105,35,0" />
+						<RADIO no="1" text="정상" radioimage="input_06.9.png" transfervalue="1" selforecolor="005:000000000" position="115,0,105,35" ly_vert="115,0,105,35,0" />
+						<RADIO no="2" text="거부" radioimage="input_06.9.png" transfervalue="2" selforecolor="005:000000000" position="230,0,105,35" ly_vert="230,0,105,35,0" />
+					</RADIO_INFO>
+				</RADIOGROUP>
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<CONTAINER name="cont1" scrollpos="" ly_vert="0,507,375,80,1" >
+			<CONTROL_INFO>
+				<LABEL name="Label0" caption="매매 구분" fontstyle="01" paddinginfo="1,0,0,0" ly_vert="18,0,200,20,1" />
+				<RADIOGROUP name="OrdGubun" fontsize="-2" buttonshape="1" buttonsnumber="3" initselectionuse="1" initselection="0" ly_vert="18,30,335,35,1" >
+					<RADIO_INFO>
+						<RADIO no="0" text="전체" radioimage="input_06.9.png" transfervalue="0" selforecolor="005:000000000" position="0,0,105,35" ly_vert="0,0,105,35,0" />
+						<RADIO no="1" text="매도" radioimage="input_06.9.png" transfervalue="1" selforecolor="005:000000000" position="230,0,105,35" ly_vert="230,0,105,35,0" />
+						<RADIO no="2" text="매수" radioimage="input_06.9.png" transfervalue="2" selforecolor="005:000000000" position="115,0,105,35" ly_vert="115,0,105,35,0" />
+					</RADIO_INFO>
+				</RADIOGROUP>
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="2266" _ulen="2142" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- v0001 강경완 : 조회 조건 추가 [T2502130001]
+ --============================================================================
+
+ --v0001
+local g_rsltCls -- 결과구분 			%:전체 1:정상 2:거부
+local g_selnByovClcd -- 매도매수구분코드	0:전체 1:매도 2:매수
+
+ --============================================================================
+function Form_OnFormInit()
+	
+	cont0.RadioRsltCls.currentindex = "0"
+	cont1.OrdGubun.currentindex = "0"
+
+	szLinkData = Form.GetOpenLinkData()
+	
+	if szLinkData ~= "" then
+	
+		arrData = gf_Split(szLinkData,"★")
+		
+		g_rsltCls = arrData[0+1]
+		g_selnByovClcd = arrData[1+1]
+		
+		if g_rsltCls == "%" then
+			cont0.RadioRsltCls.currentindex = "0"
+		else
+			cont0.RadioRsltCls.currentindex = g_rsltCls
+		end
+		
+		cont1.OrdGubun.currentindex = g_selnByovClcd
+	
+	else
+		g_rsltCls = "%"
+		g_selnByovClcd = "0"
+	end
+
+end
+
+ --============================================================================
+function BtnBackGround_OnClick()
+	Form.CloseForm()
+end
+
+ --============================================================================
+ -- 초기화 버튼 클릭이벤트
+ --============================================================================
+function btnReset_OnClick()
+
+	cont0.RadioRsltCls.currentindex = "0"
+	cont1.OrdGubun.currentindex = "0"
+	
+	g_rsltCls = "%"
+	g_selnByovClcd = "0"
+end
+
+ --============================================================================
+ -- 검색버튼 클릭이벤트(조회조건 설정 리턴)
+ --============================================================================
+function btnOk_OnClick()
+
+	Form.SendReturnToParent("mhtro16061_p9" , g_rsltCls  .. "★" .. g_selnByovClcd)
+	Form.CloseForm()
+	
+end
+
+ --============================================================================
+function cont0_RadioRsltCls_OnClick(nIndex)
+	g_rsltCls = nIndex
+	if nIndex == 0 then
+		g_rsltCls = "%"
+	end
+end
+
+ --============================================================================
+function cont1_OrdGubun_OnClick(nIndex)
+	g_selnByovClcd = nIndex
+end
+	</SCRIPT_INFO>
+</ROOT>

@@ -1,0 +1,2962 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문_매수설정" version="3" writer="함원규" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" ly_vert="0,0,375,755,1" />
+	<CONTROL_INFO>
+		<IMAGE name="imgBack" autosize="1" imgpath="icon_main_01" ly_vert="9,11,39,24,1" />
+		<LABEL name="lblTitle" caption="자동매수 감시 조건 설정" fontsize="3" ly_vert="37,0,223,47,1" />
+		<IMAGE name="imgInfo" enable="0" visible="0" autosize="1" imgpath="icon_notice" ly_vert="240,10,39,20,0" />
+		<CONTAINER name="cont0back" scrollpos="" ly_vert="1000,50,375,60,1" >
+			<CONTROL_INFO>
+				<LABEL name="lblItemInfo" ly_vert="10,0,230,32,1" />
+				<LABEL name="lblItemName" ly_vert="50,30,180,30,1" import="0,1,28" />
+				<IMAGE name="imgSearch" autosize="1" imgpath="icon_main_06" ly_vert="16,35,20,20,1" />
+				<TABLE name="Table0" colcount="3" rowcount="3" outline="0000" designorder="1" ly_vert="230,0,134,60,1" >
+					<COL_INFO ly_vert_width="15,66,53" />
+					<ROW_INFO ly_vert_height="20,20,20" />
+					<CELL_INFO>
+						<CELL cell_ly="0,0,2,0" import="0,1,1" realrec="0,1,10" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" mask="0,0,,,0,,-1,1,1,0,0,0" autofontsize="1" impidxs="" />
+						<CELL cell_ly="0,1,2,1" import="0,1,51" realrec="0,1,29" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" mask="0,0,,원,0,,0,1,1,0,0,0" autofontsize="1" impidxs="" />
+						<CELL cell_ly="0,2,0,2" import="0,1,3" realrec="0,1,11" fgcolor="004:000000000" bgcolor="038:255255255" usesign="1" halign="2" line="0,0" autofontsize="1" impidxs="" />
+						<CELL cell_ly="1,2,1,2" import="0,1,16" realrec="0,1,12" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" mask="0,0,,,0,,-1,1,1,0,0,0" autofontsize="1" impidxs="" />
+						<CELL cell_ly="2,2,2,2" import="0,1,17" realrec="0,1,13" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" mask="0,0,,%,0,,2,1,1,0,0,0" autofontsize="1" impidxs="" />
+					</CELL_INFO>
+				</TABLE>
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<CONTAINER name="cont1" scrollpos="" ly_vert="0,120,375,645,1" >
+			<CONTROL_INFO>
+				<LABEL name="lbl0" fgcolor="334:034034034" caption="1. 감시 조건을 설정해주세요." fontstyle="01" ly_vert="10,15,240,30,1" />
+				<IMAGE name="img0" autosize="1" imgpath="img_bgbox_red.9" ly_vert="20,50,335,75,1" />
+				<IMAGE name="img1" autosize="1" imgpath="input_02_n.9" ly_vert="138,60,139,30,1" />
+				<COMBO name="cmb1" fgcolor="334:034034034" fontsize="-2" cbinputdatatext="2`이하
+1`이상
+
+" ly_vert="283,60,62,30,1" />
+				<LABEL name="lbl3" fgcolor="333:115118124" caption="도달 시 실행돼요." fontsize="-2" ly_vert="21,90,318,30,1" />
+				<LABEL name="lbl10" fgcolor="334:034034034" caption="2. 매수 주문을 어떻게 낼까요?" fontstyle="01" ly_vert="10,145,240,30,1" />
+				<IMAGE name="img7" autosize="1" imgpath="img_bgbox_red.9" ly_vert="20,180,335,130,1" />
+				<LABEL name="lbl11" fgcolor="334:034034034" caption="주문유형" fontsize="-2" halign="1" ly_vert="22,189,70,32,1" />
+				<LABEL name="lbl12" fgcolor="334:034034034" caption="주문가격" fontsize="-2" halign="1" ly_vert="22,229,70,32,1" />
+				<LABEL name="lbl13" fgcolor="334:034034034" caption="주문수량" fontsize="-2" halign="1" ly_vert="22,269,70,32,1" />
+				<COMBO name="cmb4" fgcolor="334:034034034" fontsize="-2" cbinputdatatext="01`보통(지정가)
+05`시장가
+32`LOC(장마감지정가)" ly_vert="94,190,251,30,1" />
+				<COMBO name="cmb5" fgcolor="334:034034034" fontsize="-2" cbinputdatatext="01`현재가
+02`시가
+03`고가
+04`저가
+09`직접입력" ly_vert="94,230,80,30,1" />
+				<EDIT name="edtPrc0" fgcolor="334:034034034" hintcaption="틱" autofontsize="1" fontsize="-2" halign="1" imetype="0" clearall="0" imagefilepth="input_05_bid_n.9" leadheight="0" ly_vert="207,230,110,30,1" />
+				<BUTTON name="btnPMinus0" btnimage="btn_etc26.9.png" ly_vert="179,230,30,30,1" />
+				<BUTTON name="btnPPlus0" btnimage="btn_etc27.9.png" ly_vert="315,230,30,30,1" />
+				<BUTTON name="btnPrc0" btnimage="alpha" ly_vert="209,230,106,30,1" />
+				<EDIT name="edtQty" fgcolor="334:034034034" hintcaption="수량입력" autofontsize="1" fontsize="-2" mask="0,0,, 주,0,,0,1,0,0,0,0" halign="1" imetype="1" clearall="0" imagefilepth="input_07_n.9" leadheight="0" ly_vert="122,270,195,30,1" />
+				<IMAGE name="img10" autosize="1" imgpath="img_bgbox_red.9" ly_vert="20,365,335,50,1" />
+				<BUTTON name="btnQMinus" btnimage="btn_etc26.9.png" ly_vert="94,270,30,30,1" />
+				<BUTTON name="btnQPlus" btnimage="btn_etc27.9" ly_vert="315,270,30,30,1" />
+				<BUTTON name="btnQty" btnimage="alpha" ly_vert="124,270,191,30,1" />
+				<LABEL name="lbl14" caption="3. 언제까지 주문을 유지할까요?" fontstyle="01" ly_vert="10,330,240,30,1" />
+				<BUTTON name="btn0" caption="5일" fgcolor="013:051051051" fontsize="-2" ly_vert="170,375,55,30,1" />
+				<CALENDAR name="Calendar0" fontsize="-2" dispmode="33554434" ly_vert="30,375,135,30,1" />
+				<BUTTON name="btn1" caption="30일" fgcolor="013:051051051" fontsize="-2" ly_vert="230,375,55,30,1" />
+				<BUTTON name="btn2" caption="90일" fgcolor="013:051051051" fontsize="-2" ly_vert="290,375,55,30,1" />
+				<BUTTON name="btnReg0" caption="초기화" btnimage="btn_45.9" ly_vert="-5,576,165,60,1" />
+				<COMBO name="cmb6" fgcolor="334:034034034" fontsize="-2" cbinputdatatext="01`현재가
+02`시가
+03`고가
+04`저가
+05`전일종가대비
+06`등락률 (전일종가대비)" ly_vert="30,60,102,30,1" />
+				<BUTTON name="btnReg" caption="매수 조건 저장하기" btnimage="btn_etc10.9" ly_vert="160,576,215,60,1" />
+				<LABEL name="Label6" fgcolor="333:115118124" caption="$ 0" halign="2" click="1" ly_vert="138,60,139,30,1" />
+				<COMBO name="Combo0" visible="0" initkeyindex="10" cbinputdatatext="10`현재가 +10틱
+9`현재가 +9틱
+8`현재가 +8틱
+7`현재가 +7틱
+6`현재가 +6틱
+5`현재가 +5틱
+4`현재가 +4틱
+3`현재가 +3틱
+2`현재가 +2틱
+1`현재가 +1틱
+0`현재가
+-1`현재가 -1틱
+-2`현재가 -2틱
+-3`현재가 -3틱
+-4`현재가 -4틱
+-5`현재가 -5틱
+-6`현재가 -6틱
+-7`현재가 -7틱
+-8`현재가 -8틱
+-9`현재가 -9틱
+-10`현재가 -10틱" ly_vert="260,430,111,32,0" />
+				<LABEL name="Label0" visible="0" fgcolor="334:034034034" caption="<![CDATA[조건 불러오기 &gt;]]>" fontsize="-2" halign="2" click="1" ly_vert="260,15,105,30,0" />
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<CONTAINER name="contHidden" scrollpos="" ly_vert="1000,150,200,580,1" >
+			<CONTROL_INFO>
+				<LABEL name="Label0" visible="0" ly_vert="10,20,269,32,0" import="0,1,1;1,1,1;3,1,1" realrec="0,1,10;1,1,10;2,1,10" />
+				<LABEL name="Label1" visible="0" ly_vert="10,50,269,32,0" import="0,1,9;4,1,9" realrec="0,1,7;1,1,7;2,1,7" />
+				<LABEL name="Label2" visible="0" ly_vert="10,80,213,32,0" import="0,1,12;4,1,12" />
+				<LABEL name="Label3" visible="0" ly_vert="10,110,213,32,0" import="0,1,13;4,1,13" />
+				<LABEL name="Label4" visible="0" ly_vert="10,140,213,32,0" import="0,1,4;4,1,4" />
+				<LABEL name="Label5" visible="0" ly_vert="10,180,157,32,0" import="0,1,17;1,1,4;3,1,4" realrec="0,1,13;1,1,13;2,1,13" />
+				<LABEL name="Label7" visible="0" ly_vert="10,210,157,32,0" import="4,1,27" />
+				<LABEL name="Label8" visible="0" ly_vert="10,250,157,32,0" import="4,1,22" />
+				<LABEL name="Label9" visible="0" ly_vert="10,280,157,32,0" import="4,1,29" />
+				<LABEL name="Label10" visible="0" ly_vert="10,300,157,32,0" import="4,1,25" />
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<LABEL name="lblMktInfo0" fontsize="-4" halign="1" ly_vert="305,12,50,22,1" />
+		<CONTAINER name="cont0" scrollpos="" ly_vert="0,40,375,80,1" >
+			<CONTROL_INFO>
+				<IMAGE name="imgSearchBg" autosize="1" imgpath="bg_infobox.9" ly_vert="20,30,230,35,1" />
+				<IMAGE name="imgSearch" autosize="1" imgpath="icon_search" ly_vert="30,41,13,13,1" />
+				<LABEL name="lblItemInfo" fgcolor="333:115118124" fontsize="-4" valign="0" ly_vert="11,10,230,20,1" />
+				<LABEL name="lblItemName" fgcolor="334:034034034" multiline="1" click="1" ly_vert="40,32,200,31,1" />
+				<TABLE name="Table0" colcount="3" rowcount="3" outline="0000" designorder="1" ly_vert="255,4,110,65,1" >
+					<COL_INFO ly_vert_width="15,50,45" />
+					<ROW_INFO ly_vert_height="30,15,20" />
+					<CELL_INFO>
+						<CELL cell_ly="0,0,2,0" import="0,1,1;1,1,1;3,1,1" realrec="0,1,10;1,1,10;2,1,10" fgcolor="004:000000000" bgcolor="038:255255255" valign="2" halign="2" line="0,0" fontsize="2" mask="0,0,,,0,,-1,1,1,0,0,0" autofontsize="1" impidxs="" />
+						<CELL cell_ly="0,1,2,1" import="0,1,51;1,1,8;3,1,6" realrec="0,1,29;1,1,29;2,1,29" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-4" mask="0,0,,원,0,,0,1,1,0,0,0" autofontsize="1" impidxs="" />
+						<CELL cell_ly="0,2,0,2" import="0,1,3;1,1,2;3,1,2" realrec="0,1,11;1,1,11;2,1,11" fgcolor="004:000000000" bgcolor="038:255255255" usesign="1" halign="2" line="0,0" fontsize="-4" autofontsize="1" impidxs="" />
+						<CELL cell_ly="1,2,1,2" import="0,1,16;1,1,3;3,1,3" realrec="0,1,12;1,1,12;2,1,12" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-4" mask="0,0,,,0,,-1,1,1,0,0,0" autofontsize="1" impidxs="" />
+						<CELL cell_ly="2,2,2,2" import="0,1,17;1,1,4;3,1,4" realrec="0,1,13;1,1,13;2,1,13" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-4" mask="0,0,,%,0,,2,1,1,0,0,0" autofontsize="1" impidxs="" />
+					</CELL_INFO>
+				</TABLE>
+				<LABEL name="lblDiv" bgcolor="320:246247248" transmode="0" ly_vert="0,72,375,8,1" />
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+		</CONTAINER>
+		<BUTTON name="Button0" btnimage="alpha" ly_vert="1000,120,375,755,1" />
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="93267" _ulen="87615" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+
+-- ****************************************************************************
+--                G  L  O  B  A  L       V  A  R  I  A  B  L  E
+-- ****************************************************************************
+local g_sAcno
+local g_sAsno
+local g_sPwd
+local g_sAcntNm
+local g_sGbn
+local g_sCode
+local g_sExid
+local g_sItemCode
+local g_sItemName
+local g_sNation
+local g_sMarket
+local g_sExid2
+local g_sExid3
+------------------------------------------------
+-- 종목정보 및 휴장일
+local g_isSellOnly 		--매수불가 여부
+local g_isTradingSuspend 	--거래정지 여부
+local g_szBaseDate 		--기준일자
+local g_isHoliday 		--휴일 여부
+local g_isPTP			--PTP종목 여부
+g_isSellOnly 			= ""
+g_isTradingSuspend 		= ""
+g_szBaseDate 			= ""
+g_isHoliday 			= ""
+g_isPTP 				= ""
+------------------------------------------------
+------------------------------------------------
+-- 실시간 시세 여부
+local g_rtChk				--실시간 시세여부
+------------------------------------------------
+------------------------------------------------
+-- 장운영 정보
+local g_szMktOpClsCd
+local g_szMktOp				--현재 장운영 정보
+local g_isMktClosed			--장개시/종료 여부
+local g_szSubMktOp	
+g_szMktOpClsCd = ""
+g_szMktOp = ""
+g_szSubMktOp = ""
+g_isMktClosed = ""
+------------------------------------------------
+------------------------------------------------
+-- 주간시세 보정용 시세데이터
+local g_sHyun				--현재가
+local g_sHyunEx				--환산현재가
+local g_sOpen				--시가
+local g_sHigh				--상한가
+local g_sLow					--하한가
+local g_sClose				--전일대비
+local g_sCloseRate			--전일대비율
+local g_sCloseSign			--전일대비부호
+g_sHyun		= ""	
+g_sHyunEx		= ""
+g_sOpen		= ""
+g_sHigh		= ""
+g_sLow		= ""
+g_sClose		= ""
+g_sCloseRate	= ""
+g_sCloseSign	= ""
+local g_sHyun_ATTR			--현재가
+local g_sHyunEx_ATTR			--환산현재가
+local g_sClose_ATTR				--전일대비
+local g_sCloseRate_ATTR			--전일대비율
+g_sHyun_ATTR	= ""
+g_sHyunEx_ATTR	= ""
+g_sClose_ATTR	= ""
+g_sCloseRate_ATTR = ""
+------------------------------------------------
+local g_sBizDate
+g_sBizDate = ""
+--==============================================
+-- 이미지
+--==============================================
+local g_szBadgeBg_Red
+g_szBadgeBg_Red = "roundbox_4r_pink.9"
+local g_szBadgeBg_Blue
+g_szBadgeBg_Blue = "roundbox_4r_blue.9"
+local g_szBadgeBg_Grey
+g_szBadgeBg_Grey = "roundbox_4r_gray.9"
+local g_szBadgeBg_Line
+g_szBadgeBg_Line = "roundbox_4r_stoke01.9"
+local g_szBadgeBg_Line2
+g_szBadgeBg_Line2 = "roundbox_4r_stoke02.9"
+local g_sQtyUnit
+local g_sStep
+local g_sAutoRule
+g_sAutoRule = "01"
+g_sCode = ""
+g_sExid = ""
+g_sItemCode = ""
+g_sNation = ""
+g_sExid2 = ""
+g_sQtyUnit = ""
+g_sExid3 = ""
+local orderConditionId	
+local registrationDate	
+local accountNumber
+local accountSeqNumber	
+local stockExchangeCode
+local stockCode	
+local stockKoreaName	
+local tradeType	
+local watchConditionType 
+local watchConditionTypeNm
+local watchType
+local watchTypeNm
+local price	
+local orderPaymentType	
+local orderClsType
+local orderClsTypeNm	
+local orderPriceType	
+local tickValue	
+local orderPrice		
+local orderQty
+local expirationDate	
+local conditionStatusCode
+local conditionStatusName
+local g_isModify
+g_isModify = false
+local g_isFst
+g_isFst = true
+local g_isPTP
+g_isPTP = "N"
+local g_szOdrPop
+--------------------------
+-- 마지막 설정 값 유지용
+--------------------------
+local g_mCondType
+g_mCondType = "01"
+local g_mCondBound
+g_mCondBound = "2"
+local g_oCondType
+g_oCondType = "01"
+local g_oCondPrc
+g_oCondPrc = "01"
+local g_szYakCd
+g_szYakCd = ""
+-- 공통 에러 문구(REST API 용)
+local g_sCommonErrorMsg
+g_sCommonErrorMsg = "현재 자동감시주문 실행이\n불가합니다.\n고객지원센터에 문의해주세요."
+-- ****************************************************************************
+--             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+-- ****************************************************************************
+-- ===============================================
+-- NULL 체크 
+-- ===============================================
+function isEmpty(sData)
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+		return true
+	else
+		return false
+	end
+end
+-- ===============================================
+-- 숫자 소수점 절사 함수
+-- ===============================================
+function truncateToDecimalPlaces(nVal, nDeimalPlaces)
+	nVal = gf_Tonumber(nVal)
+	nFactor = 10 ^ nDeimalPlaces
+	szNumStr = gf_CommaValue(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = Instr(szNumStr, ".")
+	nTotalData = 0
+	if gf_Tonumber(nDecimalIdx) > 0 then
+		nTotalData = gf_Tonumber(Left(szNumStr, gf_Tonumber(nDecimalIdx)-1))
+	else
+		nTotalData = gf_Tonumber(szNumStr)
+	end
+	return nTotalData / nFactor
+end
+-- ===============================================
+-- (NonNull) 문자열 -> 배열 변환함수
+-- ===============================================
+function Convert_StrToArr(szData, szSeperator)
+	local arrData
+	-- --------------------------------------------
+	-- 링크데이터 값 체크
+	-- --------------------------------------------
+	if isEmpty(szData) then
+		arrData = {}
+		return arrData
+	end
+	-- --------------------------------------------
+	-- 구분자 값 체크
+	-- --------------------------------------------
+	if isEmpty(szSeperator) then
+		-- 단일변수
+		arrData = {}
+		table.insert(arrData, szData)
+	else
+		-- 다중변수
+		arrData = gf_Split(szData, szSeperator)
+	end
+	return arrData
+end
+-- =============================================================================
+-- 마스터파일에 있는 종목인지 체크
+-- =============================================================================
+function CheckMasterFile(szCode)
+	if isEmpty(szCode) == true then
+		return false
+	end
+	arrCode = gf_Split(szCode,"@")
+	if #arrCode < 2 then
+		return false
+	end
+	szTransExidCode = Transform_Exid2(arrCode[1])
+	szTransItemCode = szTransExidCode .. "@" .. arrCode[2]
+	szCheckData = Form.GetItemCodeInfo(szTransItemCode, "exchid")
+	if isEmpty(szCheckData) == true then
+		return false
+	end
+	return true
+end
+-- =============================================================================
+-- 거래소 호가단위 설정
+-- =============================================================================
+function GetHogaUnit(szMk, szPrc, nGbn) 
+	-- -----------------------------------------------------------------------
+	-- 호가단위 초기화
+	-- -----------------------------------------------------------------------
+	szOrdPrc = gf_Tonumber(szPrc)
+	szUnit = "1.000"
+	-- -----------------------------------------------------------------------
+	-- 틱타입 확인
+	-- -----------------------------------------------------------------------
+	szTtype = gf_Tonumber(contHidden.Label9.caption)
+	if szTtype == 0 or szTtype == "" then
+		szTtype = "0"
+	end
+	-- -----------------------------------------------------------------------
+	-- 중국(상해/심천) 호가단위 설정
+	-- -----------------------------------------------------------------------
+	if szMk == "0215" then -- 상해
+		-- 20240613 LES START 틱단위 수정
+		if szTtype == 2 then -- ETF
+			szUnit = "0.001"
+		else
+			szUnit = "0.010"
+		end
+		-- 20240613 LES END
+	elseif szMk == "0214" then -- 심천
+		-- 20240613 LES START 틱단위 수정
+		if szTtype == 2 then -- ETF
+			szUnit = "0.001"
+		else
+			szUnit = "0.010"
+		end
+		-- 20240613 LES END
+	-- -----------------------------------------------------------------------
+	-- 미국(뉴욕/나스닥/아멕스) 호가단위 설정
+	-- -----------------------------------------------------------------------
+	elseif szMk == "0321" or szMk == "0537" or szMk == "0066" then -- 뉴욕, 나스닥, 아멕스
+		-- 20240702 LES START - 1달러미만 종목 0.0001단위
+		if szOrdPrc < 1.00 then
+			szUnit = "0.0001" 
+		else
+			if szTtype == 1 then
+				szUnit = "0.010"
+			elseif szTtype == 2 then
+				szUnit = "0.050"
+			elseif szTtype == 3 then
+				szUnit = "0.050"
+			elseif szTtype == 4 then
+				szUnit = "0.050"
+			else
+				szUnit = "0.010"
+			end
+		end
+		-- -----------------------------------------------------------------------
+		-- 홍콩 호가단위 설정, (홍콩ETF종목 호가단위 변경)
+		-- -----------------------------------------------------------------------
+	elseif szMk == "0104" then -- 홍콩
+		if szTtype == 3 then
+			szUnit = "0.050"
+		-- 홍콩 ETF종목 호가단위 변경
+		-- type = 5 (ETF종목) 추가
+		elseif szTtype == 5 then
+			if nGbn == 0 then
+				if szOrdPrc < 1.00 then
+					szUnit = "0.001"
+				elseif szOrdPrc < 5.00 then
+					szUnit = "0.002"
+				elseif szOrdPrc < 10.00 then
+					szUnit = "0.005"
+				elseif szOrdPrc < 20.00 then
+					szUnit = "0.010"
+				elseif szOrdPrc < 100.00 then
+					szUnit = "0.020"
+				elseif szOrdPrc < 200.00 then
+					szUnit = "0.050"
+				elseif szOrdPrc < 500.00 then
+					szUnit = "0.100"
+				elseif szOrdPrc < 1000.00 then
+					szUnit = "0.200"
+				elseif szOrdPrc < 2000.00 then
+					szUnit = "0.500"
+				else
+					szUnit = "1.000"
+				end
+			else
+				if szOrdPrc <= 1.00 then
+					szUnit = "0.001"
+				elseif szOrdPrc <= 5.00 then
+					szUnit = "0.002"
+				elseif szOrdPrc <= 10.00 then
+					szUnit = "0.005"
+				elseif szOrdPrc <= 20.00 then
+					szUnit = "0.010"
+				elseif szOrdPrc <= 100.00 then
+					szUnit = "0.020"
+				elseif szOrdPrc <= 200.00 then
+					szUnit = "0.050"
+				elseif szOrdPrc <= 500.00 then
+					szUnit = "0.100"
+				elseif szOrdPrc <= 1000.00 then
+					szUnit = "0.200"
+				elseif szOrdPrc <= 2000.00 then
+					szUnit = "0.500"
+				else
+					szUnit = "1.000"
+				end
+			end
+		else
+			if nGbn == 0 then
+				if szOrdPrc < 0.25 then
+					szUnit = "0.001"
+				elseif szOrdPrc < 0.50 then
+					szUnit = "0.005"
+				elseif szOrdPrc < 10.00 then
+					szUnit = "0.010"
+				elseif szOrdPrc < 20.00 then	
+					szUnit = "0.020"
+				elseif szOrdPrc < 100.00 then
+					szUnit = "0.050"
+				elseif szOrdPrc < 200.00 then
+					szUnit = "0.100"
+				elseif szOrdPrc < 500.00 then
+					szUnit = "0.200"
+				elseif szOrdPrc < 1000.00 then
+					szUnit = "0.500"
+				elseif szOrdPrc < 2000.00 then
+					szUnit = "1.000"
+				elseif szOrdPrc < 5000.00 then
+					szUnit = "2.000"
+				else 
+					szUnit = "5.000"
+				end
+			else
+				if szOrdPrc <= 0.25 then
+					szUnit = "0.001"
+				elseif szOrdPrc <= 0.50 then
+					szUnit = "0.005"
+				elseif szOrdPrc <= 10.00 then
+					szUnit = "0.010"
+				elseif szOrdPrc <= 20.00 then	
+					szUnit = "0.020"
+				elseif szOrdPrc <= 100.00 then
+					szUnit = "0.050"
+				elseif szOrdPrc <= 200.00 then
+					szUnit = "0.100"
+				elseif szOrdPrc <= 500.00 then
+					szUnit = "0.200"
+				elseif szOrdPrc <= 1000.00 then
+					szUnit = "0.500"
+				elseif szOrdPrc <= 2000.00 then
+					szUnit = "1.000"
+				elseif szOrdPrc <= 5000.00 then
+					szUnit = "2.000"
+				else
+					szUnit = "5.000"
+				end
+			end
+		end
+	-- -----------------------------------------------------------------------
+	-- 해외주식 일본시장(도쿄거래소) 추가
+	-- -----------------------------------------------------------------------
+	elseif szMk == "0106" then -- 도쿄
+		if szTtype == 3 then
+			if nGbn == 0 then
+				if szOrdPrc < 1000 then
+					szUnit = "0.1"
+				elseif szOrdPrc < 3000 then
+					szUnit = "0.5"
+				elseif szOrdPrc < 5000 then
+					szUnit = "1"
+				elseif szOrdPrc < 10000 then	
+					szUnit = "1"
+				elseif szOrdPrc < 30000 then
+					szUnit = "5"
+				elseif szOrdPrc < 50000 then
+					szUnit = "10"
+				elseif szOrdPrc < 100000 then
+					szUnit = "10"
+				elseif szOrdPrc < 300000 then
+					szUnit = "50"
+				elseif szOrdPrc < 500000 then
+					szUnit = "100"
+				elseif szOrdPrc < 1000000 then
+					szUnit = "100"
+				elseif szOrdPrc < 3000000 then
+					szUnit = "500"
+				elseif szOrdPrc < 5000000 then
+					szUnit = "1000"
+				elseif szOrdPrc < 10000000 then
+					szUnit = "1000"
+				elseif szOrdPrc < 30000000 then
+					szUnit = "5000"
+				else 
+					szUnit = "10000"
+				end
+			else
+				if szOrdPrc <= 1000 then
+					szUnit = "0.1"
+				elseif szOrdPrc <= 3000 then
+					szUnit = "0.5"
+				elseif szOrdPrc <= 5000 then
+					szUnit = "1"
+				elseif szOrdPrc <= 10000 then	
+					szUnit = "1"
+				elseif szOrdPrc <= 30000 then
+					szUnit = "5"
+				elseif szOrdPrc <= 50000 then
+					szUnit = "10"
+				elseif szOrdPrc <= 100000 then
+					szUnit = "10"
+				elseif szOrdPrc <= 300000 then
+					szUnit = "50"
+				elseif szOrdPrc <= 500000 then
+					szUnit = "100"
+				elseif szOrdPrc <= 1000000 then
+					szUnit = "100"
+				elseif szOrdPrc <= 3000000 then
+					szUnit = "500"
+				elseif szOrdPrc <= 5000000 then
+					szUnit = "1000"
+				elseif szOrdPrc <= 10000000 then
+					szUnit = "1000"
+				elseif szOrdPrc <= 30000000 then
+					szUnit = "5000"
+				else 
+					szUnit = "10000"
+				end
+			end	
+		else
+			if nGbn == 0 then
+				if szOrdPrc < 1000 then
+					szUnit = "1"
+				elseif szOrdPrc < 3000 then
+					szUnit = "1"
+				elseif szOrdPrc < 5000 then
+					szUnit = "5"
+				elseif szOrdPrc < 10000 then	
+					szUnit = "10"
+				elseif szOrdPrc < 30000 then
+					szUnit = "10"
+				elseif szOrdPrc < 50000 then
+					szUnit = "50"
+				elseif szOrdPrc < 100000 then
+					szUnit = "100"
+				elseif szOrdPrc < 300000 then
+					szUnit = "100"
+				elseif szOrdPrc < 500000 then
+					szUnit = "500"
+				elseif szOrdPrc < 1000000 then
+					szUnit = "1000"
+				elseif szOrdPrc < 3000000 then
+					szUnit = "1000"
+				elseif szOrdPrc < 5000000 then
+					szUnit = "5000"
+				elseif szOrdPrc < 10000000 then
+					szUnit = "10000"
+				elseif szOrdPrc < 30000000 then
+					szUnit = "10000"
+				else 
+					szUnit = "50000"
+				end
+			else
+				if szOrdPrc <= 1000 then
+					szUnit = "1"
+				elseif szOrdPrc <= 3000 then
+					szUnit = "1"
+				elseif szOrdPrc <= 5000 then
+					szUnit = "5"
+				elseif szOrdPrc <= 10000 then	
+					szUnit = "10"
+				elseif szOrdPrc <= 30000 then
+					szUnit = "10"
+				elseif szOrdPrc <= 50000 then
+					szUnit = "50"
+				elseif szOrdPrc <= 100000 then
+					szUnit = "100"
+				elseif szOrdPrc <= 300000 then
+					szUnit = "100"
+				elseif szOrdPrc <= 500000 then
+					szUnit = "500"
+				elseif szOrdPrc <= 1000000 then
+					szUnit = "1000"
+				elseif szOrdPrc <= 3000000 then
+					szUnit = "1000"
+				elseif szOrdPrc <= 5000000 then
+					szUnit = "5000"
+				elseif szOrdPrc <= 10000000 then
+					szUnit = "10000"
+				elseif szOrdPrc <= 30000000 then
+					szUnit = "10000"
+				else 
+					szUnit = "50000"
+				end
+			end
+		end
+	end
+	return szUnit
+end
+-- ==============================================
+-- 거래소코드 -> 거래소명 변환 
+-- ==============================================
+function Transform_Exid(sValue)
+	if sValue == "HKS" then	-- 104
+		return "홍콩"
+	elseif sValue == "HSI" then -- 529
+		return "항셍 지수"
+	elseif sValue == "SHS" then -- 215
+		return "중국 상해"
+	elseif sValue == "SZS" then -- 214
+		return "중국 심천"
+	elseif sValue == "NYS" then -- 321
+		return "미국 뉴욕"
+	elseif sValue == "AMX" then -- 66
+		return "미국 아멕스"
+	elseif sValue == "NAS" then -- 537
+		return "미국 나스닥"
+	elseif sValue == "NAO" then -- 130
+		return "미국"
+	elseif sValue == "SPI" then -- 625
+		return "미국 S&P"
+	elseif sValue == "DJI" then -- 310
+		return "미국 다우존스"
+	elseif sValue == "TSE" then -- 106
+		return "일본 도쿄"
+	elseif sValue == "OSE" then -- 107
+		return "일본 오사카"
+	elseif sValue == "JSD" then -- 112
+		return "일본 자스닥"
+	elseif sValue == "NII" then -- 889
+		return "일본 니케이"
+	elseif sValue == "NAI" then -- 538
+		return "미국 나스닥"
+	elseif sValue == "HSX" then -- 770
+		return "베트남 호치민"
+	elseif sValue == "HNX" then -- 771
+		return "베트남 하노이"
+	else
+		return ""
+	end
+end
+-- ==============================================
+-- 거래소 구분코드 변경(3자리 -> 2자리)
+-- 원장조회 종목연동 시, 과거 거래소 코드로 연동되는 경우 예외처리를 위해 필요
+-- ==============================================
+function Transform_Exid2(sValue)
+    local Transform_Exid2 = ""
+	if sValue == "HKS" then
+		Transform_Exid2 = "HK"
+	elseif sValue == "SHS" then
+		Transform_Exid2 = "SH"
+	elseif sValue == "SZS" then
+		Transform_Exid2 = "SZ"
+	elseif sValue == "NYS" then
+		Transform_Exid2 = "NY"
+	elseif sValue == "AMX" then
+		Transform_Exid2 = "AX"
+	elseif sValue == "NAS" then
+		Transform_Exid2 = "OQ"
+	elseif sValue == "TSE" then
+		Transform_Exid2 = "JP"
+	else
+		Transform_Exid2 = sValue
+	end
+	
+	return Transform_Exid2
+end
+function Transform_Exid3(sValue)
+     local Transform_Exid3 = ""
+	if sValue == "HK" then
+		Transform_Exid3 = "HKS"
+	elseif sValue == "SH" then
+		Transform_Exid3 = "SHS"
+	elseif sValue == "SZ" then
+		Transform_Exid3 = "SZS"
+	elseif sValue == "NY" then
+		Transform_Exid3 = "NYS"
+	elseif sValue == "AX" then
+		Transform_Exid3 = "AMX"
+	elseif sValue == "OQ" then
+		Transform_Exid3 = "NAS"
+	elseif sValue == "JP" then
+		Transform_Exid3 = "TSE"
+	else
+		Transform_Exid3 = sValue
+	end
+	
+	return Transform_Exid3
+end
+-- ==============================================
+-- 장 운영 정보 조회 전용 - 거래소 구분 코드
+-- ==============================================
+function Transform_Exid4(sValue)
+     local Transform_Exid4 = ""
+	-- 20250804_01 YSH START
+	if sValue == "HK" or sValue == "HKS" then
+		Transform_Exid4 = "HK"
+	elseif sValue == "SH" or sValue == "SHS" then
+		Transform_Exid4 = "SH"
+	elseif sValue == "SZ" or sValue == "SZS" then
+		Transform_Exid4 = "SZ"
+	elseif sValue == "JP" or sValue == "TSE" then
+		Transform_Exid4 = "JP"
+	elseif sValue == "NY" or sValue == "NYS" then
+		Transform_Exid4 = "US"
+	elseif sValue == "AX" or sValue == "AMX" then
+		Transform_Exid4 = "US"
+	elseif sValue == "OQ" or sValue == "NAS" then
+		Transform_Exid4 = "US"
+	else
+		Transform_Exid4 = "US"
+	end
+	-- 20250804_01 YSH END
+	
+	return Transform_Exid4
+end
+-- ==============================================
+-- 종목코드 변경 
+-- ==============================================
+function Check_ItemCode(szCode)
+	arrLinkCode = gf_Split(szCode,"★")
+	if #arrLinkCode < 1 then
+		tempCode = "OQ@AAPL"
+		tempName = Form.GetItemCodeInfo(tempCode, "name")
+		-- 최근조회 종목 설정
+		Form.SetSharedData( "&ITEM_CODE" , tempCode )
+		Form.SetSharedData( "&ITEM_KORNAME" , tempName  )
+		Form.SetSharedData( "&ITEM_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
+		Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
+		-- 종목세팅 재시작
+		Check_ItemCode(tempCode)
+		return
+	end
+	-- ------------------------------------------------------
+	-- 종목정보 확인
+	-- ------------------------------------------------------
+	if CheckMasterFile(arrLinkCode[1]) == false then
+		tempCode = "OQ@AAPL"
+		tempName = Form.GetItemCodeInfo(tempCode, "name")
+		-- 최근조회 종목 설정
+		Form.SetSharedData( "&ITEM_CODE" , tempCode )
+		Form.SetSharedData( "&ITEM_KORNAME" , tempName  )
+		Form.SetSharedData( "&ITEM_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
+		Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
+		-- 종목세팅 재시작
+		Check_ItemCode(tempCode)
+		return
+	end
+	-- ------------------------------------------------------
+	-- 종목코드 분리 (거래소코드@종목코드)
+	-- ------------------------------------------------------
+	arrCode = gf_Split(arrLinkCode[1], "@")
+	if #arrCode > 1 then 
+		Button0.left = 1000
+		g_sCode 		= arrCode[2]							-- 종목코드		
+		g_sExid 		= Transform_Exid2(arrCode[1])				-- 거래소 구분(영문 2자리)
+		g_sItemCode 	= g_sExid .. "@" .. g_sCode					-- 거래소@종목코드
+		g_sItemName 	= Form.GetItemCodeInfo(g_sItemCode, "name")	-- 종목명
+		-- 20250804_01 YSH START
+		sKey = "&OVRS_MARKET_OPERATION_" .. Transform_Exid4(g_sExid)
+		g_szMktOpClsCd = Form.GetSharedData(sKey, false)
+		-- 20250804_01 YSH END
+		-- -----------------------------------------------------
+		-- 미국종목 아닌 경우 기본종목 재설정
+		-- -----------------------------------------------------
+		if g_sExid ~= "OQ" and g_sExid ~= "NY" and g_sExid ~= "AX" then
+			tempCode = "OQ@AAPL"
+			tempName = Form.GetItemCodeInfo(tempCode, "name")
+			-- 최근조회 종목 설정
+			Form.SetSharedData( "&ITEM_CODE" , tempCode )
+			Form.SetSharedData( "&ITEM_KORNAME" , tempName  )
+			Form.SetSharedData( "&ITEM_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
+			Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
+			-- 종목세팅 재시작
+			Check_ItemCode(tempCode)
+			return
+		end
+		-- -----------------------------------------------------
+		-- 종목정보 저장
+		-- -----------------------------------------------------
+		g_rtChk 		= Form.GetSharedData( "REALTIME_"..g_sExid, false )	-- 실시간 여부(서비스호출)
+		g_sExid2 		= Form.GetItemCodeInfo(g_sItemCode, "exchcode3") 	-- 거래소 구분값(영문 3자리)
+		g_sExid3		= Form.GetItemCodeInfo(g_sItemCode, "exchid")		-- 거래소 구분값(숫자 4자리)
+		g_sMarket 		= Transform_Exid3(arrCode[1]) 					-- 거래소 구분값(영문 3자리, 국내와 혼용)
+		-- -----------------------------------------------------
+		-- 종목명 세팅
+		-- -----------------------------------------------------
+		cont0.lblItemName.caption = g_sItemName
+		lblMktInfo0.visible = true
+		DATAMANAGER.RequestTranData("obtro_comn_006r")
+		Cancel_Real_Total()
+		-- -----------------------------------------------------
+		-- 종목정보 조회
+		-- -----------------------------------------------------
+		DATAMANAGER.RequestTranData("obsim_oscm_331r")
+	end
+end
+-- ==============================================
+-- 장운영 정보 기반 시세서비스 호출
+-- ==============================================
+function Request_MktOp(szMkOpClsCd)
+	Cancel_Real_Total()
+	if szMkOpClsCd == "001" then	-- 주간장 개시
+		DATAMANAGER.RequestTranData("ohhts_6000_017r")
+	elseif szMkOpClsCd == "002" then	-- 주간장 종료
+		DATAMANAGER.RequestTranData("ohhts_6000_001r")
+	elseif szMkOpClsCd == "003" then	-- 프리장 개시
+		DATAMANAGER.RequestTranData("ohhts_6000_001r")
+	elseif szMkOpClsCd == "004" then	-- 정규장 개시
+		DATAMANAGER.RequestTranData("ohhts_6000_001r")
+	elseif szMkOpClsCd == "005" then	-- 애프터장 개시
+		DATAMANAGER.RequestTranData("ohhts_6000_023r")
+	elseif szMkOpClsCd == "006" then	-- 애프터장 종료
+		DATAMANAGER.RequestTranData("ohhts_6000_001r")
+	elseif szMkOpClsCd == "011" or szMkOpClsCd == "012" then -- 미국 외 장개시/종료
+		DATAMANAGER.RequestTranData("ohhts_6000_001r")
+	elseif szMkOpClsCd == "013" then -- 장종료
+		DATAMANAGER.RequestTranData("ohhts_6000_001r")
+	else	-- 예외케이스
+		DATAMANAGER.RequestTranData("ohhts_6000_001r")
+	end
+end
+-- ==============================================
+-- 실시간 서비스 등록 해제 
+-- ==============================================
+function Cancel_Real_Total()
+	-- 해외주식 체결(프리/정규) 실시간 해제
+	DATAMANAGER.CancelRealData("ohhts_exst_cntg")
+	-- 해외주식 체결(주간) 실시간 해제
+	DATAMANAGER.CancelRealData("ohhts_exst_cntd")
+	-- 해외주식 체결(애프터) 실시간 해제
+	DATAMANAGER.CancelRealData("ohhts_exst_cnta")
+end
+-- ==============================================
+-- 장운영 정보 코드 변환
+-- ==============================================
+function Convert_MktOpInfo(szMkOpClsCd)
+	if szMkOpClsCd == "001" then
+		-- 주간 시작
+		g_szMktOp = "주간"
+		g_isMktClosed = "N"
+		g_szSubMktOp = "전일종가"
+	elseif szMkOpClsCd == "002" then
+		-- 주간 종료
+		g_szMktOp = "주간"
+		g_isMktClosed = "Y"
+		g_szSubMktOp = "주간종가"
+	elseif szMkOpClsCd == "003" then
+		-- Pre 시작
+		g_szMktOp = "Pre"
+		g_isMktClosed = "N"
+		g_szSubMktOp = "주간종가"
+	elseif szMkOpClsCd == "004" then
+		-- 정규장 시작
+		g_szMktOp = "정규장"
+		g_isMktClosed = "N"
+		g_szSubMktOp = "주간종가"
+	elseif szMkOpClsCd == "005" then
+		-- After 시작
+		g_szMktOp = "After"
+		g_isMktClosed = "N"
+		g_szSubMktOp = "After"
+	elseif szMkOpClsCd == "006" then
+		-- After 종료
+		g_szMktOp = "After"
+		g_isMktClosed = "Y"
+		g_szSubMktOp = "After"
+	elseif szMkOpClsCd == "011" then 
+		-- 미국 외 장시작
+		g_szMktOp = "정규장"
+		g_isMktClosed = "N"
+		g_szSubMktOp = ""
+	elseif szMkOpClsCd == "012" then 
+		-- 미국 외 장종료
+		g_szMktOp = "정규장"
+		g_isMktClosed = "Y"
+		g_szSubMktOp = ""
+	elseif szMkOpClsCd == "013" then 
+		-- 휴일
+		g_szMktOp = "정규장"
+		g_isMktClosed = "Y"
+		g_szSubMktOp = "After"
+	else
+		g_szMktOp = "정규장"
+		g_isMktClosed = "Y"
+		g_szSubMktOp = "After"
+	end
+end
+-- ==============================================
+-- 장운영 정보 (주간/휴장 포함) 체크
+-- ==============================================
+function DisplaySetting_MktOperation(szMktOp, isClosed, szSubMktOp, szBaseDate, isHoliday)
+	if g_szMktOpClsCd == "000" then
+		lblMktInfo0.caption = "휴장"
+		lblMktInfo0.imagefilepth = g_szBadgeBg_Line
+	elseif g_szMktOpClsCd == "013" then
+		lblMktInfo0.caption = "장종료"
+		lblMktInfo0.imagefilepth = g_szBadgeBg_Grey
+	else
+		lblMktInfo0.caption = szMktOp
+		lblMktInfo0.imagefilepth = g_szBadgeBg_Red
+		if isClosed == "Y" then
+			lblMktInfo0.caption = "장종료"
+			lblMktInfo0.imagefilepth = g_szBadgeBg_Grey
+		end
+	end
+end
+function Replace_Prc(sPrc)
+	if isEmpty(sPrc) == true then
+		return ""
+	end
+	sPrc = string.gsub(sPrc, ",", "")
+	sPrc = string.gsub(sPrc, contHidden.Label7.caption, "")
+	sPrc = string.gsub(sPrc, "%", "")
+	sPrc = string.gsub(sPrc, "틱", "")
+	sPrc = string.gsub(sPrc, "$", "")
+	return gf_Trim(sPrc)
+end
+-- =============================================================================
+-- (공통) 가격입력창 가격SET
+-- =============================================================================
+function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
+	sPreFix = ""
+	if sPostFix == "USD" then
+		sPostFix = ""
+		sPreFix = "$"
+	end
+	if isEmpty(nDecimalLen) == true or isEmpty(nPrc) == true then
+		return ""
+	end
+	sChk = Instr(gf_Tostring(nPrc), ".")
+	-- =================================================================
+	-- 소수점(dot)이 있는 경우
+	-- =================================================================
+	if sChk > 0 then
+		-- ------------------------------
+		-- 소수점영역 길이
+		-- ------------------------------
+		sCha = gf_Tonumber(string.len(nPrc) - sChk)
+		-- -------------------------------------------------------
+		-- 소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
+		-- -------------------------------------------------------
+		if sCha >= gf_Tonumber(nDecimalLen) then
+			if sCha >= gf_Tonumber(nDecimalLen) then
+				sResult = sPreFix.." "..gf_CommaValue(nPrc, nDecimalLen).." " .. sPostFix
+				return sResult
+			else
+				return ""
+			end
+		-- -------------------------------------------------------	 
+		-- 소수점영역의 길이를 아직 다 안채운 경우
+		-- -------------------------------------------------------
+		else
+			-- -------------------------------------------------------------------
+			-- 자동으로 호가가격이 입력되는 경우(초기값 세팅/ 호가 +,- 버튼 클릭)
+			-- 국가별 소수점 자리수로 가격을 다시 맞춰준다.
+			-- -------------------------------------------------------------------
+			if sType == "AUTO" then
+				sResult = sPreFix.." "..gf_CommaValue(nPrc,nDecimalLen).." " .. sPostFix
+				return sResult
+			-- -------------------------------------------------------------------
+			-- 가격이 수동으로 입력되는 경우(키패드 입력)에는 입력받은대로 표시
+			-- -------------------------------------------------------------------
+			else
+				sResult =  nPrc.." " .. sPostFix
+				return sResult
+			end
+		end
+	-- =================================================================
+	-- 소수점(dot)이 없는 경우
+	-- =================================================================
+	else
+		if sType == "AUTO" then
+			sResult = sPreFix.." "..gf_CommaValue(nPrc,nDecimalLen) .." " .. sPostFix
+			return sResult
+		else
+			sResult = sPreFix.." "..gf_CommaValue(nPrc,0) .." " .. sPostFix
+			return sResult
+		end
+	end
+end
+-- =============================================================================
+-- 가격 호가단위 맞추기 
+-- =============================================================================
+function ReSet_Prc(szData, nGbn)
+	if isEmpty(szData) == true then
+		return 0
+	end
+	nDecimal = gf_Tonumber(contHidden.Label8.caption)
+	szUnit = GetHogaUnit(g_sExid3, szData, nGbn)
+	if nGbn == 0 then
+		nResult = Round(gf_Tonumber(szData) % gf_Tonumber(szUnit), gf_Tonumber(nDecimal))
+		if nResult ~= 0 and nResult ~= gf_Tonumber(szUnit) then
+			return gf_Tonumber(szData) - nResult
+		else
+			return szData
+		end
+	else
+		nResult = Round(gf_Tonumber(szData) % gf_Tonumber(szUnit), gf_Tonumber(nDecimal))
+		if nResult ~= 0 then
+			return gf_Tonumber(szData) + (gf_Tonumber(szUnit) - nResult)
+		else
+			return szData
+		end
+	end
+end
+-- =============================================================================
+-- Calc_Price : +, - 버튼클릭시 호가단위로 가격계산
+-- =============================================================================
+function Calc_Price2(nType, nGbn, sValue)
+	if nType == 0 then
+		if isEmpty(sValue) == true then
+			return "0"
+		end
+		nValue  = gf_Tonumber(sValue)
+		-- ------------------------------------------------
+		-- + 버튼 클릭
+		-- ------------------------------------------------
+		if nGbn == 0 then							
+			nValue = nValue + 1
+		-- ------------------------------------------------
+		-- - 버튼 클릭 
+		-- ------------------------------------------------
+		elseif nGbn == 1 then						
+			nValue = nValue - 1
+		end
+		if nValue > 10 then
+			nValue = 10
+		end
+		if nValue < -10 then
+			nValue = -10
+		end
+		return nValue
+	else
+		-- ---------------------------------------------
+		-- 호가단위 맞춘 가격데이터 계산
+		-- ---------------------------------------------
+		sPrc  = ReSet_Prc(sValue, nGbn)
+		szUnit = GetHogaUnit(g_sExid3, sPrc, nGbn)
+		--		-- ---------------------------------------------
+		--		-- 가격데이터가 없는 경우
+		--		-- ---------------------------------------------
+		--		if isEmpty(sPrc) == true or CDbl(sPrc) == 0 then
+		--			if isEmpty(Form.getTopCtlProp("contHidden.lblItemSellHoga","caption")) == true or CDbl(Form.getTopCtlProp("contHidden.lblItemSellHoga","caption")) == 0 then
+		--				sPrc = 0
+		--			else
+		--				sPrc = Form.getTopCtlProp("contHidden.lblItemSellHoga","caption")
+		--			end
+		--			
+		--		-- ---------------------------------------------
+		--		-- 가격데이터가 있는 경우
+		--		-- ---------------------------------------------
+		--		else
+		-- ------------------------------------------------
+		-- + 버튼 클릭
+		-- ------------------------------------------------
+		if nGbn == 0 then							
+			sPrc = gf_Tonumber(sPrc) + gf_Tonumber(szUnit)
+		-- ------------------------------------------------
+		-- - 버튼 클릭 
+		-- ------------------------------------------------
+		elseif nGbn == 1 then						
+			sPrc = gf_Tonumber(sPrc) - gf_Tonumber(szUnit)
+		end
+		--		end if
+		if isEmpty(sPrc) == true or gf_Tonumber(sPrc) < 0 then
+			sPrc = ""
+		end
+		return sPrc
+	end
+end
+-- =============================================================================
+-- Calc_Qty : +, - 버튼클릭시 수량 length로 수량단위 계산
+-- =============================================================================
+function Calc_Qty2(nGbn)
+	sQty = cont1.edtQty.caption
+	g_sQtyUnit = contHidden.Label10.caption
+	if isEmpty(g_sQtyUnit) == true then
+		g_sQtyUnit = "1"
+	end
+	-- ---------------------------------------------------------
+	-- 수량이 빈값인 경우 매매단위로 초기화
+	-- ---------------------------------------------------------
+	if isEmpty(sQty) == true then
+		if nGbn == 0 then
+			sQty = g_sQtyUnit
+		else
+			return
+		end
+	-- ---------------------------------------------------------
+	-- 수량이 빈값이 아닌 경우
+	-- ---------------------------------------------------------
+	else
+		-- ---------------------------------------------------------
+		-- [+]버튼 클릭
+		-- ---------------------------------------------------------
+		if nGbn == 0 then
+			sQty = gf_Tonumber(sQty) + gf_Tonumber(g_sQtyUnit)
+			nResult = gf_Tonumber(sQty) % gf_Tonumber(g_sQtyUnit)
+			if nResult ~= 0 then
+				sQty = gf_Tonumber(sQty) - nResult
+			end
+		--			if CDbl(sQty) < CDbl(g_sDefQty) then
+		--				sQty = contHidden.Label10.caption
+		--			end if
+		-- ---------------------------------------------------------
+		-- [-]버튼 클릭
+		-- ---------------------------------------------------------
+		elseif nGbn == 1 then
+			if gf_Tonumber(sQty) == 0 then
+				return
+			else		
+				sQty = sQty - gf_Tonumber(g_sQtyUnit)
+				nResult = gf_Tonumber(sQty) % gf_Tonumber(g_sQtyUnit)
+				--				if Cdbl(sQty) < Cdbl(g_sDefQty) then
+				--					sQty = 0
+				--				end if
+			end
+		end
+	end
+	-- ---------------------------------------------------------
+	-- 입력값 자리수 체크
+	-- ---------------------------------------------------------
+	--	if Len(szQty) <= gMaxLen then		
+	if isEmpty(sQty) == true or gf_Tonumber(sQty) == 0 then
+		cont1.edtQty.caption = ""
+	else
+		cont1.edtQty.caption = sQty
+	end
+	--	end if
+end
+-- =============================================================================
+-- From일로부터 + @일/개월 가져오기
+-- =============================================================================
+function CalcDate(sType,nDiff)
+	--	sDate = Form.GetSharedData("&BIZ_DT", false )
+	--	
+	--	sToday = Form.GetSharedData("&HOST_DATE", false )
+	--	if cint(sToday) >  Cint(Form.GetSharedData("&BIZ_DT", false )) then
+	--		sDate = Form.GetSharedData("&BIZ_NXT_DT", false )
+	--	else	
+	--		sDate = Form.GetSharedData("&BIZ_DT", false )
+	--	end if
+	sDate = g_sBizDate
+	sYear = Left(sDate, 4)
+	sMonth = Mid(sDate, 5, 2)
+	sDay = Right(sDate, 2)
+	sRsltDate = string.gsub(DateAdd (sType, nDiff,  sYear.."-".. sMonth .."-".. sDay), "-", "")
+	return sRsltDate
+end
+function DisplayPrevSet_LinkInfo()
+	--	Form.ShowAlert("TEST", g_mCondType .. "|" .. g_mCondBound .. "|" .. g_oCondType .. "|" .. g_oCondPrc)
+	--	Form.ShowAlert("TEST", watchConditionType .. "|" .. watchType .. "|" .. orderClsType .. "|" .. orderPriceType)
+	if isEmpty(watchConditionType) == false then 
+		cont1.cmb6.cbkeydata = watchConditionType
+	else
+		cont1.cmb6.cbkeydata = g_mCondType
+	end
+	if isEmpty(watchType) == false then 
+		cont1.cmb1.cbkeydata = watchType
+	else
+		cont1.cmb1.cbkeydata = g_mCondBound
+	end
+	if isEmpty(orderClsType) == false then 
+		cont1.cmb4.cbkeydata = orderClsType
+	else
+		cont1.cmb4.cbkeydata = g_oCondType
+	end
+	if isEmpty(orderPriceType) == false then 
+		cont1.cmb5.cbkeydata = orderPriceType
+	else
+		cont1.cmb5.cbkeydata = g_oCondPrc
+	end
+end
+function Check_HogaUnit(sValue, isChk)
+	-- ------------------------------------
+	-- 체크여부
+	-- ------------------------------------
+	if isChk == false then
+		return true
+	end
+	szUnit = GetHogaUnit(g_sExid3, sValue, 0)
+	--	nMod = CDbl(sValue) % CDbl(szUnit)
+	nDiv = gf_Tonumber(sValue) / gf_Tonumber(szUnit)
+	sDiv = gf_CommaValue(nDiv,4,1,0,0,1)
+	nDecimalIdx = Instr(sDiv, ".")
+	nTotalLen = Form.GetLen(sDiv)
+	nMod = gf_Tonumber(right(sDiv, gf_Tonumber(nTotalLen) - gf_Tonumber(nDecimalIdx)))
+	--	msgbox CDBL(sValue) .. "|" .. cDBL(szUnit) .. "|" .. Cdbl(nMod)
+	if gf_Tonumber(sValue) >= 1 and nMod > 0 then
+		Form.ShowAlert("알림", "호가 단위를 확인해주세요.\n(호가 단위 : " .. gf_Tonumber(szUnit) .. " " .. contHidden.Label7.caption..")")
+		return false
+	else
+		return true
+	end
+end
+function Load_Config()
+	-- -------------
+	-- 감시조건 
+	-- -------------
+	g_mCondType = Form.GetEnvData("17100_BUY_MONITOR_COND_TYPE")
+	if isEmpty(g_mCondType) == true then
+		g_mCondType = "01"
+		Form.SetEnvData(1, "17100_BUY_MONITOR_COND_TYPE", g_mCondType)
+	end
+	g_mCondBound = Form.GetEnvData("17100_BUY_MONITOR_COND_BOUND")
+	if isEmpty(g_mCondBound) == true then
+		g_mCondBound = "2"
+		Form.SetEnvData(1, "17100_BUY_MONITOR_COND_BOUND", g_mCondBound)
+	end
+	-- -------------
+	-- 주문조건 
+	-- -------------
+	g_oCondType = Form.GetSharedData("17100_BUY_ORDER_COND_TYPE", false)
+	if isEmpty(g_oCondType) == true then
+		g_oCondType = "01"
+		Form.SetSharedData("17100_BUY_ORDER_COND_TYPE" , g_oCondType)
+	end
+	g_oCondPrc = Form.GetSharedData("17100_BUY_ORDER_COND_PRC", false)
+	if isEmpty(g_oCondPrc) == true then
+		g_oCondPrc = "01"
+		Form.SetSharedData("17100_BUY_ORDER_COND_PRC" , g_oCondPrc)
+	end
+end
+function SetOrderTypeList()
+	sList = "01`현재가`설정 가격에 도달 시 감시가 실행돼요.\r\n" ..
+		"02`시가(당일 정규장 기준)`설정 가격이 시가에 도달 시 감시가 실행돼요.\r\n" ..
+		"03`고가(당일 정규장 기준)`설정 가격이 고가에 도달 시 감시가 실행돼요.\r\n" ..
+		"04`저가(당일 정규장 기준)`설정 가격이 저가에 도달 시 감시가 실행돼요.\r\n" ..
+		"05`전일종가대비`전일 종가 대비 설정 가격 만큼 상승하거나 하락 시 감시가 실행돼요.     \r\n" ..
+		"06`등락률(전일종가대비)`설정한 등락률 만큼 상승하거나 하락 시 감시가 실행돼요.     \r\n"
+	sOsType = Form.GetSharedData("&OS_TYPE", false)
+	if sOsType == "2" then
+		cont1.cmb6.SetPopupHeight(470)
+	else
+		cont1.cmb6.SetPopupHeight(380)
+	end
+	cont1.cmb6.clear = true
+	cont1.cmb6.cbinputdatatext = sList
+end
+-- ****************************************************************************
+--                C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+-- ****************************************************************************
+-- =============================================================================
+function Form_OnFormInit()
+	Load_Config()
+	SetOrderTypeList()
+	cont0.lblItemName.maxlinecnt = "2^-6"
+	g_szOdrPop     = Form.LoadConfigData("SET_ORDER", "OPEN_CONFIRM")
+	if gf_Trim(g_szOdrPop) == "" then
+		g_szOdrPop = "1"
+	end
+	sLinkData = Form.GetOpenLinkData()
+	arrLinkData = Convert_StrToArr(sLinkData, "`")
+	nArrCnt = #arrLinkData
+	if nArrCnt >= 28 then
+		g_sGbn = arrLinkData[1]
+		g_sAcno = arrLinkData[2]
+		g_sAsno = arrLinkData[3]
+		g_sPwd = arrLinkData[4]
+		g_sAcntNm = arrLinkData[5]
+		orderConditionId	= arrLinkData[6]
+		registrationDate	= arrLinkData[7]
+		accountNumber		= arrLinkData[8]
+		accountSeqNumber	= arrLinkData[9]	
+		stockExchangeCode	= arrLinkData[10]
+		stockCode			= arrLinkData[11]
+		stockKoreaName		= arrLinkData[12]
+		tradeType			= arrLinkData[13]
+		watchConditionType 	= arrLinkData[14]
+		watchConditionTypeNm	= arrLinkData[15]
+		watchType			= arrLinkData[16]
+		watchTypeNm		= arrLinkData[17]
+		price			= arrLinkData[18]
+		orderPaymentType	= arrLinkData[19]
+		orderClsType		= arrLinkData[20]
+		orderClsTypeNm		= arrLinkData[21]
+		orderPriceType		= arrLinkData[22]
+		tickValue			= arrLinkData[23]
+		orderPrice			= arrLinkData[24]
+		orderQty			= arrLinkData[25]
+		expirationDate		= arrLinkData[26]	
+		conditionStatusCode	= arrLinkData[27]
+		conditionStatusName	= arrLinkData[28]
+		sItemCode = Transform_Exid2(stockExchangeCode) .. "@" .. stockCode
+		Check_ItemCode(sItemCode)
+		if isEmpty(expirationDate) == false then 
+			cont1.Calendar0.caption = string.gsub(expirationDate, "-", "")
+		end
+		g_isModify = true
+		--		g_isModify_OneTime = true
+	elseif nArrCnt >= 5 then
+		sItemCode = Form.GetSharedData("&ITEM_OVERSTOCK", 0)
+		Check_ItemCode(sItemCode)
+		g_sGbn = arrLinkData[1]
+		g_sAcno = arrLinkData[2]
+		g_sAsno = arrLinkData[3]
+		g_sPwd = arrLinkData[4]
+		g_sAcntNm = arrLinkData[5]
+		cont1_cmb4_OnEditComplete(0)
+	end
+end
+-- =============================================================================
+function cont0_imgSearch_OnClick()
+	if g_isModify == false then
+		Form.OpenPopup("msearchdialog", "종목검색★56:52★INTG_DIVIDE_HISTORY★EMPTY★EMPTY", "")
+	end
+end
+function DisplaySet_OrderPrc(sValue, isChk)
+	if isEmpty(sValue) == true or gf_Tonumber(sValue) == 0 then
+		cont1.edtPrc0.caption = ""
+		sKey = cont1.cmb5.cbkeydata
+		if sKey == "01" then
+			cont1.edtPrc0.caption = "0 틱"
+		end
+		return
+	end
+	sKey = cont1.cmb5.cbkeydata
+	if sKey == "01" then
+		sPrc = SetPrice("AUTO", sValue, "0", "틱")
+	elseif sKey == "09" then
+		if gf_Tonumber(sValue) == 0 then
+			return
+		end
+		if Check_HogaUnit(sValue, isChk) == false then
+			return
+		end
+		sTmpPrc = ReSet_Prc(sValue, 0)
+		sPrc = SetPrice("AUTO", sTmpPrc, contHidden.Label8.caption, contHidden.Label7.caption)
+	end
+	cont1.edtPrc0.caption = sPrc
+end
+function DisplaySet_CondPrc(sValue, isChk)
+	if isEmpty(sValue) == true or gf_Tonumber(sValue) == 0 then
+		return
+	end
+	sKey = cont1.cmb6.cbkeydata
+	if sKey == "06" then
+		sPrc = SetPrice("AUTO", sValue, "2", "%")
+		sSubKey = cont1.cmb1.cbkeydata
+		if sSubKey == "2" then
+			sPrc = "-"..string.gsub(sPrc, "-", "")
+		end
+	else
+		if Check_HogaUnit(sValue, isChk) == false then
+			return
+		end
+		sTmpPrc = ReSet_Prc(sValue, 0)
+		sPrc = SetPrice("AUTO", sTmpPrc, contHidden.Label8.caption, contHidden.Label7.caption)
+		sSubKey = cont1.cmb1.cbkeydata
+		if sSubKey == "2" and  sKey == "05" then
+			sPrc = "-"..string.gsub(sPrc, "-", "")
+		end
+	end
+	cont1.Label6.fgcolor = 334
+	cont1.Label6.caption = sPrc
+end
+function DisplaySet_OrderQty(sValue)
+	if isEmpty(sValue) == true or gf_Tonumber(sValue) == 0 then
+		cont1.edtQty.caption = ""
+		return
+	end
+	cont1.edtQty.caption = sValue
+end
+-- =============================================================================
+function Form_OnPopupReturn(sKeyName, sRet)
+	if sKeyName == "DLG_SELECT" then
+		Check_ItemCode(sRet)
+	elseif sKeyName == "AUTO_RULE_KEYPAD_END" then
+		arrRet = Convert_StrToArr(sRet, "`")
+		nArrCnt = #arrRet
+		if nArrCnt > 1 then
+			sKey = arrRet[1]
+			sValue = arrRet[2]
+			if sKey == "매수_주문수량" then
+				DisplaySet_OrderQty(sValue)
+			elseif sKey == "매수_감시가격" then
+				DisplaySet_CondPrc(sValue, true)
+			elseif sKey == "매수_주문가격" then
+				DisplaySet_OrderPrc(sValue, true)
+			end
+		end
+	elseif sKeyName == "ORDER_CONFIRM_CHECK" then
+		if sRet == "ok" then
+			if g_isPTP == "Y" then
+				szData = "90" .. "|" .. ""	-- 매매구분|메시지
+				-- Form.OpenPopup("mhtro16060_p15", szData , "")	-- OnPopupReturn -> "PTP주문경고"
+				Form.OpenPopupAnimation("mhtro16100_p15", szData, "", "2")
+			else
+				--				g_sAutoRule = "01"
+				--				if g_isModify == true then
+				--					AutoRule_Update() 
+				--				else
+				--					AutoRule_Create()
+				--				end if
+				-- v20250729_01 >>
+				Form.MsgBox("안내", "등록하신 감시 조건을\n바로 실행하시겠습니까?\n(감시는 정규장에서만 실행돼요.)", "MONITORING_EXECUTE", 7, "실행하기", "취소")
+				-- v20250729_01 <<
+			end
+		end
+	elseif sKeyName == "PTP주문경고" then
+		--		g_sAutoRule = "01"
+		--		if g_isModify == true then
+		--			AutoRule_Update() 
+		--		else
+		--			AutoRule_Create()
+		--		end if
+		-- v20250729_01 >>
+		Form.MsgBox("안내", "등록하신 감시 조건을\n바로 실행하시겠습니까?\n(감시는 정규장에서만 실행돼요.)", "MONITORING_EXECUTE", 7, "실행하기", "취소")
+		-- v20250729_01 <<
+	elseif sKeyName == "MYCOND_RETURN" then
+		arrLinkData = Convert_StrToArr(sRet, "`")
+		nArrCnt = #arrLinkData
+		if nArrCnt > 0 then
+			g_isModify = false
+			--			g_isModify_OneTime = false
+			orderConditionId	= ""
+			registrationDate	= ""
+			accountNumber		= arrLinkData[1]
+			accountSeqNumber	= arrLinkData[2]	
+			stockExchangeCode	= arrLinkData[3]
+			stockCode			= arrLinkData[4]
+			stockKoreaName		= arrLinkData[5]
+			tradeType			= arrLinkData[6]
+			watchConditionType 	= arrLinkData[7]
+			watchConditionTypeNm	= arrLinkData[8]
+			watchType			= arrLinkData[9]
+			watchTypeNm		= arrLinkData[10]
+			price			= arrLinkData[11]
+			orderPaymentType	= arrLinkData[12]
+			orderClsType		= arrLinkData[13]
+			orderClsTypeNm		= arrLinkData[14]
+			orderPriceType		= arrLinkData[15]
+			tickValue			= arrLinkData[16]
+			orderPrice			= arrLinkData[17]
+			orderQty			= arrLinkData[18]
+			expirationDate		= arrLinkData[19]	
+			conditionStatusCode	= ""
+			conditionStatusName	= ""
+			sItemCode = Transform_Exid2(stockExchangeCode) .. "@" .. stockCode
+			Check_ItemCode(sItemCode)
+			if isEmpty(expirationDate) == false then 
+				cont1.Calendar0.caption = string.gsub(expirationDate, "-")
+			end
+		end
+		-- --------------------------------
+		-- 비밀번호 입력 (직접 / 주문자동)
+		-- --------------------------------
+	elseif sKeyName == "CORRECT_PWD" then
+		-- --------------------------------
+		-- 비밀번호 입력 완료
+		-- --------------------------------
+		if sRet ~= "" then
+			local szAcnt
+			tData = gf_Split(sRet, "★")
+			if UBOUND(tData) > 0 then
+				g_sPwd = tData[1]
+				Form.PostLinkData("17100_PWD_CHANGE", sRet)
+			end
+			DATAMANAGER.RequestTranData("obtro_oder_132r")
+		end 
+	end
+end
+-- =============================================================================
+function Form_OnMsgBoxClose(sKeyName, sRet)
+	if sKeyName == "MONITORING_EXECUTE" then
+		if sRet == "ok" then
+			g_sAutoRule = "02"
+		else
+			g_sAutoRule = "01"
+		end
+		if g_isModify == true then
+			AutoRule_Update() 
+		else
+			AutoRule_Create()
+		end
+	elseif sKeyName == "REG" then
+		if sRet == "ok" then
+			Form.OpenScreen("87051" , g_sAcno..g_sAsno)
+		elseif sRet == "no" then
+			--			Button0.left = 0
+			--			Form.closeForm()
+		end
+	elseif sKeyName == "CLEAR_DATA" then 
+		if sRet == "ok" then
+			Clear_Data()
+		end
+	elseif sKeyName == "DISABLE_PTP" then 
+		if sRet == "no" then
+			Form.SendReturnToParent("DELETE_ITEM" , "")
+		end
+		Form.CloseForm()
+	elseif sKeyName == "DISABLE_ORDER" then 	
+		Form.CloseForm()
+	end
+end
+-- =============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	-- ----------------------------------------
+	-- 해외주식 현재가 - 프리/정규장
+	-- ----------------------------------------
+	if szTranID == "ohhts_6000_001r" then
+		DATAMANAGER.ClearInputData(0, "ohhts_6000_001r")
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		-- 시장구분			
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )		-- 마켓구분
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_sCode )		-- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , g_rtChk )		-- 실시간 여부
+	-- 해외주식 종목 기본정보 및 주간시세 보정용
+	elseif szTranID == "ohhts_6000_001r_1" then
+		DATAMANAGER.ClearInputData(0, "ohhts_6000_001r_1")
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r_1", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		-- 시장구분			
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r_1", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )		-- 마켓구분
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r_1", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_sCode )		-- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r_1", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , g_rtChk )		-- 실시간 여부
+	-- ----------------------------------------
+	-- 해외주식 현재가 - 주간장
+	-- ----------------------------------------
+	elseif szTranID == "ohhts_6000_017r" then
+		DATAMANAGER.ClearInputData(0, "ohhts_6000_017r")
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		-- 시장구분			
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )		-- 마켓구분
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_sCode )		-- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , g_rtChk )		-- 실시간 여부
+	-- ----------------------------------------
+	-- 해외주식 현재가 - 야간장
+	-- ----------------------------------------
+	elseif szTranID == "ohhts_6000_023r" then
+		DATAMANAGER.ClearInputData(0, "ohhts_6000_023r")
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" )		-- 시장구분			
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 		, 0 , g_sExid )		-- 마켓구분
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , g_sCode )		-- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_023r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , g_rtChk )		-- 실시간 여부
+	-- ----------------------------------------
+	-- 미국장 영업일 조회
+	-- ----------------------------------------
+	elseif szTranID == "obtro_comn_006r" then
+		DATAMANAGER.ClearInputData(0, "obtro_comn_006r")
+		DATAMANAGER.SetDataValue(0, "obtro_comn_006r", "InBlock1", "OVRS_EXCH_VNDR_IDNO" , 0 , g_sExid3)
+	-- ----------------------------------------
+	-- 해외주식 종목정보
+	-- ----------------------------------------
+	elseif szTranID == "obsim_oscm_331r" then
+		DATAMANAGER.ClearInputData(0, "obsim_oscm_331r")
+		DATAMANAGER.SetDataValue(0, "obsim_oscm_331r", "InBlock1", "ISCD" , 0 , g_sCode.."."..g_sExid)
+	elseif szTranID == "obtro_oder_132r" then
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "ACNO"			, 0 , g_sAcno)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "ASNO"			, 0 , g_sAsno)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "ACNT_PWD"		, 0 , g_sPwd)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "OVRS_STCK_SYMB_ISCD"	, 0 , g_sCode)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "OVRS_EXCH_VNDR_IDNO"	, 0 , g_sExid3)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "SELN_BYOV_CLCD"		, 0, "2")									-- 매도/매수구분코드
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "ODER_CLS_CODE"			, 0, cont1.cmb4.cbkeydata)							-- 주문구분코드
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "ODER_COND_CLS_CODE"		, 0, Check_OrdCond(cont1.cmb4.cbkeydata))				-- 주문조건구분코드
+		nQty = gf_Tonumber(cont1.edtQty.caption)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "ODQT"				, 0, nQty)							-- 주문수량
+		szPrc = ""
+		if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
+			--			if cont1.cmb5.cbkeydata = "01" then
+			--
+			--				sPrc = contHidden.lblHyun.caption
+			--				nUnit = Cdbl(GetHogaUnit(g_sExid3, sPrc, 0))
+			--				
+			--				nResultPrc = Cdbl(sPrc) + (nUnit * Cint(cont1.Combo0.cbkeydata))
+			--	
+			--				szPrc = nResultPrc
+			if cont1.cmb5.cbkeydata == "09" then
+				szPrc = Replace_Prc(cont1.edtPrc0.caption)
+			--			else
+			--				szPrc = contHidden.lblHyun.caption
+			end
+			szPrc = ReSet_Prc(szPrc, 0)
+		end
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "OVRS_STCK_ODER_PRC"	, 0, szPrc)									-- 주문단가
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "ODER_OCRN_TYPE_CODE"	, 0, "01")									-- 주문발생유형코드(01:일반주문)
+		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "WARN_CNFR_YN"		, 0, g_szWarnFlag)	
+	elseif szTranID == "obpds_srvc_323r" then
+		sCsno = Form.GetSharedData("&CUST_NUM", false)
+		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "ACNO" 				, 0 	, "" )
+		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "ASNO"				, 0 	, "" )
+		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "SVCD"				, 0 	, "083" )
+		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "CSNO"				, 0 	, sCsno )
+	elseif szTranID == "obsim_oscm_306r" then
+		DATAMANAGER.ClearInputData(0, "obsim_oscm_306r")
+		DATAMANAGER.SetDataValue(0, "obsim_oscm_306r", "InBlock1", "ISCD"						, 0 	, g_sCode .."."..g_sExid )
+		DATAMANAGER.SetDataValue(0, "obsim_oscm_306r", "InBlock1", "ISIN_ISCD"					, 0 	, "" )
+		DATAMANAGER.SetDataValue(0, "obsim_oscm_306r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE"	, 0 	, "" )
+	end
+end
+-- =============================================================================
+-- 주문조건구분코드
+-- =============================================================================
+function Check_OrdCond(szIdx)
+	if szIdx == "01" then
+		return "0" -- 지정가
+	elseif szIdx == "05" then
+		return "0" -- 시장가
+	elseif szIdx == "31" then
+		return "2" -- LOO
+	elseif szIdx == "32" then
+		return "7" -- LOC
+	elseif szIdx == "33" then
+		return "2" -- MOO
+	elseif szIdx == "34" then
+		return "7" -- MOC
+	elseif szIdx == "35" then
+		return "0" -- Limit VWAP
+	elseif szIdx == "36" then
+		return "0" -- Limit TWAP
+	elseif szIdx == "37" then
+		return "0" -- VWAP
+	elseif szIdx == "38" then
+		return "0" -- TWAP
+	else
+		return "0"
+	end
+end
+-- ==============================================
+-- 종목 서브정보 표시 
+-- ==============================================
+function DisplaySetting_ItemSubInfo(szPreText, isTradingSuspend, isSellOnly, isPTP)
+	sItemInfo = szPreText
+	-- 거래정지 여부
+	if isTradingSuspend == "Y" then
+		sItemInfo = szPreText .. " | 거래정지"
+	end
+	-- 매도만 가능 여부
+	if isSellOnly == "Y" then
+		sItemInfo = szPreText .. " | 매도만가능"
+	end
+	-- PTP종목 여부
+	if isPTP == "Y" then
+		sItemInfo = szPreText .. " | PTP종목"
+	end
+	cont0.lblItemInfo.caption = sItemInfo
+end
+-- =============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	if szTranID == "ohhts_6000_001r_1" then
+		sBusinessName 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_BSTP_MDDV_NAME", 0)	-- 업종명
+		sEtfEtn 		= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_ETF_TYPE_CODE", 0) 	-- ETF여부
+		sLvrg 		= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FID_LVRG", 0) 			-- 레버리지
+		sData = g_sCode .. " | " .. Transform_Exid(g_sExid2)
+		g_szYakCd = ""
+		local szLvrg
+		szLvrg = Form.getItemCodeInfo(g_sItemCode, "lvrgratio")
+		if sEtfEtn == "001" then			
+			if gf_Tonumber(szLvrg) == 89 then
+				sData = sData .. " | ETF(변동)"
+			else
+				sData = sData .. " | ETF(" .. gf_CommaValue(szLvrg,1) .. ")"
+			end
+			if gf_Tonumber(szLvrg) ~= 1 then
+				DATAMANAGER.RequestTranData("obpds_srvc_323r")
+			else
+				DATAMANAGER.RequestTranData("obsim_oscm_306r")
+			end
+		elseif sEtfEtn == "002" then
+			if gf_Tonumber(szLvrg) == 89 then
+				sData = sData .. " | ETN(변동)"
+			else
+				sData = sData .. " | ETN(" .. gf_CommaValue(szLvrg,1) .. ")"
+			end
+			DATAMANAGER.RequestTranData("obpds_srvc_323r")
+		else
+			sData = sData .. " | " .. sBusinessName
+		end
+		-- -------------------------------
+		-- 종목정보 세팅
+		-- -------------------------------
+		DisplaySetting_ItemSubInfo(sData, g_isTradingSuspend, g_isSellOnly, g_isPTP)
+		-- -------------------------------
+		-- 주간시세 보정용 시세정보
+		-- -------------------------------
+		g_sHyun 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRPR", 0)	-- 현재가
+		g_sHyunEx 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_UNCH_PRPR" , 0)	-- 환산현재가
+		g_sOpen 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_OPRC", 0)	-- 시가
+		g_sHigh 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_MXPR", 0)	-- 상한가
+		g_sLow 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_LLAM", 0)	-- 하한가
+		g_sClose 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS", 0)	-- 전일대비
+		g_sCloseRate = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_CTRT", 0)	-- 전일대비율
+		g_sCloseSign = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS_SIGN" , 0)	-- 전일대비부호
+		g_sHyun_ATTR 	= DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRPR", 0)	
+		g_sHyunEx_ATTR 	= DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_UNCH_PRPR", 0)	
+		g_sClose_ATTR 	= DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_VRSS", 0)	
+		g_sCloseRate_ATTR 	= DATAMANAGER.GetDataAttr(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_PRDY_CTRT", 0)	
+		-- -------------------------------
+		-- 해외주식 시세조회
+		-- -------------------------------
+		Request_MktOp(g_szMktOpClsCd)
+	elseif szTranID == "ohhts_6000_001r" or szTranID == "ohhts_6000_017r" or szTranID == "ohhts_6000_023r" then
+		--		DisplayPrevSet_LinkInfo()
+		if isEmpty(watchConditionType) == false then 
+			cont1.cmb6.cbkeydata = watchConditionType
+		else
+			cont1.cmb6.cbkeydata = g_mCondType
+		end
+		cont1_cmb6_OnEditComplete(0)
+		if isEmpty(watchType) == false then 
+			cont1.cmb1.cbkeydata = watchType
+		else
+			cont1.cmb1.cbkeydata = g_mCondBound
+		end
+		if isEmpty(orderClsType) == false then 
+			cont1.cmb4.cbkeydata = orderClsType
+		else
+			cont1.cmb4.cbkeydata = g_oCondType
+		end
+		if isEmpty(orderPriceType) == false then 
+			cont1.cmb5.cbkeydata = orderPriceType
+		else
+			cont1.cmb5.cbkeydata = g_oCondPrc
+		end
+		cont1_cmb5_OnEditComplete(0)
+		cont1_cmb4_OnEditComplete(0)
+		g_isFst = false
+		sKey = cont1.cmb5.cbkeydata
+		if sKey == "01" then
+			DisplaySet_OrderPrc(tickValue, false)
+		elseif sKey == "09" then
+			DisplaySet_OrderPrc(orderPrice, false)
+		end
+		DisplaySet_CondPrc(price, false)
+		DisplaySet_OrderQty(orderQty)
+		-- ---------------------
+		-- 실시간 등록
+		-- ---------------------
+		if szTranID == "ohhts_6000_001r" then
+			DATAMANAGER.RequestRealData( "ohhts_exst_cntg" )
+		elseif szTranID == "ohhts_6000_017r" then
+			DATAMANAGER.RequestRealData( "ohhts_exst_cntd" )
+		elseif szTranID == "ohhts_6000_023r" then
+			DATAMANAGER.RequestRealData( "ohhts_exst_cnta" )
+		end
+	elseif szTranID == "obtro_comn_006r" then
+		g_sBizDate   		= DATAMANAGER.GetDataValue(0, "obtro_comn_006r", "OutBlock1", "BSOP_DATE"	, 0) -- 미국장 영업일
+		if isEmpty(expirationDate) == false then 
+			cont1.Calendar0.caption = string.gsub(expirationDate, "-", "")
+		else
+			cont1.Calendar0.caption = CalcDate("d",89)
+		end
+	elseif szTranID == "obsim_oscm_331r" then
+		g_isSellOnly   		= DATAMANAGER.GetDataValue(0, "obsim_oscm_331r", "OutBlock1", "BYOV_PRHB_YN"	, 0) -- 매수불가여부
+		g_isTradingSuspend   = DATAMANAGER.GetDataValue(0, "obsim_oscm_331r", "OutBlock1", "TRHT_YN"		, 0) -- 거래정지여부
+		g_szBaseDate   		= DATAMANAGER.GetDataValue(0, "obsim_oscm_331r", "OutBlock2", "STND_DATE"		, 0) -- 기준일
+		g_isHoliday    		= DATAMANAGER.GetDataValue(0, "obsim_oscm_331r", "OutBlock2", "HLDY_YN"		, 0) -- 휴일여부
+		g_isPTP      		= DATAMANAGER.GetDataValue(0, "obsim_oscm_331r", "OutBlock2", "PTP_ISSU_YN"	, 0) -- PTP종목여부
+		Convert_MktOpInfo(g_szMktOpClsCd)
+		DisplaySetting_MktOperation(g_szMktOp, g_isMktClosed, g_szSubMktOp, g_szBaseDate, g_isHoliday)
+		-- 해외주식 종목 기본정보 및 주간시세 보정용
+		DATAMANAGER.RequestTranData("ohhts_6000_001r_1")
+	elseif szTranID == "obpds_srvc_323r" then
+		g_szYakCd = DATAMANAGER.GetDataMsgCode(szTranID)
+		if g_szYakCd ~= "5766" and g_szYakCd ~= "" then
+			Form.MsgBox("안내", "해외 ETP 거래 미신청 계좌입니다.\n해당 화면으로 이동하시겠습니까?" , "REG", 7, "거래신청하기" , "취소")
+		end
+	elseif szTranID == "obsim_oscm_306r" then
+		sETFTypeCode = DATAMANAGER.GetDataValue(0, "obsim_oscm_306r", "OutBlock1", "OVRS_ETF_TPCD" , 0)
+		-- 변동성 ETF / ETC 체크
+		if sETFTypeCode == "005" or sETFTypeCode == "003" then
+			DATAMANAGER.RequestTranData("obpds_srvc_323r")
+		end
+	elseif szTranID == "obtro_oder_132r" then
+		cont1.btnReg.enable = true
+		if g_szOdrPop == "1" then
+			Open_Confirm()
+		else
+			if g_isPTP == "Y" then
+				szData = "90" .. "|" .. ""	-- 매매구분|메시지
+				-- Form.OpenPopup("mhtro16060_p15", szData , "")	-- OnPopupReturn -> "PTP주문경고"
+				Form.OpenPopupAnimation("mhtro16100_p15", szData, "", "2")
+			else
+				--				g_sAutoRule = "01"
+				--				if g_isModify == true then
+				--					AutoRule_Update() 
+				--				else
+				--					AutoRule_Create()
+				--				end if
+				-- v20250729_01 >>
+				Form.MsgBox("안내", "등록하신 감시 조건을\n바로 실행하시겠습니까?\n(감시는 정규장에서만 실행돼요.)", "MONITORING_EXECUTE", 7, "실행하기", "취소")
+				-- v20250729_01 <<
+			end
+		end
+	end
+end
+function Check_InputData()
+	sPrc = Replace_Prc(cont1.Label6.caption)
+	if isEmpty(sPrc) == true or gf_Tonumber(sPrc) == 0 then
+		if cont1.cmb6.cbkeydata ~= "06" then
+			Form.showAlert("알림", "감시가격을 입력해 주세요.")
+		else
+			Form.showAlert("알림", "감시기준 등락률을 입력해 주세요.")
+		end
+		return false
+	end
+	if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
+		if (cont1.cmb5.cbkeydata == "01" or cont1.cmb5.cbkeydata == "09") and isEmpty(cont1.edtPrc0.caption) == true then
+			Form.showAlert("알림", "주문 가격을 입력해 주세요.")
+			return false
+		end
+	end
+	if isEmpty(cont1.edtQty.caption) == true then
+		Form.showAlert("알림", "주문 수량을 입력해 주세요.")
+		return false
+	end
+	return true
+end
+function Clear_Data() 
+	--	cont1.cmb6.cbkeydata = "01"
+	--	cont1.cmb1.cbkeydata = "2"
+	--	cont1.cmb4.cbkeydata = "01"
+	--	cont1.cmb5.cbkeydata = "01"
+	cont1_cmb6_OnEditComplete(0)
+	cont1_cmb1_OnEditComplete(0)
+	g_isFst = true
+	cont1_cmb4_OnEditComplete(0)
+	cont1_cmb5_OnEditComplete(0)
+	cont1.edtQty.caption = ""
+	sCal = CalcDate("d",89)
+	cont1.Calendar0.caption = sCal
+	g_isFst = false
+end
+-- =============================================================================
+function DATAMANAGER_OnSendRealBefore(szTranID)
+	if szTranID == "ohhts_exst_cntg" or szTranID == "ohhts_exst_cntd" or szTranID == "ohhts_exst_cnta" then
+		DATAMANAGER.SetDataValue( 1, szTranID, "InBlock1", "FIDXR_ISCD" , 0 , g_sItemCode )
+	end
+end
+-- =============================================================================
+function cont1_Label6_OnClick()
+	sLinkData = "1"									-- 매도/매수 구분 (매도:0, 매수:1)
+	sPrc = Replace_Prc(cont1.Label6.caption)
+	if gf_Tonumber(sPrc) == 0 then
+		sPrc = ""
+	end
+	if cont1.cmb6.cbkeydata == "06" then
+		sLinkData = "0"	
+		sLinkData = sLinkData .. "`" .. "2"					-- 가격/수량 구분 (가격:0, 수량:1, 등락률:2)
+		sLinkData = sLinkData .. "`" .. string.gsub(sPrc, "-", "")	-- 가격/수량 값   
+		sLinkData = sLinkData .. "`" .. "6"	-- 소숫점 자리
+		sLinkData = sLinkData .. "`" .. "2"	-- 소숫점 자리
+		sLinkData = sLinkData .. "`" .. "%"	-- 뒷첨자 
+	else
+		sLinkData = sLinkData .. "`" .. "0"					-- 가격/수량 구분 (가격:0, 수량:1, 등락률:2)
+		sLinkData = sLinkData .. "`" .. string.gsub(sPrc, "-", "")		-- 가격/수량 값   
+		sLinkData = sLinkData .. "`" .. "12"	-- 소숫점 자리
+		sLinkData = sLinkData .. "`" .. contHidden.Label8.caption	-- 소숫점 자리
+		sLinkData = sLinkData .. "`" .. contHidden.Label7.caption	-- 뒷첨자 
+	end
+	if cont1.cmb6.cbkeydata == "06" then
+		sPrc = SetPrice("AUTO", 0, "2", "%")
+	else
+		sPrc = SetPrice("AUTO", 0, contHidden.Label8.caption, contHidden.Label7.caption)
+	end
+	cont1.Label6.fgcolor = 333
+	cont1.Label6.caption = sPrc
+	sLinkData = sLinkData .. "`" .. "매수_감시가격"			-- 리턴받을 키값
+	Form.OpenPopup("nrshtro17100_p0" , sLinkData, "")
+end
+-- =============================================================================
+function cont1_btn0_OnClick()
+	sCal = CalcDate("d",4)
+	cont1.Calendar0.caption = sCal
+end
+-- =============================================================================
+function cont1_btn1_OnClick()
+	sCal = CalcDate("d",29)
+	cont1.Calendar0.caption = sCal
+end
+-- =============================================================================
+function cont1_btn2_OnClick()
+	sCal = CalcDate("d",89)
+	cont1.Calendar0.caption = sCal
+end
+-- =============================================================================
+
+-- =============================================================================
+-- btnPPlus_OnClick : 가격 + 버튼
+-- =============================================================================
+function cont1_btnPPlus0_OnClick()
+	Calc_Price2(gf_Tonumber(cont1.cmb5.currentindex), 0)
+	sPrevPrc = Replace_Prc(cont1.edtPrc0.caption)
+	sKey = cont1.cmb5.cbkeydata
+	if sKey == "01" then
+		sPrc = Calc_Price2(0, 0, sPrevPrc)
+		cont1.Combo0.cbkeydata = sPrc
+		sPrc = SetPrice("AUTO", sPrc, "0", "틱")
+	elseif sKey == "09" then
+		if gf_Tonumber(sPrevPrc) == 0 then
+			sPrc = Replace_Prc(contHidden.Label0.caption)
+			sPrc  = ReSet_Prc(sPrc, 1)
+		else
+			sPrc = Calc_Price2(1, 0, sPrevPrc)
+		end
+		sPrc = SetPrice("AUTO", sPrc, contHidden.Label8.caption, contHidden.Label7.caption)
+	end
+	cont1.edtPrc0.caption = sPrc
+end
+-- =============================================================================
+-- btnPMinus_OnClick : 가격 - 버튼
+-- =============================================================================
+function cont1_btnPMinus0_OnClick()
+	sPrevPrc = Replace_Prc(cont1.edtPrc0.caption)
+	sKey = cont1.cmb5.cbkeydata
+	if sKey == "01" then
+		sPrc = Calc_Price2(0, 1, sPrevPrc)
+		cont1.Combo0.cbkeydata = sPrc
+		sPrc = SetPrice("AUTO", sPrc, "0", "틱")
+	elseif sKey == "09" then
+		if gf_Tonumber(sPrevPrc) == 0 then
+			sPrc = Replace_Prc(contHidden.Label0.caption)
+			sPrc  = ReSet_Prc(sPrc, 0)
+		else
+			sPrc = Calc_Price2(1, 1, sPrevPrc)
+		end
+		sPrc = SetPrice("AUTO", sPrc, contHidden.Label8.caption, contHidden.Label7.caption)
+	end
+	cont1.edtPrc0.caption = sPrc
+end
+-- =============================================================================
+-- contMain_btnQPlus_OnClick : 수량 + 버튼
+-- =============================================================================
+function cont1_btnQPlus_OnClick()
+	Calc_Qty2(0)
+end
+-- =============================================================================
+-- contMain_btnQMinus_OnClick : 수량 - 버튼
+-- =============================================================================
+function cont1_btnQMinus_OnClick()
+	Calc_Qty2(1)
+end
+function cont1_btnQty_OnClick()
+	sLinkData = "1"									-- 매도/매수 구분 (매도:0, 매수:1)
+	sLinkData = sLinkData .. "`" .. "1"					-- 가격/수량 구분 (가격:0, 수량:1)
+	sLinkData = sLinkData .. "`" .. cont1.edtQty.caption		-- 가격/수량 값   
+	sLinkData = sLinkData .. "`" .. "12"	-- 소숫점 자리
+	sLinkData = sLinkData .. "`" .. "0"					-- 소숫점 자리
+	sLinkData = sLinkData .. "`" .. "주"					-- 뒷첨자 
+	sLinkData = sLinkData .. "`" .. "매수_주문수량"			-- 리턴받을 키값
+	Form.OpenPopup("nrshtro17100_p0" , sLinkData, "")
+end
+function cont1_btnPrc0_OnClick()
+	if gf_Tonumber(cont1.cmb5.currentindex) == 0 then
+		cont1.Combo0.openList()
+	elseif gf_Tonumber(cont1.cmb5.currentindex) == 4 then
+		sLinkData = "1"									-- 매도/매수 구분 (매도:0, 매수:1)
+		sLinkData = sLinkData .. "`" .. "0"					-- 가격/수량 구분 (가격:0, 수량:1)
+		sLinkData = sLinkData .. "`" .. Replace_Prc(cont1.edtPrc0.caption)		-- 가격/수량 값   
+		sLinkData = sLinkData .. "`" .. "12"	-- 소숫점 자리
+		sLinkData = sLinkData .. "`" .. contHidden.Label8.caption	-- 소숫점 자리
+		sLinkData = sLinkData .. "`" .. contHidden.Label7.caption	-- 뒷첨자 
+		sLinkData = sLinkData .. "`" .. "매수_주문가격"			-- 리턴받을 키값
+		Form.OpenPopup("nrshtro17100_p0" , sLinkData, "")
+	end
+end
+-- =============================================================================
+function cont1_cmb5_OnEditComplete(iIndex)
+	--	cont1.edtPrc0.caption = ""
+	cont1.Combo0.cbkeydata = "0"
+	sKey = cont1.cmb5.cbkeydata
+	Form.SetSharedData("17100_BUY_ORDER_COND_PRC" , sKey)
+	if sKey == "01" then
+		cont1.edtPrc0.hintcaption = "틱"
+		cont1.edtPrc0.caption = "0 틱"
+		cont1.btnPPlus0.visible = true
+		cont1.btnPMinus0.visible = true
+		cont1.edtPrc0.visible = true
+		cont1.btnPrc0.visible = true
+	elseif sKey == "02" then
+		cont1.edtPrc0.hintcaption = ""
+		cont1.edtPrc0.caption = ""
+		cont1.btnPPlus0.visible = false
+		cont1.btnPMinus0.visible = false
+		cont1.edtPrc0.visible = false
+		cont1.btnPrc0.visible = false
+	elseif sKey == "03" then
+		cont1.edtPrc0.hintcaption = ""
+		cont1.edtPrc0.caption = ""
+		cont1.btnPPlus0.visible = false
+		cont1.btnPMinus0.visible = false
+		cont1.edtPrc0.visible = false
+		cont1.btnPrc0.visible = false
+	elseif sKey == "04" then
+		cont1.edtPrc0.hintcaption = ""
+		cont1.edtPrc0.caption = ""
+		cont1.btnPPlus0.visible = false
+		cont1.btnPMinus0.visible = false
+		cont1.edtPrc0.visible = false
+		cont1.btnPrc0.visible = false
+	elseif sKey == "09" then
+		cont1.edtPrc0.hintcaption = "금액입력"
+		cont1.edtPrc0.caption = ""
+		cont1.btnPPlus0.visible = true
+		cont1.btnPMinus0.visible = true
+		cont1.edtPrc0.visible = true
+		cont1.btnPrc0.visible = true
+	end
+	sKey2 = cont1.cmb4.cbkeydata
+	if sKey2 == "05" or sKey2 == "34" then 
+		cont1.edtPrc0.hintcaption = ""
+		cont1.edtPrc0.caption = ""
+		cont1.btnPPlus0.visible = false
+		cont1.btnPMinus0.visible = false
+		cont1.edtPrc0.visible = false
+		cont1.btnPrc0.visible = false
+	end
+	cont1.btnPrc0.bringFront("1")
+end
+function Change_OrderType()
+	sKey = cont1.cmb5.cbkeydata
+	if sKey == "01" then
+		cont1.edtPrc0.hintcaption = "틱"
+		if isEmpty(gf_Trim(cont1.edtPrc0.caption)) == true then
+			cont1.edtPrc0.caption = "0 틱"
+		end
+		cont1.btnPPlus0.visible = true
+		cont1.btnPMinus0.visible = true
+		cont1.edtPrc0.visible = true
+		cont1.btnPrc0.visible = true
+	elseif sKey == "02" then
+		cont1.edtPrc0.hintcaption = ""
+		cont1.btnPPlus0.visible = false
+		cont1.btnPMinus0.visible = false
+		cont1.edtPrc0.visible = false
+		cont1.btnPrc0.visible = false
+	elseif sKey == "03" then
+		cont1.edtPrc0.hintcaption = ""
+		cont1.btnPPlus0.visible = false
+		cont1.btnPMinus0.visible = false
+		cont1.edtPrc0.visible = false
+		cont1.btnPrc0.visible = false
+	elseif sKey == "04" then
+		cont1.edtPrc0.hintcaption = ""
+		cont1.btnPPlus0.visible = false
+		cont1.btnPMinus0.visible = false
+		cont1.edtPrc0.visible = false
+		cont1.btnPrc0.visible = false
+	elseif sKey == "09" then
+		cont1.edtPrc0.hintcaption = "금액입력"
+		cont1.btnPPlus0.visible = true
+		cont1.btnPMinus0.visible = true
+		cont1.edtPrc0.visible = true
+		cont1.btnPrc0.visible = true
+	end
+	sKey2 = cont1.cmb4.cbkeydata
+	if sKey2 == "05" or sKey2 == "34" then 
+		cont1.btnPPlus0.visible = false
+		cont1.btnPMinus0.visible = false
+		cont1.edtPrc0.visible = false
+		cont1.btnPrc0.visible = false
+	end
+	cont1.btnPrc0.bringFront("1")
+end
+-- =============================================================================
+function cont1_Combo0_OnEditComplete(iIndex)
+	sKey = cont1.Combo0.cbkeydata
+	cont1.edtPrc0.caption = sKey .. " 틱"
+end
+-- =============================================================================
+function cont1_cmb6_OnEditComplete(iIndex)
+	sKey = cont1.cmb6.cbkeydata
+	Form.SetEnvData(1, "17100_BUY_MONITOR_COND_TYPE", sKey)
+	if sKey == "06" then
+		cont1.cmb6.caption = "등락률"
+		sPrc = SetPrice("AUTO", 0, "2", "%")
+		cont1.cmb1.cbinputdatatext = "2`하락\r\n1`상승"
+	else
+		if sKey == "02" then
+			cont1.cmb6.caption = "시가"
+		elseif sKey == "03" then
+			cont1.cmb6.caption = "고가"
+		elseif sKey == "04" then
+			cont1.cmb6.caption = "저가"
+		end
+		sPrc = SetPrice("AUTO", 0, contHidden.Label8.caption, contHidden.Label7.caption)
+		if sKey == "05" then
+			cont1.cmb1.cbinputdatatext = "2`하락\r\n1`상승"
+		else
+			cont1.cmb1.cbinputdatatext = "2`이하\r\n1`이상"
+		end
+	end
+	cont1.Label6.fgcolor = 333
+	cont1.Label6.caption = sPrc
+	--	if cont1.cmb6.cbkeydata = "06" then
+	--		cont1.Label6.caption = "0 %" 
+	--	else
+	--		cont1.Label6.caption = "0 " .. contHidden.Label7.caption
+	--	end if
+end
+-- =============================================================================
+-- 접두사 / 접미사 변환 함수 (조건추가해서 사용하기 바람)
+-- =============================================================================
+function Replace_Affix(nIdx, sAffix, sText)
+	sTempAffix = ""
+	if sAffix == "$" then
+		sTempAffix = "USD"
+	elseif sAffix == "USD" then
+		sTempAffix = "$"
+	else
+		sTempAffix = sAffix
+	end
+	sResult = sText
+	if Instr(sResult, sAffix) > 0 then
+		-- --------------
+		-- Prefix
+		-- --------------
+		if nIdx == 0 then
+			sResult = sTempAffix .. " " .. gf_Trim(string.gsub(sResult, sAffix, ""))
+		-- --------------
+		-- Suffix
+		-- --------------
+		elseif nIdx == 1 then
+			sResult = gf_Trim(string.gsub(sResult, sAffix, "")) .. " " .. sTempAffix
+		end
+	end
+	return sResult
+end
+-- ======================================================================================
+-- REST API 통신처리
+-- ======================================================================================
+function Open_Confirm()
+	sLinkData = Left(g_sAcno,4) .. "-" .. Right(g_sAcno,4)  .. "-" .. g_sAsno .. " " .. g_sAcntNm
+	sLinkData = sLinkData .. "`" .. g_sCode
+	sLinkData = sLinkData .. "`" .. g_sItemName
+	sLinkData = sLinkData .. "`" .. cont1.cmb6.caption
+	sLinkData = sLinkData .. "`" .. Replace_Affix(1, "$", cont1.Label6.caption)  .. " " .. cont1.cmb1.caption
+	sLinkData = sLinkData .. "`" .. cont1.cmb4.caption 
+	if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
+		if cont1.cmb5.cbkeydata == "01" then
+			sLinkData = sLinkData .. "`" .. cont1.Combo0.caption 
+		elseif cont1.cmb5.cbkeydata == "09" then
+			sLinkData = sLinkData .. "`" .. Replace_Affix(1, "$", cont1.edtPrc0.caption)  
+		else
+			sLinkData = sLinkData .. "`" .. cont1.cmb5.caption 
+		end
+	else
+		sLinkData = sLinkData .. "`" .. "-"
+	end
+	if isEmpty(cont1.edtQty.caption) == true then
+		sLinkData = sLinkData .. "`" .. "-"
+	else
+		sLinkData = sLinkData .. "`" .. gf_CommaValue(cont1.edtQty.caption , 0) .. " 주"
+	end
+	sDate = cont1.Calendar0.caption
+	sConvDate = Mid(sDate,3,2) .. "." .. Mid(sDate,5,2) .. "." .. Right(sDate,2) .. " 까지"
+	sLinkData = sLinkData .. "`" .. sConvDate
+	Form.OpenPopup("nrshtro17100_pa" , sLinkData , "")
+end
+-- =============================================================================
+function cont1_btnReg_OnClick()
+	cont1.btnReg.enable = false
+	if g_szYakCd ~= "5766" and g_szYakCd ~= "" then
+		Form.MsgBox("안내", "해외 ETP 거래 미신청 계좌입니다.\n해당 화면으로 이동하시겠습니까?" , "REG", 7 , "거래신청하기", "취소")
+		cont1.btnReg.enable = true
+		return
+	end
+	if Check_InputData() == false then
+		cont1.btnReg.enable = true
+		return
+	end
+	--	cont1.btnReg.enable = true
+	--	if g_szOdrPop == "1" then
+	--		Open_Confirm()
+	--	else
+	--		if g_isPTP == "Y" then
+	--			szData = "90" & "|" & ""	-- 매매구분|메시지
+	--			-- Form.OpenPopup("mhtro16060_p15", szData , "")	-- OnPopupReturn -> "PTP주문경고"
+	--			Form.OpenPopupAnimation("mhtro16100_p15", szData, "", "2")
+	--		else
+	--			--			g_sAutoRule = "01"
+	--			--			if g_isModify == true then
+	--			--				AutoRule_Update() 
+	--			--			else
+	--			--				AutoRule_Create()
+	--			--			end if
+	--		
+	--			Form.MsgBox("안내", "등록하신 감시 조건을\n바로 실행하시겠습니까?", "MONITORING_EXECUTE", 7, "실행하기", "취소")
+	--		end if
+	--	end if
+	DATAMANAGER.RequestTranData("obtro_oder_132r")
+	Form.setDelayEvent(1, 0.5)
+	-- cont1.btnReg.enable = true	
+end
+function Form_OnDelayEvent(nID)
+	if gf_Tonumber(nID) == 1 then
+		cont1.btnReg.enable = true
+	end
+end
+function AutoRule_Create() 
+	g_sStep = "CREATE"
+	Form.releaseRequestData()
+	sUserID = Form.GetSharedData("&USER_ID", false )
+	Form.MakeRequestData("userId", sUserID)
+	Form.MakeRequestData("accountNumber", 	g_sAcno)
+	Form.MakeRequestData("accountSeqNumber", g_sAsno)
+	Form.MakeRequestData("accountPassword", g_sPwd)
+	Form.MakeRequestData("stockExchangeCode", g_sMarket)
+	Form.MakeRequestData("stockCode", g_sCode)
+	Form.MakeRequestData("tradeType", "2")
+	Form.MakeRequestData("conditionName", "매수자동조건")
+	Form.startBuildJson()
+	Form.putJsonData("watchConditionType", cont1.cmb6.cbkeydata)
+	Form.putJsonData("watchType", cont1.cmb1.cbkeydata)
+	Form.putJsonData("price", Replace_Prc(cont1.Label6.caption))
+	sData = Form.endBuildJson()
+	Form.MakeRequestData("buyCondition", sData)
+	Form.MakeRequestData("orderPaymentType", "1")
+	Form.MakeRequestData("orderClsType", cont1.cmb4.cbkeydata)
+	if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
+		Form.MakeRequestData("orderPriceType", cont1.cmb5.cbkeydata)
+		if cont1.cmb5.cbkeydata == "01" then
+			Form.MakeRequestData("tickValue", cont1.Combo0.cbkeydata)
+			Form.MakeRequestData("orderPrice", "0")
+			--		sPrc = contHidden.lblHyun.caption
+			--		nUnit = Cdbl(GetHogaUnit(g_sExid3, sPrc, 0))
+			--		
+			--		nResultPrc = Cdbl(sPrc) + (nUnit * Cint(cont1.Combo0.cbkeydata))
+			--		Form.MakeRequestData("orderPrice", nResultPrc)
+		elseif cont1.cmb5.cbkeydata == "09" then
+			Form.MakeRequestData("tickValue","0")
+			Form.MakeRequestData("orderPrice", Replace_Prc(cont1.edtPrc0.caption))
+		else
+			Form.MakeRequestData("tickValue","0")
+			Form.MakeRequestData("orderPrice", "0")
+		end
+	end
+	Form.MakeRequestData("orderQty", cont1.edtQty.caption)
+	sMonth = cont1.Calendar0.calmonth
+	if gf_Tonumber(cont1.Calendar0.calmonth) < 10 then
+		sMonth = "0"..sMonth
+	end
+	sDate = cont1.Calendar0.caption
+	Form.MakeRequestData("expirationDate", Left(sDate,4) .. "-" ..  Mid(sDate,5,2)  .. "-" .. Right(sDate,2))
+	Form.MakeRequestData("conditionStatusCode", g_sAutoRule)
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	if sDev == "1" then	-- 개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end
+	Form.requestRestAPI(sUrl.."api/v1/rule/create", "")
+	g_sAutoRule = "01"
+end
+function AutoRule_Update() 
+	g_sStep = "UPDATE"
+	Form.releaseRequestData()
+	Form.MakeRequestData("orderConditionId", orderConditionId)
+	Form.MakeRequestData("accountPassword", g_sPwd)
+	Form.MakeRequestData("stockExchangeCode", g_sMarket)
+	Form.MakeRequestData("stockCode", g_sCode)
+	Form.MakeRequestData("tradeType", "2")
+	Form.startBuildJson()
+	Form.putJsonData("watchConditionType", cont1.cmb6.cbkeydata)
+	Form.putJsonData("watchType", cont1.cmb1.cbkeydata)
+	Form.putJsonData("price", Replace_Prc(cont1.Label6.caption))
+	sData = Form.endBuildJson()
+	Form.MakeRequestData("buyCondition", sData)
+	Form.MakeRequestData("orderPaymentType", "1")
+	Form.MakeRequestData("orderClsType", cont1.cmb4.cbkeydata)
+	if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
+		Form.MakeRequestData("orderPriceType", cont1.cmb5.cbkeydata)
+		if cont1.cmb5.cbkeydata == "01" then
+			Form.MakeRequestData("tickValue", cont1.Combo0.cbkeydata)
+			Form.MakeRequestData("orderPrice", "0")
+			--		sPrc = contHidden.lblHyun.caption
+			--		nUnit = Cdbl(GetHogaUnit(g_sExid3, sPrc, 0))
+			--		
+			--		nResultPrc = Cdbl(sPrc) + (nUnit * Cint(cont1.Combo0.cbkeydata))
+			--		Form.MakeRequestData("orderPrice", nResultPrc)
+		elseif cont1.cmb5.cbkeydata == "09" then
+			Form.MakeRequestData("tickValue","0")
+			Form.MakeRequestData("orderPrice", Replace_Prc(cont1.edtPrc0.caption))
+		else
+			Form.MakeRequestData("tickValue","0")
+			Form.MakeRequestData("orderPrice", "0")
+		end
+	end
+	Form.MakeRequestData("orderQty", cont1.edtQty.caption)
+	sMonth = cont1.Calendar0.calmonth
+	if gf_Tonumber(cont1.Calendar0.calmonth) < 10 then
+		sMonth = "0"..sMonth
+	end
+	Form.MakeRequestData("conditionStatusCode", g_sAutoRule)
+	sDate = cont1.Calendar0.caption
+	Form.MakeRequestData("expirationDate", Left(sDate,4) .. "-" ..  Mid(sDate,5,2)  .. "-" .. Right(sDate,2))
+	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sUrl = ""
+	if sDev == "1" then	-- 개발기
+		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
+	else
+		sUrl = "https://api-gateway.imeritz.com:8443/"
+	end
+	Form.requestRestAPI(sUrl.."api/v1/rule/update", "")
+	g_sAutoRule = "01"
+end
+-- =============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
+	if sEventName ==  "RESTAPI_RETURN" then
+		sStep = g_sStep
+		g_sStep = ""
+		-- ----------------------------------
+		-- 조건 등록
+		-- ----------------------------------
+		if sStep == "CREATE" then
+			-- ----------------------------------------
+			-- 성공
+			-- ----------------------------------------
+			if sParam == "SUCCESS" then
+				status = Form.responseRestAPI("DATA", 0, "status", "")
+				if status == "00" then
+					Form.CloseForm()
+					Form.SendReturnToParent("COMPLETE_ORDER" , "")
+				end
+			-- ----------------------------------------
+			-- 실패(ERROR or EXCEPTION)
+			-- ----------------------------------------
+			else
+				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+				if isEmpty(oError) == false then
+					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					if errorCode == "LIMIT_REACHED" then
+						Form.ShowAlert("알림", "자동 감시 주문은\n50개 까지만 등록 가능해요.")
+						return 
+					end
+				end
+				Form.ShowAlert("알림", g_sCommonErrorMsg)
+				return 
+			end
+		-- ----------------------------------
+		-- 조건 수정
+		-- ----------------------------------
+		elseif sStep == "UPDATE" then
+			-- ----------------------------------------
+			-- 성공
+			-- ----------------------------------------
+			if sParam == "SUCCESS" then
+				status = Form.responseRestAPI("DATA", 0, "status", "")
+				if status == "00" then
+					Form.CloseForm()
+					Form.SendReturnToParent("COMPLETE_MODIFY" , "")
+				end
+			-- ----------------------------------------
+			-- 실패(ERROR or EXCEPTION)
+			-- ----------------------------------------
+			else
+				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+				if isEmpty(oError) == false then
+					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					if errorCode == "UNMODIFIABLE_STATUS" then
+						Form.MsgBox("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.", "DISABLE_ORDER", 6)
+						return 
+					elseif errorCode == "FORCED_STOP_STATUS" then
+						Form.ShowAlert("알림", errorMessage)
+						return 
+					end
+				end
+				Form.ShowAlert("알림", g_sCommonErrorMsg)
+				return 
+			end
+		end
+	end
+end
+-- =============================================================================
+function Form_OnFormInitBefore()
+	imgBack.maintainratio = "2"
+	imgInfo.maintainratio = "1"
+	cont0.imgSearch.maintainratio = "1"
+	--	cont0.lblItemName.maxlinecnt = "2^-4"
+end
+-- =============================================================================
+function Form_OnLinkData(sKey, sValue)
+	-- 20250804_01 YSH START
+	-- 해외주식 장운영 정보 조회방식 변경
+	if sKey == "OVRS_MARKET_OPERATION_TRAN" then
+		-- Form.ShowAlert("자동감시주문_매수_nrshtro17100_p2", "조회 성공 여부 : " & sValue)
+		if sValue == "SUCCESS" then
+			if g_sExid ~= "" then
+				sKey = "&OVRS_MARKET_OPERATION_" .. Transform_Exid4(g_sExid)
+				g_szMktOpClsCd = Form.GetSharedData(sKey, false)
+				Check_ItemCode(g_sItemCode)
+			end
+		end
+	elseif sKey == "OVRS_MARKET_OPERATION_REAL" then
+		-- Form.ShowAlert("자동감시주문_매수_nrshtro17100_p2", "실시간 조회 성공 여부 : " & sValue & " / g_sExid : " & Transform_Exid4(g_sExid))
+		arrMktData = gf_Split(sValue, "@")
+		if arrMktData[1] == Transform_Exid4(g_sExid) and g_szMktOpClsCd ~= arrMktData[2] then
+			g_szMktOpClsCd = arrMktData[2]
+			Convert_MktOpInfo(g_szMktOpClsCd)
+			DisplaySetting_MktOperation(g_szMktOp, g_isMktClosed, g_szSubMktOp, g_szBaseDate, g_isHoliday)
+			Cancel_Real_Total()
+			-- 해외주식 종목 기본정보 및 주간시세 보정용
+			DATAMANAGER.RequestTranData("ohhts_6000_001r_1")
+		end
+	end
+	-- 20250804_01 YSH END
+end
+-- =============================================================================
+function imgBack_OnClick()
+	Form.SendReturnToParent("CLOSE_FORM" , "")
+	Form.closeForm()
+end
+-- =============================================================================
+function cont1_btnReg0_OnClick()
+	Form.MsgBox("안내", "입력된 조건을\n초기화 하시겠습니까?", "CLEAR_DATA", 7, "확인", "취소")
+	--	Clear_Data()
+end
+-- =============================================================================
+function cont1_Label0_OnClick()
+	if g_isModify == false then
+		sLinkData = g_sAcno .. "`" .. g_sAsno .. "`" .. "2" .. "`" .. "2"
+		Form.OpenPopup("nrshtro17100_p7" , sLinkData , "")
+	end
+end
+-- =============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+	if szTranID == "obtro_oder_132r" then
+		cont1.btnReg.enable = true
+		-- -----------------------
+		-- 일부메시지 하드코딩
+		-- -----------------------
+		if szErrCode == "6090" then
+			Form.ShowAlert("알림", "자동주문 설정이 불가한 종목입니다.\n(권리락, 배당락, 액면분할 등 권리 발생 또는 종목 정보 변경 종목은 설정 불가)" )
+			return
+		elseif szErrCode == "6119" then
+			--			Form.ShowAlert("알림", "자동주문 설정이 불가한 종목입니다.\n(주문 제한 PTP 종목)" )
+			if g_isModify == true then
+				Form.MsgBox("알림", "자동주문 설정이 불가한 종목입니다.\n(주문 제한 PTP 종목)" , "DISABLE_PTP", 7, "확인", "삭제하기")
+			else
+				Form.MsgBox("알림", "자동주문 설정이 불가한 종목입니다.\n(주문 제한 PTP 종목)" , "DISABLE_PTP", 6)
+			end
+			return
+		elseif szErrCode == "2438" then
+			Form.openPopupAnimation("pwdcheckpopup", g_sAcno..g_sAsno ,"","2")
+			return
+		end
+	end
+	if szTranID == "obpds_srvc_323r" then
+		g_szYakCd = DATAMANAGER.GetDataMsgCode(szTranID)
+		if g_szYakCd ~= "5766" and g_szYakCd ~= "" then
+			Form.MsgBox("안내", "해외 ETP 거래 미신청 계좌입니다.\n해당 화면으로 이동하시겠습니까?" , "REG", 7 , "거래신청하기", "취소")
+			return
+		end
+	end
+	if szTranID == "obsim_oscm_306r" then	
+		DATAMANAGER.RequestTranData("obpds_srvc_323r")
+		return
+	end
+	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
+	if	string.len(gf_Trim(szSubMsg))	>	0	then
+		Form.ShowAlert("알림", szErrMsg .. "(" .. szSubMsg .. ")")
+	else
+		Form.ShowAlert("알림", szErrMsg )
+	end
+end
+-- =============================================================================
+function DATAMANAGER_OnReceiveTranData(szTranID)
+	if szTranID == "ohhts_6000_017r" then
+		sHyun 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR", 0)	-- 현재가
+		-- ----------------------------------
+		-- 주간시세 현재가 없는 경우 시세보정
+		-- ----------------------------------
+		if isEmpty(sHyun) == true or gf_Tonumber(sHyun) == 0 then
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR", 0 , g_sHyun)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR", 0 , g_sHyun_ATTR)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_UNCH_PRPR", 0 , g_sHyunEx)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_UNCH_PRPR", 0 , g_sHyunEx_ATTR)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_VRSS_SIGN", 0 , g_sCloseSign)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_VRSS", 0 , g_sClose)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_VRSS", 0 , g_sClose_ATTR)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_CTRT", 0 , g_sCloseRate)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_CTRT", 0 , g_sCloseRate_ATTR)
+		end
+	elseif szTranID == "ohhts_6000_023r" then
+		sHyun 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR", 0)	-- 현재가
+		-- ----------------------------------
+		-- 애프터시세 현재가 없는 경우 시세보정
+		-- ----------------------------------
+		if isEmpty(sHyun) == true or gf_Tonumber(sHyun) == 0 then
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR", 0 , g_sHyun)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR", 0 , g_sHyun_ATTR)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_UNCH_PRPR", 0 , g_sHyunEx)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_UNCH_PRPR", 0 , g_sHyunEx_ATTR)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_VRSS_SIGN", 0 , g_sCloseSign)
+			DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_VRSS", 0 , g_sClose)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_VRSS", 0 , g_sClose_ATTR)
+			DATAMANAGER.SetDataValue(0,"ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_CTRT" , 0 , g_sCloseRate)
+			DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_CTRT", 0 , g_sCloseRate_ATTR)
+		end
+	end
+end
+-- =============================================================================
+function cont0_lblItemName_OnClick()
+	cont0_imgSearch_OnClick()
+end
+-- =============================================================================
+function cont1_cmb4_OnEditComplete(iIndex)
+	sKey = cont1.cmb4.cbkeydata
+	Form.SetSharedData("17100_BUY_ORDER_COND_TYPE" , sKey)
+	sKey2 = cont1.cmb4.cbkeydata
+	if sKey2 == "05" or sKey2 == "34" then 
+		bPopYN = Form.GetEnvData("OrdNotice_17100_p13")
+		if (bPopYN == "" or bPopYN == "0") and g_isFst == false  then
+			-- sText = "상/하한가가 없는 미국 시장의 특성 상\n해당종목의 가격이 급등락할 수 있으며 "..
+			--	   "시장가 주문 시 현재가 또는 원하는 가격보다 낮거나 불리한 가격에 체결될 수 있음을 유의하시기 바랍니다."
+			--
+			-- Form.MsgBox("시장가 주문 유의사항 안내",sText, "MARKET_ORDER_NOTICE" ,7, "확인","다시보지않기")
+			Form.OpenPopup("nrshtro17100_p13" , "" , "") 
+		end
+		cont1.cmb5.enable = false
+		cont1.cmb5.caption = ""
+	else
+		cont1.cmb5.enable = true
+		cont1.cmb5.cbkeydata = cont1.cmb5.cbkeydata
+	end
+	Change_OrderType()
+end
+-- =============================================================================
+function cont1_cmb1_OnEditComplete(iIndex)
+	sKey = cont1.cmb1.cbkeydata
+	Form.SetEnvData(1, "17100_BUY_MONITOR_COND_BOUND", sKey)
+	sKey2 = cont1.cmb6.cbkeydata
+	if sKey2 == "06" or sKey2 == "05" then
+		sPrc = Replace_Prc(cont1.Label6.caption)
+		if gf_Tonumber(sPrc) == 0 then
+			sPrc = ""
+		end
+		sPrc = string.gsub(sPrc, "-", "")
+		if isEmpty(sPrc) == false then
+			if sKey2 == "06" then
+				sPrc = SetPrice("AUTO", sPrc, "2", "%")
+			elseif sKey2 == "05" then	
+				sPrc = SetPrice("AUTO", sTmpPrc, contHidden.Label8.caption, contHidden.Label7.caption)
+			end
+			if sKey == "2" then
+				sPrc = "-"..sPrc
+			end
+			cont1.Label6.caption = sPrc
+		end
+	end
+end
+	</SCRIPT_INFO>
+	<DATAIO_INFO>
+		<TRID_INFO>
+			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />
+			<TRAN tranid="ohhts_exst_cntd" trcode="ohhts_exst_cntd" />
+			<TRAN tranid="ohhts_exst_cnta" trcode="ohhts_exst_cnta" />
+			<TRAN tranid="ohhts_6000_001r" trcode="ohhts_6000_001r" compress="1" encryption="1" inputcheck="1" />
+			<TRAN tranid="ohhts_6000_017r" trcode="ohhts_6000_017r" compress="1" encryption="1" inputcheck="1" />
+			<TRAN tranid="obsim_oscm_331r" trcode="obsim_oscm_331r" compress="1" encryption="1" inputcheck="1" />
+			<TRAN tranid="ohhts_6000_023r" trcode="ohhts_6000_023r" compress="1" encryption="1" inputcheck="1" />
+			<TRAN tranid="ohhts_6000_001r_1" trcode="ohhts_6000_001r" compress="1" encryption="1" inputcheck="1" />
+			<TRAN tranid="obtro_oder_132r" trcode="obtro_oder_132r" compress="1" encryption="1" inputcheck="1" />
+			<TRAN tranid="obpds_srvc_323r" trcode="obpds_srvc_323r" compress="1" encryption="1" inputcheck="1" />
+			<TRAN tranid="obtro_comn_006r" trcode="obtro_comn_006r" compress="1" encryption="1" inputcheck="1" />
+			<TRAN tranid="obsim_oscm_306r" trcode="obsim_oscm_306r" compress="1" encryption="1" inputcheck="1" />
+		</TRID_INFO>
+		<TRIO_INFO>
+			<TRAN name="ohhts_exst_cntg" title="해외주식체결 자동갱신" realdata="1" keylength="19" dessvr="4" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="52" _ulen="44" >
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="1686" _ulen="1406" >
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0^0^
+FIDXR_DELY_YN^FIDXR지연여부^1^0^0^0^0^0^0^0^
+FIDXR_ACPL_BSOP_DATE^FIDXR현지영업일자^8^0^0^0^0^0^0^0^
+FIDXR_ACPL_DATE^FIDXR현지일자^8^0^0^0^0^0^0^0^
+FIDXR_ACPL_HOUR^FIDXR현지시간^6^0^0^0^0^0^0^0^
+FIDXR_KOREA_DATE^FIDXR한국일자^8^0^0^0^0^0^0^0^
+FIDXR_KOREA_HOUR^FIDXR한국시간^6^0^0^0^0^0^0^0^
+FIDXR_OPRC^FIDXR시가^18^4^1^0^0^1^0^0.4^
+FIDXR_HPRC^FIDXR고가^18^4^1^0^0^1^0^0.4^
+FIDXR_LPRC^FIDXR저가^18^4^1^0^0^1^0^0.4^
+FIDXR_PRPR^FIDXR현재가^18^4^1^0^0^1^0^0.4^
+FIDXR_VRSS_SIGN^FIDXR대비부호^1^0^0^0^0^0^0^0^
+FIDXR_PRDY_VRSS^FIDXR전일대비^18^4^1^0^0^1^0^0.4^
+FIDXR_RSFL_RT^FIDXR등락율^10^2^1^0^0^1^0^0.2^
+FIDXR_BIDP^FIDXR매수호가^18^4^1^0^0^1^0^0.4^
+FIDXR_SHNU_ASPR_RSQN^FIDXR매수호가잔량^13^0^1^0^0^0^0^0^
+FIDXR_ASKP^FIDXR매도호가^18^4^1^0^0^1^0^0.4^
+FIDXR_SELN_ASPR_RSQN^FIDXR매도호가잔량^13^0^1^0^0^0^0^0^
+FIDXR_CNQN^FIDXR체결량^13^0^1^0^0^1^0^0^
+FIDXR_ACML_VOL^FIDXR누적거래량^19^0^1^0^0^0^0^0^
+FIDXR_ACML_TR_PBMN^FIDXR누적거래대금^19^0^1^0^0^0^0^0^
+FIDXR_MKT_CLS^FIDXR장구분^1^0^0^0^0^0^0^0^
+FIDXR_SHNU_ACML_CNQN^FIDXR매수누적체결량^19^0^1^0^0^0^0^0^
+FIDXR_SELN_ACML_CNQN^FIDXR매도누적체결량^19^0^1^0^0^0^0^0^
+FIDXR_RLTV^FIDXR체결강도^10^2^1^0^0^1^0^0.2^
+FIDXR_PRDY_VRSS_OPRC_RATE^FIDXR전일대비시가비율^10^2^1^0^0^1^0^0.2^
+FIDXR_PRDY_VRSS_HPRC_RATE^FIDXR전일대비고가비율^10^2^1^0^0^1^0^0.2^
+FIDXR_PRDY_VRSS_LPRC_RATE^FIDXR전일대비저가비율^10^2^1^0^0^1^0^0.2^
+FIDXR_WGHN_AVRG_PRC^FIDXR가중평균가격^18^4^1^0^0^0^0^0.4^
+FIDXR_UNCH_PRPR^FIDXR환산현재가^18^4^1^0^0^1^0^0.4^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_exst_cntd" title="해외주식 주간체결 자동갱신" realdata="1" keylength="19" dessvr="4" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="52" _ulen="44" >
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="1686" _ulen="1406" >
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0^0^
+FIDXR_DELY_YN^FIDXR지연여부^1^0^0^0^0^0^0^0^
+FIDXR_ACPL_BSOP_DATE^FIDXR현지영업일자^8^0^0^0^0^0^0^0^
+FIDXR_ACPL_DATE^FIDXR현지일자^8^0^0^0^0^0^0^0^
+FIDXR_ACPL_HOUR^FIDXR현지시간^6^0^0^0^0^0^0^0^
+FIDXR_KOREA_DATE^FIDXR한국일자^8^0^0^0^0^0^0^0^
+FIDXR_KOREA_HOUR^FIDXR한국시간^6^0^0^0^0^0^0^0^
+FIDXR_OPRC^FIDXR시가^18^4^1^0^0^1^0^0.4^
+FIDXR_HPRC^FIDXR고가^18^4^1^0^0^1^0^0.4^
+FIDXR_LPRC^FIDXR저가^18^4^1^0^0^1^0^0.4^
+FIDXR_PRPR^FIDXR현재가^18^4^1^0^0^1^0^0.4^
+FIDXR_VRSS_SIGN^FIDXR대비부호^1^0^0^0^0^0^0^0^
+FIDXR_PRDY_VRSS^FIDXR전일대비^18^4^1^0^0^1^0^0.4^
+FIDXR_RSFL_RT^FIDXR등락율^10^2^1^0^0^1^0^0.2^
+FIDXR_BIDP^FIDXR매수호가^18^4^1^0^0^1^0^0.4^
+FIDXR_SHNU_ASPR_RSQN^FIDXR매수호가잔량^13^0^1^0^0^0^0^0^
+FIDXR_ASKP^FIDXR매도호가^18^4^1^0^0^1^0^0.4^
+FIDXR_SELN_ASPR_RSQN^FIDXR매도호가잔량^13^0^1^0^0^0^0^0^
+FIDXR_CNQN^FIDXR체결량^13^0^1^0^0^1^0^0^
+FIDXR_ACML_VOL^FIDXR누적거래량^19^0^1^0^0^0^0^0^
+FIDXR_ACML_TR_PBMN^FIDXR누적거래대금^19^0^1^0^0^0^0^0^
+FIDXR_MKT_CLS^FIDXR장구분^1^0^0^0^0^0^0^0^
+FIDXR_SHNU_ACML_CNQN^FIDXR매수누적체결량^19^0^1^0^0^0^0^0^
+FIDXR_SELN_ACML_CNQN^FIDXR매도누적체결량^19^0^1^0^0^0^0^0^
+FIDXR_RLTV^FIDXR체결강도^10^2^1^0^0^1^0^0.2^
+FIDXR_PRDY_VRSS_OPRC_RATE^FIDXR전일대비시가비율^10^2^1^0^0^1^0^0.2^
+FIDXR_PRDY_VRSS_HPRC_RATE^FIDXR전일대비고가비율^10^2^1^0^0^1^0^0.2^
+FIDXR_PRDY_VRSS_LPRC_RATE^FIDXR전일대비저가비율^10^2^1^0^0^1^0^0.2^
+FIDXR_WGHN_AVRG_PRC^FIDXR가중평균가격^18^4^1^0^0^0^0^0.4^
+FIDXR_UNCH_PRPR^FIDXR환산현재가^18^4^1^0^0^1^0^0.4^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_exst_cnta" title="해외주식체결 자동갱신(장후체결" realdata="1" keylength="19" dessvr="9" datamode=".Func" >
+				<TRBLOCK name="InBlock1" occurs="1" inout="in" _len="52" _ulen="44" >
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="1686" _ulen="1406" >
+FIDXR_ISCD^FIDXR종목코드^19^0^0^0^0^0^0^0^
+FIDXR_DELY_YN^FIDXR지연여부^1^0^0^0^0^0^0^0^
+FIDXR_ACPL_BSOP_DATE^FIDXR현지영업일자^8^0^0^0^0^0^0^0^
+FIDXR_ACPL_DATE^FIDXR현지일자^8^0^0^0^0^0^0^0^
+FIDXR_ACPL_HOUR^FIDXR현지시간^6^0^0^0^0^0^0^0^
+FIDXR_KOREA_DATE^FIDXR한국일자^8^0^0^0^0^0^0^0^
+FIDXR_KOREA_HOUR^FIDXR한국시간^6^0^0^0^0^0^0^0^
+FIDXR_OPRC^FIDXR시가^18^4^1^0^0^1^0^0.4^
+FIDXR_HPRC^FIDXR고가^18^4^1^0^0^1^0^0.4^
+FIDXR_LPRC^FIDXR저가^18^4^1^0^0^1^0^0.4^
+FIDXR_PRPR^FIDXR현재가^18^4^1^0^0^1^0^0.4^
+FIDXR_VRSS_SIGN^FIDXR대비부호^1^0^0^0^0^0^0^0^
+FIDXR_PRDY_VRSS^FIDXR전일대비^18^4^1^0^0^1^0^0.4^
+FIDXR_RSFL_RT^FIDXR등락율^10^2^1^0^0^1^0^0.2^
+FIDXR_BIDP^FIDXR매수호가^18^4^1^0^0^1^0^0.4^
+FIDXR_SHNU_ASPR_RSQN^FIDXR매수호가잔량^13^0^1^0^0^0^0^0^
+FIDXR_ASKP^FIDXR매도호가^18^4^1^0^0^1^0^0.4^
+FIDXR_SELN_ASPR_RSQN^FIDXR매도호가잔량^13^0^1^0^0^0^0^0^
+FIDXR_CNQN^FIDXR체결량^13^0^1^0^0^1^0^0^
+FIDXR_ACML_VOL^FIDXR누적거래량^19^0^1^0^0^0^0^0^
+FIDXR_ACML_TR_PBMN^FIDXR누적거래대금^19^0^1^0^0^0^0^0^
+FIDXR_MKT_CLS^FIDXR장구분^1^0^0^0^0^0^0^0^
+FIDXR_SHNU_ACML_CNQN^FIDXR매수누적체결량^19^0^1^0^0^0^0^0^
+FIDXR_SELN_ACML_CNQN^FIDXR매도누적체결량^19^0^1^0^0^0^0^0^
+FIDXR_RLTV^FIDXR체결강도^10^2^1^0^0^1^0^0.2^
+FIDXR_PRDY_VRSS_OPRC_RATE^FIDXR전일대비시가비율^10^2^1^0^0^1^0^0.2^
+FIDXR_PRDY_VRSS_HPRC_RATE^FIDXR전일대비고가비율^10^2^1^0^0^1^0^0.2^
+FIDXR_PRDY_VRSS_LPRC_RATE^FIDXR전일대비저가비율^10^2^1^0^0^1^0^0.2^
+FIDXR_WGHN_AVRG_PRC^FIDXR가중평균가격^18^4^1^0^0^0^0^0.4^
+FIDXR_UNCH_PRPR^FIDXR환산현재가^18^4^1^0^0^1^0^0.4^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_6000_001r" title="해외주식 현재가 조회" realdata="0" attribute="1" dessvr="4" datamode=".SFID" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="331" toutblk="OutBlock1" _ulen="257" >
+FID_INPUT_COND_MRKT_DIV_CODE^FID입력조건시장분류코드^2^0^0^9100^9999^0^0^0^
+FID_INPUT_OVRS_ISCD^FID입력해외종목코드^16^0^0^9030^9999^0^0^0^
+FID_COND_MRKT_CLS_CODE^FID조건시장구분코드^2^0^0^9103^9999^0^0^0^
+FIDX_INPUT_DELY_RLTM_CLS_CODE^FIDX입력지연실시간구분코드^1^0^0^9152^9999^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="3005" _ulen="2595" >
+FIDX_ISCD^FIDX종목코드^16^0^0^1^1000^0^0^0^
+FIDX_PRPR^FIDX현재가^14^4^1^4^1000^0^0^0.4^
+FIDX_ACML_VOL^FIDX누적거래량^19^0^1^14^1000^0^0^0^
+FIDX_PRDY_VRSS_SIGN^FIDX전일대비부호^1^0^0^6^1000^0^0^0^
+FIDX_PRDY_CLPR^FIDX전일종가^14^4^1^13^1000^0^0^0.4^
+FIDX_PRDY_VOL^FIDX전일거래량^19^0^1^133^1000^0^0^0^
+FIDX_52_WEEK_HGPR^FIDX52주최고가^14^4^1^32^1000^0^0^0.4^
+FIDX_52_WEEK_LWPR^FIDX52주최저가^14^4^1^35^1000^0^0^0.4^
+FIDX_LSTN_STCN^FIDX상장주수^19^0^1^30^1000^0^0^0^
+FIDX_OPRC^FIDX시가^14^4^1^17^1000^0^0^0.4^
+FIDX_HPRC^FIDX고가^14^4^1^18^1000^0^0^0.4^
+FIDX_LPRC^FIDX저가^14^4^1^19^1000^0^0^0.4^
+FIDX_MXPR^FIDX상한가^14^4^1^26^1000^0^0^0.4^
+FIDX_LLAM^FIDX하한가^14^4^1^27^1000^0^0^0.4^
+FIDX_AVLS^FIDX시가총액^19^0^1^28^1000^0^0^0^
+FIDX_EPS^FIDXEPS^11^4^1^210^1000^0^0^0.4^
+FIDX_PRDY_VRSS^FIDX전일대비^14^4^1^5^1000^0^0^0.4^
+FIDX_PRDY_CTRT^FIDX전일대비율^11^2^1^7^1000^0^0^0.2^
+FIDX_BSTP_CLS_CODE^FIDX업종구분코드^4^0^0^335^1000^0^0^0^
+FIDX_BSTP_LRDV_NAME^FIDX업종대분류명^80^0^0^5133^1000^0^0^0^
+FIDX_BSTP_MDDV_NAME^FIDX업종중분류명^80^0^0^5134^1000^0^0^0^
+FIDX_BSTP_SMDV_NAME^FIDX업종소분류명^80^0^0^5135^1000^0^0^0^
+FIDX_DCPN_CNT^FIDX소수점수^2^0^1^5132^1000^0^0^0^
+FIDX_SHNU_ASPR_UNIT^FIDX매수호가단위^14^4^1^5125^1000^0^0^0.4^
+FIDX_SELN_ASPR_UNIT^FIDX매도호가단위^14^4^1^5126^1000^0^0^0.4^
+FIDX_SHNU_ODER_QTY_UNIT^FIDX매수주문수량단위^9^0^1^5127^1000^0^0^0^
+FIDX_SELN_ODER_QTY_UNIT^FIDX매도주문수량단위^9^0^1^5128^1000^0^0^0^
+FIDX_CRNC_CODE^FIDX통화코드^4^0^0^5114^1000^0^0^0^
+FIDX_KOR_ISNM^FIDX한글종목명^65^0^0^2^1000^0^0^0^
+FIDX_TICK_CLS^FIDX틱구분^4^0^0^5136^1000^0^0^0^
+FID_PBR^FIDPBR^9^2^1^43^1000^0^0^0.2^
+FIDX_PER^FIDXPER^9^2^1^42^1000^0^0^0.2^
+BSTP_KOR_ISNM^업종한글종목명^100^0^0^822^1000^0^0^0^
+FIDX_CAS_TRGT_ISSU_YN^FIDXCAS대상종목여부^1^0^0^5181^1000^0^0^0^
+FIDX_VCM_STAT_CLS_CODE^FIDXVCM상태구분코드^1^0^0^5166^1000^0^0^0^
+FIDX_ENG_ISNM^FIDX영문종목명^65^0^0^5112^1000^0^0^0^
+FIDX_SDPR^FIDX기준가^14^4^1^24^1000^0^0^0.4^
+FIDX_VCM_STA_HOUR^FIDXVCM시작시간^6^0^0^5167^1000^0^0^0^
+FIDX_VCM_FIN_HOUR^FIDXVCM종료시간^6^0^0^5168^1000^0^0^0^
+FIDX_SELL_ONLY^FIDXSELLONLY^2^0^1^5173^1000^0^0^0^
+FIDX_ISSU_STAT_CLS_CODE^FIDX종목상태구분코드^1^0^0^6016^1000^0^0^0^
+FIDX_CAS_IEP^FIDXCASIEP^11^4^1^5215^1000^0^0^0.4^
+FIDX_CAS_IEV^FIDXCASIEV^11^4^1^5216^1000^0^0^0.4^
+FIDX_ETF_YN^FIDXETF여부^1^0^0^5159^1000^0^0^0^
+FID_LVRG^FID레버리지^14^6^1^81^1000^0^0^0.6^
+FIDX_CAS_TRGT_ISSU^FIDXCAS대상종목^1^0^0^5221^1000^0^0^0^
+FIDX_CAS_STAT^FIDXCAS상태^2^0^0^5222^1000^0^0^0^
+FIDX_CAS_SDPR^FIDXCAS기준가^14^4^1^5223^1000^0^0^0.4^
+FIDX_CAS_MXPR^FIDXCAS상한가^14^4^1^5224^1000^0^0^0.4^
+FIDX_CAS_LLAM^FIDXCAS하한가^14^4^1^5225^1000^0^0^0.4^
+FIDX_ETF_TYPE_CODE^FIDXETF유형코드^3^0^0^5210^1000^0^0^0^
+FIDX_UNCH_PRPR^FIDX환산현재가^14^4^1^2051^1000^0^0^0.4^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_6000_017r" title="해외주식 주간거래 현재가 조회" realdata="0" attribute="1" dessvr="4" datamode=".SFID" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="331" toutblk="OutBlock1" _ulen="257" >
+FID_INPUT_COND_MRKT_DIV_CODE^FID입력조건시장분류코드^2^0^0^9100^9999^0^0^0^
+FID_INPUT_OVRS_ISCD^FID입력해외종목코드^16^0^0^9030^9999^0^0^0^
+FID_COND_MRKT_CLS_CODE^FID조건시장구분코드^2^0^0^9103^9999^0^0^0^
+FIDX_INPUT_DELY_RLTM_CLS_CODE^FIDX입력지연실시간구분코드^1^0^0^9152^9999^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="617" _ulen="503" >
+FIDX_ISCD^FIDX종목코드^16^0^0^1^1000^0^0^0^
+FIDX_DYTM_PRPR^FIDX주간현재가^14^4^1^7479^1000^0^0^0.4^
+FIDX_DYTM_PRDY_VRSS_SIGN^FIDX주간전일대비부호^1^0^0^7480^1000^0^0^0^
+FIDX_DYTM_PRDY_VRSS^FIDX주간전일대비^14^4^1^7481^1000^0^0^0.4^
+FIDX_DYTM_PRDY_CTRT^FIDX주간전일대비율^11^2^1^7482^1000^0^0^0.2^
+FIDX_DYTM_ACML_VOL^FIDX주간누적거래량^19^0^1^7484^1000^0^0^0^
+FIDX_DYTM_ACML_TR_PBMN^FIDX주간누적거래대금^19^0^1^7485^1000^0^0^0^
+FIDX_DYTM_MKT_YN^FIDX주간장여부^1^0^0^7483^1000^0^0^0^
+FIDX_DYTM_UNCH_PRPR^FIDX주간환산현재가^14^4^1^2052^1000^0^0^0.4^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obsim_oscm_331r" title="해외주식 종목정보 및 휴장일 조" realdata="0" dessvr="9" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="41" _ulen="33" >
+ISCD^종목코드^12^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="487" _ulen="363" >
+ISCD^종목코드^12^0^0^0^0^0^0^0^
+OVRS_STCK_MRKT_TR_CLS_CODE^해외주식시장거래구분코드^2^0^0^0^0^0^0^0^
+OVRS_STCK_SYMB_ISCD^해외주식심볼종목코드^12^0^0^0^0^0^0^0^
+OVRS_STCK_EXCH_IDNO^해외주식거래소식별번호^6^0^0^0^0^0^0^0^
+KOR_ISNM^한글종목명^100^0^0^0^0^0^0^0^
+ISIN_ISCD^ISIN종목코드^12^0^0^0^0^0^0^0^
+CRCD^통화코드^3^0^0^0^0^0^0^0^
+BYOV_PRHB_YN^매수불가여부^1^0^0^0^0^0^0^0^
+TRHT_YN^거래정지여부^1^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock2" inout="out" _len="178" _ulen="142" >
+STND_DATE^기준일자^8^0^0^0^0^0^0^0^
+HLDY_YN^휴일여부^1^0^0^0^0^0^0^0^
+PTP_ISSU_YN^PTP종목여부^1^0^0^0^0^0^0^0^
+DYTM_TR_YN^주간거래여부^1^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="ohhts_6000_023r" title="해외주식 애프터장 거래 현재가(" realdata="0" attribute="1" dessvr="4" datamode=".SFID" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="331" toutblk="OutBlock1" _ulen="257" >
+FID_INPUT_COND_MRKT_DIV_CODE^FID입력조건시장분류코드^2^0^0^9100^9999^0^0^0^
+FID_INPUT_OVRS_ISCD^FID입력해외종목코드^16^0^0^9030^9999^0^0^0^
+FID_COND_MRKT_CLS_CODE^FID조건시장구분코드^2^0^0^9103^9999^0^0^0^
+FIDX_INPUT_DELY_RLTM_CLS_CODE^FIDX입력지연실시간구분코드^1^0^0^9152^9999^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="481" _ulen="397" >
+FIDX_ISCD^FIDX종목코드^16^0^0^1^1000^0^0^0^
+FIDX_MKT_AFT_PRPR^FIDX장후현재가^14^4^1^7487^1000^0^0^0.4^
+FIDX_MKT_AFT_PRDY_VRSS_SIGN^FIDX장후전일대비부호^1^0^0^7488^1000^0^0^0^
+FIDX_MKT_AFT_PRDY_VRSS^FIDX장후전일대비^14^4^1^7489^1000^0^0^0.4^
+FIDX_MKT_AFT_PRDY_CTRT^FIDX장후전일대비율^11^2^1^7490^1000^0^0^0.2^
+FIDX_ACML_VOL^FIDX누적거래량^19^0^1^14^1000^0^0^0^
+FIDX_MKT_AFT_UNCH_PRPR^FIDX장후환산현재가^14^4^1^2053^1000^0^0^0.4^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obtro_oder_132r" title="해외주식 자동감시 선체크 처리" realdata="0" dessvr="9" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="755" _ulen="561" >
+ACNO^계좌번호^8^0^0^0^0^0^0^0^
+ASNO^계좌일련번호^2^0^0^0^0^0^0^0^
+ACNT_PWD^계좌비밀번호^68^0^0^0^0^0^0^0^
+OVRS_STCK_SYMB_ISCD^해외주식심볼종목코드^12^0^0^0^0^0^0^0^
+OVRS_EXCH_VNDR_IDNO^해외거래소벤더식별번호^6^0^0^0^0^0^0^0^
+SELN_BYOV_CLCD^매도매수구분코드^1^0^0^0^0^0^0^0^
+ODER_CLS_CODE^주문구분코드^2^0^0^0^0^0^0^0^
+ODER_COND_CLS_CODE^주문조건구분코드^1^0^0^0^0^0^0^0^
+ODQT^주문수량^19^0^1^0^0^0^0^0^
+OVRS_STCK_ODER_PRC^해외주식주문가격^20^8^1^0^0^0^0^0.8^
+ODER_OCRN_TYPE_CODE^주문발생유형코드^2^0^0^0^0^0^0^0^
+ODER_GRP_NO^주문그룹번호^11^0^1^0^0^0^0^0^
+WARN_CNFR_YN^경고확인여부^1^0^0^0^0^0^0^0^
+PROS_SRNO^처리일련번호^11^0^1^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="193" _ulen="151" >
+ODER_NO^주문번호^11^0^1^0^0^0^0^0^
+WARN_CLS_CODE^경고구분코드^1^0^0^0^0^0^0^0^
+UI_MSG_CNTT^UI메시지내용^100^0^0^0^0^0^0^0^
+PROS_SRNO^처리일련번호^11^0^1^0^0^0^0^0^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obpds_srvc_323r" title="HTS-WTS용 서비스 내역 조회" realdata="0" dessvr="9" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="158" _ulen="120" >
+ACNO^계좌번호^8^0^0^0^0^0^0^0^
+ASNO^계좌일련번호^2^0^0^0^0^0^0^0^
+SVCD^서비스코드^3^0^0^0^0^0^0^0^
+CSNO^고객번호^10^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="169" _ulen="129" >
+SVCD^서비스코드^3^0^0^0^0^0^0^0^
+SVC_SRNO^서비스일련번호^11^0^1^0^0^0^0^0^
+CSNO^고객번호^10^0^0^0^0^0^0^0^
+APRV_YN^승인여부^1^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obtro_comn_006r" title="해외주식 익영업일 조회(예약주?" realdata="0" dessvr="9" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="76" _ulen="54" >
+OVRS_EXCH_VNDR_IDNO^해외거래소벤더식별번호^6^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="45" _ulen="37" >
+BSOP_DATE^영업일자^8^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obsim_oscm_306r" title="해외주식 종목정보 조회" realdata="0" dessvr="9" memfieldlen="0" >
+				<TRBLOCK name="InBlock1" inout="in" _len="169" _ulen="129" >
+ISCD^종목코드^12^0^0^0^0^0^0^0^
+ISIN_ISCD^ISIN종목코드^12^0^0^0^0^0^0^0^
+OVRS_STCK_MRKT_TR_CLS_CODE^해외주식시장거래구분코드^2^0^0^0^0^0^0^0^
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="1668" _ulen="1258" >
+ISCD^종목코드^12^0^0^0^0^0^0^0^
+OVRS_STCK_MRKT_TR_CLS_CODE^해외주식시장거래구분코드^2^0^0^0^0^0^0^0^
+KOR_ISNM^한글종목명^100^0^0^0^0^0^0^0^
+ENG_ISNM^영문종목명^100^0^0^0^0^0^0^0^
+ISIN_ISCD^ISIN종목코드^12^0^0^0^0^0^0^0^
+CRCD^통화코드^3^0^0^0^0^0^0^0^
+OVRS_STCK_ISSU_TPCD^해외주식종목유형코드^1^0^0^0^0^0^0^0^
+ISO_CTCD^ISO국가코드^3^0^0^0^0^0^0^0^
+UPLM_PRC^상한가격^20^8^1^0^0^0^0^0.8^
+LSLM_PRC^하한가격^20^8^1^0^0^0^0^0.8^
+STND_CRNC_PRC^기준통화가격^20^8^1^0^0^0^0^0.8^
+FCAM_CAMT^액면가통화금액^20^4^1^0^0^0^0^0.4^
+FCVL_CRCD^액면통화코드^3^0^0^0^0^0^0^0^
+TRHT_YN^거래정지여부^1^0^0^0^0^0^0^0^
+LSTN_DATE^상장일자^8^0^0^0^0^0^0^0^
+LSTN_STCK_QTY^상장주식수량^19^0^1^0^0^0^0^0^
+BYOV_UNIT_QTY^매수단위수량^19^0^1^0^0^0^0^0^
+SELN_UNIT_QTY^매도단위수량^19^0^1^0^0^0^0^0^
+OVRS_STCK_TICK_TPCD^해외주식틱유형코드^1^0^0^0^0^0^0^0^
+STMP_LEVY_YN^인지세징수여부^1^0^0^0^0^0^0^0^
+USER_INPUT_TRHT_YN^사용자입력거래정지여부^1^0^0^0^0^0^0^0^
+FIX_TLMS_EXCH_CODE^FIX전문거래소코드^10^0^0^0^0^0^0^0^
+BYOV_PRHB_YN^매수불가여부^1^0^0^0^0^0^0^0^
+DCPN_LOEQ_CIPH^소수점이하자릿수^5^0^1^0^0^0^0^0^
+OVRS_ETF_TPCD^해외ETF유형코드^3^0^0^0^0^0^0^0^
+BSTP_TOTAL_DVCD^업종총분류코드^4^0^0^0^0^0^0^0^
+BSTP_KOR_MDDV_NAME^업종한글중분류명^40^0^0^0^0^0^0^0^
+BSTP_KOR_SMDV_NAME^업종한글소분류명^40^0^0^0^0^0^0^0^
+PRDY_LAST_CRNC_PRC^전일최종통화가격^20^8^1^0^0^0^0^0.8^
+BLBG_EXCH_CLCD^블룸버그거래소구분코드^2^0^0^0^0^0^0^0^
+LVRG_RATE^레버리지비율^10^5^1^0^0^0^0^0.5^
+
+				</TRBLOCK>
+			</TRAN>
+		</TRIO_INFO>
+	</DATAIO_INFO>
+</ROOT>

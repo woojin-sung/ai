@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문_매도조건 확인" version="2" writer="함원규" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" transmode="0" ly_vert="0,0,375,755,1" />
+	<CONTROL_INFO>
+		<IMAGE name="imgBg" autosize="1" imgpath="alpha128" ly_vert="0,0,375,647,1" />
+		<IMAGE name="imgMain" autosize="1" imgpath="popup_bg.9" ly_vert="0,235,375,526,1" />
+		<LABEL name="lblTitleSell" fgcolor="291:079102214" caption="매도 조건 설정" fontsize="2" fontstyle="01" halign="2" ly_vert="0,235,188,60,1" />
+		<LABEL name="lblTitleComm" caption="하시겠습니까?" bgcolor="092:185046046" fontsize="2" fontstyle="01" paddinginfo="1,0,0,0" ly_vert="187,235,187,60,1" />
+		<LABEL name="lblSubTitle0" fgcolor="334:034034034" caption="주문정보" fontstyle="01" ly_vert="10,295,200,35,1" />
+		<IMAGE name="imgBuyInfo" imgpath="bg_infobox.9" ly_vert="20,340,335,320,1" />
+		<BUTTON name="btnClose" caption="닫기" btnimage="btn_28.9" ly_vert="0,701,147,55,1" />
+		<BUTTON name="btnOk" caption="확인" btnimage="btn_etc11.9" ly_vert="146,701,231,55,1" />
+		<TABLE name="tblBuyInfo0" visible="0" colcount="2" rowcount="12" outline="0000" transmode="1" designorder="1" ly_vert="30,351,315,300,0" >
+			<COL_INFO ly_vert_width="89,226" />
+			<ROW_INFO ly_vert_height="30,10,30,30,10,30,30,10,30,30,30,30" />
+			<CELL_INFO>
+				<CELL cell_ly="0,0,0,0" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,0,1,0" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,1,0,1" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,1,1,1" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,2,0,2" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,2,1,2" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" fontstyle="01" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,3,0,3" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,3,1,3" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,4,0,4" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,4,1,4" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,5,0,5" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,5,1,5" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,6,0,6" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,6,1,6" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,7,0,7" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,7,1,7" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,8,0,8" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,8,1,8" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,9,0,9" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,9,1,9" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,10,0,10" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,10,1,10" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,11,0,11" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,11,1,11" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+			</CELL_INFO>
+		</TABLE>
+		<TABLE name="tblBuyInfo1" visible="0" colcount="2" rowcount="13" outline="0000" transmode="1" designorder="1" ly_vert="30,321,315,330,0" >
+			<COL_INFO ly_vert_width="89,226" />
+			<ROW_INFO ly_vert_height="30,10,30,30,10,30,30,30,10,30,30,30,30" />
+			<CELL_INFO>
+				<CELL cell_ly="0,0,0,0" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,0,1,0" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,1,0,1" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,1,1,1" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,2,0,2" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,2,1,2" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" fontstyle="01" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,3,0,3" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,3,1,3" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,4,0,4" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,4,1,4" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,5,0,5" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,5,1,5" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,6,0,6" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,6,1,6" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,7,0,7" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,7,1,7" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,8,0,8" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,8,1,8" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,9,0,9" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,9,1,9" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,10,0,10" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,10,1,10" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,11,0,11" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,11,1,11" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,12,0,12" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,12,1,12" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+			</CELL_INFO>
+		</TABLE>
+		<TABLE name="tblBuyInfo2" visible="0" colcount="2" rowcount="14" outline="0000" transmode="1" designorder="1" ly_vert="30,291,315,360,0" >
+			<COL_INFO ly_vert_width="89,226" />
+			<ROW_INFO ly_vert_height="30,10,30,30,10,30,30,30,30,10,30,30,30,30" />
+			<CELL_INFO>
+				<CELL cell_ly="0,0,0,0" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,0,1,0" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,1,0,1" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,1,1,1" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,2,0,2" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,2,1,2" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" fontstyle="01" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,3,0,3" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,3,1,3" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,4,0,4" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,4,1,4" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,5,0,5" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,5,1,5" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,6,0,6" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,6,1,6" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,7,0,7" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,7,1,7" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,8,0,8" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,8,1,8" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,9,0,9" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,9,1,9" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,10,0,10" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,10,1,10" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,11,0,11" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,11,1,11" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,12,0,12" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,12,1,12" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,13,0,13" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="1,13,1,13" fgcolor="004:000000000" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+			</CELL_INFO>
+		</TABLE>
+		<LABEL name="lblDivLine0" bgcolor="017:216216216" transmode="0" ly_vert="40,451,295,1,1" />
+		<LABEL name="lblDivLine1" bgcolor="017:216216216" transmode="0" ly_vert="40,525,295,1,1" />
+		<LABEL name="lblItemName" fontsize="-3" halign="2" multiline="1" ly_vert="100,411,245,40,1" />
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="9137" _ulen="8939" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+
+-- ****************************************************************************
+--                G  L  O  B  A  L       V  A  R  I  A  B  L  E
+-- ****************************************************************************
+local g_sAcnt
+local g_sItemCode
+local g_sItemName
+local g_sCond1
+local g_sCond2
+local g_sCond3
+local g_sCond4
+local g_sCond5
+local g_sCond6
+local g_sCond7
+local g_sCond8
+local g_sOrdType
+local g_sOrdPrc
+local g_sOrdQty
+local g_sEndDate
+local g_isOrder
+g_isOrder = "cancel"
+-- ****************************************************************************
+--             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+-- ****************************************************************************
+-- ===============================================
+-- NULL 체크 
+-- ===============================================
+function isEmpty(sData)
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+		return true
+	else
+		return false
+	end
+end
+-- ===============================================
+-- 숫자 소수점 절사 함수
+-- ===============================================
+function truncateToDecimalPlaces(nVal, nDeimalPlaces)
+	nVal = gf_Tonumber(nVal)
+	nFactor = 10 ^ nDeimalPlaces
+	szNumStr = gf_CommaValue(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = string.find(szNumStr, "%.")
+	nTotalData = 0
+	if gf_Tonumber(nDecimalIdx) > 0 then
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, gf_Tonumber(nDecimalIdx)-1))
+	else
+		nTotalData = gf_Tonumber(szNumStr)
+	end
+	return nTotalData / nFactor
+end
+-- ===============================================
+-- (NonNull) 문자열 -> 배열 변환함수
+-- ===============================================
+function Convert_StrToArr(szData, szSeperator)
+	local arrData
+	-- --------------------------------------------
+	-- 링크데이터 값 체크
+	-- --------------------------------------------
+	if isEmpty(szData) then
+		arrData = {}
+		return arrData
+	end
+	-- --------------------------------------------
+	-- 구분자 값 체크
+	-- --------------------------------------------
+	if isEmpty(szSeperator) then
+		-- 단일변수
+		arrData = {}
+		table.insert(arrData, szData)
+	else
+		-- 다중변수
+		arrData = gf_Split(szData, szSeperator)
+	end
+	return arrData
+end
+function Init_Control()
+end
+function DisplaySet_BuyInfo()
+	nCnt = 3 
+	if isEmpty(g_sCond3) == true then
+		nCnt = nCnt - 1
+	end
+	if isEmpty(g_sCond5) == true then
+		nCnt = nCnt - 1
+	end
+	if isEmpty(g_sCond7) == true then
+		nCnt = nCnt - 1
+	end
+	if nCnt == 1 then
+		tblBuyInfo0.visible = true
+		nIdx = 0
+		tblBuyInfo0.SetCellString(nIdx, 1, g_sAcnt)
+		nIdx = nIdx + 1
+		tblBuyInfo0.SetCellString(nIdx, 1, "")
+		nIdx = nIdx + 1
+		tblBuyInfo0.SetCellString(nIdx, 1, g_sItemCode)
+		nIdx = nIdx + 1
+		lblItemName.maxlinecnt = "2"
+		lblItemName.caption = g_sItemName
+		--		tblBuyInfo0.SetCellString(nIdx, 1, g_sItemName)
+		nIdx = nIdx + 1
+		tblBuyInfo0.SetCellString(nIdx, 1, "")
+		nIdx = nIdx + 1
+		tblBuyInfo0.SetCellString(nIdx, 1, g_sCond1 .. " " .. g_sCond2)
+		nIdx = nIdx + 1
+		if isEmpty(g_sCond3) == false then
+			tblBuyInfo0.SetCellString(nIdx, 1, "이익실현 " .. g_sCond3 .. g_sCond4)
+			nIdx = nIdx + 1
+		end
+		if isEmpty(g_sCond5) == false then
+			tblBuyInfo0.SetCellString(nIdx, 1, "이익보존 " .. g_sCond5 .. g_sCond6)
+			nIdx = nIdx + 1
+		end
+		if isEmpty(g_sCond7) == false then
+			tblBuyInfo0.SetCellString(nIdx, 1, "손실제한 " .. g_sCond7 .. g_sCond8)
+			nIdx = nIdx + 1
+		end
+		tblBuyInfo0.SetCellString(nIdx, 1, "")
+		nIdx = nIdx + 1
+		tblBuyInfo0.SetCellString(nIdx, 1, g_sOrdType)
+		nIdx = nIdx + 1
+		tblBuyInfo0.SetCellString(nIdx, 1, g_sOrdPrc)
+		nIdx = nIdx + 1
+		tblBuyInfo0.SetCellString(nIdx, 1, g_sOrdQty)
+		nIdx = nIdx + 1
+		tblBuyInfo0.SetCellString(nIdx, 1, g_sEndDate)
+	elseif nCnt == 2 then
+		tblBuyInfo1.visible = true
+		nIdx = 0
+		tblBuyInfo1.SetCellString(nIdx, 1, g_sAcnt)
+		nIdx = nIdx + 1
+		tblBuyInfo1.SetCellString(nIdx, 1, "")
+		nIdx = nIdx + 1
+		tblBuyInfo1.SetCellString(nIdx, 1, g_sItemCode)
+		nIdx = nIdx + 1
+		lblItemName.maxlinecnt = "2"
+		lblItemName.caption = g_sItemName
+		--		tblBuyInfo1.SetCellString(nIdx, 1, g_sItemName)
+		nIdx = nIdx + 1
+		tblBuyInfo1.SetCellString(nIdx, 1, "")
+		nIdx = nIdx + 1
+		tblBuyInfo1.SetCellString(nIdx, 1, g_sCond1 .. " " .. g_sCond2)
+		nIdx = nIdx + 1
+		if isEmpty(g_sCond3) == false then
+			tblBuyInfo1.SetCellString(nIdx, 1, "이익실현 " .. g_sCond3 .. g_sCond4)
+			nIdx = nIdx + 1
+		end
+		if isEmpty(g_sCond5) == false then
+			tblBuyInfo1.SetCellString(nIdx, 1, "이익보존 " .. g_sCond5 .. g_sCond6)
+			nIdx = nIdx + 1
+		end
+		if isEmpty(g_sCond7) == false then
+			tblBuyInfo1.SetCellString(nIdx, 1, "손실제한 " .. g_sCond7 .. g_sCond8)
+			nIdx = nIdx + 1
+		end
+		tblBuyInfo1.SetCellString(nIdx, 1, "")
+		nIdx = nIdx + 1
+		tblBuyInfo1.SetCellString(nIdx, 1, g_sOrdType)
+		nIdx = nIdx + 1
+		tblBuyInfo1.SetCellString(nIdx, 1, g_sOrdPrc)
+		nIdx = nIdx + 1
+		tblBuyInfo1.SetCellString(nIdx, 1, g_sOrdQty)
+		nIdx = nIdx + 1
+		tblBuyInfo1.SetCellString(nIdx, 1, g_sEndDate)
+	elseif nCnt == 3 then
+		tblBuyInfo2.visible = true
+		nIdx = 0
+		tblBuyInfo2.SetCellString(nIdx, 1, g_sAcnt)
+		nIdx = nIdx + 1
+		tblBuyInfo2.SetCellString(nIdx, 1, "")
+		nIdx = nIdx + 1
+		tblBuyInfo2.SetCellString(nIdx, 1, g_sItemCode)
+		nIdx = nIdx + 1
+		lblItemName.maxlinecnt = "2"
+		lblItemName.caption = g_sItemName
+		--		tblBuyInfo2.SetCellString(nIdx, 1, g_sItemName)
+		nIdx = nIdx + 1
+		tblBuyInfo2.SetCellString(nIdx, 1, "")
+		nIdx = nIdx + 1
+		tblBuyInfo2.SetCellString(nIdx, 1, g_sCond1 .. " " .. g_sCond2)
+		nIdx = nIdx + 1
+		if isEmpty(g_sCond3) == false then
+			tblBuyInfo2.SetCellString(nIdx, 1, "이익실현 " .. g_sCond3 .. g_sCond4)
+			nIdx = nIdx + 1
+		end
+		if isEmpty(g_sCond5) == false then
+			tblBuyInfo2.SetCellString(nIdx, 1, "이익보존 " .. g_sCond5 .. g_sCond6)
+			nIdx = nIdx + 1
+		end
+		if isEmpty(g_sCond7) == false then
+			tblBuyInfo2.SetCellString(nIdx, 1, "손실제한 " .. g_sCond7 .. g_sCond8)
+			nIdx = nIdx + 1
+		end
+		tblBuyInfo2.SetCellString(nIdx, 1, "")
+		nIdx = nIdx + 1
+		tblBuyInfo2.SetCellString(nIdx, 1, g_sOrdType)
+		nIdx = nIdx + 1
+		tblBuyInfo2.SetCellString(nIdx, 1, g_sOrdPrc)
+		nIdx = nIdx + 1
+		tblBuyInfo2.SetCellString(nIdx, 1, g_sOrdQty)
+		nIdx = nIdx + 1
+		tblBuyInfo2.SetCellString(nIdx, 1, g_sEndDate)
+	end
+	nGap = (nCnt-1) * 30
+	imgMain.top = 235 - nGap
+	imgMain.height = 526 + nGap
+	lblTitleSell.top = 235 - nGap
+	lblTitleComm.top = 235 - nGap
+	lblItemName.top = 411 - nGap
+	lblSubTitle0.top = 295 - nGap
+	imgBuyInfo.top = 340 - nGap
+	imgBuyInfo.height = 320 + nGap
+	lblDivLine0.top = 452 - nGap
+end
+-- ****************************************************************************
+--                C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+-- ****************************************************************************
+-- =============================================================================
+function Form_OnFormInit()
+	sLinkData = Form.GetOpenLinkData()
+	arrLinkData = Convert_StrToArr(sLinkData, "`")
+	nArrCnt = #arrLinkData
+	if nArrCnt >= 15 then
+		-- -----------------------------
+		-- 계좌정보
+		-- -----------------------------
+		g_sAcnt		= arrLinkData[1]
+		-- -----------------------------
+		-- 종목정보
+		-- -----------------------------
+		g_sItemCode	= arrLinkData[2]
+		g_sItemName	= arrLinkData[3]
+		-- -----------------------------
+		-- 감시기준가
+		-- -----------------------------
+		g_sCond1		= arrLinkData[4]
+		g_sCond2		= arrLinkData[5]
+		-- -----------------------------
+		-- 감시조건
+		-- -----------------------------
+		g_sCond3		= arrLinkData[6]
+		g_sCond4  	 	= arrLinkData[7]
+		g_sCond5   	= arrLinkData[8]
+		g_sCond6   	= arrLinkData[9]
+		g_sCond7		= arrLinkData[10]
+		g_sCond8		= arrLinkData[11]
+		-- -----------------------------
+		-- 주문정보
+		-- -----------------------------
+		g_sOrdType		= arrLinkData[12]
+		g_sOrdPrc		= arrLinkData[13]
+		g_sOrdQty		= arrLinkData[14]
+		g_sEndDate		= arrLinkData[15]
+		DisplaySet_BuyInfo()
+		return
+	end
+end
+-- =============================================================================
+function Form_OnFormBackKeyPressed()
+	g_isOrder = "cancel"
+	Form.CloseForm()
+end
+-- =============================================================================
+function imgBg_OnClick()
+	g_isOrder = "cancel"
+	Form.CloseForm()
+end
+-- =============================================================================
+function btnClose_OnClick()
+	g_isOrder = "cancel"
+	Form.CloseForm()
+end
+-- =============================================================================
+function btnOk_OnClick()
+	g_isOrder = "ok"
+	Form.CloseForm()
+end
+-- =============================================================================
+function Form_OnFormClose()
+	Form.SendReturnToParent("ORDER_CONFIRM_CHECK" , g_isOrder)
+end
+	</SCRIPT_INFO>
+</ROOT>

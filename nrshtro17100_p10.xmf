@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="17100" scrname="미국주식 자동감시주문_유의사항" version="2" writer="함원규" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" transmode="0" ly_vert="0,0,375,755,1" />
+	<CONTROL_INFO>
+		<IMAGE name="imgAlpha" autosize="1" imgpath="alpha128" ly_vert="0,-1,375,755,1" />
+		<IMAGE name="imgBg" autosize="1" imgpath="popup_bg.9" ly_vert="0,420,375,775,1" />
+		<LABEL name="lblTitle" caption="종목 정보가 변동되어" fontsize="1" fontstyle="01" multiline="1" ly_vert="20,440,283,30,1" />
+		<IMAGE name="imgClose" autosize="1" ly_vert="320,380,39,18,1" />
+		<PANNEL name="Pannel0" activecard="card0" ly_vert="400,495,375,160,1" scroll_ly_vert="400,495,375,160,1" >
+			<CONTROL_INFO>
+				<LABEL name="lblGuide" fontsize="-2" fontstyle="01" halign="1" valign="0" ly_vert="20,0,10,50,1" />
+				<LABEL name="lblInfo" bgcolor="029:255212175" fontsize="-2" halign="1" valign="0" multiline="1" ly_vert="20,0,310,629,1" />
+				<IMAGE name="imgGuide0" autosize="1" ly_vert="0,0,375,100,1" />
+				<LABEL name="lblDiv" transmode="0" ly_vert="0,0,375,10,1" />
+				<TABORDER_INFO horz="" vert="" />
+			</CONTROL_INFO>
+			<CARD_LIST>
+				<CARD_INFO name="card0" cardhw="70, -1" >
+					<CELL name="lblGuide" />
+					<CELL name="lblInfo" />
+					<CELL name="imgGuide0" />
+					<CELL name="lblDiv" />
+				</CARD_INFO>
+			</CARD_LIST>
+		</PANNEL>
+		<LABEL name="lblTemp2" fontsize="-2" multiline="1" ly_vert="400,0,280,700,1" />
+		<LABEL name="lblTemp1" fontsize="-2" valign="0" multiline="1" ly_vert="400,0,295,700,1" />
+		<LABEL name="lblTemp0" fontsize="-2" valign="0" multiline="1" ly_vert="400,0,310,700,1" />
+		<BUTTON name="Button0" enable="0" visible="0" caption="나중에" fgcolor="333:115118124" btnimage="btn_21.9" ly_vert="10,280,188,60,0" />
+		<BUTTON name="Button1" caption="확인" btnimage="btn_20.9" ly_vert="0,696,375,60,1" />
+		<LABEL name="lblTempTitle" valign="0" multiline="1" ly_vert="400,0,335,700,1" />
+		<CHKBUTTON name="chk1" visible="0" fgcolor="333:115118124" fontsize="-2" chkcaption="다시 읽지 않음" unchkcaption="다시 읽지 않음" chkbtnimage="checkmenu_o" unchkbtnimage="checkmenu_n" ly_vert="10,240,180,32,0" />
+		<LABEL name="Label0" multiline="1" ly_vert="20,490,335,30,1" />
+		<LABEL name="Label1" multiline="1" ly_vert="20,510,335,30,1" />
+		<IMAGE name="Image0" imgpath="bg_infobox.9" ly_vert="20,550,335,130,1" />
+		<LABEL name="Label2" ly_vert="30,560,315,30,1" />
+		<LABEL name="Label3" multiline="1" ly_vert="30,580,315,30,1" />
+		<LABEL name="lblTitle0" caption="감시 실행이 불가해요." fontsize="1" fontstyle="01" multiline="1" ly_vert="20,460,283,30,1" />
+		<LABEL name="Label4" ly_vert="30,600,315,30,1" />
+		<LABEL name="Label5" ly_vert="30,620,315,30,1" />
+		<LABEL name="Label6" ly_vert="30,640,315,30,1" />
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="13837" _ulen="12945" >
+
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+
+-- ****************************************************************************
+--                G  L  O  B  A  L       V  A  R  I  A  B  L  E
+-- ****************************************************************************
+-- -----------------------------------------------
+-- OS TYPE
+-- -----------------------------------------------
+local g_szOsType
+g_szOsType = Form.GetSharedData("&OS_TYPE", false)
+
+-- -----------------------------------------------
+-- 설정 글자크기
+-- -----------------------------------------------
+local g_szTextSize
+g_szTextSize = Form.getEnvData("common.textsize")
+
+-- -----------------------------------------------
+-- 공통 이미지
+-- -----------------------------------------------
+local g_szBgImg
+g_szBgImg = "popup_bg.9"
+
+local g_szCloseImg  
+g_szCloseImg = "icon_close"
+
+-- -----------------------------------------------
+-- 컬러코드
+-- -----------------------------------------------
+-- 기본 텍스트 컬러 (검정색)
+local g_szTxtColor_Normal 
+g_szTxtColor_Normal 	= "334"
+
+-- 기본 텍스트 컬러 (회색)
+local g_szTxtColor_Grey 
+g_szTxtColor_Grey 	= "333"
+
+-- -----------------------------------------------
+-- 기타 전역변수
+-- -----------------------------------------------
+local g_szTitle
+
+
+-- ****************************************************************************
+--             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+-- ****************************************************************************
+
+function DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
+	
+	-- 글머리 기호
+	Pannel0.setPropCardCell("paddinginfo" 	,"lblGuide", nIdx, "0,1,0,0")
+	Pannel0.setPropCardCell("fgcolor" 		,"lblGuide", nIdx, szFgColor)
+
+	-- 본문
+	Pannel0.setPropCardCell("paddinginfo" ,"lblInfo",nIdx,"0,0,0,0")
+	Pannel0.setPropCardCell("fgcolor" ,"lblInfo",nIdx,szFgColor)
+	
+	-- 이미지
+	Pannel0.setPropCardCell("maintainratio" ,"imgGuide0",nIdx, "1")
+	
+	-- 구분라인
+	Pannel0.setPropCardCell("bgcolor" ,"lblDiv",nIdx, szFgColor)
+	
+	-- ---------------------------------------------------------------
+	-- 들여쓰기 단계
+	-- ---------------------------------------------------------------
+	local szCtlNm = ""
+	-- 0단계(기본) : 글머리 20 / 본문 35 (310)
+	if nDepth == 0 then
+		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "20")
+		
+		-- 글머리 유무 체크
+		if szHead == "" then
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "20")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "335")
+			szCtlNm = "lblTempTitle"
+		else
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+			szCtlNm = "lblTemp0"
+		end
+		
+	-- 1단계 : 글머리 35 / 본문 50 (295) 
+	elseif nDepth == 1 then
+		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "35")
+		
+		-- 글머리 유무 체크
+		if szHead == "" then
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+			szCtlNm = "lblTemp0"
+		else
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "50")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "295")
+			szCtlNm = "lblTemp1"
+		end
+		
+	-- 2단계 : 글며리 50 / 본문 75 (280)
+	elseif nDepth == 2 then
+		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "50")
+		
+		-- 글머리 유무 체크
+		if szHead == "" then
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "50")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "295")
+			szCtlNm = "lblTemp1"
+		else
+			Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "75")
+			Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "280")
+			szCtlNm = "lblTemp2"
+		end
+		
+	else
+		Pannel0.setPropCardCell("left",  "lblGuide", nIdx, "20")
+		Pannel0.setPropCardCell("left",  "lblInfo" , nIdx, "35")
+		Pannel0.setPropCardCell("width", "lblInfo" , nIdx, "310")
+		szCtlNm = "lblTemp0"
+	end
+	-- ---------------------------------------------------------------
+	
+	-- ---------------------------------------------------------------
+	-- 폰트스타일 (사이즈 / 볼드 / 글자색)
+	-- ---------------------------------------------------------------
+	Pannel0.setPropCardCell("fontsize" ,"lblGuide",nIdx, szSize)
+	Pannel0.setPropCardCell("fontsize" ,"lblInfo",nIdx, szSize)
+--	Form.SetCtlProp(szCtlNm, "fontsize", szSize)
+	
+
+	Pannel0.setPropCardCell("fontbold" ,"lblGuide",nIdx, szBold)
+	Pannel0.setPropCardCell("fontbold" ,"lblInfo",nIdx, szBold)
+--	Form.SetCtlProp(szCtlNm, "fontbold", szBold)
+	
+	Pannel0.setPropCardCell("fgcolor" ,"lblGuide",nIdx, szFgColor)
+	Pannel0.setPropCardCell("fgcolor" ,"lblInfo",nIdx, szFgColor)
+	-- ---------------------------------------------------------------
+	
+	local nHeight = 0
+	-- ---------------------------------------------------------------
+	-- 데이터 세팅
+	-- ---------------------------------------------------------------
+	-- 텍스트
+	if szType == "0" then
+		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, szHead)
+		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, szText)
+		
+		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+		
+		local nLineCnt = 0
+		if szCtlNm == "lblTempTitle" then
+			lblTempTitle.caption = szText
+			nLineCnt = lblTempTitle.linecnt
+		elseif szCtlNm == "lblTemp0" then
+			lblTemp0.caption = szText
+			nLineCnt = lblTemp0.linecnt
+		elseif szCtlNm == "lblTemp1" then
+			lblTemp1.caption = szText
+			nLineCnt = lblTemp1.linecnt
+		elseif szCtlNm == "lblTemp2" then
+			lblTemp2.caption = szText
+			nLineCnt = lblTemp2.linecnt
+		end
+		
+		
+		nHeight = Resize_LineH(szText, gf_Tonumber(szSize), nLineCnt)
+		Pannel0.SetCardWHAt(nIdx, nHeight)
+		
+	-- 이미지
+	elseif szType == "1" then
+		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		
+		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+		
+	-- 구분선(Divide)
+	elseif szType == "2" then
+		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		
+		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "20")
+		Pannel0.setPropCardCell("width" ,"lblDiv",nIdx, "335")
+		
+	-- 초기화	
+	else
+		Pannel0.setPropCardCell("caption" ,"lblGuide",nIdx, "")
+		Pannel0.setPropCardCell("caption" ,"lblInfo",nIdx, "")
+		
+		Pannel0.setPropCardCell("imgpath" ,"imgGuide0",nIdx, "alpha")
+		Pannel0.setPropCardCell("left" ,"lblDiv",nIdx, "500")
+	end
+	-- ---------------------------------------------------------------
+	
+	return nHeight
+end
+
+function Resize_LineH(szText, nFontSize, nLineCnt)
+	local nResult = 0
+	local nLineHeigth = 20 + nFontSize
+	local nGap = 0 
+	
+	if g_szOsType == "2" then
+		nGap = 2
+	else
+		nGap = 1
+	end
+	
+--	Form.SetCtlProp(szCtlNm, "caption", szText)
+--	nLineCnt = Form.GetCtlProp(szCtlNm, "linecnt")
+	nResult = (nLineHeigth + (gf_Tonumber(g_szTextSize) * nGap)) * nLineCnt + 5
+	
+	return nResult
+end
+
+-- ===============================================
+-- 컨트롤 초기설정
+-- ===============================================
+function Init_Control()
+	-- -----------------------------------------------
+	-- 배경이미지 초기화
+	-- -----------------------------------------------
+	imgBg.imgpath = g_szBgImg
+	
+	-- -----------------------------------------------
+	-- 타이틀 초기화
+	-- -----------------------------------------------
+--	lblTitle.paddinginfo = "0,0,0,0"
+--	g_szTitle = "상품 주요설명 확인"
+--	lblTitle.caption = g_szTitle
+	
+	-- -----------------------------------------------
+	-- 닫기 버튼 초기화
+	-- -----------------------------------------------
+	imgClose.SetMaintainingRatio("3")
+	imgClose.imgpath = g_szCloseImg
+	imgClose.visible = false
+	
+	-- -----------------------------------------------
+	-- 유의사항 본문내용 초기화
+	-- -----------------------------------------------
+	local szInfo0 = "매수주문을 완료하기 전까지"
+	local szInfo0_1 = "해외채권 호가는 실시간으로 변동돼요."
+	local szInfo1 = "원하는 주문수량을 입력하기 전에"
+	local szInfo1_1 = "상품에 대한 주요 설명을 확인하시면"
+	local szInfo1_2 = "가격변동 가능성을 줄일 수 있어요."
+
+	-- ==================================================================================================================================================
+	local nHeight = 0
+	
+	-- ------------------------------------------------------------------------------------------
+	-- DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, szBold, szFgColor)
+	-- szType 설명
+	-- - "0" : 텍스트 
+	-- - "1" : 이미지
+	-- - "2" : 가이드 라인
+	-- - "empty" : 공백
+	-- ------------------------------------------------------------------------------------------
+	
+	-- ------------------------------------------------------------------------------------------
+	-- 민간평가사 정보 START
+	-- ------------------------------------------------------------------------------------------
+	local nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo0, "-1", "0", g_szTxtColor_Normal)
+--	Pannel0.SetCardWHAt(nIdx, nHeight - 5)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo0_1, "-1", "0", g_szTxtColor_Normal)
+--	Pannel0.SetCardWHAt(nIdx, nHeight - 5)
+	
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo1, "-1", "0", g_szTxtColor_Normal)
+--	Pannel0.SetCardWHAt(nIdx, nHeight - 5)
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo1_1, "-1", "0", g_szTxtColor_Normal)
+--	Pannel0.SetCardWHAt(nIdx, nHeight - 5)
+	nIdx = Pannel0.AddRow()
+	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo1_2, "-1", "0", g_szTxtColor_Normal)
+--	Pannel0.SetCardWHAt(nIdx, nHeight - 5)
+--	nIdx = Pannel0.AddRow()
+--	nHeight = DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo1_3, "-1", "0", g_szTxtColor_Normal)
+--	Pannel0.SetCardWHAt(nIdx, nHeight + 10)
+	
+--	nIdx = Pannel0.AddRow()
+--	DisplaySetting_PannelRow(nIdx, "0", 0, "", szInfo2, "-1", "0", g_szTxtColor_Normal)
+	
+	nIdx = Pannel0.AddRow()
+	DisplaySetting_PannelRow(nIdx, "0", 1, "", "", "-2", "0", "333")
+
+	-- ------------------------------------------------------------------------------------------
+	-- 민간평가사 정보 안내 END
+	-- ------------------------------------------------------------------------------------------
+
+end
+
+-- ****************************************************************************
+--                C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+-- ****************************************************************************
+
+-- ===============================================
+-- Form_OnFormInitBefore
+-- ===============================================
+function Form_OnFormInitBefore()
+end
+
+-- ===============================================
+-- Form_OnFormInit
+-- ===============================================
+function Form_OnFormInit()
+	-- -----------------------------------------------
+	-- 패딩값 초기화 (위치변경 X)
+	-- -----------------------------------------------
+	lblTempTitle.paddinginfo = "0,0,0,0"
+	lblTemp0.paddinginfo = "0,0,0,0"
+	lblTemp1.paddinginfo = "0,0,0,0"
+	lblTemp2.paddinginfo = "0,0,0,0"
+	
+	Label0.caption = "해당 종목은 감시 실행이 불가하므로"
+	Label1.caption = "삭제 후 이용해 주세요"
+	
+	Label2.caption = "거래정지, 권리 발생(액면병합, 액면분할, 합병"
+	Label3.caption = "등), 종목정보 변경 (ISIN코드, Tiker, 거래소"
+	Label4.caption = "변경, 재상장 등), 상장폐지, OTC 종목으로"
+	Label5.caption = "전환, 기준가격이 변동된 경우에는 감시 실행이"
+	Label6.caption = "불가해요."
+	
+--	Label2.changeTextAttr(0, 4, 290, 0, false)
+--	Label4.changeTextAttr(18, 8, 290, 0, false)
+--	Label5.changeTextAttr(0, 9, 290, 0, false)
+	
+	lblTitle0.setHighlight(332)
+	Label5.setHighlight(332, 10, 15)
+	Label6.setHighlight(332)
+	-- ------------------------------------------------------------------------------
+	-- 라벨컨트롤 라인수 체크 시 OS별 동작 타이밍 다름
+	-- iOS : 즉시 라인수 체크 가능
+	-- 안드로이드 : 지연처리 후 라인수 체크 가능(컨트롤 생성 타이밍 때문으로 보임)
+	-- ------------------------------------------------------------------------------
+--	if g_szOsType == "2" then
+--		Init_Control()
+--	else
+--		Form.setDelayEvent(1, 0.1)
+--	end
+	
+end
+
+-- ===============================================
+-- Form_OnDelayEvent(1회 실행)
+-- ===============================================
+function Form_OnDelayEvent(nID)
+	if gf_Tonumber(nID) == 1 then
+		Init_Control()
+	end
+end
+
+-- ===============================================
+-- imgInfo_OnClick
+-- ===============================================
+function imgClose_OnClick()
+	Form.SendReturnToParent("Check_Prev_OnlGuide" , "cancel")
+	Form.CloseForm()
+end
+
+-- ===============================================
+-- imgAlpha_OnClick
+-- ===============================================
+function imgAlpha_OnClick()
+	Form.SendReturnToParent("Check_Prev_OnlGuide" , "cancel")
+	Form.CloseForm()
+end
+
+-- ===============================================
+-- Button0_OnClick
+-- ===============================================
+function Button0_OnClick()
+	Form.SendReturnToParent("Check_Prev_OnlGuide" , "cancel")
+	Form.CloseForm()
+end
+
+-- ===============================================
+-- Button1_OnClick
+-- ===============================================
+function Button1_OnClick()
+	Form.SendReturnToParent("Check_Prev_OnlGuide" , "ok")
+	Form.CloseForm()
+end
+
+
+
+	</SCRIPT_INFO>
+</ROOT>

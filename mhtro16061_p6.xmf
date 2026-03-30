@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ROOT>
+	<MAP_INFO scrno="16061" scrname="(NEW)해외주식_예약주문_취소확인창" version="3" writer="아이티젠" scrtype="1" scripttype="1" />
+	<FORM_INFO name="Form" transmode="0" ly_vert="0,0,375,647,1" />
+	<CONTROL_INFO>
+		<IMAGE name="imgBg" imgpath="alpha" ly_vert="0,0,375,647,1" />
+		<IMAGE name="imgMain" imgpath="popup_bg.9" ly_vert="0,267,375,470,1" />
+		<LABEL name="Label0" fgcolor="293:017158176" caption="취소" fontsize="2" fontstyle="01" halign="2" ly_vert="85,271,80,60,1" />
+		<LABEL name="lblMaesu1Title" caption="하시겠습니까?" bgcolor="092:185046046" fontsize="2" fontstyle="01" autosize="2" paddinginfo="1,0,0,0" ly_vert="160,271,130,60,1" />
+		<LABEL name="Label3" fgcolor="334:034034034" caption="주문정보" fontstyle="01" valign="0" ly_vert="20,331,100,20,1" />
+		<IMAGE name="Image0" imgpath="bg_infobox.9" ly_vert="20,361,335,215,1" />
+		<BUTTON name="btnMaesu1Close" caption="닫기" fgcolor="004:000000000" btnimage="btn_28.9" ly_vert="0,592,147,55,1" />
+		<BUTTON name="btnMaesu1" caption="취소하기" btnimage="btn_etc18.9" ly_vert="147,592,230,55,1" />
+		<TABLE name="tblMaedo1" colcount="3" rowcount="8" outline="0000" transmode="1" designorder="1" ly_vert="40,381,295,186,1" >
+			<COL_INFO ly_vert_width="89,120,86" />
+			<ROW_INFO ly_vert_height="21,21,25,25,21,21,21,31" />
+			<CELL_INFO>
+				<CELL cell_ly="0,0,0,0" fgcolor="333:115118124" bgcolor="042:255255255" halign="0" line="0,0" text="계좌번호" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,0,2,0" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,1,0,1" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" text="매매구분" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,1,2,1" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" fontstyle="01" impidxs="" />
+				<CELL cell_ly="0,2,0,2" fgcolor="333:115118124" bgcolor="042:255255255" valign="2" halign="0" line="0,0" text="종목" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,2,2,2" fgcolor="334:034034034" bgcolor="038:255255255" valign="2" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,3,0,3" fgcolor="333:115118124" bgcolor="042:255255255" valign="0" halign="0" line="0,0" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,3,2,3" fgcolor="334:034034034" bgcolor="038:255255255" valign="0" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,4,0,4" fgcolor="333:115118124" bgcolor="042:255255255" halign="0" line="0,0" text="주문구분" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,4,2,4" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,5,0,5" fgcolor="333:115118124" bgcolor="042:255255255" halign="0" line="0,0" text="수량" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,5,2,5" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" mask="1,0,,,1,,0,0,0,0,0,0" fontstyle="01" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,6,0,6" fgcolor="333:115118124" bgcolor="042:255255255" halign="0" line="0,0" text="단가" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,6,2,6" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" mask="0,0,,,0,,0,1,1,0,0,0" fontstyle="01" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,7,0,7" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" text="원주문번호" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,7,2,7" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" mask="0,0,,,0,,0,0,0,0,0,0" fontstyle="01" impidxs="" />
+			</CELL_INFO>
+		</TABLE>
+		<TABLE name="tblMaedo2" colcount="3" rowcount="9" outline="0000" transmode="1" designorder="1" ly_vert="40,30,295,216,1" >
+			<COL_INFO ly_vert_width="89,120,86" />
+			<ROW_INFO ly_vert_height="21,20,21,25,25,21,21,31,31" />
+			<CELL_INFO>
+				<CELL cell_ly="0,0,0,0" fgcolor="333:115118124" bgcolor="042:255255255" halign="0" line="0,0" text="계좌번호" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,0,2,0" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,1,0,1" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" text="매매구분" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,1,2,1" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" fontstyle="01" impidxs="" />
+				<CELL cell_ly="0,2,0,2" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" text="대출구분" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,2,2,2" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,3,0,3" fgcolor="333:115118124" bgcolor="042:255255255" valign="2" halign="0" line="0,0" text="종목" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,3,2,3" fgcolor="334:034034034" bgcolor="038:255255255" valign="2" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,4,0,4" fgcolor="333:115118124" bgcolor="042:255255255" valign="0" halign="0" line="0,0" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,4,2,4" fgcolor="334:034034034" bgcolor="038:255255255" valign="0" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,5,0,5" fgcolor="333:115118124" bgcolor="042:255255255" halign="0" line="0,0" text="주문구분" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,5,2,5" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,6,0,6" fgcolor="333:115118124" bgcolor="042:255255255" halign="0" line="0,0" text="수량" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,6,2,6" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" fontstyle="01" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,7,0,7" fgcolor="333:115118124" bgcolor="042:255255255" halign="0" line="0,0" text="단가" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,7,2,7" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" mask="0,0,,,0,,0,1,1,0,0,0" fontstyle="01" autofontsize="1" impidxs="" />
+				<CELL cell_ly="0,8,0,8" fgcolor="333:115118124" bgcolor="038:255255255" halign="0" line="0,0" text="원주문번호" fontsize="-2" impidxs="" />
+				<CELL cell_ly="1,8,2,8" fgcolor="334:034034034" bgcolor="038:255255255" halign="2" line="0,0" fontsize="-2" mask="0,0,,,0,,0,0,0,0,0,0" fontstyle="01" impidxs="" />
+			</CELL_INFO>
+		</TABLE>
+		<TABORDER_INFO horz="" vert="" />
+	</CONTROL_INFO>
+	<SCRIPT_INFO _len="10343" _ulen="9535" >
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+
+local g_nCount
+g_nCount = 0
+
+local g_nIndex -- 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
+local g_szOrder_Acc -- 계좌번호
+local g_szOrder_AccName -- 고객명
+local g_szOrd_ItmCode -- 종목코드
+local g_szOrd_ItmName -- 종목명
+local g_szOrd_OrdType -- 주문구분
+local g_szOrd_Security -- 현금/대출
+local g_nOrd_Qty -- 주문수량
+local g_nOrd_Price -- 주문가격
+local g_nOrd_OrdNo -- 원주문번호
+local g_nOrd_ChkAll -- 잔량전부	
+local g_nOrd_Decimal -- 가격자릿수
+local g_nOrd_Currency -- 통화기호
+local g_szOrd_PrcName -- 시장가/지정가
+
+local g_nOrd_LoanType -- 대출구분
+local g_szOrd_LoanDate -- 대출일자
+local g_szOrd_LoanSrno -- 대출일련번호
+
+ --============================================================================
+function Form_OnFormInitBefore()
+
+	local szData, arrData, szItemName
+
+	szData = Form.GetOpenLinkData()
+	
+	arrData = gf_Split(szData,"|")
+	
+	if #arrData < 1 then
+	    return
+	end
+	
+	 -------------------------------------------------------------
+	 -- 일반주문(현금/대출)
+	 -------------------------------------------------------------
+	g_nIndex				= arrData[0+1]  -- 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소, 10:예약매수, 11:예약매도, 12:예약취소)
+	g_szOrder_Acc			= arrData[1+1]	 -- 계좌번호
+	g_szOrder_AccName		= arrData[2+1]	 -- 고객명
+	g_szOrd_ItmCode 		= arrData[3+1]	 -- 종목코드
+	g_szOrd_ItmName 		= arrData[4+1]	 -- 종목명
+	g_szOrd_OrdType  		= arrData[5+1]	 -- 주문구분
+	g_szOrd_Security 		= arrData[6+1]	 -- 현금/대출구분 (0:현금/1:대출)
+	g_nOrd_Qty   			= arrData[7+1]	 -- 주문수량
+	g_nOrd_Price 			= arrData[8+1]	 -- 주문가격
+	g_nOrd_OrdNo 			= arrData[9+1]	 -- 원주문번호
+	g_nOrd_ChkAll 		= arrData[10+1]	 -- 잔량전부
+	g_nOrd_Decimal		= arrData[11+1]	 -- 가격자릿수
+	g_nOrd_Currency		= arrData[12+1]	 -- 통화
+	g_szOrd_PrcName		= arrData[13+1]	 -- 시장가or지정가
+	
+	 --대출일경우
+	if g_szOrd_Security == "1" then
+		g_nOrd_LoanType		= arrData[14+1]	 -- 대출구분
+		g_szOrd_LoanDate		= arrData[15+1]	 -- 대출일자
+		g_szOrd_LoanSrno		= arrData[16+1]	 -- 대출일련번호
+	end
+	
+end
+
+ --============================================================================
+function Form_OnFormInit()
+
+    Set_Data(g_nIndex)
+    
+end
+
+ --============================================================================
+ --주문화면 데이터
+ --============================================================================
+function Set_Data(nIndex)
+
+     --===========================================================
+     -- 일반주문
+     --===========================================================
+		
+	 --===========================================================
+	 -- 대출
+	 --===========================================================
+	if g_szOrd_Security == "1" then
+		
+		 -------------------------------------------------------------
+		 -- 일반주문 : (현금)숨김처리 / (대출) 보임처리
+		 -------------------------------------------------------------
+		Label0.top = 250
+		lblMaesu1Title.top = 250
+		
+		imgMain.top = 246
+		imgMain.height = 491 
+		Image0.top = 340
+		Image0.height = 236
+		Label3.top = 310
+		
+		tblMaedo2.top = 352
+	
+		tblMaedo1.visible = false
+		tblMaedo2.visible = true
+		
+		 -------------------------------------------------------------
+		 -- 계좌번호/고객명
+		 -------------------------------------------------------------
+		szStr1 = string.sub(g_szOrder_Acc, 1, 4)
+		szStr2 = string.sub(g_szOrder_Acc, 5, 5 + 4 - 1)
+		szStr3 = string.sub(g_szOrder_Acc, -2)
+		tblMaedo2.SetCellString( 0, 1, szStr1.."-".. szStr2 .."-".. szStr3.." "..g_szOrder_AccName)
+		
+		 -------------------------------------------------------------
+		 -- 매매구분
+		 -------------------------------------------------------------
+		if nIndex == 1 or nIndex == "1" then
+			
+			tblMaedo2.SetCellFgColor(1, 1, 291)
+			tblMaedo2.SetCellString( 1, 1, "매도")
+		
+		elseif nIndex == 2 or nIndex == "2" then
+			
+			tblMaedo2.SetCellFgColor(1, 1, 290)
+			tblMaedo2.SetCellString( 1, 1, "매수")
+			
+		end
+		
+		 -------------------------------------------------------------
+		 -- 대출구분/대출일자
+		 -------------------------------------------------------------
+		sLoanName = ""
+		if g_nOrd_LoanType == "0251" then
+			sLoanName = "예탁주식"
+		end
+		
+		sLoanDate = string.sub(g_szOrd_LoanDate, 1, 4) .. "." .. string.sub(g_szOrd_LoanDate, 5, 5 + 2 - 1) .. "." .. string.sub(g_szOrd_LoanDate, -2)
+		
+		tblMaedo2.SetCellString( 2, 1, sLoanName .. " | " .. sLoanDate)
+		
+		 -------------------------------------------------------------
+		 -- 종목코드/종목명
+		 -------------------------------------------------------------
+		tblMaedo2.SetCellString( 3, 1, g_szOrd_ItmCode)
+		tblMaedo2.SetCellString( 4, 1, g_szOrd_ItmName)
+		
+		 -------------------------------------------------------------
+		 -- 주문구분
+		 -------------------------------------------------------------
+		tblMaedo2.SetCellString( 5, 1, g_szOrd_OrdType)
+		
+		 -------------------------------------------------------------
+		 -- 수량
+		 -------------------------------------------------------------
+		if g_nOrd_ChkAll == "Y" then
+			g_nOrd_Qty = "잔량전부"
+		end
+		
+		tblMaedo2.SetCellString( 6, 1, g_nOrd_Qty)
+		
+		 -------------------------------------------------------------
+		 -- 시장가/지정가 여부에따라 가격 세팅
+		 -------------------------------------------------------------
+		if g_szOrd_PrcName == "시장가" then
+		
+			tblMaedo2.SetCellString( 7, 1, "-" )	
+			
+		else
+		
+			 -------------------------------------------------------------
+			 -- 단가(시장별 소수점처리 및 통화처리)
+			 -------------------------------------------------------------
+			sMask = "0,0,,".. " "..g_nOrd_Currency ..",0,,"..g_nOrd_Decimal..",1,1,2,0"
+			tblMaedo2.SetCellMaskInfo( 7, 1, sMask )
+			tblMaedo2.SetCellString( 7, 1, g_nOrd_Price )	
+		
+		end
+		
+		 -------------------------------------------------------------
+		 -- 원주문번호
+		 -------------------------------------------------------------
+		tblMaedo2.SetCellString( 8, 1, g_nOrd_OrdNo )	
+	
+	
+	 --===========================================================
+	 -- 현금
+	 --===========================================================	
+	else
+	
+		 -------------------------------------------------------------
+		 -- 일반주문 : (현금)보임처리 / (대출) 숨김처리
+		 -------------------------------------------------------------
+		tblMaedo1.visible = true
+		tblMaedo2.visible = false
+		
+		 -------------------------------------------------------------
+		 -- 계좌번호/고객명
+		 -------------------------------------------------------------
+		szStr1 = string.sub(g_szOrder_Acc, 1, 4)
+		szStr2 = string.sub(g_szOrder_Acc, 5, 5 + 4 - 1)
+		szStr3 = string.sub(g_szOrder_Acc, -2)
+		tblMaedo1.SetCellString( 0, 1, szStr1.."-".. szStr2 .."-".. szStr3.." "..g_szOrder_AccName)
+		
+		 -------------------------------------------------------------
+		 -- 매매구분(매수/매도)
+		 -------------------------------------------------------------
+		if nIndex == 1 or nIndex == "1" then
+			
+			tblMaedo1.SetCellFgColor(1, 1, 291)
+			tblMaedo1.SetCellString( 1, 1, "매도")
+		
+		elseif nIndex == 2 or nIndex == "2" then
+			
+			tblMaedo1.SetCellFgColor(1, 1, 290)
+			tblMaedo1.SetCellString( 1, 1, "매수")
+			
+		end
+		
+		 -------------------------------------------------------------
+		 -- 종목코드/종목명
+		 -------------------------------------------------------------
+		tblMaedo1.SetCellString( 2, 1, g_szOrd_ItmCode)
+		tblMaedo1.SetCellString( 3, 1, g_szOrd_ItmName)
+		
+		 -------------------------------------------------------------
+		 -- 주문구분(지정가/시장가)
+		 -------------------------------------------------------------
+		tblMaedo1.SetCellString( 4, 1, g_szOrd_OrdType)
+		
+		 -------------------------------------------------------------
+		 -- 수량
+		 -------------------------------------------------------------
+		if g_nOrd_ChkAll == "Y" then
+			g_nOrd_Qty = "잔량전부"
+		end
+		
+		tblMaedo1.SetCellString( 5, 1, g_nOrd_Qty)
+		
+		 -------------------------------------------------------------
+		 -- 시장가/지정가 여부에따라 가격 세팅
+		 -------------------------------------------------------------
+		if g_szOrd_PrcName == "시장가" then
+			
+			tblMaedo1.SetCellString( 6, 1, "-" )
+			
+		else
+			
+			 -------------------------------------------------------------
+			 -- 단가(시장별 소수점처리 및 통화처리)
+			 -------------------------------------------------------------
+			sMask = "0,0,,".. " "..g_nOrd_Currency ..",0,,"..g_nOrd_Decimal..",1,1,2,0"
+			tblMaedo1.SetCellMaskInfo( 6, 1, sMask )
+			tblMaedo1.SetCellString( 6, 1, g_nOrd_Price )	
+		
+		end
+		
+		 -------------------------------------------------------------
+		 -- 원주문번호
+		 -------------------------------------------------------------
+		tblMaedo1.SetCellString( 7, 1, g_nOrd_OrdNo )	
+	
+	end
+	  
+
+end
+
+ --============================================================================
+function SendOrder()
+    
+    if g_nCount == 0 then
+	    Form.SendReturnToParent( "주문전송" , "1")
+	    
+	    g_nCount = 1
+	    Form.CloseForm( )
+	    
+    end
+    
+end
+ --============================================================================
+function btnMaesu1Close_OnClick()
+	Form.CloseForm()	
+end
+ --============================================================================
+function btnMaesu1_OnClick()
+	SendOrder()
+end
+ --============================================================================
+function imgBg_OnClick()
+	Form.CloseForm()	
+end
+
+ --============================================================================
+
+	</SCRIPT_INFO>
+</ROOT>
