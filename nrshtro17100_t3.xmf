@@ -396,44 +396,46 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="43856" _ulen="41526" >
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim g_nDataCnt
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+local g_nDataCnt
 g_nDataCnt = 0
 
-Dim g_nRunCnt 
+local g_nRunCnt
 g_nRunCnt = 0
 
-Dim g_nClickIdx
+local g_nClickIdx
 g_nClickIdx = 0
 
-Dim g_nViewMode
+local g_nViewMode
 g_nViewMode = 0
 
-Dim g_isModify
+local g_isModify
 g_isModify = false
 
-Dim g_sModifyInfo
+local g_sModifyInfo
 
-Dim g_sGbn
-Dim g_sCode
-Dim g_sExid
-Dim g_sItemCode
-Dim g_sItemName
-Dim g_sNation
-Dim g_sMarket
-Dim g_sExid2
-Dim g_sExid3
+local g_sGbn
+local g_sCode
+local g_sExid
+local g_sItemCode
+local g_sItemName
+local g_sNation
+local g_sMarket
+local g_sExid2
+local g_sExid3
 
-Dim g_sQtyUnit
+local g_sQtyUnit
 
-Dim g_sStep
+local g_sStep
 
-Dim g_sOrderGbn
+local g_sOrderGbn
 g_sOrderGbn = ""
 
-Dim g_sResultGbn
+local g_sResultGbn
 g_sResultGbn = ""
 
 g_sCode = ""
@@ -444,15 +446,15 @@ g_sExid2 = ""
 g_sQtyUnit = ""
 g_sExid3 = ""
 
-Dim g_sNextKey
+local g_sNextKey
 g_sNextKey = ""
 
 
-Dim g_szSaveFilterData1
-Dim g_szSaveFilterData2
+local g_szSaveFilterData1
+local g_szSaveFilterData2
 
-Dim g_szFilterData1
-Dim g_szFilterData2
+local g_szFilterData1
+local g_szFilterData2
 
 g_szSaveFilterData1 = ""
 g_szSaveFilterData2 = ""
@@ -460,235 +462,235 @@ g_szSaveFilterData2 = ""
 g_szFilterData1 = "매수`매도"
 g_szFilterData2 = "전체(종료제외)`주문`체결`주문취소`거부`감시종료(주문미실행)"
 
-' 공통 에러 문구(REST API 용)
-Dim g_sCommonErrorMsg
+ -- 공통 에러 문구(REST API 용)
+local g_sCommonErrorMsg
 g_sCommonErrorMsg = "현재 자동감시주문 실행이\n불가합니다.\n고객지원센터에 문의해주세요."
 
-Dim g_sCal0
+local g_sCal0
 g_sCal0 = ""
-Dim g_sCal1
+local g_sCal1
 g_sCal1 = ""
-Dim g_sBizDate
+local g_sBizDate
 g_sBizDate = ""
 
-Dim g_isFst
+local g_isFst
 g_isFst = false
 
-Dim g_sAcno
+local g_sAcno
 g_sAcno = ""
 
-Dim g_sAsno
+local g_sAsno
 g_sAsno = ""
 
-Dim g_sPwd
+local g_sPwd
 g_sPwd = ""
 
-Dim g_sAccName
+local g_sAccName
 g_sAccName = ""
 
-Dim g_isClick
+local g_isClick
 g_isClick = false
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
-'****************************************************************************
-'===============================================
-' NULL 체크 
-'===============================================
-Function isEmpty(sData)
-	if trim(sData) == "" or sData == null or trim(sData) == "null" then
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
+ --****************************************************************************
+ --===============================================
+ -- NULL 체크 
+ --===============================================
+function isEmpty(sData)
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
 		return true
 	else
 		return false
-	end if
-End Function
+	end
+end
 
-'===============================================
-' 숫자 소수점 절사 함수
-'===============================================
-Function truncateToDecimalPlaces(nVal, nDeimalPlaces)
-	nVal = Cdbl(nVal)
+ --===============================================
+ -- 숫자 소수점 절사 함수
+ --===============================================
+function truncateToDecimalPlaces(nVal, nDeimalPlaces)
+	nVal = gf_Tonumber(nVal)
 	nFactor = 10 ^ nDeimalPlaces
-	szNumStr = FormatNumber(nVal*nFactor,12,0,0,0,1)
-	nDecimalIdx = instr(szNumStr, ".")
+	szNumStr = gf_CommaValue(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = string.find(szNumStr, ".")
 	
 	nTotalData = 0
-	if Cint(nDecimalIdx) > 0 then
-		nTotalData = Cdbl(left(szNumStr, Cint(nDecimalIdx)-1))
+	if gf_Tonumber(nDecimalIdx) > 0 then
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, Cint(nDecimalIdx)-1))
 	else
-		nTotalData = Cdbl(szNumStr)
-	end if
+		nTotalData = gf_Tonumber(szNumStr)
+	end
 
 	return nTotalData / nFactor
-End Function
+end
 
-'===============================================
-' (NonNull) 문자열 -> 배열 변환함수
-'===============================================
-Function Convert_StrToArr(szData, szSeperator)
+ --===============================================
+ -- (NonNull) 문자열 -> 배열 변환함수
+ --===============================================
+function Convert_StrToArr(szData, szSeperator)
 
-	Dim arrData
+	local arrData
 	
-	'--------------------------------------------
-	' 링크데이터 값 체크
-	'--------------------------------------------
+	 ----------------------------------------------
+	 -- 링크데이터 값 체크
+	 ----------------------------------------------
 	if isEmpty(szData) then
 		arrData = {}
 		return arrData
-	end if
+	end
 	
-	'--------------------------------------------
-	' 구분자 값 체크
-	'--------------------------------------------
+	 ----------------------------------------------
+	 -- 구분자 값 체크
+	 ----------------------------------------------
 	if isEmpty(szSeperator) then
-		' 단일변수
+		 -- 단일변수
 		arrData = {}
-		Table.insert(arrData, szData)
+		Table.Insert(arrData, szData)
 	else
-		' 다중변수
-		arrData = split(szData, szSeperator)
-	end if
+		 -- 다중변수
+		arrData = gf_Split(szData, szSeperator)
+	end
 	
 	return arrData
 	
-End Function
+end
 
-Function AutoRule_SelectOrderHistory() 
+function AutoRule_SelectOrderHistory()
 	g_sStep = "SELECT_ORDER_HISTORY"
 	
-	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
 	sCode = g_sCode
 	
 	g_sNextKey = ""
 	Grid0.SetClear()
 	Grid0.rowcount = 0
-	Grid0.initScrollX()
+	Grid0.InitScrollX()
 	
-	Form.makeRequestData("accountNumber", sAcno)
-	Form.makeRequestData("accountSeqNumber", sAsno)
-	Form.makeRequestData("dataTargetType", "2")
-	Form.makeRequestData("queryStartDate", Calendar0.caption)
-	Form.makeRequestData("queryEndDate", Calendar1.caption)
+	Form.MakeRequestData("accountNumber", sAcno)
+	Form.MakeRequestData("accountSeqNumber", sAsno)
+	Form.MakeRequestData("dataTargetType", "2")
+	Form.MakeRequestData("queryStartDate", Calendar0.caption)
+	Form.MakeRequestData("queryEndDate", Calendar1.caption)
 	
 	if isEmpty(sCode) == false then
-		Form.makeRequestData("stockCode", sCode)
-	end if
+		Form.MakeRequestData("stockCode", sCode)
+	end
 	
 	if isEmpty(g_sOrderGbn) == false then
-		Form.makeRequestData("tradeType", g_sOrderGbn)
-	end if
+		Form.MakeRequestData("tradeType", g_sOrderGbn)
+	end
 	
 	if isEmpty(g_sResultGbn) == false then
-		Form.makeRequestData("procResultType", g_sResultGbn)
-	end if
+		Form.MakeRequestData("procResultType", g_sResultGbn)
+	end
 	
 	sState = chk0.checkstate
 	if isEmpty(sState) == false and sState == "1" then
-		Form.makeRequestData("todayFlagType", sState)
-	end if
+		Form.MakeRequestData("todayFlagType", sState)
+	end
 
 	
 	if isEmpty(g_sNextKey) == false then
-		Form.makeRequestData("nextKey", g_sNextKey)
-	end if
+		Form.MakeRequestData("nextKey", g_sNextKey)
+	end
 	
-	Form.makeRequestData("pageInfo", "20")
+	Form.MakeRequestData("pageInfo", "20")
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	If sDev == "1" Then	'개발기
+	if sDev == "1" then --개발기
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
-	end if
+	end
 		
-	Form.requestRestAPI(sUrl&"api/v1/rule/select-order-history", "ORDER_LIST_"&g_sStep)
-End Function
+	Form.RequestRestAPI(sUrl.."api/v1/rule/select-order-history", "ORDER_LIST_"..g_sStep)
+end
 
-Function AutoRule_SelectOrderHistory_Next() 
+function AutoRule_SelectOrderHistory_Next()
 	g_sStep = "SELECT_ORDER_HISTORY_NEXT"
 	
-	sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
-	sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+	sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
+	sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
 	sCode = g_sCode
 	
-	Form.makeRequestData("accountNumber", sAcno)
-	Form.makeRequestData("accountSeqNumber", sAsno)
-	Form.makeRequestData("dataTargetType", "2")
-	Form.makeRequestData("queryStartDate", Calendar0.caption)
-	Form.makeRequestData("queryEndDate", Calendar1.caption)
+	Form.MakeRequestData("accountNumber", sAcno)
+	Form.MakeRequestData("accountSeqNumber", sAsno)
+	Form.MakeRequestData("dataTargetType", "2")
+	Form.MakeRequestData("queryStartDate", Calendar0.caption)
+	Form.MakeRequestData("queryEndDate", Calendar1.caption)
 	
 	if isEmpty(sCode) == false then
-		Form.makeRequestData("stockCode", sCode)
-	end if
+		Form.MakeRequestData("stockCode", sCode)
+	end
 	
 	if isEmpty(g_sOrderGbn) == false then
-		Form.makeRequestData("tradeType", g_sOrderGbn)
-	end if
+		Form.MakeRequestData("tradeType", g_sOrderGbn)
+	end
 	
 	if isEmpty(g_sResultGbn) == false then
-		Form.makeRequestData("procResultType", g_sResultGbn)
-	end if
+		Form.MakeRequestData("procResultType", g_sResultGbn)
+	end
 	
 	sState = chk0.checkstate
 	if isEmpty(sState) == false and sState == "1" then
-		Form.makeRequestData("todayFlagType", sState)
-	end if
+		Form.MakeRequestData("todayFlagType", sState)
+	end
 	
 	if isEmpty(g_sNextKey) == false then
-		Form.makeRequestData("nextKey", g_sNextKey)
-	end if
+		Form.MakeRequestData("nextKey", g_sNextKey)
+	end
 	
-	Form.makeRequestData("pageInfo", "20")
+	Form.MakeRequestData("pageInfo", "20")
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	If sDev == "1" Then	'개발기
+	if sDev == "1" then --개발기
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
-	end if
+	end
 		
-	Form.requestRestAPI(sUrl&"api/v1/rule/select-order-history", "ORDER_LIST_"&g_sStep)
-End Function
+	Form.RequestRestAPI(sUrl.."api/v1/rule/select-order-history", "ORDER_LIST_"..g_sStep)
+end
 
-'===============================================
-' REST API_토큰발급
-'===============================================
-Function IssueToken() 
+ --===============================================
+ -- REST API_토큰발급
+ --===============================================
+function IssueToken()
 	g_sStep = "ISSUE_TOKEN"
 	
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	
-	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
-	sData1  = Form.GetSharedData("&USER_ID", false )
-	sData2  = Form.GetSharedData("&MCI_SESSION_KEY", false )
-	sData3  = Form.GetSharedData("&SEMI_SSO_KEY", false )
+	sData0  = Form.GetSharedData("..MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("..USER_ID", false )
+	sData2  = Form.GetSharedData("..MCI_SESSION_KEY", false )
+	sData3  = Form.GetSharedData("..SEMI_SSO_KEY", false )
 	
-	Form.makeRequestData("channelClsCode", 	sData0)
-	Form.makeRequestData("userId", 			sData1)
-	Form.makeRequestData("sessionKey", 		sData2)
-	Form.makeRequestData("semiSsoKey", 		sData3)
+	Form.MakeRequestData("channelClsCode", 	sData0)
+	Form.MakeRequestData("userId", 			sData1)
+	Form.MakeRequestData("sessionKey", 		sData2)
+	Form.MakeRequestData("semiSsoKey", 		sData3)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	If sDev == "1" Then	'개발기
+	if sDev == "1" then --개발기
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
-	end if
+	end
 	
-	Form.requestRestAPI(sUrl&"auth/issue-token", "ORDER_LIST_"&g_sStep)
-End Function
+	Form.RequestRestAPI(sUrl.."auth/issue-token", "ORDER_LIST_"..g_sStep)
+end
 
-Function DisplaySet_EmptyNotice(isShow) 
+function DisplaySet_EmptyNotice(isShow)
 	if isShow == true then
 		imgNotice.visible = true
 		LabelGuideText2.visible = true
@@ -697,8 +699,8 @@ Function DisplaySet_EmptyNotice(isShow)
 		imgNotice.visible = false
 		LabelGuideText2.visible = false
 		
-	end if
-End Function
+	end
+end
 
 Function DisplaySet_Pannel(nIdx, orderConditionId, registrationDate, accountNumber, accountSeqNumber, stockExchangeCode, stockExchangeName,
 					stockCode, stockKoreaName, tradeType, procResultName, watchBasePrice, watchCondition, orderPaymentType, orderClsType, orderClsTypeNm,
@@ -706,7 +708,7 @@ Function DisplaySet_Pannel(nIdx, orderConditionId, registrationDate, accountNumb
 					
 	sTicker = Form.GetEnvData("common.ticker_text")
 	
-	'윗줄
+	 --윗줄
 	Grid0.SetCellData("bd_cell0", nIdx, orderDate)
 	
 	sTradeTypeNm = ""
@@ -716,7 +718,7 @@ Function DisplaySet_Pannel(nIdx, orderConditionId, registrationDate, accountNumb
 	elseif tradeType == "2" then
 		sTradeTypeNm = "매수"
 		Grid0.SetCellFgColor("bd_cell1", nIdx, "290")
-	end if
+	end
 	
 	Grid0.SetCellData("bd_cell1", nIdx, sTradeTypeNm)
 	Grid0.SetCellData("bd_cell2", nIdx, procResultName)
@@ -731,14 +733,14 @@ Function DisplaySet_Pannel(nIdx, orderConditionId, registrationDate, accountNumb
 	
 	Grid0.SetCellData("bd_cell11", nIdx, stockExchangeCode)
 	Grid0.SetCellData("bd_cell12", nIdx, canModifyYn)
-'	Grid0.SetCellData("bd_cell13", nIdx, )
-'	Grid0.SetCellData("bd_cell14", nIdx, )
+ --	Grid0.SetCellData("bd_cell13", nIdx, )
+ --	Grid0.SetCellData("bd_cell14", nIdx, )
 	
-	'아랫줄
+	 --아랫줄
 	Grid0.SetCellData("bd_cell15", nIdx, stockKoreaName)
 	Grid0.SetCellData("bd_cell16", nIdx, stockCode)
 	Grid0.SetCellData("bd_cell17", nIdx, watchCondition)
-	'Grid0.SetCellData("bd_cell18", nIdx, )	'빈칸
+	 --Grid0.SetCellData("bd_cell18", nIdx, )	'빈칸
 	Grid0.SetCellData("bd_cell19", nIdx, orderPriceDesc)
 	Grid0.SetCellData("bd_cell20", nIdx, orderPrice)
 	Grid0.SetCellData("bd_cell21", nIdx, cntgCamt)
@@ -746,18 +748,18 @@ Function DisplaySet_Pannel(nIdx, orderConditionId, registrationDate, accountNumb
 	Grid0.SetCellData("bd_cell23", nIdx, "미국")
 	Grid0.SetCellData("bd_cell24", nIdx, "USD")
 	
-'	Grid0.SetCellData("bd_cell25", nIdx, )
-'	Grid0.SetCellData("bd_cell26", nIdx, )
-'	Grid0.SetCellData("bd_cell27", nIdx, )
-'	Grid0.SetCellData("bd_cell28", nIdx, )
-'	Grid0.SetCellData("bd_cell29", nIdx, )
+ --	Grid0.SetCellData("bd_cell25", nIdx, )
+ --	Grid0.SetCellData("bd_cell26", nIdx, )
+ --	Grid0.SetCellData("bd_cell27", nIdx, )
+ --	Grid0.SetCellData("bd_cell28", nIdx, )
+ --	Grid0.SetCellData("bd_cell29", nIdx, )
 	
-End Function
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'============================================================================
-Sub Form_OnFormInitBefore()
+end
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --============================================================================
+function Form_OnFormInitBefore()
 	imgNotice.maintainratio = "1"
 	imgSearch.maintainratio = "1"
 	Image0.maintainratio = "1"
@@ -768,21 +770,21 @@ Sub Form_OnFormInitBefore()
 	Grid0.SetCellMaxLineCount("bd_cell22", 2)
 	
 	lblItemName.paddinginfo = "0,0,0,0"
-End Sub
+end
 
-Sub Form_OnDelayEvent(nID)
-	if Cint(nID) == 1 then
+function Form_OnDelayEvent(nID)
+	if gf_Tonumber(nID) == 1 then
 		AutoRule_SelectOrderHistory() 
-	elseif Cint(nID) == 2 then
+	elseif gf_Tonumber(nID) == 2 then
 		DATAMANAGER.RequestTranData("obtro_oder_268r")
-	elseif Cint(nID) == 3 then
+	elseif gf_Tonumber(nID) == 3 then
 		contToast.visible = false
 		contToast.left = 500
-	end if
-End Sub 
+	end
+end
 
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam, sParam2)
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 
 	if sEventName ==  "TOKEN_SUCCESS" or sEventName ==  "TAB_CHANGE" then
 		if isEmpty(sParam) == false then
@@ -790,15 +792,15 @@ Sub Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			nArrCnt = #arrData
 			
 			if nArrCnt > 2 then
-				g_sAcno = arrData(0)
-				g_sAsno = arrData(1)
-				g_sAccName = arrData(2)
-			end if
+				g_sAcno = arrData[0+1]
+				g_sAsno = arrData[1+1]
+				g_sAccName = arrData[2+1]
+			end
 			
 			if nArrCnt > 3 then
-				g_sPwd = arrData(3)
-			end if
-		end if
+				g_sPwd = arrData[3+1]
+			end
+		end
 		
 		g_sOrderGbn = Form.GetSharedData("17100_T3_ORDER_GBN" , false)
 		g_sResultGbn = Form.GetSharedData("17100_T3_RESULT_GBN" , false)
@@ -813,38 +815,38 @@ Sub Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			
 			if Return_OrderText(g_sOrderGbn) == "전체" then
 				nCnt_Total = nCnt_Total + 1
-			end if
+			end
 		else
 			sFilter = "전체"
-		end if
+		end
 		
 		if isEmpty(g_sResultGbn) == false then
 			if isEmpty(sFilter) == true then
 				sFilter = Return_ResultText(g_sResultGbn)
 			else
-				if Return_ResultText(g_sResultGbn) == "감시종료(주문미실행)" or Return_ResultText(g_sResultGbn) == "전체(종료제외)" or Return_ResultText(g_sResultGbn) == "주문취소"  then
-					sFilter = sFilter & "ㆍ\n" & Return_ResultText(g_sResultGbn)
+				if Return_ResultText(g_sResultGbn) == "감시종료(주문미실행)" or Return_ResultText(g_sResultGbn) == "전체(종료제외)" or Return_ResultText(g_sResultGbn) == "주문취소" then
+					sFilter = sFilter .. "ㆍ\n" .. Return_ResultText(g_sResultGbn)
 				else
-					sFilter = sFilter & "ㆍ" & Return_ResultText(g_sResultGbn)
-				end if
-			end if
+					sFilter = sFilter .. "ㆍ" .. Return_ResultText(g_sResultGbn)
+				end
+			end
 			
 			g_szSaveFilterData2 =  Return_ResultText(g_sResultGbn)
 			
 			if Return_ResultText(g_sResultGbn) == "전체" then
 				nCnt_Total = nCnt_Total + 1
-			end if
+			end
 		else
 			if isEmpty(sFilter) == true then
 				sFilter = "필터"
 			else
-				sFilter = sFilter & "ㆍ전체"
-			end if
-		end if
+				sFilter = sFilter .. "ㆍ전체"
+			end
+		end
 		
-		if nCnt_Total == 2 or sFilter = "전체ㆍ전체" then
+		if nCnt_Total == 2 or sFilter == "전체ㆍ전체" then
 			sFilter = "필터"
-		end if
+		end
 		
 		LabelFilter.fontsize = -2
 		LabelFilter.maxlinecnt = "2"
@@ -852,23 +854,23 @@ Sub Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		LabelFilter.caption = sFilter
 		
 		sCode = Form.GetSharedData("17100_T3_ITEMCODE" , false)
-'		if isEmpty(sCode) == false then
-'			Check_ItemCode(sCode)
-'		end if
+ --		if isEmpty(sCode) == false then
+ --			Check_ItemCode(sCode)
+ --		end if
 		
-'		sDate = Form.GetSharedData("17100_T3_CALENDAR" , false)
-'		
-'		if isEmpty(sDate) == false then
-'			Calendar0.caption = sDate
-'			
-'			sDateBase = Form.GetSharedData("17100_T3_CALENDAR_BASE" , false)
-'			if isEmpty(sDateBase) == false then
-'				Calendar1.caption = sDateBase
-'			end if
-'		else
-'			sCal = CalcDate("d",-30)
-'			Calendar0.caption = sCal
-'		end if
+ --		sDate = Form.GetSharedData("17100_T3_CALENDAR" , false)
+ --		
+ --		if isEmpty(sDate) == false then
+ --			Calendar0.caption = sDate
+ --			
+ --			sDateBase = Form.GetSharedData("17100_T3_CALENDAR_BASE" , false)
+ --			if isEmpty(sDateBase) == false then
+ --				Calendar1.caption = sDateBase
+ --			end if
+ --		else
+ --			sCal = CalcDate("d",-30)
+ --			Calendar0.caption = sCal
+ --		end if
 
 		Calendar1.caption = CalcDate("d",0)
 		Calendar0.caption = CalcDate("d",-30)
@@ -884,15 +886,15 @@ Sub Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			else
 				g_isFst = false
 				AutoRule_SelectOrderHistory() 
-			end if
+			end
 		else
 			AutoRule_SelectOrderHistory() 
-		end if
+		end
 		
 		
-'		Form.setDelayEvent(1, 0.2)
-'		AutoRule_SelectOrderHistory() 
-	end if
+ --		Form.setDelayEvent(1, 0.2)
+ --		AutoRule_SelectOrderHistory() 
+	end
 	
 	if sEventName ==  "ACCT_CHANGE" then
 		if isEmpty(sParam) == false then
@@ -900,18 +902,18 @@ Sub Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			nArrCnt = #arrData
 			
 			if nArrCnt > 2 then
-				g_sAcno = arrData(0)
-				g_sAsno = arrData(1)
-				g_sAccName = arrData(2)
-			end if
+				g_sAcno = arrData[0+1]
+				g_sAsno = arrData[1+1]
+				g_sAccName = arrData[2+1]
+			end
 			
 			if nArrCnt > 3 then
-				g_sPwd = arrData(3)
-			end if
-		end if
+				g_sPwd = arrData[3+1]
+			end
+		end
 		
 		AutoRule_SelectOrderHistory() 
-	end if
+	end
 	
 	if sEventName ==  "REFRESH_LIST" then
 		if isEmpty(sParam) == false then
@@ -919,191 +921,191 @@ Sub Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			nArrCnt = #arrData
 			
 			if nArrCnt > 2 then
-				g_sAcno = arrData(0)
-				g_sAsno = arrData(1)
-				g_sAccName = arrData(2)
-			end if
+				g_sAcno = arrData[0+1]
+				g_sAsno = arrData[1+1]
+				g_sAccName = arrData[2+1]
+			end
 			
 			if nArrCnt > 3 then
-				g_sPwd = arrData(3)
-			end if
-		end if
+				g_sPwd = arrData[3+1]
+			end
+		end
 		
 		AutoRule_SelectOrderHistory() 
-	end if
+	end
 	
-	if Cint(instr(sEventName, "RESTAPI_RETURN_ORDER_LIST")) > 0 then
-		sStep = replace(sEventName, "RESTAPI_RETURN_ORDER_LIST_", "") 'g_sStep
+	if gf_Tonumber(string.find(sEventName, "RESTAPI_RETURN_ORDER_LIST")) > 0 then
+		sStep = string.gsub(sEventName, string.gsub("RESTAPI_RETURN_ORDER_LIST_", "([%p])", "%%%1"), "")  --g_sStep
 		g_sStep = ""
 		
-'		if sParam <> "SUCCESS" then
-'			oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParam2)
-'			
-'			if isEmpty(oError) == false then
-'				errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-'
-'				if errorCode == "INVALID_TOKEN" then
-'					g_sStep_Prev = sStep
-'					IssueToken() 
-'					Exit Sub 
-'				end if
-'			end if
-'		end if
+ --		if sParam <> "SUCCESS" then
+ --			oError = Form.responseRestAPI("JSONOBJ", 0, "error", sParam2)
+ --			
+ --			if isEmpty(oError) == false then
+ --				errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+ --
+ --				if errorCode == "INVALID_TOKEN" then
+ --					g_sStep_Prev = sStep
+ --					IssueToken() 
+ --					Exit Sub 
+ --				end if
+ --			end if
+ --		end if
 		
-		'----------------------------------------
-		' 서버 검증용 토큰 발급
-		'----------------------------------------
+		 ------------------------------------------
+		 -- 서버 검증용 토큰 발급
+		 ------------------------------------------
 		if sStep == "ISSUE_TOKEN" then
 		
-			'----------------------------------------
-			' 성공
-			'----------------------------------------
+			 ------------------------------------------
+			 -- 성공
+			 ------------------------------------------
 			if sParam == "SUCCESS" then
 			
-				data = Form.responseRestAPI("JSONOBJ", 0, "data", sParam2)
+				data = Form.ResponseRestAPI("JSONOBJ", 0, "data", sParam2)
 				
-				accessToken = Form.responseRestAPI("DATA", 0, "accessToken", data)
-				refreshToken = Form.responseRestAPI("DATA", 0, "refreshToken", data)
+				accessToken = Form.ResponseRestAPI("DATA", 0, "accessToken", data)
+				refreshToken = Form.ResponseRestAPI("DATA", 0, "refreshToken", data)
 				
 				if isEmpty(accessToken) == false then
-					Form.SetSharedData("&REST_API_TOKEN", " Bearer " & accessToken )
-				end if
+					Form.SetSharedData("..REST_API_TOKEN", " Bearer " .. accessToken )
+				end
 				
 				if isEmpty(refreshToken) == false then
-					Form.SetSharedData("&REST_API_REFRESH_TOKEN", " Bearer " & refreshToken )
-				end if
+					Form.SetSharedData("..REST_API_REFRESH_TOKEN", " Bearer " .. refreshToken )
+				end
 				
 				if g_sStep_Prev == "SELECT_ORDER_HISTORY" then
 					AutoRule_SelectOrderHistory()
-				end if
+				end
 				
-			'----------------------------------------
-			' 실패(ERROR or EXCEPTION)
-			'----------------------------------------
+			 ------------------------------------------
+			 -- 실패(ERROR or EXCEPTION)
+			 ------------------------------------------
 			else
 				Form.MsgBox("알림", "현재 자동감시주문 실행이 불가합니다.\n고객지원센터에 문의해주세요.", "CLOSE_FORM", 6)
-			end if
+			end
 			
 			g_sStep_Prev = ""
 		
 		elseif sStep == "SELECT_ORDER_HISTORY" or sStep == "SELECT_ORDER_HISTORY_NEXT" then
-			'----------------------------------------
-			' 성공
-			'----------------------------------------
+			 ------------------------------------------
+			 -- 성공
+			 ------------------------------------------
 			if sParam == "SUCCESS" then
 				
 				if sStep == "SELECT_ORDER_HISTORY" then
 					g_sNextKey = ""
 					Grid0.SetClear()
 					Grid0.rowcount = 0
-					Grid0.initScrollX()
-				end if
-				'--------------------
-				' 응답데이터(전체)
-				'--------------------
-				oData = Form.responseRestAPI("JSONOBJ", 0, "data", sParam2)	
+					Grid0.InitScrollX()
+				end
+				 ----------------------
+				 -- 응답데이터(전체)
+				 ----------------------
+				oData = Form.ResponseRestAPI("JSONOBJ", 0, "data", sParam2)	
 				
-				'--------------------
-				' ROW COUNT
-				'--------------------
-				nDataCnt = Form.responseRestAPI("DATA", 0, "dataCount", oData)
+				 ----------------------
+				 -- ROW COUNT
+				 ----------------------
+				nDataCnt = Form.ResponseRestAPI("DATA", 0, "dataCount", oData)
 				
-				'--------------------
-				' NEXT KEY
-				'--------------------
-				shasNext = Form.responseRestAPI("DATA", 0, "hasNext", oData)
+				 ----------------------
+				 -- NEXT KEY
+				 ----------------------
+				shasNext = Form.ResponseRestAPI("DATA", 0, "hasNext", oData)
 				
 				if shasNext == true or shasNext == "true" or shasNext == "1" then
-					g_sNextKey = Form.responseRestAPI("DATA", 0, "nextKey", oData)
+					g_sNextKey = Form.ResponseRestAPI("DATA", 0, "nextKey", oData)
 				else
 					g_sNextKey = ""
-				end if
+				end
 
-				if Cdbl(nDataCnt) > 0 then
-					for i = 0 to Cdbl(nDataCnt) - 1
+				if gf_Tonumber(nDataCnt) > 0 then
+					for i = 0, gf_Tonumber(nDataCnt) - 1 do
 					
-						'--------------------
-						' ROW DATA
-						'--------------------
-						oListData = Form.responseRestAPI("JSONLIST", i, "data", oData)
+						 ----------------------
+						 -- ROW DATA
+						 ----------------------
+						oListData = Form.ResponseRestAPI("JSONLIST", i, "data", oData)
 						
-						'--------------------
-						' 내역 정보
-						'--------------------
-						orderConditionId 	= Form.responseRestAPI("DATA", 0, "orderConditionId", 	oListData)
-						registrationDate 	= Form.responseRestAPI("DATA", 0, "registrationDate", 	oListData)
-						accountNumber		= Form.responseRestAPI("DATA", 0, "accountNumber", 		oListData)
-						accountSeqNumber	= Form.responseRestAPI("DATA", 0, "accountSeqNumber", 	oListData)
-						stockExchangeCode	= Form.responseRestAPI("DATA", 0, "stockExchangeCode", 	oListData)
-						stockExchangeName	= Form.responseRestAPI("DATA", 0, "stockExchangeName", 	oListData)
-						stockCode			= Form.responseRestAPI("DATA", 0, "stockCode", 			oListData)
-						stockKoreaName		= Form.responseRestAPI("DATA", 0, "stockKoreaName", 		oListData)
-						tradeType			= Form.responseRestAPI("DATA", 0, "tradeType", 			oListData)
-						procResultName		= Form.responseRestAPI("DATA", 0, "procResultName", 		oListData)
-						watchBasePrice		= Form.responseRestAPI("DATA", 0, "watchBasePrice", 		oListData)
-						watchCondition		= Form.responseRestAPI("DATA", 0, "watchCondition", 		oListData)
-						orderPaymentType	= Form.responseRestAPI("DATA", 0, "orderPaymentType", 	oListData)
-						orderClsType		= Form.responseRestAPI("DATA", 0, "orderClsType", 		oListData)
-						orderClsTypeNm		= Form.responseRestAPI("DATA", 0, "orderClsTypeNm", 		oListData)
-						orderPriceType		= Form.responseRestAPI("DATA", 0, "orderPriceType", 		oListData)
-						orderPrice			= Form.responseRestAPI("DATA", 0, "orderPrice", 		oListData)
-						orderPriceDesc		= Form.responseRestAPI("DATA", 0, "orderPriceDesc", 		oListData)
-						orderQty			= Form.responseRestAPI("DATA", 0, "orderQty", 			oListData)
-						expirationDate		= Form.responseRestAPI("DATA", 0, "expirationDate", 		oListData)
-						cntgQty			= Form.responseRestAPI("DATA", 0, "cntgQty", 			oListData)
-						cntgCamt			= Form.responseRestAPI("DATA", 0, "cntgCamt", 			oListData)
-						orderResponseCode	= Form.responseRestAPI("DATA", 0, "orderResponseCode", 	oListData)
-						orderMsg			= Form.responseRestAPI("DATA", 0, "orderMsg", 			oListData)
-						orderNo			= Form.responseRestAPI("DATA", 0, "orderNo", 			oListData)
-						orderDate			= Form.responseRestAPI("DATA", 0, "orderDate", 			oListData)
-						canModifyYn		= Form.responseRestAPI("DATA", 0, "canModifyYn", 		oListData)
+						 ----------------------
+						 -- 내역 정보
+						 ----------------------
+						orderConditionId 	= Form.ResponseRestAPI("DATA", 0, "orderConditionId", 	oListData)
+						registrationDate 	= Form.ResponseRestAPI("DATA", 0, "registrationDate", 	oListData)
+						accountNumber		= Form.ResponseRestAPI("DATA", 0, "accountNumber", 		oListData)
+						accountSeqNumber	= Form.ResponseRestAPI("DATA", 0, "accountSeqNumber", 	oListData)
+						stockExchangeCode	= Form.ResponseRestAPI("DATA", 0, "stockExchangeCode", 	oListData)
+						stockExchangeName	= Form.ResponseRestAPI("DATA", 0, "stockExchangeName", 	oListData)
+						stockCode			= Form.ResponseRestAPI("DATA", 0, "stockCode", 			oListData)
+						stockKoreaName		= Form.ResponseRestAPI("DATA", 0, "stockKoreaName", 		oListData)
+						tradeType			= Form.ResponseRestAPI("DATA", 0, "tradeType", 			oListData)
+						procResultName		= Form.ResponseRestAPI("DATA", 0, "procResultName", 		oListData)
+						watchBasePrice		= Form.ResponseRestAPI("DATA", 0, "watchBasePrice", 		oListData)
+						watchCondition		= Form.ResponseRestAPI("DATA", 0, "watchCondition", 		oListData)
+						orderPaymentType	= Form.ResponseRestAPI("DATA", 0, "orderPaymentType", 	oListData)
+						orderClsType		= Form.ResponseRestAPI("DATA", 0, "orderClsType", 		oListData)
+						orderClsTypeNm		= Form.ResponseRestAPI("DATA", 0, "orderClsTypeNm", 		oListData)
+						orderPriceType		= Form.ResponseRestAPI("DATA", 0, "orderPriceType", 		oListData)
+						orderPrice			= Form.ResponseRestAPI("DATA", 0, "orderPrice", 		oListData)
+						orderPriceDesc		= Form.ResponseRestAPI("DATA", 0, "orderPriceDesc", 		oListData)
+						orderQty			= Form.ResponseRestAPI("DATA", 0, "orderQty", 			oListData)
+						expirationDate		= Form.ResponseRestAPI("DATA", 0, "expirationDate", 		oListData)
+						cntgQty			= Form.ResponseRestAPI("DATA", 0, "cntgQty", 			oListData)
+						cntgCamt			= Form.ResponseRestAPI("DATA", 0, "cntgCamt", 			oListData)
+						orderResponseCode	= Form.ResponseRestAPI("DATA", 0, "orderResponseCode", 	oListData)
+						orderMsg			= Form.ResponseRestAPI("DATA", 0, "orderMsg", 			oListData)
+						orderNo			= Form.ResponseRestAPI("DATA", 0, "orderNo", 			oListData)
+						orderDate			= Form.ResponseRestAPI("DATA", 0, "orderDate", 			oListData)
+						canModifyYn		= Form.ResponseRestAPI("DATA", 0, "canModifyYn", 		oListData)
 						
-						'--------------------
-						' ADD ROW
-						'--------------------
+						 ----------------------
+						 -- ADD ROW
+						 ----------------------
 						Grid0.AddRow()
-						nIdx = Cint(Grid0.rowcount) - 1 
+						nIdx = gf_Tonumber(Grid0.rowcount) - 1 
 						
-						'--------------------
-						' ROW DATA 저장
-						'--------------------
+						 ----------------------
+						 -- ROW DATA 저장
+						 ----------------------
 						DisplaySet_Pannel(nIdx, orderConditionId, registrationDate, accountNumber, accountSeqNumber, stockExchangeCode, stockExchangeName,
 						stockCode, stockKoreaName, tradeType, procResultName, watchBasePrice, watchCondition, orderPaymentType, orderClsType, orderClsTypeNm,
 						orderPriceType, orderPrice, orderPriceDesc, orderQty, expirationDate, cntgQty, cntgCamt, orderResponseCode, orderMsg, orderNo, orderDate, canModifyYn)
 						
-					next	
-				end if
+					end
+				end
 				
-			'----------------------------------------
-			' 실패(ERROR or EXCEPTION)
-			'----------------------------------------
-			else	
-'				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
-'			
-'				if isEmpty(oError) == false then
-'					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-'					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
-'					
-'					if isEmpty(errorMessage) == false then
-'						Form.ShowAlert("알림", errorMessage)
-'						Exit Sub 
-'					end if
-'				end if
+			 ------------------------------------------
+			 -- 실패(ERROR or EXCEPTION)
+			 ------------------------------------------
+			else
+ --				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+ --			
+ --				if isEmpty(oError) == false then
+ --					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
+ --					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+ --					
+ --					if isEmpty(errorMessage) == false then
+ --						Form.ShowAlert("알림", errorMessage)
+ --						Exit Sub 
+ --					end if
+ --				end if
 				
 				Form.ShowAlert("알림", g_sCommonErrorMsg)
-			end if
+			end
 			
-			nRowCnt = Cdbl(Grid0.rowcount)
+			nRowCnt = gf_Tonumber(Grid0.rowcount)
 				
 			if nRowCnt > 0 then
 				DisplaySet_EmptyNotice(false)
 			else
 				DisplaySet_EmptyNotice(true)
-			end if
+			end
 			
 			g_isClick = false
-		end if
-	end if
+		end
+	end
 	
 	
 	if sEventName ==  "ACCT_PWD_CHECK" then
@@ -1113,40 +1115,40 @@ Sub Form_OnTriggerEvent(sEventName, sParam, sParam2)
 			nArrCnt = #arrData
 			
 			if nArrCnt > 1 then
-				sRet = arrData(0)
-				g_sPwd = arrData(1)
+				sRet = arrData[0+1]
+				g_sPwd = arrData[1+1]
 			else
 				sRet = sParam
-			end if
-		end if
+			end
+		end
 		
 		if sRet == "SUCCESS" then
-			sAcno 	= g_sAcno 'Form.getTopCtlProp("act0","total")
-			sAsno 	= g_sAsno 'Form.getTopCtlProp("act0","sequence")
+			sAcno 	= g_sAcno  --Form.getTopCtlProp("act0","total")
+			sAsno 	= g_sAsno  --Form.getTopCtlProp("act0","sequence")
 			
-			sAcntNm 	= g_sAccName 'Form.getTopCtlProp("act0","accountname")
+			sAcntNm 	= g_sAccName  --Form.getTopCtlProp("act0","accountname")
 			
-			sPwd 	= g_sPwd	'Form.getTopCtlProp("edtPwd","caption")
+			sPwd 	= g_sPwd	 --Form.getTopCtlProp("edtPwd","caption")
 			
 			sLinkData = "1"
-			sLinkData = sLinkData & "`" & sAcno
-			sLinkData = sLinkData & "`" & sAsno
-			sLinkData = sLinkData & "`" & sPwd
-			sLinkData = sLinkData & "`" & sAcntNm
+			sLinkData = sLinkData .. "`" .. sAcno
+			sLinkData = sLinkData .. "`" .. sAsno
+			sLinkData = sLinkData .. "`" .. sPwd
+			sLinkData = sLinkData .. "`" .. sAcntNm
 			
-			if g_isModify = true then
-				sLinkData = sLinkData & "`" & g_sModifyInfo
+			if g_isModify == true then
+				sLinkData = sLinkData .. "`" .. g_sModifyInfo
 				
 				g_sModifyInfo = ""
 				g_isModify = false
-			end if
+			end
 
 			Form.OpenPopup("nrshtro17100_p2" , sLinkData , "")
-		end if
-	end if
-End Sub
-'============================================================================
-Sub Form_OnPopupReturn(sKeyName, sRet)
+		end
+	end
+end
+ --============================================================================
+function Form_OnPopupReturn(sKeyName, sRet)
 	if sKeyName == "COMPLETE_ORDER" then
 		AutoRule_SelectByAccount() 
 		
@@ -1157,7 +1159,7 @@ Sub Form_OnPopupReturn(sKeyName, sRet)
 		g_isModify = true
 		g_sModifyInfo = sRet
 		
-		Form.triggerEvent("#", "CHECK_ACCT_PWD", "")
+		Form.TriggerEvent("#", "CHECK_ACCT_PWD", "")
 	elseif sKeyName == "DLG_SELECT" then
 		Check_ItemCode(sRet)
 		
@@ -1170,41 +1172,41 @@ Sub Form_OnPopupReturn(sKeyName, sRet)
 		sFilter = ""
 		nCnt_Total = 0
 		if nArrCnt > 0 then
-			g_sOrderGbn = Return_OrderCode(arrLinkData(0))
+			g_sOrderGbn = Return_OrderCode(arrLinkData[0+1])
 			Form.SetSharedData("17100_T3_ORDER_GBN" , g_sOrderGbn)
-			sFilter = arrLinkData(0)
+			sFilter = arrLinkData[0+1]
 			
-			g_szSaveFilterData1 =  arrLinkData(0)
+			g_szSaveFilterData1 =  arrLinkData[0+1]
 			
-			if arrLinkData(0) == "전체" then
+			if arrLinkData[0+1] == "전체" then
 				nCnt_Total = nCnt_Total + 1
-			end if
-		end if
+			end
+		end
 		
 		if nArrCnt > 1 then
-			g_sResultGbn = Return_ResultCode(arrLinkData(1))
+			g_sResultGbn = Return_ResultCode(arrLinkData[1+1])
 			Form.SetSharedData("17100_T3_RESULT_GBN" , g_sResultGbn)
 			if isEmpty(sFilter) == true then
-				sFilter = arrLinkData(1)
+				sFilter = arrLinkData[1+1]
 			else
 				if Return_ResultText(g_sResultGbn) == "감시종료(주문미실행)" or Return_ResultText(g_sResultGbn) == "전체(종료제외)" or Return_ResultText(g_sResultGbn) == "주문취소" then
-					sFilter = sFilter & "ㆍ\n" & arrLinkData(1)
+					sFilter = sFilter .. "ㆍ\n" .. arrLinkData[1+1]
 				else
-					sFilter = sFilter & "ㆍ" & arrLinkData(1)
-				end if
+					sFilter = sFilter .. "ㆍ" .. arrLinkData[1+1]
+				end
 				
-			end if
+			end
 			
-			g_szSaveFilterData2 =  arrLinkData(1)
+			g_szSaveFilterData2 =  arrLinkData[1+1]
 			
-			if arrLinkData(1) == "전체" then
+			if arrLinkData[1+1] == "전체" then
 				nCnt_Total = nCnt_Total + 1
-			end if
-		end if
+			end
+		end
 		
 		if nCnt_Total == 2 then
 			sFilter = "필터"
-		end if
+		end
 		
 		LabelFilter.fontsize = -2
 		LabelFilter.maxlinecnt = "2"
@@ -1215,169 +1217,162 @@ Sub Form_OnPopupReturn(sKeyName, sRet)
 		AutoRule_SelectOrderHistory()
 		
 	elseif sKeyName == "MOVEPOPUP_RETURN" then
-		'sRet = 선택행인덱스★이동화면 구분값 
-		arrData = Split(sRet,"★")
+		 --sRet = 선택행인덱스★이동화면 구분값 
+		arrData = gf_Split(sRet,"★")
 		
-		sIndex = arrData(0)
-		sGubun = arrData(1)
+		sIndex = arrData[0+1]
+		sGubun = arrData[1+1]
 		
-		if sIndex <> "" and sGubun <> "" then
+		if sIndex ~= "" and sGubun ~= "" then
 			MoveScreen(sGubun,sIndex)
-		end if
-	end if
-End Sub
+		end
+	end
+end
 
-Function Return_OrderCode(sCode)
-	Select case sCode
-		case "전체"
+function Return_OrderCode(sCode)
+		if sCode == "전체" then
 			return ""
 			
-		case "매도"
+		elseif sCode == "매도" then
 			return "1"
 			
-		case "매수"
+		elseif sCode == "매수" then
 			return "2"
 			
-		case else
+		else
 			return ""
-	End Select
-End Function
+	end
+end
 
-Function Return_OrderText(sCode)
-	Select case sCode
-		case ""
+function Return_OrderText(sCode)
+		if sCode == "" then
 			return "전체"
 			
-		case "1"
+		elseif sCode == "1" then
 			return "매도"
 			
-		case "2"
+		elseif sCode == "2" then
 			return "매수"
 			
-		case else
+		else
 			return "전체"
-	End Select
-End Function
+	end
+end
 
-Function Return_ResultCode(sCode)
-	Select case sCode
-		case "전체", "전체(종료포함)"
+function Return_ResultCode(sCode)
+		if sCode == "전체" or sCode == "전체(종료포함)" then
 			return ""
 			
-		case "전체(종료제외)"
+		elseif sCode == "전체(종료제외)" then
 			return "0"
 			
-		case "주문실행", "주문"
+		elseif sCode == "주문실행" or sCode == "주문" then
 			return "1"
 			
-		case "주문체결", "체결"
+		elseif sCode == "주문체결" or sCode == "체결" then
 			return "2"
 		
-		case "거부", "주문거부"
+		elseif sCode == "거부" or sCode == "주문거부" then
 			return "3"
 			
-		case "주문취소", "취소"
+		elseif sCode == "주문취소" or sCode == "취소" then
 			return "4"
 		
-		case "감시종료(주문미실행)", "감시종료"
+		elseif sCode == "감시종료(주문미실행)" or sCode == "감시종료" then
 			return "5"
 			
-		case else
+		else
 			return ""
-	End Select
-End Function
+	end
+end
 
-Function Return_ResultText(sCode)
-	Select case sCode
-		case ""
+function Return_ResultText(sCode)
+		if sCode == "" then
 			return "전체"
 			
-		case "0"
+		elseif sCode == "0" then
 			return "전체(종료제외)"
 			
-		case "1"
+		elseif sCode == "1" then
 			return "주문"
 			
-		case "2"
+		elseif sCode == "2" then
 			return "체결"
 		
-		case "3"
+		elseif sCode == "3" then
 			return "거부"
 			
-		case "4"
+		elseif sCode == "4" then
 			return "주문취소"
 			
-		case "5"
+		elseif sCode == "5" then
 			return "감시종료(주문미실행)"
 			
-		case else
+		else
 			return ""
-	End Select
-End Function
+	end
+end
 
 
-'============================================================================
-' 마스터파일에 있는 종목인지 체크
-'============================================================================
-Function CheckMasterFile(szCode)
-	if szCode == "" or szCode == null then
-		CheckMasterFile = false
-		Exit Function
-	end if
-	arrCode = Split(szCode,"@")
+ --============================================================================
+ -- 마스터파일에 있는 종목인지 체크
+ --============================================================================
+function CheckMasterFile(szCode)
+	if szCode == "" or szCode == nil then
+		return false
+	end
+	arrCode = gf_Split(szCode,"@")
 	
 	if #arrCode < 2 then
-		CheckMasterFile = false
-		Exit Function
-	end if
+		return false
+	end
 	
-	g_sMarket = arrCode(0)
+	g_sMarket = arrCode[0+1]
 	
-	szTransExidCode = Transform_Exid2(arrCode(0))
-	szTransItemCode = szTransExidCode .. "@" .. arrCode(1)
+	szTransExidCode = Transform_Exid2(arrCode[0+1])
+	szTransItemCode = szTransExidCode .. "@" .. arrCode[1+1]
 	szCheckData = Form.GetItemCodeInfo(szTransItemCode, "exchid")
 	
-	if szCheckData = "" or szCheckData = null then
-		CheckMasterFile = false
-		Exit Function
-	end if
+	if szCheckData == "" or szCheckData == nil then
+		return false
+	end
 	
-	CheckMasterFile = true
+	return true
 	
-End Function
+end
 
-'==============================================
-' 종목코드 변경 
-'==============================================
-Function Check_ItemCode(szCode)
-	arrLinkCode = Split(szCode,"★")
+ --==============================================
+ -- 종목코드 변경 
+ --==============================================
+function Check_ItemCode(szCode)
+	arrLinkCode = gf_Split(szCode,"★")
 	
 	if #arrLinkCode < 1 then
-		Exit Function
-	end if
+		return
+	end
 	
-	szCheckData = Form.GetItemCodeInfo(arrLinkCode(0), "name")
-	szCheckData2 = Form.GetItemCodeInfo(arrLinkCode(0), "enablefst")
+	szCheckData = Form.GetItemCodeInfo(arrLinkCode[0+1], "name")
+	szCheckData2 = Form.GetItemCodeInfo(arrLinkCode[0+1], "enablefst")
 	
-	'종목정보 확인 (name 없는 경우, 마스터 파일에 없다고 판단)
-	if CheckMasterFile(arrLinkCode(0)) == false then
-		Exit Function
-	end if
+	 --종목정보 확인 (name 없는 경우, 마스터 파일에 없다고 판단)
+	if CheckMasterFile(arrLinkCode[0+1]) == false then
+		return
+	end
 	
-	'------------------------------------------------------
-	' 종목코드 분리 (거래소코드@종목코드)
-	'------------------------------------------------------
-	arrCode = split(arrLinkCode(0), "@")
+	 --------------------------------------------------------
+	 -- 종목코드 분리 (거래소코드@종목코드)
+	 --------------------------------------------------------
+	arrCode = gf_Split(arrLinkCode[0+1], "@")
 	
-	if #arrCode > 1 then 
-		Form.SetSharedData("17100_T3_ITEMCODE" , arrLinkCode(0))
-		g_sCode = arrCode(1)		
-		g_sExid = Transform_Exid2(arrCode(0))
-		g_sMarket = Transform_Exid3(arrCode(0))
-		g_sItemCode = g_sExid & "@" & g_sCode
+	if #arrCode > 1 then
+		Form.SetSharedData("17100_T3_ITEMCODE" , arrLinkCode[0+1])
+		g_sCode = arrCode[1+1]		
+		g_sExid = Transform_Exid2(arrCode[0+1])
+		g_sMarket = Transform_Exid3(arrCode[0+1])
+		g_sItemCode = g_sExid .. "@" .. g_sCode
 		
-		g_sNation 	= Form.GetItemCodeInfo(g_sItemCode, "ovsnation") '국가구분 코드
-		g_sExid2 	= Form.GetItemCodeInfo(g_sItemCode, "exchcode3") '거래소 구분코드
+		g_sNation 	= Form.GetItemCodeInfo(g_sItemCode, "ovsnation")  --국가구분 코드
+		g_sExid2 	= Form.GetItemCodeInfo(g_sItemCode, "exchcode3")  --거래소 구분코드
 		g_sExid3	= Form.GetItemCodeInfo(g_sItemCode, "exchid")
 		g_sItemName = Form.GetItemCodeInfo(g_sItemCode, "name")
 		
@@ -1391,131 +1386,115 @@ Function Check_ItemCode(szCode)
 			else
 				sName = g_sItemName
 				
-				if Form.getItemCodeInfo(g_sItemCode, "etfyn") = "Y" then 
+				if Form.GetItemCodeInfo(g_sItemCode, "etfyn") == "Y" then
 					sName = g_sCode
-				end if
+				end
 				
 				lblItemName.caption = sName
-			end if
+			end
 		else
 			lblItemName.caption = g_sItemName
-		end if
+		end
 		
 		Image1.visible = true
 	else
-		Exit Function
-	end if
-End Function
+		return
+	end
+end
 
-'==============================================
-' 거래소 구분코드 변경(3자리 -> 2자리)
-' 원장조회 종목연동 시, 과거 거래소 코드로 연동되는 경우 예외처리를 위해 필요
-'==============================================
-Function Transform_Exid2(sValue)
-	if sValue = "HKS" then
-		Transform_Exid2 = "HK"
-		exit Function
-	elseif sValue = "SHS" then
-		Transform_Exid2 = "SH"
-		exit Function
-	elseif sValue = "SZS" then
-		Transform_Exid2 = "SZ"
-		exit Function
-	elseif sValue = "NYS" then
-		Transform_Exid2 = "NY"
-		exit Function
-	elseif sValue = "AMX" then
-		Transform_Exid2 = "AX"
-		exit Function
-	elseif sValue = "NAS" then
-		Transform_Exid2 = "OQ"
-		exit Function
-	elseif sValue = "TSE" then
-		Transform_Exid2 = "JP"
-		exit Function
+ --==============================================
+ -- 거래소 구분코드 변경(3자리 -> 2자리)
+ -- 원장조회 종목연동 시, 과거 거래소 코드로 연동되는 경우 예외처리를 위해 필요
+ --==============================================
+function Transform_Exid2(sValue)
+	if sValue == "HKS" then
+		return "HK"
+	elseif sValue == "SHS" then
+		return "SH"
+	elseif sValue == "SZS" then
+		return "SZ"
+	elseif sValue == "NYS" then
+		return "NY"
+	elseif sValue == "AMX" then
+		return "AX"
+	elseif sValue == "NAS" then
+		return "OQ"
+	elseif sValue == "TSE" then
+		return "JP"
 	else
-		Transform_Exid2 = sValue
-		exit Function
-	end if
-End Function
+		return sValue
+	end
+end
 
-Function Transform_Exid3(sValue)
-	if sValue = "HK" then
-		Transform_Exid3 = "HKS"
-		exit Function
-	elseif sValue = "SH" then
-		Transform_Exid3 = "SHS"
-		exit Function
-	elseif sValue = "SZ" then
-		Transform_Exid3 = "SZS"
-		exit Function
-	elseif sValue = "NY" then
-		Transform_Exid3 = "NYS"
-		exit Function
-	elseif sValue = "AX" then
-		Transform_Exid3 = "AMX"
-		exit Function
-	elseif sValue = "OQ" then
-		Transform_Exid3 = "NAS"
-		exit Function
-	elseif sValue = "JP" then
-		Transform_Exid3 = "TSE"
-		exit Function
+function Transform_Exid3(sValue)
+	if sValue == "HK" then
+		return "HKS"
+	elseif sValue == "SH" then
+		return "SHS"
+	elseif sValue == "SZ" then
+		return "SZS"
+	elseif sValue == "NY" then
+		return "NYS"
+	elseif sValue == "AX" then
+		return "AMX"
+	elseif sValue == "OQ" then
+		return "NAS"
+	elseif sValue == "JP" then
+		return "TSE"
 	else
-		Transform_Exid3 = sValue
-		exit Function
-	end if
-End Function
+		return sValue
+	end
+end
 
 
-'============================================================================
-' From일로부터 + @일/개월 가져오기
-'============================================================================
-Function CalcDate(sType,nDiff)
+ --============================================================================
+ -- From일로부터 + @일/개월 가져오기
+ --============================================================================
+function CalcDate(sType,nDiff)
 	
-	sDate = Form.GetSharedData("&HOST_DATE", false )
-	sYear = left(sDate, 4)
-	sMonth = mid(sDate, 5, 2)
-	sDay = right(sDate, 2)
+	sDate = Form.GetSharedData("..HOST_DATE", false )
+	sYear = string.sub(sDate, 1, 4)
+	sMonth = string.sub(sDate, 5, 5 + 2 - 1)
+	sDay = string.sub(sDate, -2)
 	
-	sRsltDate = Replace(DateAdd (sType, nDiff,  sYear&"-"& sMonth &"-"& sDay), "-", "")
+	sRsltDate = string.gsub(gf_DateAdd(sType, string.gsub(nDiff, "([%p])", "%%%1"), sYear.."-".. sMonth .."-".. sDay), "-", "")
 	return sRsltDate
 
-End Function
+end
 
-''============================================================================
-'Sub btn0_OnClick()
-'	sCal = CalcDate("d",0)
-'	Calendar0.caption = sCal
-'	Calendar1.caption = sCal
-'	
-'	Form.SetSharedData("17100_T3_CALENDAR" , Calendar0.caption)
-'	Form.SetSharedData("17100_T3_CALENDAR_BASE" , Calendar1.caption)
-'	
-'	AutoRule_SelectOrderHistory()
-'End Sub
+ --'============================================================================
+ --Sub btn0_OnClick()
+ --	sCal = CalcDate("d",0)
+ --	Calendar0.caption = sCal
+ --	Calendar1.caption = sCal
+ --	
+ --	Form.SetSharedData("17100_T3_CALENDAR" , Calendar0.caption)
+ --	Form.SetSharedData("17100_T3_CALENDAR_BASE" , Calendar1.caption)
+ --	
+ --	AutoRule_SelectOrderHistory()
+ --End Sub
 
-'============================================================================
-Sub chk0_OnChange(sCheckState)
+ --============================================================================
+function chk0_OnChange(sCheckState)
 	Form.SetSharedData("17100_T3_CHK0" , sCheckState)
 	Form.SetEnvData(1, "17100_T3_CHK0", sCheckState)
 	
 	if sCheckState == "0" then
 		SetShowToast(false)
-'		sDate = Form.GetSharedData("17100_T3_CALENDAR" , false)
-'		if isEmpty(sDate) == false then
-'			g_sCal0 = sDate
-'		end if
-'		
-'		sDateBase = Form.GetSharedData("17100_T3_CALENDAR_BASE" , false)
-'		if isEmpty(sDateBase) == false then
-'			g_sCal1 = sDateBase
-'		end if
+ --		sDate = Form.GetSharedData("17100_T3_CALENDAR" , false)
+ --		if isEmpty(sDate) == false then
+ --			g_sCal0 = sDate
+ --		end if
+ --		
+ --		sDateBase = Form.GetSharedData("17100_T3_CALENDAR_BASE" , false)
+ --		if isEmpty(sDateBase) == false then
+ --			g_sCal1 = sDateBase
+ --		end if
 		
-'		if isEmpty(g_sCal0) == true or isEmpty(g_sCal1) == true then
+ --		if isEmpty(g_sCal0) == true or isEmpty(g_sCal1) == true then
 			g_sCal0 = CalcDate("d",-30)
 			g_sCal1 = CalcDate("d",0)
-'		end if
+ --		end if
 	
 		Calendar0.caption = g_sCal0
 		Calendar1.caption = g_sCal1
@@ -1536,40 +1515,40 @@ Sub chk0_OnChange(sCheckState)
 		
 		Calendar0.enable = false
 		Calendar1.enable = false
-	end if
+	end
 	
 	g_isFst = false
-End Sub
+end
 
-'============================================================================
-Sub imgSearch_OnClick()
+ --============================================================================
+function imgSearch_OnClick()
 	Form.OpenPopup("msearchdialog", "종목검색★56:52★INTG_DIVIDE_HISTORY★EMPTY★EMPTY", "")
-End Sub
-'============================================================================
-Sub lblItemName_OnClick()
+end
+ --============================================================================
+function lblItemName_OnClick()
 	Form.OpenPopup("msearchdialog", "종목검색★56:52★INTG_DIVIDE_HISTORY★EMPTY★EMPTY", "")
-End Sub
+end
 
-'============================================================================
-Sub Image0_OnClick()
-	if g_szSaveFilterData1 = "" then
+ --============================================================================
+function Image0_OnClick()
+	if g_szSaveFilterData1 == "" then
 		g_szSaveFilterData1 = "전체"
-	end if
+	end
 	
-	if g_szSaveFilterData2 = "" then
+	if g_szSaveFilterData2 == "" then
 		g_szSaveFilterData2 = "전체"
-	end if
+	end
 	
-	Form.OpenPopup("nrshtro17100_p5", "HISTORY★1★1★"&g_szFilterData1&"★"&g_szFilterData2&"★"&g_szSaveFilterData1&"★"&g_szSaveFilterData2 , "")
-End Sub
+	Form.OpenPopup("nrshtro17100_p5", "HISTORY★1★1★"..g_szFilterData1.."★"..g_szFilterData2.."★"..g_szSaveFilterData1.."★"..g_szSaveFilterData2 , "")
+end
 
-'============================================================================
-Sub LabelFilter_OnClick()
+ --============================================================================
+function LabelFilter_OnClick()
 	Image0_OnClick()
-End Sub
+end
 
-'============================================================================
-Sub Image1_OnClick()
+ --============================================================================
+function Image1_OnClick()
 	g_sCode = ""
 	g_sExid = ""
 	g_sMarket = ""
@@ -1586,91 +1565,91 @@ Sub Image1_OnClick()
 	Form.SetSharedData("17100_T3_ITEMCODE" , "")
 	
 	AutoRule_SelectOrderHistory()
-End Sub
+end
 
 
-'============================================================================
-Sub Calendar0_OnEditComplete()
+ --============================================================================
+function Calendar0_OnEditComplete()
 	
-	if Cint(Calendar0.caption) >  Cint(Calendar1.caption) then
+	if gf_Tonumber(Calendar0.caption) >  gf_Tonumber(Calendar1.caption) then
 		Form.ShowAlert("알림", "과거일자가 기준일자보다 큽니다.")
 		Calendar0.caption = Calendar1.caption
-	end if
+	end
 	
-	'sCal = CalcDate("d",-365)
+	 --sCal = CalcDate("d",-365)
 	
 	sDate = Calendar1.caption
-	sYear = left(sDate, 4)
-	sMonth = mid(sDate, 5, 2)
-	sDay = right(sDate, 2)
+	sYear = string.sub(sDate, 1, 4)
+	sMonth = string.sub(sDate, 5, 5 + 2 - 1)
+	sDay = string.sub(sDate, -2)
 	
-	sRsltDate = Replace(DateAdd ("d", -365,  sYear&"-"& sMonth &"-"& sDay), "-", "")
+	sRsltDate = string.gsub(gf_DateAdd("d", string.gsub(-365, "([%p])", "%%%1"), sYear.."-".. sMonth .."-".. sDay), "-", "")
 	
-	if Cint(Calendar0.caption) <  Cint(sRsltDate) then
+	if gf_Tonumber(Calendar0.caption) <  gf_Tonumber(sRsltDate) then
 		Form.ShowAlert("알림", "최대 1년 단위로만 조회 가능합니다.")
 		Calendar0.caption = sRsltDate
-	end if
+	end
 	
 	Form.SetSharedData("17100_T3_CALENDAR" , Calendar0.caption)
 	Form.SetSharedData("17100_T3_CALENDAR_BASE" , Calendar1.caption)
 	
 	AutoRule_SelectOrderHistory()
-End Sub
+end
 
-'============================================================================
-Sub Calendar1_OnEditComplete()
+ --============================================================================
+function Calendar1_OnEditComplete()
 	
-	if Cint(Calendar0.caption) >  Cint(Calendar1.caption) then
+	if gf_Tonumber(Calendar0.caption) >  gf_Tonumber(Calendar1.caption) then
 		Form.ShowAlert("알림", "과거일자가 기준일자보다 큽니다.")
 		Calendar1.caption = Calendar0.caption
-	end if
+	end
 	
 	sDate = Calendar0.caption
-	sYear = left(sDate, 4)
-	sMonth = mid(sDate, 5, 2)
-	sDay = right(sDate, 2)
+	sYear = string.sub(sDate, 1, 4)
+	sMonth = string.sub(sDate, 5, 5 + 2 - 1)
+	sDay = string.sub(sDate, -2)
 	
-	sRsltDate = Replace(DateAdd ("d", 365,  sYear&"-"& sMonth &"-"& sDay), "-", "")
+	sRsltDate = string.gsub(gf_DateAdd("d", string.gsub(365, "([%p])", "%%%1"), sYear.."-".. sMonth .."-".. sDay), "-", "")
 	
-	sHostDate = Form.GetSharedData("&HOST_DATE", false)
+	sHostDate = Form.GetSharedData("..HOST_DATE", false)
 	
-	if Cint(sRsltDate) > Cint(sHostDate) then
-		if Cint(Calendar1.caption) >  Cint(sHostDate) then
+	if gf_Tonumber(sRsltDate) > gf_Tonumber(sHostDate) then
+		if gf_Tonumber(Calendar1.caption) >  gf_Tonumber(sHostDate) then
 			Form.ShowAlert("알림", "당일 이후 날짜는 선택 불가해요.")
 			Calendar1.caption = sHostDate
-		end if
+		end
 	else
-		if Cint(Calendar1.caption) >  Cint(sRsltDate) then
+		if gf_Tonumber(Calendar1.caption) >  gf_Tonumber(sRsltDate) then
 			Form.ShowAlert("알림", "최대 1년 단위로만 조회 가능합니다.")
 			Calendar1.caption = sRsltDate
-		end if
-	end if
+		end
+	end
 	
 	Form.SetSharedData("17100_T3_CALENDAR" , Calendar0.caption)
 	Form.SetSharedData("17100_T3_CALENDAR_BASE" , Calendar1.caption)
 	
 	AutoRule_SelectOrderHistory()
-End Sub
+end
 
 
 
-'============================================================================
-Sub Grid0_OnClickUp(lRow, szCellID)
+ --============================================================================
+function Grid0_OnClickUp(lRow, szCellID)
 	SetShowToast(false)
 	
 	OpenMovePopup(lRow)
-End Sub
+end
 
-'============================================================================
-Function OpenMovePopup(nIndex)
+ --============================================================================
+function OpenMovePopup(nIndex)
 
-	'--------------------------------------------
-	'무브팝업 화면에 넘겨줄 데이터 가져옴
-	'--------------------------------------------
-	listLocation =  Split(Grid0.location,":")
+	 ----------------------------------------------
+	 --무브팝업 화면에 넘겨줄 데이터 가져옴
+	 ----------------------------------------------
+	listLocation =  gf_Split(Grid0.location,":")
 	
-	nYPos = Int(listLocation[1])
-	nHeight = listLocation[3]
+	nYPos = Int(listLocation[1+1])
+	nHeight = listLocation[3+1]
 
 	sIndex 		= nIndex
 	sName 		= Grid0.GetCellData("bd_cell15", nIndex)
@@ -1679,31 +1658,31 @@ Function OpenMovePopup(nIndex)
 	sCanMod		= Grid0.GetCellData("bd_cell12", nIndex)
 	
 	sExid		= Transform_Exid2(sVndrCode)
-	sExid3		= Form.GetItemCodeInfo(sExid&"@"&sCode, "exchid")
+	sExid3		= Form.GetItemCodeInfo(sExid.."@"..sCode, "exchid")
 	
 	sResult       = Grid0.GetCellData("bd_cell2", nIndex)
 	sResultCode   = Return_ResultCode(sResult)
 	
 	if sExid == "" then
-		'Form.ShowAlert("알림", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요")
-		Exit Function
-	end if
+		 --Form.ShowAlert("알림", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요")
+		return
+	end
 	
-	szData = "OVRS_ODER_JANGO" & "★" & nYPos & "★" & nHeight & "★" & sIndex & "★" & sName & "★" & sCode & "★" & sExid3 & "★" & sResultCode  & "★" & sCanMod 
+	szData = "OVRS_ODER_JANGO" .. "★" .. nYPos .. "★" .. nHeight .. "★" .. sIndex .. "★" .. sName .. "★" .. sCode .. "★" .. sExid3 .. "★" .. sResultCode  .. "★" .. sCanMod 
 
 	
-	'--------------------------------------------
-	'무브팝업 오픈
-	'--------------------------------------------
+	 ----------------------------------------------
+	 --무브팝업 오픈
+	 ----------------------------------------------
 	Form.OpenPopup("nrshtro17100_pmove" , szData , "")
 	
 
-End Function
+end
 
-Function MoveScreen(sGubun,sIndex)
+function MoveScreen(sGubun,sIndex)
 
-	Dim nIndex
-	nIndex = Cint(sIndex)
+	local nIndex
+	nIndex = gf_Tonumber(sIndex)
 	
 	szName 		= Grid0.GetCellData("bd_cell15", nIndex)
 	
@@ -1715,218 +1694,219 @@ Function MoveScreen(sGubun,sIndex)
 	sResultGbn 	= Grid0.GetCellData("bd_cell2", nIndex)
 	
 	sExid		= Transform_Exid2(sVndrCode)
-	sExid3		= Form.GetItemCodeInfo(sExid&"@"&sCode, "exchid")
-	szItemCode = sExid&"@"&sCode
+	sExid3		= Form.GetItemCodeInfo(sExid.."@"..sCode, "exchid")
+	szItemCode = sExid.."@"..sCode
 
 	if sExid == "" then
-'		Form.ShowAlert("알림", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요")
-		Exit Function
-	end if
+ --		Form.ShowAlert("알림", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요")
+		return
+	end
 
-'	showalert  szItemCode .. "|" .. szName .. "|" .. sJangoGubun .. "|" .. sOrdAbleQty .. "|" .. sLoanType .. "|" .. sLoanDate .. "|" .. sLoanSrno
-	Form.SetSharedData( "&ITEM_CODE" , szItemCode)
-	Form.SetSharedData( "&ITEM_KORNAME" , szName  )	
-	Form.SetSharedData( "&ITEM_OVERSTOCK", szItemCode.."★"..szName.."★".."", "" )			
+ --	showalert  szItemCode .. "|" .. szName .. "|" .. sJangoGubun .. "|" .. sOrdAbleQty .. "|" .. sLoanType .. "|" .. sLoanDate .. "|" .. sLoanSrno
+	Form.SetSharedData( "..ITEM_CODE" , szItemCode)
+	Form.SetSharedData( "..ITEM_KORNAME" , szName  )	
+	Form.SetSharedData( "..ITEM_OVERSTOCK", szItemCode.."★"..szName.."★".."", "" )			
 	Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", szItemCode.."★"..szName.."★".."", "" )
 	
-	'------------------------------------
-	' [현재가] : 종목연동
-	'------------------------------------
+	 --------------------------------------
+	 -- [현재가] : 종목연동
+	 --------------------------------------
 	if sGubun == "MOVE_HYUN" then
-		if szItemCode <> "" then
+		if szItemCode ~= "" then
 			Form.OpenScreen("16000", "")	
-		end if
+		end
 	
-	'------------------------------------
-	' [차트] : 종목연동
-	'------------------------------------
+	 --------------------------------------
+	 -- [차트] : 종목연동
+	 --------------------------------------
 	elseif sGubun == "MOVE_CHART" then
-		if szItemCode <> "" then
+		if szItemCode ~= "" then
 			Form.OpenScreen("16020", "")
-		end if
+		end
 	
-	'------------------------------------
-	' [매수] : 종목연동
-	'------------------------------------
+	 --------------------------------------
+	 -- [매수] : 종목연동
+	 --------------------------------------
 	elseif sGubun == "MOVE_MOD" then
 		
 		if sResultGbn == "주문" and sCanMod == "1" then
-			if szItemCode <> "" then
+			if szItemCode ~= "" then
 				Form.OpenScreen("16060", "2")
-			end if
+			end
 		else
 			Form.OpenScreen("16074", "")
-		end if
+		end
 		
-'	'------------------------------------
-'	' [매도] : 종목연동 / 매도가능수량 연동
-'	'------------------------------------
-'	elseif sGubun == "MOVE_MAEDO" then
-'		'---------------------------------------------------------------------------------------
-'		' 연동수량(주문가능수량) 천단위부호(,) 제거
-'		' 그리드에 있는 주문가능수량 데이터는 일반잔고/소수점 잔고의 수량을 
-'		' 표시하기 위해 문자형으로 세팅되어있음. 그대로 값을 가져오면 천단위 부호도 같이 넘어옴.
-'		' 넘어온 데이터를 그대로 천단위 부호까지 같이 넘기면
-'		' 안드로이드에서 천단위 부호 중복해서 보이는 현상 발생.
-'		'---------------------------------------------------------------------------------------
-'		sOrdAbleQty = replace(sOrdAbleQty,",","")
-'		
-'		'--------------------------------------------
-'		'소수점 잔고일 경우 소수점 주문화면으로 연동
-'		'--------------------------------------------
-'		if sJangoGubun == "03" then
-'		
-'			if szItemCode <> "" then
-'				szData = szItemCode & "★" & szName & "♥" & "1" & "♥" & "" & "♥" & "" & "♥" & "0000" & "♥" & "0" & "♥" & "00000000000"
-'				Form.OpenScreen("16092" , szData)
-'			end if
-'		
-'		'--------------------------------------------
-'		' 일반/대출 잔고일 경우 매도탭으로 연동
-'		'--------------------------------------------
-'		else
-'			
-'			if szItemCode <> "" then
-'				szData = szItemCode & "★" & szName & "♥" & "1" & "♥" & sOrdAbleQty & "♥" & sLoanDate & "♥" & sLoanType & "♥" & "0" & "♥" & sLoanSrno
-'				
-'				'--------------------------------------------
-'				' 현재 해외주식 신용합산 주문이 불가하므로,
-'				' 대출일 경우 대출합산 체크 여부 확인하여
-'				' 체크되어있으면 주문불가 안내팝업 발생
-'				'--------------------------------------------
-'				if sJangoGubun == "02" then
-'				
-'					nCheckHabsan = Cint(contBody.chk1.checkstate)
-'					
-'					if nCheckHabsan == 1 then
-'						Form.MsgBox("안내", "합산 주문이 불가합니다.\n대출합산 해지 후 매도를 진행해주세요.", "MOVEPOPUP_CHECK_HABSAN", 6)
-'						Exit Function
-'					end if
-'					
-'				end if
-'				
-'				Form.OpenScreen("16060", szData)
-'			
-'			end if
-'			
-'		end if
+ --	'------------------------------------
+ --	' [매도] : 종목연동 / 매도가능수량 연동
+ --	'------------------------------------
+ --	elseif sGubun == "MOVE_MAEDO" then
+ --		'---------------------------------------------------------------------------------------
+ --		' 연동수량(주문가능수량) 천단위부호(,) 제거
+ --		' 그리드에 있는 주문가능수량 데이터는 일반잔고/소수점 잔고의 수량을 
+ --		' 표시하기 위해 문자형으로 세팅되어있음. 그대로 값을 가져오면 천단위 부호도 같이 넘어옴.
+ --		' 넘어온 데이터를 그대로 천단위 부호까지 같이 넘기면
+ --		' 안드로이드에서 천단위 부호 중복해서 보이는 현상 발생.
+ --		'---------------------------------------------------------------------------------------
+ --		sOrdAbleQty = replace(sOrdAbleQty,",","")
+ --		
+ --		'--------------------------------------------
+ --		'소수점 잔고일 경우 소수점 주문화면으로 연동
+ --		'--------------------------------------------
+ --		if sJangoGubun == "03" then
+ --		
+ --			if szItemCode <> "" then
+ --				szData = szItemCode & "★" & szName & "♥" & "1" & "♥" & "" & "♥" & "" & "♥" & "0000" & "♥" & "0" & "♥" & "00000000000"
+ --				Form.OpenScreen("16092" , szData)
+ --			end if
+ --		
+ --		'--------------------------------------------
+ --		' 일반/대출 잔고일 경우 매도탭으로 연동
+ --		'--------------------------------------------
+ --		else
+ --			
+ --			if szItemCode <> "" then
+ --				szData = szItemCode & "★" & szName & "♥" & "1" & "♥" & sOrdAbleQty & "♥" & sLoanDate & "♥" & sLoanType & "♥" & "0" & "♥" & sLoanSrno
+ --				
+ --				'--------------------------------------------
+ --				' 현재 해외주식 신용합산 주문이 불가하므로,
+ --				' 대출일 경우 대출합산 체크 여부 확인하여
+ --				' 체크되어있으면 주문불가 안내팝업 발생
+ --				'--------------------------------------------
+ --				if sJangoGubun == "02" then
+ --				
+ --					nCheckHabsan = Cint(contBody.chk1.checkstate)
+ --					
+ --					if nCheckHabsan == 1 then
+ --						Form.MsgBox("안내", "합산 주문이 불가합니다.\n대출합산 해지 후 매도를 진행해주세요.", "MOVEPOPUP_CHECK_HABSAN", 6)
+ --						Exit Function
+ --					end if
+ --					
+ --				end if
+ --				
+ --				Form.OpenScreen("16060", szData)
+ --			
+ --			end if
+ --			
+ --		end if
 	
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-Sub Grid0_OnScrollEnd()
+ --============================================================================
+function Grid0_OnScrollEnd()
 	if isEmpty(g_sNextKey) == false then
 		AutoRule_SelectOrderHistory_Next()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 	LabelFilter.maxlinecnt = "2"
 	lblItemName.maxlinecnt = "1"
 	
 	contToast.LabelText.caption = "00:00 ~ After 시간에 당일 버튼 클릭 시 미국 현지일 기준으로 조회되어 정규장에 실행된 전체 내역을 확인 할 수 있어요."
 	
-'	Form.setDelayEvent(2, 0.2)
-End Sub
+ --	Form.setDelayEvent(2, 0.2)
+end
 
-'============================================================================
-' 비용포함 체크 시, 안내메시지 보임여부
-'============================================================================
-Function SetShowToast(bShow)
+ --============================================================================
+ -- 비용포함 체크 시, 안내메시지 보임여부
+ --============================================================================
+function SetShowToast(bShow)
 	
 	if g_isFst == false then
 		if bShow then
 			contToast.left = 30
 			contToast.visible = true
 			
-			Form.setDelayEvent(3, 5)
+			Form.SetDelayEvent(3, 5)
 		else
 			contToast.visible = false
 			contToast.left = 500
-		end if
-	end if
+		end
+	end
 
-End Function
+end
 
 
 
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
-	'----------------------------------------
-	' 미국장 영업일 조회
-	'----------------------------------------
-	If szTranID == "obtro_comn_005r" then
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
+	 ------------------------------------------
+	 -- 미국장 영업일 조회
+	 ------------------------------------------
+	if szTranID == "obtro_comn_005r" then
 		DATAMANAGER.ClearInputData(0, "obtro_comn_005r")
 		
-		DATAMANAGER.SetDataValue(0, "obtro_comn_005r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE", 0 ,  "01")	'미국 거래소로 고정
+		DATAMANAGER.SetDataValue(0, "obtro_comn_005r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE", 0 ,  "01")	 --미국 거래소로 고정
 	elseif szTranID == "obtro_oder_268r" then
 		DATAMANAGER.ClearInputData(0, "obtro_oder_268r")
 		
-		DATAMANAGER.SetDataValue(0, "obtro_oder_268r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE"		, 0, "01")		' 해외주식시장 거래구분코드 : 미국
-		DATAMANAGER.SetDataValue(0, "obtro_oder_268r", "InBlock1", "OVRS_MKOP_CLS_CODE"				, 0, "005")		' 해외장 운영구분코드 : 정규장+에프터
+		DATAMANAGER.SetDataValue(0, "obtro_oder_268r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE"		, 0, "01")		 -- 해외주식시장 거래구분코드 : 미국
+		DATAMANAGER.SetDataValue(0, "obtro_oder_268r", "InBlock1", "OVRS_MKOP_CLS_CODE"				, 0, "005")		 -- 해외장 운영구분코드 : 정규장+에프터
 		
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	'----------------------------------------
-	' 미국장 영업일 조회
-	'----------------------------------------
-	If szTranID = "obtro_comn_005r" then
-		g_sBizDate   		= DATAMANAGER.GetDataValue(0, "obtro_comn_005r", "OutBlock1", "BSOP_DATE"	, 0) ' 미국장 영업일
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	 ------------------------------------------
+	 -- 미국장 영업일 조회
+	 ------------------------------------------
+	if szTranID == "obtro_comn_005r" then
+		g_sBizDate   		= DATAMANAGER.GetDataValue(0, "obtro_comn_005r", "OutBlock1", "BSOP_DATE"	, 0)  -- 미국장 영업일
 
-		if Cdbl(g_sBizDate) < Cdbl(CalcDate("d",-1)) then
+		if gf_Tonumber(g_sBizDate) < gf_Tonumber(CalcDate("d",-1)) then
 			Calendar0.caption = CalcDate("d",0)
 			Calendar1.caption = CalcDate("d",0)
 		else
 			Calendar0.caption = g_sBizDate
 			Calendar1.caption = CalcDate("d",0)
-		end if
+		end
 		
 		AutoRule_SelectOrderHistory()
 		
-	elseif szTranID = "obtro_oder_268r" then
+	elseif szTranID == "obtro_oder_268r" then
 		g_sBizDate = DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "MANG_DATE", 0)
-		sHostDate = Form.GetSharedData("&HOST_DATE", false)
+		sHostDate = Form.GetSharedData("..HOST_DATE", false)
 		
 		Calendar0.caption = g_sBizDate
 		Calendar1.caption = sHostDate
 		
 		AutoRule_SelectOrderHistory()
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-' 비용포함 체크 시, 안내메시지 닫기
-'============================================================================
-Sub contToast_ImageClose_OnClick()
+ --============================================================================
+ -- 비용포함 체크 시, 안내메시지 닫기
+ --============================================================================
+function contToast_ImageClose_OnClick()
 	
 	SetShowToast(false)
 	
-End Sub
+end
 
-'============================================================================
-' 비용포함 체크 시, 안내메시지 닫기
-'============================================================================
-Sub contToast_LabelText_OnClick()
+ --============================================================================
+ -- 비용포함 체크 시, 안내메시지 닫기
+ --============================================================================
+function contToast_LabelText_OnClick()
 
 	SetShowToast(false)
 		
-End Sub
+end
 
-'============================================================================
-Sub Image2_OnClick()
+ --============================================================================
+function Image2_OnClick()
 	if g_isClick == false then
 		g_isClick = true
 		AutoRule_SelectOrderHistory()
-	end if
-End Sub
+	end
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_comn_005r" trcode="obtro_comn_005r" compress="1" encryption="1" inputcheck="1" useattr="0" />

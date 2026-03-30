@@ -39,33 +39,35 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="7677" _ulen="7039" >
-Dim optionNationTable(),optionNationCtlTable()
-Dim optionOrderIndex
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+local optionNationTable(),optionNationCtlTable()
+local optionOrderIndex
 
 
-'전체/미국/중국/홍콩/일본
+ --전체/미국/중국/홍콩/일본
 optionNationTable = {"Y","N","N","N","N"} 
 optionNationCtlTable = {"contNation.imgFilterAll","contNation.imgFilterUSA","contNation.imgFilterCHN","contNation.imgFilterHK","contNation.imgFilterJP"}
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	'매매구분(0:전체/1:매수/2:매도)
+	 --매매구분(0:전체/1:매수/2:매도)
 	optionOrderIndex = 0
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 
 	szLinkData = Form.GetOpenLinkData()
 	
-	if szLinkData <> "" then
+	if szLinkData ~= "" then
 	
-		'국가선택값★매매구분값
-		'EX) N@Y@Y@Y@Y@N★1
+		 --국가선택값★매매구분값
+		 --EX) N@Y@Y@Y@Y@N★1
 		
-		arrData = Split(szLinkData,"★")
+		arrData = gf_Split(szLinkData,"★")
 		
 		if #arrData < 2 then
 			
@@ -75,145 +77,145 @@ Sub Form_OnFormInit()
 			
 		else
 		
-			arrNationSelect = Split(arrData(0),"@")
-			for i = 0 to #arrNationSelect - 1 
-				if arrNationSelect(i) == "Y" then
+			arrNationSelect = gf_Split(arrData[0+1],"@")
+			for i = 0, #arrNationSelect - 1 do
+				if arrNationSelect[i+1] == "Y" then
 					Change_optionNationTable(i)
-				end if
-			next
+				end
+			end
 			
-			optionOrderIndex = arrData(1)
+			optionOrderIndex = arrData[1+1]
 			
 			SelectNationOption()
 			SelectOrderOption()
 		
-		end if
+		end
 	
 	else
 		
-		'화면링크데이터가 없으면 디폴트 데이터값 설정
+		 --화면링크데이터가 없으면 디폴트 데이터값 설정
 		SetDefaultOption()
 		
-		'설정된 디폴트 값으로 조회구분 세팅(국가/기간)
+		 --설정된 디폴트 값으로 조회구분 세팅(국가/기간)
 		SelectNationOption()
 		SelectOrderOption()
 	
-	end if
+	end
 	
 
-End Sub
-'============================================================================
-Sub BtnBackGround_OnClick()
+end
+ --============================================================================
+function BtnBackGround_OnClick()
 	Form.CloseForm()
-End Sub
-'============================================================================
-Sub contGubun_OrdGubun_OnClick(nIndex)
+end
+ --============================================================================
+function contGubun_OrdGubun_OnClick(nIndex)
 
 	Change_optionOrderGubun(nIndex)	
 	
-End Sub
-'============================================================================
-Sub contNation_imgFilterAll_OnClick()
+end
+ --============================================================================
+function contNation_imgFilterAll_OnClick()
 	Change_optionNationTable(0)
 	SelectNationOption()
-End Sub
-'============================================================================
-Sub contNation_imgFilterUSA_OnClick()
+end
+ --============================================================================
+function contNation_imgFilterUSA_OnClick()
 	Change_optionNationTable(1)
 	SelectNationOption()
-End Sub
-'============================================================================
-'
-'============================================================================
-Sub contNation_imgFilterCHN_OnClick()
+end
+ --============================================================================
+ --
+ --============================================================================
+function contNation_imgFilterCHN_OnClick()
 	Change_optionNationTable(2)
 	SelectNationOption()
-End Sub
+end
 
-'============================================================================
-'
-'============================================================================
-Sub contNation_imgFilterHK_OnClick()
+ --============================================================================
+ --
+ --============================================================================
+function contNation_imgFilterHK_OnClick()
 	Change_optionNationTable(3)
 	SelectNationOption()
-End Sub
+end
 
-'============================================================================
-'
-'============================================================================
-Sub contNation_imgFilterJP_OnClick()
+ --============================================================================
+ --
+ --============================================================================
+function contNation_imgFilterJP_OnClick()
 	Change_optionNationTable(4)
 	SelectNationOption()
-End Sub
+end
 
-'============================================================================
-' 초기화 버튼 클릭이벤트
-'============================================================================
-Sub btnReset_OnClick()
+ --============================================================================
+ -- 초기화 버튼 클릭이벤트
+ --============================================================================
+function btnReset_OnClick()
 
 	SetDefaultOption()
 	SelectNationOption()
 	SelectOrderOption()
 	
 	
-End Sub
-'============================================================================
-' 검색버튼 클릭이벤트(조회조건 설정 리턴)
-'============================================================================
-Sub btnOk_OnClick()
+end
+ --============================================================================
+ -- 검색버튼 클릭이벤트(조회조건 설정 리턴)
+ --============================================================================
+function btnOk_OnClick()
 
 	sRsltNationOption = ""
 	sRsltOrderOption = ""
 	
 	
-	for i = 0 to #optionNationTable -1
+	for i = 0, #optionNationTable -1 do
 		if i == 0 then
 			sRsltNationOption = optionNationTable[i]
 		else
 			sRsltNationOption = sRsltNationOption .. "@" .. optionNationTable[i]
-		end if
-	next
+		end
+	end
 	
 	sRsltOrderOption = optionOrderIndex
 	
-	'국가구분★조회기간인덱스★From일★To일
-	'Form.ShowAlert("FILTER_SET_COMPLETE", sRsltNationOption.."★"..sRsltOrderOption)
+	 --국가구분★조회기간인덱스★From일★To일
+	 --Form.ShowAlert("FILTER_SET_COMPLETE", sRsltNationOption.."★"..sRsltOrderOption)
 	Form.SendReturnToParent("FILTER_SET_COMPLETE" , sRsltNationOption.."★"..sRsltOrderOption)
 	Form.CloseForm()
 	
-End Sub
-'============================================================================
-' 닫기버튼 클릭이벤트
-'============================================================================
-Sub imgClose_OnClick()
+end
+ --============================================================================
+ -- 닫기버튼 클릭이벤트
+ --============================================================================
+function imgClose_OnClick()
 	Form.CloseForm()
-End Sub
-'============================================================================
-' 조회조건(매매구분/조회국가) 디폴트값 설정
-'============================================================================
-Function SetDefaultOption()
+end
+ --============================================================================
+ -- 조회조건(매매구분/조회국가) 디폴트값 설정
+ --============================================================================
+function SetDefaultOption()
 
-	'조회국가 디폴트값 설정(전체)
-	for i = 0 to #optionNationTable -1
+	 --조회국가 디폴트값 설정(전체)
+	for i = 0, #optionNationTable -1 do
 		if i == 0 then
 			optionNationTable[i] = "Y"
 		else
 			optionNationTable[i] = "N"
-		end if	 
-	next
+		end
+	end
 	
-	'매매구분 디폴트값 설정(전체)
+	 --매매구분 디폴트값 설정(전체)
 	optionOrderIndex = 0
 	
 	
-End Function
+end
 
-'============================================================================
-' 조회조건(국가)에 따라 선택/미선택 표시
-'============================================================================
-Function SelectNationOption()
+ --============================================================================
+ -- 조회조건(국가)에 따라 선택/미선택 표시
+ --============================================================================
+function SelectNationOption()
 
-	for i = 0 to #optionNationTable -1
+	for i = 0, #optionNationTable -1 do
 		
 		isSelect = optionNationTable[i]
 		
@@ -221,43 +223,42 @@ Function SelectNationOption()
 			Form.SetCtlProp(optionNationCtlTable[i], "imgpath", "btn_line2_o.9")
 		else
 			Form.SetCtlProp(optionNationCtlTable[i], "imgpath", "btn_line2_n.9")
-		end if
+		end
 	
-	next
+	end
 
-End Function
-'============================================================================
-' 조회조건(기간)에 따라 선택/미선택 표시
-'============================================================================
-Function SelectOrderOption()
+end
+ --============================================================================
+ -- 조회조건(기간)에 따라 선택/미선택 표시
+ --============================================================================
+function SelectOrderOption()
 	
 	contGubun.OrdGubun.currentindex = optionOrderIndex
 	
-End Function
+end
 
-'============================================================================
-' 조회조건(국가) 변경 처리
-'============================================================================
-Function Change_optionNationTable(nIndex)
+ --============================================================================
+ -- 조회조건(국가) 변경 처리
+ --============================================================================
+function Change_optionNationTable(nIndex)
 	
-	'---------------------------------------------
-	'0:전체일경우 첫번째인덱스만 Y 나머지 다 N처리
-	'그외 : 선택한 인덱스값 변경처리(Y->N, N->Y)
-	'---------------------------------------------
-	Select Case nIndex
-		Case 0
+	 -----------------------------------------------
+	 --0:전체일경우 첫번째인덱스만 Y 나머지 다 N처리
+	 --그외 : 선택한 인덱스값 변경처리(Y->N, N->Y)
+	 -----------------------------------------------
+		if nIndex == 0 then
 			
-			for i = 0 to #optionNationTable - 1
+			for i = 0, #optionNationTable - 1 do
 				
 				if i == 0 then
 					optionNationTable[i] = "Y"
 				else
 					optionNationTable[i] = "N"
-				end if
+				end
 				
-			next
+			end
 			
-		Case 1,2,3,4,5
+		elseif nIndex == 1 or nIndex == 2 or nIndex == 3 or nIndex == 4 or nIndex == 5 then
 			optionNationTable[0] = "N"
 			
 			beforeFlag = optionNationTable[nIndex]
@@ -266,64 +267,64 @@ Function Change_optionNationTable(nIndex)
 				optionNationTable[nIndex] = "N"
 			else
 				optionNationTable[nIndex] = "Y"
-			end if
+			end
 			
-	End Select
+	end
 	
-	'---------------------------------------------
-	' 전체를 제외한 모든 플래그 Y여부 체크
-	' 모든 플래그가 Y인 경우 전체로 자동으로 변경
-	'---------------------------------------------
+	 -----------------------------------------------
+	 -- 전체를 제외한 모든 플래그 Y여부 체크
+	 -- 모든 플래그가 Y인 경우 전체로 자동으로 변경
+	 -----------------------------------------------
 	isAllFlagY = True
-	for i = 1 to #optionNationTable - 1
+	for i = 1, #optionNationTable - 1 do
 		
 		isSelect = optionNationTable[i]
 		
 		if isSelect == "N" then
 			isAllFlagY = False
-		end if
+		end
 		
-	next
+	end
 	
-	'---------------------------------------------
-	' 전체를 포함한 모든 플래그 N여부 체크
-	' 모든 플래그가 N인 경우 전체로 자동으로 변경
-	'---------------------------------------------
+	 -----------------------------------------------
+	 -- 전체를 포함한 모든 플래그 N여부 체크
+	 -- 모든 플래그가 N인 경우 전체로 자동으로 변경
+	 -----------------------------------------------
 	isAllFalgN = True
-	for i = 0 to #optionNationTable - 1
+	for i = 0, #optionNationTable - 1 do
 		
 		isSelect = optionNationTable[i]
 		
 		if isSelect == "Y" then
 			isAllFalgN = False
-		end if
+		end
 		
-	next
+	end
 	
-	if isAllFlagY  then
+	if isAllFlagY then
 		Change_optionNationTable(0)
-	end if
+	end
 	
 	if isAllFalgN then
 		Change_optionNationTable(0)
-	end if
-	'--------------------------------------
+	end
+	 ----------------------------------------
 	
 	
-End Function
+end
 
-'============================================================================
-' 조회조건(매매구분) 변경 처리
-'============================================================================
-Function Change_optionOrderGubun(nIndex)
+ --============================================================================
+ -- 조회조건(매매구분) 변경 처리
+ --============================================================================
+function Change_optionOrderGubun(nIndex)
 	
 	if nIndex < 0 then
 		optionOrderIndex = 0
 	else
 		optionOrderIndex = nIndex
-	end if
+	end
 	
-End Function
+end
 
 
 
@@ -333,5 +334,6 @@ End Function
 
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

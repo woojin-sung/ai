@@ -33,253 +33,255 @@
 		<LABEL name="LblInvisible" mask="0,0,,,1,,0,1,1,0,0" ly_vert="400,150,150,22,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="61707" _ulen="59265" >
-'-------------------------------------------------------------------------------------------
-' 2026.03.18 김구연 v0001 MTS 차트에 권리발생시 화면수정 요청건
-'                 
-'-------------------------------------------------------------------------------------------
-'============================================================================
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'============================================================================
-Dim g_sCode 
-Dim g_szItemMarket
-Dim g_szChrtType
-Dim g_szToday
-Dim g_szMinType
-Dim g_szTicType
-Dim g_flagMin
-Dim g_flagTic
-Dim g_flagWeek
-Dim g_flagInit
-Dim g_flagLine
-Dim g_sStockMode
-Dim g_szExid
-Dim g_szCode
-Dim g_rtChk
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ ---------------------------------------------------------------------------------------------
+ -- 2026.03.18 김구연 v0001 MTS 차트에 권리발생시 화면수정 요청건
+ --                 
+ ---------------------------------------------------------------------------------------------
+ --============================================================================
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --============================================================================
+local g_sCode
+local g_szItemMarket
+local g_szChrtType
+local g_szToday
+local g_szMinType
+local g_szTicType
+local g_flagMin
+local g_flagTic
+local g_flagWeek
+local g_flagInit
+local g_flagLine
+local g_sStockMode
+local g_szExid
+local g_szCode
+local g_rtChk
 
-'20250731 YSH START
-Dim g_szItemCode
+ --20250731 YSH START
+local g_szItemCode
 g_szItemCode = ""
-'20250731 YSH END
+ --20250731 YSH END
 
-g_sStockMode = "1"	'수정주가 1: 0
-g_szChrtType = "D" 	'일
+g_sStockMode = "1"	 --수정주가 1: 0
+g_szChrtType = "D" 	 --일
 
-'20231016 LES START
-Dim g_bApplyVersion
+ --20231016 LES START
+local g_bApplyVersion
 g_bApplyVersion = false
-'20231016 LES END
+ --20231016 LES END
 
-'20240610 SWJ START
-Dim gUseOrderList
+ --20240610 SWJ START
+local gUseOrderList
 gUseOrderList = ""
 
-Dim gChartPeriod
+local gChartPeriod
 gChartPeriod = ""
 
-Dim g_sInitFlag
+local g_sInitFlag
 g_sInitFlag = True
 
-Dim gCmbIndex
+local gCmbIndex
 gCmbIndex = ""
 
-Dim gRadioIndex
+local gRadioIndex
 gRadioIndex = ""
 
-Dim g_sUserID
+local g_sUserID
 g_sUserID = ""
 
-Dim g_sChartPopup
+local g_sChartPopup
 g_sChartPopup = ""
 
-Dim g_sCurrency
+local g_sCurrency
 g_sCurrency = ""
 
-Dim g_sMarketCode
+local g_sMarketCode
 g_sMarketCode = ""
-'20240610 SWJ END
+ --20240610 SWJ END
 
-Dim g_bChangeAdjustStock 'v0001 차트 설정 수정주가사용 토글 구분
+local g_bChangeAdjustStock --v0001 차트 설정 수정주가사용 토글 구분
 g_bChangeAdjustStock = False
 
-Function Check_Version2()
+function Check_Version2()
 
-	szOsType = Form.GetSharedData("&OS_TYPE", False) 
-	szAppVer	= Form.GetSharedData("&APP_VERSION", False)
-	szAppVer	= Replace(szAppVer, ".", "")
+	szOsType = Form.GetSharedData("..OS_TYPE", False) 
+	szAppVer	= Form.GetSharedData("..APP_VERSION", False)
+	szAppVer	= string.gsub(szAppVer, string.gsub(".", "([%p])", "%%%1"), "")
 	
-	'-----------------------------------------------------------------------
-	'안드로이드
-	'-----------------------------------------------------------------------
+	 -------------------------------------------------------------------------
+	 --안드로이드
+	 -------------------------------------------------------------------------
 	if szOsType == "1" then
 		
-		if Cint(szAppVer) > 260 then
+		if gf_Tonumber(szAppVer) > 260 then
 			return true
 		else
 			return false
-		end if
+		end
 	
-	'-----------------------------------------------------------------------
-	'iOS
-	'-----------------------------------------------------------------------
+	 -------------------------------------------------------------------------
+	 --iOS
+	 -------------------------------------------------------------------------
 	elseif szOsType == "2" then
 		
-		if Cint(szAppVer) > 2559 then
+		if gf_Tonumber(szAppVer) > 2559 then
 			return true
 		else
 			return false
-		end if
+		end
 	
-	end if
+	end
 	
-End Function
+end
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 	ChartEx0.SetLoadChart("foreignstock")
 	
 	szMin0 = Form.GetEnvData( "mhtro16000_chart_min0" )
 	szTic0 = Form.GetEnvData( "mhtro16000_chart_tic0" )
 
-	if szMin0 = "" or szMin0 = 0 then
+	if szMin0 == "" or szMin0 == 0 then
 		szMin0 = "1"
-	end if
+	end
 	
-	if szTic0 = "" or szTic0 = 0 then
+	if szTic0 == "" or szTic0 == 0 then
 		szTic0 = "1"
-	end if
+	end
 	
 	RadioGroup0.SetRadioCaption( 2, szMin0.."분" )
 	RadioGroup0.SetRadioCaption( 3, szTic0.."틱" )
 	
 	ChartEx0.SetMarketCategory("7")
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()	
+ --============================================================================
+function Form_OnFormInit()
 	g_flagInit = true
 	g_flagMin = false
 	g_flagTic = false
 	g_flagWeek = false
 	g_flagLine = false
 	
-	'20250417 MSH START 화면이 완전히 뜨기 이전에 currentindex 설정시 다른 주기차트를 호출하는 오류 개선
-'	Dim szRadio
-'	szRadio = Form.GetEnvData("mhtro16000_t03_RADIO")
-'	if szRadio <> null and szRadio <> ""	then
-'		RadioGroup0.currentindex = szRadio
-'	end if
-	'20250417 MSH END 
+	 --20250417 MSH START 화면이 완전히 뜨기 이전에 currentindex 설정시 다른 주기차트를 호출하는 오류 개선
+ --	Dim szRadio
+ --	szRadio = Form.GetEnvData("mhtro16000_t03_RADIO")
+ --	if szRadio <> null and szRadio <> ""	then
+ --		RadioGroup0.currentindex = szRadio
+ --	end if
+	 --20250417 MSH END 
 	
-	g_szToday = Form.GetSharedData( "&HOST_DATE", 0 )
+	g_szToday = Form.GetSharedData( "..HOST_DATE", 0 )
 	setChart()
 	
-'	PeriodSet(g_szChrtType) '20250417 MSH
+ --	PeriodSet(g_szChrtType) '20250417 MSH
 	
-	'20240610 SWJ START
-	g_sUserID = Form.GetSharedData("&USER_ID", false)
-	'20240610 SWJ END
+	 --20240610 SWJ START
+	g_sUserID = Form.GetSharedData("..USER_ID", false)
+	 --20240610 SWJ END
 	
 	
-	'20250313_01 HWG START : 차트 높이조정 로직 추가 
+	 --20250313_01 HWG START : 차트 높이조정 로직 추가 
 	if Check_Version2() == true then
 		ChartEx0.height = 365
-	end if
-	'20250313_01 HWG END
+	end
+	 --20250313_01 HWG END
 			
-End Sub
+end
 
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
 	if sEventName == "RequestData" then
 		g_sCode = sParam
-		sTemp = split(g_sCode, "@")
-		g_szExid = sTemp[0] '시장구분
-		g_szCode = sTemp[1] '종목코드 
+		sTemp = gf_Split(g_sCode, "@")
+		g_szExid = sTemp[0+1]  --시장구분
+		g_szCode = sTemp[1+1]  --종목코드 
 		g_rtChk = Form.GetSharedData( "REALTIME_"..g_szExid, false )
 		
-		'20231016 LES START
+		 --20231016 LES START
 		Check_Version()
-		'20231016 LES END
+		 --20231016 LES END
 	
 		RequestData()
 		
-		'Form.SetTimerEvent2("2", 1, 0.2) v0001 주석처리
-		ChartEx0.setTradeData("")
+		 --Form.SetTimerEvent2("2", 1, 0.2) v0001 주석처리
+		ChartEx0.SetTradeData("")
 	
-	'20250313_01 HWG START : 차트 높이조정 로직 추가 
+	 --20250313_01 HWG START : 차트 높이조정 로직 추가 
 	elseif sEventName == "RESIZE_CHART" then
 		if Check_Version2() == true then
 			if sParam == "TOP" then
 				ChartEx0.height = 365
 			else
 				ChartEx0.height = 465
-			end if
-		end if
+			end
+		end
 	elseif sEventName == "ENABLE_SCROLL" then
 		if Check_Version2() == true then
 			if sParam == "END" then
 				ChartEx0.height = 465
-			end if
-		end if
-	end if
-	'20250313_01 HWG END
-End Sub
+			end
+		end
+	end
+	 --20250313_01 HWG END
+end
 
-'============================================================================
-Function SetChart()
-	Dim szValue, szValueMinTick
+ --============================================================================
+function SetChart()
+	local szValue, szValueMinTick
 
-     szValue 			= Form.GetEnvData( "mhtro16000_chart_setting" ) 			'2^000000001
-     szValueMinTick 	= Form.GetEnvData( "mhtro16000_chart_settingmintick" )    	'1^1
+     szValue 			= Form.GetEnvData( "mhtro16000_chart_setting" ) 			 --2^000000001
+     szValueMinTick 	= Form.GetEnvData( "mhtro16000_chart_settingmintick" )    	 --1^1
      tempStock		= Form.GetEnvData( "mhtro16000_chart_stockmode" )    
       
-	if tempStock <> "" then
+	if tempStock ~= "" then
 		g_sStockMode = tempStock
 		ChartEx0.SetAdjustedStock(g_sStockMode)
-	end if
+	end
 	
-	if szValue = "" then
+	if szValue == "" then
 		Form.SetEnvData(1, "mhtro16000_chart_settingmintick", "2^001")
 	     g_sPeriod 	 = "001"
 	     g_sPeriodType = "2"
 	     
 	else
-		temp = split(szValue, "^")
-		g_sPeriodType = temp[0]
-		g_sPeriod	= temp[1]
+		temp = gf_Split(szValue, "^")
+		g_sPeriodType = temp[0+1]
+		g_sPeriod	= temp[1+1]
 		
-	end if
+	end
 	
-	if szValueMinTick <> "" then
-		temp1 = split(szValueMinTick, "^")
-		g_szMinType = temp1[0]
-		g_szTicType = temp1[1]
+	if szValueMinTick ~= "" then
+		temp1 = gf_Split(szValueMinTick, "^")
+		g_szMinType = temp1[0+1]
+		g_szTicType = temp1[1+1]
 		
 	else
-		' 20190404 HWG START
-		' 차트 분,틱 설정값 세팅 오류 수정
+		 -- 20190404 HWG START
+		 -- 차트 분,틱 설정값 세팅 오류 수정
 		szMin0 = Form.GetEnvData( "mhtro16000_chart_min0" )
 		szTic0 = Form.GetEnvData( "mhtro16000_chart_tic0" )
 	
-		if szMin0 <> "" and szMin0 <> 0 then
+		if szMin0 ~= "" and szMin0 ~= 0 then
 			g_szMinType = szMin0
 		else
 			g_szMinType = "1"
-		end if
+		end
 		
-		if szTic0 <> "" and szTic0 <> 0 then
+		if szTic0 ~= "" and szTic0 ~= 0 then
 			g_szTicType = szTic0
-		else 
+		else
 			g_szTicType = "1"
-		end if
-		' 20190404 HWG END     
+		end
+		 -- 20190404 HWG END     
 	     
-	end if
+	end
 	
-	'분틱 셋팅	
-	tmpIndex = null 
-	if g_sPeriodType = "0" or g_sPeriodType = "1" then
-		if g_sPeriodType = "0" then
+	 --분틱 셋팅	
+	tmpIndex = nil 
+	if g_sPeriodType == "0" or g_sPeriodType == "1" then
+		if g_sPeriodType == "0" then
 			g_TempIndex = 3
 			g_szChrtType = "T"
 			RadioGroup0.SetRadioCaption( g_TempIndex, g_szTicType.."틱" )
@@ -289,21 +291,21 @@ Function SetChart()
 			g_szChrtType = "A"
 			RadioGroup0.SetRadioCaption( g_TempIndex, g_szMinType.."분" )
 			
-		end if
+		end
 	
 	else
-		if g_sPeriodType = "2" then
+		if g_sPeriodType == "2" then
 			g_TempIndex = 0
 			g_szChrtType = "D"
 			
-		elseif g_sPeriodType = "3" then
+		elseif g_sPeriodType == "3" then
 			g_TempIndex = 1
 			g_flagWeek = false
 			g_szChrtType = "W"
 			RadioGroup0.SetRadioCaption( g_TempIndex, "주" )
 			
-'PENTA13 START => 2019.05.08
-		elseif g_sPeriodType = "4" then
+ --PENTA13 START => 2019.05.08
+		elseif g_sPeriodType == "4" then
 			g_TempIndex = 1
 			g_flagWeek = false
 			g_szChrtType = "M"
@@ -315,67 +317,67 @@ Function SetChart()
 			g_szChrtType = "Y"
 			RadioGroup0.SetRadioCaption( g_TempIndex, "년" )
 			
-		end if
-'PENTA13 END
-	end if
+		end
+ --PENTA13 END
+	end
 	
 	RadioGroup0.currentindex = g_TempIndex
 
-End Function
+end
 
-'======================================
-Function RequestData()
+ --======================================
+function RequestData()
 	DATAMANAGER.CancelRealData("ohhts_exst_cntg")
-	DATAMANAGER.CancelRealData("ohhts_exst_cntd") '20221213_01 KBC 해외주식주간거래
-'	20250513 KSJ START : 애프터장 분틱 챠트 시세 실시간 처리
+	DATAMANAGER.CancelRealData("ohhts_exst_cntd")  --20221213_01 KBC 해외주식주간거래
+ --	20250513 KSJ START : 애프터장 분틱 챠트 시세 실시간 처리
 	DATAMANAGER.CancelRealData("ohhts_exst_cnta")
-'	20250513 KSJ END
+ --	20250513 KSJ END
 
 	szStockMode = "0"
-	if g_sStockMode = "0" then
+	if g_sStockMode == "0" then
 		szStockMode = "1"
-	end if
+	end
 	
-	PeriodSetChart(g_szChrtType)  '20230905 한국금융IT : 일주월분 차트 주기 설정
+	PeriodSetChart(g_szChrtType)   --20230905 한국금융IT : 일주월분 차트 주기 설정
 	
-	if g_szChrtType = "A" then			'분차트
-		sMin = Split(g_szMinType, "분", -1, 1)
-		sTemp = sMin[0] * 60
+	if g_szChrtType == "A" then --분차트
+		sMin = gf_Split(g_szMinType, "분", -1, 1)
+		sTemp = sMin[0+1] * 60
 		
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_005r", "InBlock2", "FID_INPUT_HOUR_CLS_CODE", 0, sTemp )
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_005r", "InBlock2", "FID_INPUT_DATE1" ,0,g_szToday)	
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_005r", "InBlock2", "FID_INPUT_PAST_DATA_INCU_YN" , 0,"Y")
 		DATAMANAGER.RequestTranData("ohhts_5041_005r")
 		
-	elseif g_szChrtType = "T" then		'틱차트
-		sTic = Split(g_szTicType, "틱", -1, 1)
+	elseif g_szChrtType == "T" then --틱차트
+		sTic = gf_Split(g_szTicType, "틱", -1, 1)
 		
-		DATAMANAGER.SetDataValue( 0, "ohhts_5041_006r", "InBlock2", "FID_INPUT_CNT1" , 0, sTic[0])
+		DATAMANAGER.SetDataValue( 0, "ohhts_5041_006r", "InBlock2", "FID_INPUT_CNT1" , 0, sTic[0+1])
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_006r", "InBlock2", "FID_INPUT_PAST_DATA_INCU_YN" , 0, "Y")
 		DATAMANAGER.RequestTranData("ohhts_5041_006r")
 		
-	elseif g_szChrtType = "D" then		'일차트
+	elseif g_szChrtType == "D" then --일차트
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_001r", "InBlock2", "FID_INPUT_MOD_STPR_CLS_CODE", 0, szStockMode )
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_001r", "InBlock2", "FID_INPUT_DATE1" ,0,g_szToday)	
 		DATAMANAGER.RequestTranData("ohhts_5041_001r")
 		
-	elseif g_szChrtType = "W" then		'주차트
+	elseif g_szChrtType == "W" then --주차트
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_002r", "InBlock2", "FID_INPUT_DATE1" ,0,g_szToday)	
 		DATAMANAGER.RequestTranData("ohhts_5041_002r")
 		
-	elseif g_szChrtType == "M" then 	'월차트
+	elseif g_szChrtType == "M" then --월차트
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_003r", "InBlock2", "FID_INPUT_DATE1" ,0,g_szToday)	
 		DATAMANAGER.RequestTranData("ohhts_5041_003r")
 		
-	elseif g_szChrtType == "Y" then 	'년차트
+	elseif g_szChrtType == "Y" then --년차트
 		DATAMANAGER.SetDataValue( 0, "ohhts_5041_004r", "InBlock2", "FID_INPUT_DATE1" ,0,g_szToday)	
 		DATAMANAGER.RequestTranData("ohhts_5041_004r")
 		
-	End If
+	end
 
-end Function
-'============================================================================
-Sub DATAMANAGER_OnSendTranBefore(szTranID)
+end
+ --============================================================================
+function DATAMANAGER_OnSendTranBefore(szTranID)
 	if szTranID == "ohhts_5041_001r" then
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" , 0 , "OV" )
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" , 0 , g_szCode )
@@ -442,29 +444,29 @@ Sub DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_006r", "InBlock2", "FID_COND_MRKT_CLS_CODE" , 0 , g_szExid)
 		DATAMANAGER.SetDataValue( false, "ohhts_5041_006r", "InBlock2", "FIDX_INPUT_DELY_RLTM_CLS_CODE" , 0 , g_rtChk )
 		
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranData(szTranID)
-	Dim nDecimal
-	nDecimal = CInt(DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "FIDX_DCPN_CNT" , 0))
+ --============================================================================
+function DATAMANAGER_OnReceiveTranData(szTranID)
+	local nDecimal
+	nDecimal = gf_Tonumber(DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "FIDX_DCPN_CNT" , 0))
 	ChartEx0.SetDecimal(nDecimal)
 	ChartEx0.SetJisuCode(g_sCode)
 	
-	'20211209 HWG START : 해외주식 차트 종목명 길이체크 로직추가
-	Dim szName, sz40Name
+	 --20211209 HWG START : 해외주식 차트 종목명 길이체크 로직추가
+	local szName, sz40Name
 	szName = DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "FIDX_KOR_ISNM" , 0)
 	
-	if len(szName) > 39 then
-		sz40Name = Left(szName, 39)
+	if string.len(szName) > 39 then
+		sz40Name = string.sub(szName, 1, 39)
 		DATAMANAGER.SetDataValue(0, szTranID, "OutBlock1", "FIDX_KOR_ISNM" , 0 , sz40Name)
-	end if
-	'20211209 HWG END
+	end
+	 --20211209 HWG END
 	
-	'20221213_01 KBC START : 해외주식주간거래
-	if szTranID = "ohhts_5041_006r" or szTranID = "ohhts_5041_005r" then	
+	 --20221213_01 KBC START : 해외주식주간거래
+	if szTranID == "ohhts_5041_006r" or szTranID == "ohhts_5041_005r" then
 		sPRPR 			= DATAMANAGER.GetDataValue(false, szTranID , "OutBlock2" , "FIDX_PRPR" , 0)
 		sPRDY_VRSS_SIGN 	= DATAMANAGER.GetDataValue(false, szTranID , "OutBlock2" , "FIDX_PRDY_VRSS_SIGN" , 0)
 		sPRDY_CTRT 		= DATAMANAGER.GetDataValue(false, szTranID , "OutBlock2" , "FIDX_PRDY_CTRT" , 0)
@@ -474,85 +476,85 @@ Sub DATAMANAGER_OnReceiveTranData(szTranID)
 		DATAMANAGER.SetDataValue(false, szTranID , "OutBlock1" , "FIDX_PRDY_VRSS_SIGN"	, 0 , sPRDY_VRSS_SIGN)
 		DATAMANAGER.SetDataValue(false, szTranID , "OutBlock1" , "FIDX_PRDY_CTRT"		, 0 , sPRDY_CTRT)
 		DATAMANAGER.SetDataValue(false, szTranID , "OutBlock1" , "FIDX_ACML_VOL"			, 0 , sACML_VOL)
-	end if
-	'20221213_01 KBC END
-End Sub
+	end
+	 --20221213_01 KBC END
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
-	'20250522_01 HWG START : 차트VOC 대응
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
+	 --20250522_01 HWG START : 차트VOC 대응
 	if szTranID = "ohhts_5041_001r" or szTranID = "ohhts_5041_002r"  or szTranID = "ohhts_5041_003r"  or szTranID = "ohhts_5041_004r"  or szTranID = "ohhts_5041_005r" or szTranID = "ohhts_5041_006r"then
 		sLinkData = "PreOpen,;PreLow,;PreHigh,;PreClose,"
-		ChartEx0.setPrePriceData(sLinkData)
+		ChartEx0.SetPrePriceData(sLinkData)
 		
 		ChartEx0.SetHolidaySchedule("")
 		
-		'v0001
-		if g_bChangeAdjustStock == True and szTranID = "ohhts_5041_001r" then
+		 --v0001
+		if g_bChangeAdjustStock == True and szTranID == "ohhts_5041_001r" then
 			g_bChangeAdjustStock = False
 			Apply_Use_OrderList()
-		end if
+		end
 		
-	end if
-	'20250522_01 HWG END
+	end
+	 --20250522_01 HWG END
 	
 	DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntg", "InBlock1", "FIDXR_ISCD", 0, g_sCode )
 	DATAMANAGER.RequestRealData( "ohhts_exst_cntg" )
 	
-	'20221213_01 KBC 해외주식주간거래
-	if szTranID = "ohhts_5041_006r" or szTranID = "ohhts_5041_005r" then
+	 --20221213_01 KBC 해외주식주간거래
+	if szTranID == "ohhts_5041_006r" or szTranID == "ohhts_5041_005r" then
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cntd", "InBlock1", "FIDXR_ISCD", 0, g_sCode )
 		DATAMANAGER.RequestRealData( "ohhts_exst_cntd" )
-'		20250513 KSJ START : 애프터장 분틱 챠트 시세 실시간 처리
+ --		20250513 KSJ START : 애프터장 분틱 챠트 시세 실시간 처리
 		DATAMANAGER.SetDataValue( 1, "ohhts_exst_cnta", "InBlock1", "FIDXR_ISCD", 0, g_sCode )
 		DATAMANAGER.RequestRealData( "ohhts_exst_cnta" )
-'		20250513 KSJ END
+ --		20250513 KSJ END
 
-		'20250522_01 HWG START : 차트VOC 대응
-		if szTranID = "ohhts_5041_005r" then	
+		 --20250522_01 HWG START : 차트VOC 대응
+		if szTranID == "ohhts_5041_005r" then
 			sPRDY_OPRC	= DATAMANAGER.GetDataValue(false, "ohhts_5041_005r", "OutBlock1", "FIDX_PRDY_OPRC" , 0)
 			sPRDY_HPRC 	= DATAMANAGER.GetDataValue(false, "ohhts_5041_005r", "OutBlock1", "FIDX_PRDY_HPRC" , 0)
 			sPRDY_LPRC 	= DATAMANAGER.GetDataValue(false, "ohhts_5041_005r", "OutBlock1", "FIDX_PRDY_LPRC" , 0)
 			sPRDY_CLPR 	= DATAMANAGER.GetDataValue(false, "ohhts_5041_005r", "OutBlock1", "FIDX_PRDY_CLPR" , 0)
 			
-			sLinkData = "PreOpen," .. Cdbl(sPRDY_OPRC) .. ";PreLow," .. Cdbl(sPRDY_LPRC) .. ";PreHigh," .. Cdbl(sPRDY_HPRC) .. ";PreClose," .. Cdbl(sPRDY_CLPR)
-			ChartEx0.setPrePriceData(sLinkData)
+			sLinkData = "PreOpen," .. gf_Tonumber(sPRDY_OPRC) .. ";PreLow," .. gf_Tonumber(sPRDY_LPRC) .. ";PreHigh," .. gf_Tonumber(sPRDY_HPRC) .. ";PreClose," .. gf_Tonumber(sPRDY_CLPR)
+			ChartEx0.SetPrePriceData(sLinkData)
 			
 			if g_szExid == "OQ" or g_szExid == "AX" or g_szExid == "NY" then
 				g_sHoliday = ""
 				
 				DATAMANAGER.ClearInputData(0, "obpdf_oscm_101r")
 				
-				sDate = Form.GetSharedData("&HOST_DATE", false)
+				sDate = Form.GetSharedData("..HOST_DATE", false)
 				sYear = ""
-				if sDate <> "" then
-					sYear = left(sDate, 4)
-				end if
+				if sDate ~= "" then
+					sYear = string.sub(sDate, 1, 4)
+				end
 			
 				DATAMANAGER.SetDataValue(false, "obpdf_oscm_101r", "InBlock1", "STND_YEAR", 0 , sYear)
 				DATAMANAGER.SetDataValue(false, "obpdf_oscm_101r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE", 0 , "01")
 				
 				DATAMANAGER.RequestTranData("obpdf_oscm_101r")
-			end if
-		end if
-		'20250522_01 HWG END
+			end
+		end
+		 --20250522_01 HWG END
 		
-	'20231016 LES START
+	 --20231016 LES START
 	elseif szTranID == "obtrs_comn_430r" then
 		avgPrice = DATAMANAGER.GetDataValue(0, "obtrs_comn_430r", "OutBlock1", "AVRG_BYOV_PRC" , 0)
 		
-		if g_szItemCode == "" or g_szItemCode == null then
+		if g_szItemCode == "" or g_szItemCode == nil then
 			g_szItemCode = g_sCode
-		end if
+		end
 		
-		ChartEx0.SetAvgBuyPrice(g_szItemCode..";"..Cdbl(avgPrice))
-	'20231016 LES END
+		ChartEx0.SetAvgBuyPrice(g_szItemCode..";"..Gf_Tonumber(avgPrice))
+	 --20231016 LES END
 	
-	end if
+	end
 	
-	'20240610 SWJ START
+	 --20240610 SWJ START
 	
-	Dim sChartSetting
+	local sChartSetting
 	sChartSetting = ""
 	
 	if szTranID == "obtro_cntg_611r" then
@@ -560,9 +562,9 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 		nCount = DATAMANAGER.GetDataCount(0, "obtro_cntg_611r" , "OutBlock1")
 		
 		sAcnt = Form.LoadConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "ACNT")
-		sAcntNumber = Left(sAcnt, 4) & "-" & Mid(sAcnt, 5, 4) & "-" & Right(sAcnt, 2)
+		sAcntNumber = string.sub(sAcnt, 1, 4) .. "-" .. string.sub(sAcnt, 5, 5 + 4 - 1) .. "-" .. string.sub(sAcnt, -2)
 		
-		Dim arrayOrderDate, arrayOrderTime, arrayBuyPrice, arraySellPrice, arrayBuyQuantity, arraySellQuantity, arrayDealClsCode
+		local arrayOrderDate, arrayOrderTime, arrayBuyPrice, arraySellPrice, arrayBuyQuantity, arraySellQuantity, arrayDealClsCode
 		
 		arrayOrderDate = Array()
 		
@@ -578,108 +580,108 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 		
 		arrayDealClsCode = Array()
 		
-		for i = 0 to nCount - 1 
+		for i = 0, nCount - 1 do
 			
-			'주문일자
-			arrayOrderDate(i) = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "ODER_DATE" , i)
+			 --주문일자
+			arrayOrderDate[i+1] = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "ODER_DATE" , i)
 			
-			'체결시각
-			arrayOrderTime(i) = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "CNTG_RCMS_TIME" , i)
+			 --체결시각
+			arrayOrderTime[i+1] = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "CNTG_RCMS_TIME" , i)
 			
-			'매수평균단가
-			arrayBuyPrice(i) = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "BYOV_UNPR" , i)
+			 --매수평균단가
+			arrayBuyPrice[i+1] = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "BYOV_UNPR" , i)
 			
-			'매도평균단가
-			arraySellPrice(i) = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "SELN_UNPR" , i)
+			 --매도평균단가
+			arraySellPrice[i+1] = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "SELN_UNPR" , i)
 			
-			'매수평균체결합계
-			arrayBuyQuantity(i) = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "BYOV_CNTG_SMTN" , i)
+			 --매수평균체결합계
+			arrayBuyQuantity[i+1] = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "BYOV_CNTG_SMTN" , i)
 			
-			'매도평균체결합계
-			arraySellQuantity(i) = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "SELN_CNTG_SMTN" , i)
+			 --매도평균체결합계
+			arraySellQuantity[i+1] = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "SELN_CNTG_SMTN" , i)
 			
-			'매매구분코드
-			arrayDealClsCode(i) = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "SELN_BYOV_CLCD" , i)
+			 --매매구분코드
+			arrayDealClsCode[i+1] = DATAMANAGER.GetDataValue(0, "obtro_cntg_611r", "OutBlock1", "SELN_BYOV_CLCD" , i)
 			
 			
 			if gChartPeriod == "D" then
 				
-				'매수 2, 매도 1
-				if arrayDealClsCode(i) == "2" then
-					'차트엔 매수구분 0으로 세팅
-					'sSetting = "0".."^"..arrayOrderDate(i).."^"..sAcntNumber.."^"..Cdbl(arrayBuyPrice(i)).."원".."^"..Cdbl(arrayBuyQuantity(i)).."주"
-					sSetting = "0".."^"..arrayOrderDate(i).."^"..sAcntNumber.."^"..SetPriceMask(Cdbl(arrayBuyPrice(i))).."^"..Cdbl(arrayBuyQuantity(i))
+				 --매수 2, 매도 1
+				if arrayDealClsCode[i+1] == "2" then
+					 --차트엔 매수구분 0으로 세팅
+					 --sSetting = "0".."^"..arrayOrderDate(i).."^"..sAcntNumber.."^"..Cdbl(arrayBuyPrice(i)).."원".."^"..Cdbl(arrayBuyQuantity(i)).."주"
+					sSetting = "0".."^"..arrayOrderDate[i+1].."^"..sAcntNumber.."^"..SetPriceMask(gf_Tonumber(arrayBuyPrice[i+1])).."^"..Gf_Tonumber(arrayBuyQuantity[i+1])
 				else
-					'sSetting = arrayDealClsCode(i).."^"..arrayOrderDate(i).."^"..sAcntNumber.."^"..Cdbl(arraySellPrice(i)).."원".."^"..Cdbl(arraySellQuantity(i)).."주"
-					sSetting = arrayDealClsCode(i).."^"..arrayOrderDate(i).."^"..sAcntNumber.."^"..SetPriceMask(Cdbl(arraySellPrice(i))).."^"..Cdbl(arraySellQuantity(i))
-				end if
+					 --sSetting = arrayDealClsCode(i).."^"..arrayOrderDate(i).."^"..sAcntNumber.."^"..Cdbl(arraySellPrice(i)).."원".."^"..Cdbl(arraySellQuantity(i)).."주"
+					sSetting = arrayDealClsCode[i+1].."^"..arrayOrderDate[i+1].."^"..sAcntNumber.."^"..SetPriceMask(gf_Tonumber(arraySellPrice[i+1])).."^"..Gf_Tonumber(arraySellQuantity[i+1])
+				end
 				
 			else
 			
-				'매수 2, 매도 1
-				if arrayDealClsCode(i) == "2" then
-					'차트엔 매수구분 0으로 세팅
-					'sSetting = "0".."^"..arrayOrderTime(i).."^"..sAcntNumber.."^"..Cdbl(arrayBuyPrice(i)).."원".."^"..Cdbl(arrayBuyQuantity(i)).."주"
-					sSetting = "0".."^"..Right(arrayOrderDate(i),4)..arrayOrderTime(i).."^"..sAcntNumber.."^"..SetPriceMask(Cdbl(arrayBuyPrice(i))).."^"..Cdbl(arrayBuyQuantity(i))
+				 --매수 2, 매도 1
+				if arrayDealClsCode[i+1] == "2" then
+					 --차트엔 매수구분 0으로 세팅
+					 --sSetting = "0".."^"..arrayOrderTime(i).."^"..sAcntNumber.."^"..Cdbl(arrayBuyPrice(i)).."원".."^"..Cdbl(arrayBuyQuantity(i)).."주"
+					sSetting = "0".."^"..string.sub(arrayOrderDate[i+1], -4)..arrayOrderTime[i+1].."^"..sAcntNumber.."^"..SetPriceMask(gf_Tonumber(arrayBuyPrice[i+1])).."^"..Gf_Tonumber(arrayBuyQuantity[i+1])
 				else
-					'sSetting = arrayDealClsCode(i).."^"..arrayOrderTime(i).."^"..sAcntNumber.."^"..Cdbl(arraySellPrice(i)).."원".."^"..Cdbl(arraySellQuantity(i)).."주"
-					sSetting = arrayDealClsCode(i).."^"..Right(arrayOrderDate(i),4)..arrayOrderTime(i).."^"..sAcntNumber.."^"..SetPriceMask(Cdbl(arraySellPrice(i))).."^"..Cdbl(arraySellQuantity(i))
-				end if
-			end if
+					 --sSetting = arrayDealClsCode(i).."^"..arrayOrderTime(i).."^"..sAcntNumber.."^"..Cdbl(arraySellPrice(i)).."원".."^"..Cdbl(arraySellQuantity(i)).."주"
+					sSetting = arrayDealClsCode[i+1].."^"..string.sub(arrayOrderDate[i+1], -4)..arrayOrderTime[i+1].."^"..sAcntNumber.."^"..SetPriceMask(gf_Tonumber(arraySellPrice[i+1])).."^"..Gf_Tonumber(arraySellQuantity[i+1])
+				end
+			end
 			
 			if i == 0 then
 				sChartSetting = sSetting
 			else
 				sChartSetting = sChartSetting .. ";"..sSetting
-			end if
+			end
 			
-		next
+		end
 		
-		if sChartSetting <> "" then
-			'Form.ShowAlert("TEST", nCount..";"..sChartSetting)
-			ChartEx0.setTradeData(nCount..";"..sChartSetting)
+		if sChartSetting ~= "" then
+			 --Form.ShowAlert("TEST", nCount..";"..sChartSetting)
+			ChartEx0.SetTradeData(nCount..";"..sChartSetting)
 		else
-			ChartEx0.setTradeData("")
-		end if
+			ChartEx0.SetTradeData("")
+		end
 		
-	'20250522_01 HWG START : 차트VOC 대응
+	 --20250522_01 HWG START : 차트VOC 대응
 	elseif szTranID == "obpdf_oscm_101r" then
-		sDate = Form.GetSharedData("&HOST_DATE", false)
+		sDate = Form.GetSharedData("..HOST_DATE", false)
 		sYear = ""
-		if sDate <> "" then
-			sYear = left(sDate, 4)
-		end if
+		if sDate ~= "" then
+			sYear = string.sub(sDate, 1, 4)
+		end
 			
-		for i = 0 to 11 
+		for i = 0, 11 do
 			nMonthIdx = i + 1
-			for j = 0 to 30
+			for j = 0, 30 do
 				nDayIdx = j + 1
 				sYN = DATAMANAGER.GetDataValue(0,"obpdf_oscm_101r", "OutBlock1", "HLDY_YN" .. nDayIdx  , i)
 				
 				if sYN == "Y" then
-					sMonth = right("00" & nMonthIdx, 2)
-					sDay = right("00" & nDayIdx, 2)
+					sMonth = string.sub("00" .. nMonthIdx, -2)
+					sDay = string.sub("00" .. nDayIdx, -2)
 					
-					sWeekDate = WeekDay( CDate(sYear & "-" & sMonth & "-" & sDay) )
+					sWeekDate = WeekDay( CDate(sYear .. "-" .. sMonth .. "-" .. sDay) )
 					
-					if Trim( sWeekDate ) <> "1" then
-						if g_sHoliday <> "" then
+					if gf_Trim(sWeekDate) ~= "1" then
+						if g_sHoliday ~= "" then
 							g_sHoliday = g_sHoliday .. ";"
-						end if
+						end
 					
 						g_sHoliday = g_sHoliday .. sYear..sMonth..sDay
-					end if
-				end if
-			next
-		next
+					end
+				end
+			end
+		end
 		
 		DATAMANAGER.ClearInputData(0, "obpdf_oscm_101r_1")
 				
-		sDate = Form.GetSharedData("&HOST_DATE", false)
+		sDate = Form.GetSharedData("..HOST_DATE", false)
 		sYear = ""
-		if sDate <> "" then
-			sYear = Cint(left(sDate, 4)) - 1
-		end if
+		if sDate ~= "" then
+			sYear = gf_Tonumber(string.sub(sDate, 1, 4)) - 1
+		end
 	
 		DATAMANAGER.SetDataValue(false, "obpdf_oscm_101r_1", "InBlock1", "STND_YEAR", 0 , sYear)
 		DATAMANAGER.SetDataValue(false, "obpdf_oscm_101r_1", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE", 0 , "01")
@@ -687,89 +689,89 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 		DATAMANAGER.RequestTranData("obpdf_oscm_101r_1")
 		
 	elseif szTranID == "obpdf_oscm_101r_1" then
-		sDate = Form.GetSharedData("&HOST_DATE", false)
+		sDate = Form.GetSharedData("..HOST_DATE", false)
 		sYear = ""
-		if sDate <> "" then
-			sYear = Cint(left(sDate, 4)) - 1
-		end if
+		if sDate ~= "" then
+			sYear = gf_Tonumber(string.sub(sDate, 1, 4)) - 1
+		end
 			
 		sHoliday = ""
-		for i = 0 to 11 
+		for i = 0, 11 do
 			nMonthIdx = i + 1
-			for j = 0 to 30
+			for j = 0, 30 do
 				nDayIdx = j + 1
 				sYN = DATAMANAGER.GetDataValue(0,"obpdf_oscm_101r_1", "OutBlock1", "HLDY_YN" .. nDayIdx  , i)
 				
 				if sYN == "Y" then
-					sMonth = right("00" & nMonthIdx, 2)
-					sDay = right("00" & nDayIdx, 2)
+					sMonth = string.sub("00" .. nMonthIdx, -2)
+					sDay = string.sub("00" .. nDayIdx, -2)
 					
-					sWeekDate = WeekDay( CDate(sYear & "-" & sMonth & "-" & sDay) )
+					sWeekDate = WeekDay( CDate(sYear .. "-" .. sMonth .. "-" .. sDay) )
 					
-					if Trim( sWeekDate ) <> "1" then
-						if sHoliday <> "" then
+					if gf_Trim(sWeekDate) ~= "1" then
+						if sHoliday ~= "" then
 							sHoliday = sHoliday .. ";"
-						end if
+						end
 					
 						sHoliday = sHoliday .. sYear..sMonth..sDay
-					end if
-				end if
-			next
-		next
+					end
+				end
+			end
+		end
 		
 		g_sHoliday = sHoliday .. ";" .. g_sHoliday
 		
 		ChartEx0.SetHolidaySchedule(g_sHoliday)
-	'20250522_01 HWG END
+	 --20250522_01 HWG END
 		
-	end if
-	'20240610 SWJ END
+	end
+	 --20240610 SWJ END
 	
 	g_flagInit = false
 	g_flagMinTic = false
 	
-End Sub
+end
 
-'======================================
-'Chart 불러오기(기간)
-' 설정창 닫을때 분,틱 주기 넘겨줌.
-'======================================
+ --======================================
+ --Chart 불러오기(기간)
+ -- 설정창 닫을때 분,틱 주기 넘겨줌.
+ --======================================
 function ChartEx0_OnGetPeriodInfo()
-	Dim sPeriodType
-	Dim sMin, sTic
+	local sPeriodType
+	local sMin, sTic
 	sPeriodType = ""
 	
-   ' 차트 설정창에서 주기 값 넘어온 경우
-   ' 분주기#틱주기 => 1;3;5;.../1;3;5;...
-	for i = 0 to 8
-		sMin = Form.GetEnvData( "mhtro16000_chart_min"..i ) '분차트
-		if sMin <> "" then
+    -- 차트 설정창에서 주기 값 넘어온 경우
+    -- 분주기#틱주기 => 1;3;5;.../1;3;5;...
+	for i = 0, 8 do
+		sMin = Form.GetEnvData( "mhtro16000_chart_min"..i )  --분차트
+		if sMin ~= "" then
 			if i == 7 then
-			    sPeriodType = sPeriodType&sMin&"/"
+			    sPeriodType = sPeriodType..sMin.."/"
 			else
-				sPeriodType = sPeriodType&sMin&";"
-			end if
-		end if
-	next
+				sPeriodType = sPeriodType..sMin..";"
+			end
+		end
+	end
 	
-	for i = 0 to 8
-		sTic = Form.GetEnvData( "mhtro16000_chart_tic"..i ) '분차트
-		if sTic <> "" then
+	for i = 0, 8 do
+		sTic = Form.GetEnvData( "mhtro16000_chart_tic"..i )  --분차트
+		if sTic ~= "" then
 			if i == 7 then
-			    sPeriodType = sPeriodType&sTic&"/"
+			    sPeriodType = sPeriodType..sTic.."/"
 			else
-			    sPeriodType = sPeriodType&sTic&";"
-			end if
-		end if
-	next
+			    sPeriodType = sPeriodType..sTic..";"
+			end
+		end
+	end
 	
-	if sPeriodType <> "" then
-		ChartEx0.setSyncPeriodValueToChart(sPeriodType)
-	end if
-end function 
+	if sPeriodType ~= "" then
+		ChartEx0.SetSyncPeriodValueToChart(sPeriodType)
+	end
+end
 
-' 차트설정 변경시
-'======================================
+ -- 차트설정 변경시
+ --======================================
  function ChartEx0_OnChangePeriod(sPeriodType)
 	 sMinArr = {}
 	 sTicArr = {}
@@ -777,147 +779,147 @@ end function
  
 	 g_sIsRequestChartEvent = "1"
 
-   ' 차트 설정창에서 주기 값 넘어온 경우
-   ' 분주기#틱주기 => 1;3;5;.../1;3;5;...
-	if InStr(sPeriodType, "/") > 0 then
-	    sTemp = split(sPeriodType, "/")
-	    sMinArr = split(sTemp[0], ";")
-	    sTicArr = split(sTemp[1], ";")
-	    'Form.Log("sPeriodType",sPeriodType)
+    -- 차트 설정창에서 주기 값 넘어온 경우
+    -- 분주기#틱주기 => 1;3;5;.../1;3;5;...
+	if string.find(sPeriodType, "/") > 0 then
+	    sTemp = gf_Split(sPeriodType, "/")
+	    sMinArr = gf_Split(sTemp[0+1], ";")
+	    sTicArr = gf_Split(sTemp[1+1], ";")
+	     --Form.Log("sPeriodType",sPeriodType)
     
-	    for i = 0 to 7 step 1
+	    for i = 0, 7, 1 do
 			Form.SetEnvData( 1, "mhtro16000_chart_min"..i, sMinArr[i] )
 			Form.SetEnvData( 1, "mhtro16000_chart_tic"..i, sTicArr[i] )
-	    next
-	end if
-end function
+	    end
+	end
+end
 
-'======================================
-' 차트 설정 개수 변경시
-'======================================
+ --======================================
+ -- 차트 설정 개수 변경시
+ --======================================
 function ChartEx0_OnByNumber(Count)
-	if #Count = 1 then
+	if #Count == 1 then
 		Count = "000"..Count
 	   
-	elseif #Count = 2 then
+	elseif #Count == 2 then
 		Count = "00"..Count
 	   
-	elseif #Count = 3 then
+	elseif #Count == 3 then
 		Count = "0"..Count
 	   
-	end if
+	end
 
 	g_sChartCnt = Count
 	RequestData()
 	
-end function
+end
 
-'======================================
-' 일,분,틱 주기별 차트 설정
-' 0(틱),1(분) ,2(일), 3(주), 4(월), 5(년)
-'======================================
+ --======================================
+ -- 일,분,틱 주기별 차트 설정
+ -- 0(틱),1(분) ,2(일), 3(주), 4(월), 5(년)
+ --======================================
 function PeriodSet(sPeriodType)
-	if sPeriodType = "T" then
+	if sPeriodType == "T" then
 		g_sPeriod = g_szTicType
 		g_sPeriodType = "0"
 	   
-	elseif sPeriodType = "A" then
-		g_sPeriod = CInt(g_szMinType) 
+	elseif sPeriodType == "A" then
+		g_sPeriod = gf_Tonumber(g_szMinType) 
 		g_sPeriodType = "1"
 	   
-	elseif sPeriodType = "D" then 
+	elseif sPeriodType == "D" then
 		g_sPeriodType = "2"
 		g_sPeriod ="1"
 	   
-	elseif sPeriodType = "W" then 
+	elseif sPeriodType == "W" then
 		g_sPeriodType = "3"
 		g_sPeriod = "1"
 	   
-	elseif sPeriodType = "M" then 
+	elseif sPeriodType == "M" then
 		g_sPeriodType = "4"
 		g_sPeriod = "1"
 		
-	elseif sPeriodType = "Y" then 	'PENTA13 START => 2019.05.08
+	elseif sPeriodType == "Y" then --PENTA13 START => 2019.05.08
 		g_sPeriodType = "5"
 		g_sPeriod = "1"
 
-	end if
+	end
 	
-	sPeriod = CInt( g_sPeriod)
-	if Len( sPeriod )= 1 then
+	sPeriod = gf_Tonumber(g_sPeriod)
+	if string.len(sPeriod)== 1 then
 	   g_sPeriod = "00"..g_sPeriod
 	   
-	elseif Len( sPeriod )= 2 then
+	elseif string.len(sPeriod)== 2 then
 	   g_sPeriod = "0"..g_sPeriod
 	   
-	end if
+	end
 	
 	ChartEx0.SetPeriodType(g_sPeriodType)
 	ChartEx0.SetPeriodTime(g_sPeriod)
-'   
-	' 조회TR 보내기
+ --   
+	 -- 조회TR 보내기
 	RequestData()	
-end function
-'======================================
-'20230905 한국금융IT START : 일주월분 차트 주기 설정
+end
+ --======================================
+ --20230905 한국금융IT START : 일주월분 차트 주기 설정
 function PeriodSetChart(sPeriodType)
-	if sPeriodType = "T" then
+	if sPeriodType == "T" then
 		g_sPeriod = g_szTicType
 		g_sPeriodType = "0"
 	   
-	elseif sPeriodType = "A" then
-		g_sPeriod = CInt(g_szMinType) 
+	elseif sPeriodType == "A" then
+		g_sPeriod = gf_Tonumber(g_szMinType) 
 		g_sPeriodType = "1"
 	   
-	elseif sPeriodType = "D" then 
+	elseif sPeriodType == "D" then
 		g_sPeriodType = "2"
 		g_sPeriod ="1"
 	   
-	elseif sPeriodType = "W" then 
+	elseif sPeriodType == "W" then
 		g_sPeriodType = "3"
 		g_sPeriod = "1"
 	   
-	elseif sPeriodType = "M" then 
+	elseif sPeriodType == "M" then
 		g_sPeriodType = "4"
 		g_sPeriod = "1"
 		
-	elseif sPeriodType = "Y" then
+	elseif sPeriodType == "Y" then
 		g_sPeriodType = "5"
 		g_sPeriod = "1"
 
-	end if
+	end
 	
-	sPeriod = CInt( g_sPeriod )
-	if Len( sPeriod )= 1 then
+	sPeriod = gf_Tonumber(g_sPeriod)
+	if string.len(sPeriod)== 1 then
 	   g_sPeriod = "00"..g_sPeriod
 	   
-	elseif Len( sPeriod )= 2 then
+	elseif string.len(sPeriod)== 2 then
 	   g_sPeriod = "0"..g_sPeriod
 	   
-	end if
+	end
 	
 	ChartEx0.SetPeriodType(g_sPeriodType)
 	ChartEx0.SetPeriodTime(g_sPeriod)
-end function
-'20230905 한국금융IT END : 일주월분 차트 주기 설정
-'======================================
-Sub BtnSave_OnClick()
+end
+ --20230905 한국금융IT END : 일주월분 차트 주기 설정
+ --======================================
+function BtnSave_OnClick()
 	ChartEx0.SetOpenDlg("save;BtnSave")
-End Sub
+end
 
-'======================================
-Sub BtnIndi_OnClick()
+ --======================================
+function BtnIndi_OnClick()
 	ChartEx0.SetOpenDlg("indicatormini;BtnIndi")
-End Sub
+end
 
-'======================================
-Sub BtnTool_OnClick()
+ --======================================
+function BtnTool_OnClick()
 	ChartEx0.SetOpenDlg("tools;BtnTool")
-End Sub
+end
 
-'======================================
-Sub RadioGroup0_OnClick(nIndex)
-	if nIndex = 0 then		'일
+ --======================================
+function RadioGroup0_OnClick(nIndex)
+	if nIndex == 0 then --일
 		g_flagMin = false
 		g_flagTic = false
 		g_flagWeek = false
@@ -925,11 +927,11 @@ Sub RadioGroup0_OnClick(nIndex)
 		
 		PeriodSet(g_szChrtType)
 		
-	elseif nIndex = 1 then		'주/월/년
+	elseif nIndex == 1 then --주/월/년
 		g_flagMin = false
 		g_flagTic = false
 		
-		if g_flagWeek == false   then
+		if g_flagWeek == false then
 			sTemp = RadioGroup0.GetRadioCaption(1)
 			if sTemp == "월" then
 				g_szChrtType = "M"
@@ -937,7 +939,7 @@ Sub RadioGroup0_OnClick(nIndex)
 				g_szChrtType = "Y"	
 			else
 				g_szChrtType = "W"
-			end if
+			end
 			
 			g_flagWeek = true
 			PeriodSet(g_szChrtType)
@@ -946,98 +948,98 @@ Sub RadioGroup0_OnClick(nIndex)
 			sTemp = RadioGroup0.GetRadioCaption(1)
 			Form.OpenPopup( "mhcht13000_p4.xmf", sTemp, "" )
 			
-		end if
+		end
 		
-	elseif nIndex = 2 then   '분
+	elseif nIndex == 2 then --분
 		g_flagTic = false
 		g_flagWeek = false
 		g_szChrtType = "A"
 		
-		if g_flagMin = false then
+		if g_flagMin == false then
 			g_flagMin = true
-			tmpMin = split(RadioGroup0.GetRadioCaption(2),"분")
-			g_szMinType = tmpMin[0]
-			
-			PeriodSet(g_szChrtType)
-			
-		else				
-			If g_flagInit = true Then
-				PeriodSet(g_szChrtType)
-			Else
-				Form.OpenPopup( "mhtro16020_p1.xmf" , g_szMinType , "" )
-			End If
-			
-		end if
-		
-	elseif nIndex = 3 then   '틱
-		g_flagMin = false
-		g_flagWeek = false
-		g_szChrtType = "T"
-
-		if g_flagTic = false then
-			g_flagTic = true
-			tmpTic = split(RadioGroup0.GetRadioCaption(3),"틱")
-			g_szTicType = tmpTic[0]
+			tmpMin = gf_Split(RadioGroup0.GetRadioCaption(2),"분")
+			g_szMinType = tmpMin[0+1]
 			
 			PeriodSet(g_szChrtType)
 			
 		else
-			If g_flagMinTic = true Then
+			if g_flagInit == true then
 				PeriodSet(g_szChrtType)
-			Else
-				Form.OpenPopup( "mhtro16020_p2.xmf" , g_szTicType , "" )
-			End If
+			else
+				Form.OpenPopup( "mhtro16020_p1.xmf" , g_szMinType , "" )
+			end
+			
+		end
+		
+	elseif nIndex == 3 then --틱
+		g_flagMin = false
+		g_flagWeek = false
+		g_szChrtType = "T"
 
-		end if
-	end if
+		if g_flagTic == false then
+			g_flagTic = true
+			tmpTic = gf_Split(RadioGroup0.GetRadioCaption(3),"틱")
+			g_szTicType = tmpTic[0+1]
+			
+			PeriodSet(g_szChrtType)
+			
+		else
+			if g_flagMinTic == true then
+				PeriodSet(g_szChrtType)
+			else
+				Form.OpenPopup( "mhtro16020_p2.xmf" , g_szTicType , "" )
+			end
+
+		end
+	end
 
 	Form.SetEnvData(1, "mhtro16000_t03_RADIO", RadioGroup0.currentindex)
 	
-	'20240610 SWJ START
-	'처음 오픈했을 때 방지 및
-	'클릭했을 때는 인덱스가 달라졌을 때만
-	if g_sInitFlag = False then
-		if gRadioIndex <> nIndex then
+	 --20240610 SWJ START
+	 --처음 오픈했을 때 방지 및
+	 --클릭했을 때는 인덱스가 달라졌을 때만
+	if g_sInitFlag == False then
+		if gRadioIndex ~= nIndex then
 			Form.SetTimerEvent2(1, 1, 0.2)
-			ChartEx0.setTradeData("")
-		end if
-	end if
+			ChartEx0.SetTradeData("")
+		end
+	end
 	
 	
 	gRadioIndex = nIndex
-	'20240610 SWJ END
-End Sub
+	 --20240610 SWJ END
+end
 
-'======================================
-Sub Form_OnPopupReturn(sKeyName, sRet)
-	if sKeyName = "Chart_Min" then
+ --======================================
+function Form_OnPopupReturn(sKeyName, sRet)
+	if sKeyName == "Chart_Min" then
 		g_szMinType = sRet
 		RadioGroup0.SetRadioCaption( 2, g_szMinType )
-		tmpMin = split(RadioGroup0.GetRadioCaption(2),"분")
-		g_szMinType = tmpMin[0]
+		tmpMin = gf_Split(RadioGroup0.GetRadioCaption(2),"분")
+		g_szMinType = tmpMin[0+1]
 		
 		PeriodSet(g_szChrtType)
 		
-		'20240610 SWJ START
-		'콤보 인덱스가 달라졌을 때만
-		if gCmbIndex <> g_szMinType then 
-			'Chart_UseWhatLine()
+		 --20240610 SWJ START
+		 --콤보 인덱스가 달라졌을 때만
+		if gCmbIndex ~= g_szMinType then
+			 --Chart_UseWhatLine()
 			Form.SetTimerEvent2("2", 1, 0.2)
-			ChartEx0.setTradeData("")
-		end if	
+			ChartEx0.SetTradeData("")
+		end
 		
 		gCmbIndex = g_szMinType
-		'20240610 SWJ END
+		 --20240610 SWJ END
 		
-	elseif sKeyName = "Chart_Tic" then
+	elseif sKeyName == "Chart_Tic" then
 		g_szTicType = sRet		
 		RadioGroup0.SetRadioCaption( 3, g_szTicType)
-		tmpTic = split(RadioGroup0.GetRadioCaption(3),"틱")
-		g_szTicType = tmpTic[0]
+		tmpTic = gf_Split(RadioGroup0.GetRadioCaption(3),"틱")
+		g_szTicType = tmpTic[0+1]
 		
 		PeriodSet(g_szChrtType)
-'		
-	elseif sKeyName == "Chart_WEEK" then	
+ --		
+	elseif sKeyName == "Chart_WEEK" then
 		if sRet == "월" then
 			g_szChrtType = "M"
 			
@@ -1047,147 +1049,147 @@ Sub Form_OnPopupReturn(sKeyName, sRet)
 		else
 			g_szChrtType = "W"
 			
-		end if
+		end
 		
 		RadioGroup0.SetRadioCaption( 1, sRet )
 		PeriodSet(g_szChrtType)
 		
-'20231016 LES START
-	elseif sKeyName = "AvgBuyPrice_Accnt_Select" then
-		Form.SaveConfigData("CHART_USE_LINE_OVERSTOCK".."_"..g_sUserID, "USE", "AvgBuyPrice")	'20240610 SWJ
-		Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "USE", "1")		'20240610 SWJ  : 다른 ID일 때 고려
-		Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "ACNT", sRet)		'20240610 SWJ : 다른 ID일 때 고려
+ --20231016 LES START
+	elseif sKeyName == "AvgBuyPrice_Accnt_Select" then
+		Form.SaveConfigData("CHART_USE_LINE_OVERSTOCK".."_"..g_sUserID, "USE", "AvgBuyPrice")	 --20240610 SWJ
+		Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "USE", "1")		 --20240610 SWJ  : 다른 ID일 때 고려
+		Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "ACNT", sRet)		 --20240610 SWJ : 다른 ID일 때 고려
 		Apply_Use_AvgBuyPrice()
-	'20231016 LES END
+	 --20231016 LES END
 	
-	'20240610 SWJ START
-	elseif sKeyName = "OrderList_Accnt_Select" then
+	 --20240610 SWJ START
+	elseif sKeyName == "OrderList_Accnt_Select" then
 		
-'		Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK", "USE", "1")
-'		Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK", "ACNT", sRet)
-'		Apply_Use_AvgBuyPrice()
+ --		Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK", "USE", "1")
+ --		Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK", "ACNT", sRet)
+ --		Apply_Use_AvgBuyPrice()
 
-		szData = Split(sRet, "★")
+		szData = gf_Split(sRet, "★")
 		
-		if Ubound(szData) > 0 then
+		if #szData > 0 then
 			
-			g_sUserID = Form.GetSharedData("&USER_ID", false)
+			g_sUserID = Form.GetSharedData("..USER_ID", false)
 			
-			Form.SaveConfigData("CHART_USE_LINE_OVERSTOCK".."_"..g_sUserID, "USE", szData(1))
+			Form.SaveConfigData("CHART_USE_LINE_OVERSTOCK".."_"..g_sUserID, "USE", szData[1+1])
 			
-			'매수평균단가
-			if szData(1) == "AvgBuyPrice" then
+			 --매수평균단가
+			if szData[1+1] == "AvgBuyPrice" then
 				
 				Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "USE", "1")
-				Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "ACNT", szData(0))
+				Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "ACNT", szData[0+1])
 				Apply_Use_AvgBuyPrice()
 		
-			'매매내역
-			elseif szData(1) == "OrderList" then
+			 --매매내역
+			elseif szData[1+1] == "OrderList" then
 				
 				Form.SaveConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "USE", "1")
-				Form.SaveConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "ACNT", szData(0))
+				Form.SaveConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "ACNT", szData[0+1])
 				Apply_Use_OrderList()
 			
-			'둘 다
-			elseif szData(1) == "Both" then
+			 --둘 다
+			elseif szData[1+1] == "Both" then
 				
 				Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "USE", "1")
 				Form.SaveConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "USE", "1")
 				
-				Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "ACNT", szData(0))
-				Form.SaveConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "ACNT", szData(0))
+				Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "ACNT", szData[0+1])
+				Form.SaveConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "ACNT", szData[0+1])
 				
 				Apply_Use_OrderList()
 				Apply_Use_AvgBuyPrice()
 			
-			end if
+			end
 			
-		end if
-	'20240610 SWJ END
+		end
+	 --20240610 SWJ END
 
-	end if
-End Sub
+	end
+end
 
-'============================================================================
+ --============================================================================
 function ChartEx0_OnChangeAdjustedStock(sData)
-	if g_sStockMode <> sData then
-		g_bChangeAdjustStock = True 'v0001
+	if g_sStockMode ~= sData then
+		g_bChangeAdjustStock = True  --v0001
 		g_sStockMode = sData
 		Form.SetEnvData( 1, "mhtro16000_chart_stockmode", g_sStockMode )
 		RequestData()
-	end if
-end function
-'======================================
-Sub Form_OnFormClose()
+	end
+end
+ --======================================
+function Form_OnFormClose()
 	Form.SetEnvData( 1,"mhtro16000_chart_setting" 	   , g_sPeriodType.."^"..g_sPeriod )
 	Form.SetEnvData( 1,"mhtro16000_chart_settingmintick" , g_szMinType.."^"..g_szTicType )
 		
 	ChartEx0.SetSaveChart("1")
-End Sub
+end
 
-'============================================================================
-' 분,틱 설정파일 저장
-'============================================================================
+ --============================================================================
+ -- 분,틱 설정파일 저장
+ --============================================================================
 function Save_ini()
-	dim sMin, sTic, sflag
+	local sMin, sTic, sflag
 	
-	for i = 0 to 6
+	for i = 0, 6 do
 		Form.SetEnvData( 1, "mhtro16000_chart_mflag"..i, g_chartMinFlagArr[i] )
 		Form.SetEnvData( 1, "mhtro16000_chart_min"..i, g_chartMinArr[i] )
 		
 		Form.SetEnvData( 1, "mhtro16000_chart_tflag"..i, g_chartTicFlagArr[i] )
 		Form.SetEnvData( 1, "mhtro16000_chart_tic"..i, g_chartTicArr[i] )
-	next
-'	Form.SetEnvData( 1, "chart_Count", g_sChartCnt )			' 데이터갯수...필요 없음 삭제 해도 됩니다.
+	end
+ --	Form.SetEnvData( 1, "chart_Count", g_sChartCnt )			' 데이터갯수...필요 없음 삭제 해도 됩니다.
 
-end function
+end
 
-'============================================================================
-Sub Form_OnRefresh()
+ --============================================================================
+function Form_OnRefresh()
 	RequestData()
-End Sub
-'============================================================================
-Sub ChartEx0_OnScrollEnd()
-	' Chart Next Data
-	if g_szChrtType = "A" then
+end
+ --============================================================================
+function ChartEx0_OnScrollEnd()
+	 -- Chart Next Data
+	if g_szChrtType == "A" then
 		DATAMANAGER.RequestNextData("ohhts_5041_005r")
 		
-	elseif g_szChrtType = "T" then
+	elseif g_szChrtType == "T" then
 		DATAMANAGER.RequestNextData("ohhts_5041_006r")
 		
-	elseif g_szChrtType = "D" then	
+	elseif g_szChrtType == "D" then
 		DATAMANAGER.RequestNextData("ohhts_5041_001r")
 		
-	elseif g_szChrtType == "W" then 
+	elseif g_szChrtType == "W" then
 		DATAMANAGER.RequestNextData("ohhts_5041_002r")
 		
-	elseif g_szChrtType == "M" then 
+	elseif g_szChrtType == "M" then
 		DATAMANAGER.RequestNextData("ohhts_5041_003r")
 		
-	elseif g_szChrtType == "Y" then 
+	elseif g_szChrtType == "Y" then
 		DATAMANAGER.RequestNextData("ohhts_5041_004r")
 		
-	end if
-End Sub
+	end
+end
 
-'차트 불러오기
-'============================================================================
+ --차트 불러오기
+ --============================================================================
 function ChartEx0_OnRequestData(nIndex, sData)
-	if sData = "" or sData = null then
-		exit function
-	end if
+	if sData == "" or sData == nil then
+		return
+	end
 	
-	Data = split(sData, ";")
+	Data = gf_Split(sData, ";")
 
-   '현재가내의 차트에서는 종목코드를 변경하지 않는다.
-	g_szItemCode	= Cstr(Trim(Data[0]))             '코드
-	g_sPeriodType	= Cstr(Trim(Data[1]))             '일주월년분틱
-	g_sPeriod	= Cstr(Trim(Data[2]))             '주기(1,5,...)
-	sRefresh 	= Cstr(Trim(Data[3]))
+    --현재가내의 차트에서는 종목코드를 변경하지 않는다.
+	g_szItemCode	= gf_Tostring(gf_Trim(Data[0+1]))              --코드
+	g_sPeriodType	= gf_Tostring(gf_Trim(Data[1+1]))              --일주월년분틱
+	g_sPeriod	= gf_Tostring(gf_Trim(Data[2+1]))              --주기(1,5,...)
+	sRefresh 	= gf_Tostring(gf_Trim(Data[3+1]))
 	radioIndex 	= ""
 	
-	if sRefresh = 1 or sRefresh = "1" or sRefresh = true then
+	if sRefresh == 1 or sRefresh == "1" or sRefresh == true then
 		g_sPeriodType = "2"
 		g_sPeriod = "1"
 		radioIndex = 0
@@ -1196,153 +1198,152 @@ function ChartEx0_OnRequestData(nIndex, sData)
 		sTic = Form.GetEnvData( "mhtro16000_chart_tic0" )
 		sMin = Form.GetEnvData( "mhtro16000_chart_min0" )
 
-		if sTic = "" then
+		if sTic == "" then
 			sTic = "1"
-		end if
+		end
 		
-		if sMin = "" then
+		if sMin == "" then
 			sMin = "1"
-		end if
+		end
 		
 		RadioGroup0.SetRadioCaption( 3, sTic.."틱" )
 		RadioGroup0.SetRadioCaption( 2, sMin.."분" )
 		
 	else
-		'PENTA13 START => 2023.07.04(차트성능개선)
-		Select case g_sPeriodType
-			case "0"
+		 --PENTA13 START => 2023.07.04(차트성능개선)
+			if g_sPeriodType == "0" then
 				g_szChrtType = "T"
 				radioIndex = 3
 				RadioGroup0.SetRadioCaption( radioIndex, g_sPeriod.."틱" )
 				g_szTicType = g_sPeriod
 				
-			case "1"
+			elseif g_sPeriodType == "1" then
 				g_szChrtType = "A"
 				radioIndex = 2
 				RadioGroup0.SetRadioCaption( radioIndex, g_sPeriod.."분" )
-				g_szMinType = g_sPeriod	'한국금융IT => 2023.08.08(차트성능개선)
+				g_szMinType = g_sPeriod	 --한국금융IT => 2023.08.08(차트성능개선)
 			
-			case "2"
+			elseif g_sPeriodType == "2" then
 				g_szChrtType = "D"
 				radioIndex = 0
 			
-			case "3"
+			elseif g_sPeriodType == "3" then
 				g_szChrtType = "W"
 				radioIndex = 1
 				RadioGroup0.SetRadioCaption( radioIndex, "주" )
 			
-			case "4"
+			elseif g_sPeriodType == "4" then
 				g_szChrtType = "M"
 				radioIndex = 1
 				RadioGroup0.SetRadioCaption( radioIndex, "월" )
 
-			case "5"						'PENTA13 START => 2019.03.04
+			elseif g_sPeriodType == "5" then --PENTA13 START => 2019.03.04
 				g_szChrtType = "Y"
 				radioIndex = 1
 				RadioGroup0.SetRadioCaption( radioIndex, "년" )
 
-		end Select
-		'PENTA13 END
-	end if
+		end
+		 --PENTA13 END
+	end
 	
-'PENTA13 START => 2023.07.31(차트성능개선)
+ --PENTA13 START => 2023.07.31(차트성능개선)
 	if ChartEx0.GetDivideNum() == 1 then
 		RadioGroup0.currentindex = radioIndex
 	else
-		RadioGroup0.setCurIndexSilent(radioIndex)
-	end if
+		RadioGroup0.SetCurIndexSilent(radioIndex)
+	end
 	
-	Dim sDwmm
+	local sDwmm
 	sDwmm = ChartEx0.GetStateDWMM()
 	if sDwmm == "0" then
 		RadioGroup0.enable = 1
-	end if
-'PENTA13 END
+	end
+ --PENTA13 END
 	
 	ChartEx0.SetPeriodType(g_sPeriodType)
 	ChartEx0.SetPeriodTime(g_sPeriod)
 
-	Dim szName
+	local szName
 	szName = Form.GetItemCodeInfo(g_szItemCode, "name")
-	Form.setOverStockItemCode(g_szItemCode.."★"..szName)
+	Form.SetOverStockItemCode(g_szItemCode.."★"..szName)
 
 	RequestData()
-end function
-'============================================================================
-'PENTA13 START => 2023.07.25(차트성능개선)
+end
+ --============================================================================
+ --PENTA13 START => 2023.07.25(차트성능개선)
 function ChartEx0_OnSelectedChart(nIndex, sData)
 	if sData == "" then
-		Exit function
-	end if
+		return
+	end
 
 	if nIndex < 1 then
-		Exit function
-	end if
+		return
+	end
 
-	Data = split(sData, ";")
+	Data = gf_Split(sData, ";")
 	
-	g_sPeriodType   = Cstr(Trim(Data[2]))
-	g_sPeriod       = Cstr(Trim(Data[3]))
+	g_sPeriodType   = gf_Tostring(gf_Trim(Data[2+1]))
+	g_sPeriod       = gf_Tostring(gf_Trim(Data[3+1]))
 	
 	if g_sPeriodType == "0" or g_sPeriodType == "1" then
-		if g_sPeriodType == "0" then		'틱
+		if g_sPeriodType == "0" then --틱
 			g_TempIndex = 3
 			g_szChrtType = "T"
 			g_szTicType = g_sPeriod
 			
 			RadioGroup0.SetRadioCaption( g_TempIndex, g_szTicType.."틱" )
 			
-		else								'분
+		else --분
 			g_TempIndex = 2
 			g_szChrtType = "A"
 			g_szMinType = g_sPeriod
 			
 			RadioGroup0.SetRadioCaption( g_TempIndex, g_szMinType.."분" )
 			
-		end if
+		end
 	
 	else
 		g_sPeriod = "1"
 		
-		if g_sPeriodType == "2" then		'일
+		if g_sPeriodType == "2" then --일
 			g_TempIndex = 0
-			g_szChrtType = "D"			'PENTA13 START => 2023.08.08(차트성능개선)
+			g_szChrtType = "D"			 --PENTA13 START => 2023.08.08(차트성능개선)
 			
-		elseif g_sPeriodType == "3" then	'주
+		elseif g_sPeriodType == "3" then --주
 			g_TempIndex = 1
 			g_flagWeek = false
 			g_szChrtType = "W"
 			RadioGroup0.SetRadioCaption( g_TempIndex, "주" )
 			
-		elseif g_sPeriodType == "4" then	'월
+		elseif g_sPeriodType == "4" then --월
 			g_TempIndex = 1
 			g_flagWeek = false
 			g_szChrtType = "M"
 			RadioGroup0.SetRadioCaption( g_TempIndex, "월" )
 			
-		else								'년
+		else --년
 			g_TempIndex = 1
 			g_flagWeek = false
 			g_szChrtType = "Y"
 			RadioGroup0.SetRadioCaption( g_TempIndex, "년" )
 		
-		end if
+		end
 		
-	end if
+	end
 	
-	RadioGroup0.setCurIndexSilent(g_TempIndex)
+	RadioGroup0.SetCurIndexSilent(g_TempIndex)
 	
-	Dim sDwmm
+	local sDwmm
 	sDwmm = ChartEx0.GetStateDWMM()
 	if sDwmm == "1" then
 		RadioGroup0.enable = 0
-	end if
+	end
 
-end function
-'PENTA13 END
-'============================================================================
-Sub BtnLine_OnClick()
-	if g_flagLine = false then
+end
+ --PENTA13 END
+ --============================================================================
+function BtnLine_OnClick()
+	if g_flagLine == false then
 		g_flagLine = true
 		ChartEx0.SetShowCrossLine("true")
 		BtnLine.imgpath = "btn_chart01_o.9.png"
@@ -1352,119 +1353,119 @@ Sub BtnLine_OnClick()
 		ChartEx0.SetShowCrossLine("false")
 		BtnLine.imgpath = "btn_chart01_n.9.png"
 		
-	end if
-End Sub
+	end
+end
 
-'============================================================================
-Sub Form_OnLinkData(sKey, sValue)
+ --============================================================================
+function Form_OnLinkData(sKey, sValue)
 	if "&ITEM_CODE" == sKey then
-'PENTA13 START => 2023.07.31(차트성능개선)
-		if g_szItemCode = sValue and g_flagInit = false then
-			exit Sub
-		end if
-'PENTA13 END
+ --PENTA13 START => 2023.07.31(차트성능개선)
+		if g_szItemCode == sValue and g_flagInit == false then
+			return
+		end
+ --PENTA13 END
 	
 		g_szItemCode = sValue
 		RequestData()
 		
-		'20240610 SWJ START
-		'20231016 LES START
+		 --20240610 SWJ START
+		 --20231016 LES START
 		if g_bApplyVersion then
 			
-			if g_sInitFlag = False then
+			if g_sInitFlag == False then
 				Form.SetTimerEvent2("2", 1, 0.2)
-				ChartEx0.setTradeData("")
-			end if
+				ChartEx0.SetTradeData("")
+			end
 		else
 			Apply_Use_AvgBuyPrice()
-		end if
-		'20231016 LES END
-		'20240610 SWJ END
+		end
+		 --20231016 LES END
+		 --20240610 SWJ END
 		
-	'20231016 LES START
-	elseif sKey =	"&LOGIN"	then
+	 --20231016 LES START
+	elseif sKey ==	"&LOGIN" then
 	
-		'20240610 SWJ START
-		'Apply_Use_AvgBuyPrice()
-		'Chart_UseWhatLine()
+		 --20240610 SWJ START
+		 --Apply_Use_AvgBuyPrice()
+		 --Chart_UseWhatLine()
 
-		'20231016 LES START
+		 --20231016 LES START
 		if g_bApplyVersion then
 			Form.SetTimerEvent2("2", 1, 0.2)
-			ChartEx0.setTradeData("")
+			ChartEx0.SetTradeData("")
 		else
 			Apply_Use_AvgBuyPrice()
-		end if
-		'20240610 SWJ END
+		end
+		 --20240610 SWJ END
 		
-	'20231016 LES END
+	 --20231016 LES END
 		
 		
-	end	if
-End Sub
+	end
+end
 
-'============================================================================
-'20231016 LES START
-'============================================================================
-'
-'-----------------------------------------------------------------------
-'[화면오픈 시]
-'-----------------------------------------------------------------------
-'1. Check_Version()   : 앱실행 시, 적용가능 버전인지 체크
-'2. Apply_Use_AvgBuyPrice() : 매수평균가 사용여부 확인 후 차트에 적용
-'
-'
-'-----------------------------------------------------------------------
-'[화면오픈 후 설정변경 시]
-'-----------------------------------------------------------------------
-'
-'(기존에 사용상태인 경우)
-'1. Change_Use_AvgBuyPrice() : 매수평균가 미사용으로 변경
-'2. Apply_Use_AvgBuyPrice()  : 매수평균가 사용여부 확인 후 차트에 적용
+ --============================================================================
+ --20231016 LES START
+ --============================================================================
+ --
+ -------------------------------------------------------------------------
+ --[화면오픈 시]
+ -------------------------------------------------------------------------
+ --1. Check_Version()   : 앱실행 시, 적용가능 버전인지 체크
+ --2. Apply_Use_AvgBuyPrice() : 매수평균가 사용여부 확인 후 차트에 적용
+ --
+ --
+ -------------------------------------------------------------------------
+ --[화면오픈 후 설정변경 시]
+ -------------------------------------------------------------------------
+ --
+ --(기존에 사용상태인 경우)
+ --1. Change_Use_AvgBuyPrice() : 매수평균가 미사용으로 변경
+ --2. Apply_Use_AvgBuyPrice()  : 매수평균가 사용여부 확인 후 차트에 적용
 
-'(기존에 미사용 상태인 경우)
-'1. AvgBuyPrice_Accnt_Select : 팝업리턴 후, 사용가능여부/사용계좌 데이터 설정
-'2. Apply_Use_AvgBuyPrice()  : 매수평균가 사용여부 확인 후 차트에 적용
+ --(기존에 미사용 상태인 경우)
+ --1. AvgBuyPrice_Accnt_Select : 팝업리턴 후, 사용가능여부/사용계좌 데이터 설정
+ --2. Apply_Use_AvgBuyPrice()  : 매수평균가 사용여부 확인 후 차트에 적용
 
-'============================================================================
-Function Check_Version()
+ --============================================================================
+function Check_Version()
 
-	szOsType = Form.GetSharedData("&OS_TYPE", False) 
-	szAppVer	= Form.GetSharedData("&APP_VERSION", False)
-	szAppVer	= Replace(szAppVer, ".", "")
+	szOsType = Form.GetSharedData("..OS_TYPE", False) 
+	szAppVer	= Form.GetSharedData("..APP_VERSION", False)
+	szAppVer	= string.gsub(szAppVer, string.gsub(".", "([%p])", "%%%1"), "")
 	
-	'1.안드로이드 2.iOS
+	 --1.안드로이드 2.iOS
 	if szOsType == "1" then
 		
-		'20240610 SWJ START: 이전 버전은 매수평균단가만
+		 --20240610 SWJ START: 이전 버전은 매수평균단가만
 		
-		'-----------------------------------------------------------------------
-		'추세선 숨김처리
-		'-----------------------------------------------------------------------
+		 -------------------------------------------------------------------------
+		 --추세선 숨김처리
+		 -------------------------------------------------------------------------
 		BtnLine.visible = false 
 			
-		'-----------------------------------------------------------------------
-		'Image5 : 매매평균가 스위치 이미지
-		'-----------------------------------------------------------------------
+		 -------------------------------------------------------------------------
+		 --Image5 : 매매평균가 스위치 이미지
+		 -------------------------------------------------------------------------
 		Image5.visible = true
 		Image5.left = 197
-		Image5.setMaintainingRatio("1")
+		Image5.SetMaintainingRatio("1")
 			
-		'-----------------------------------------------------------------------
-		'Label0 : 매수평균 텍스트라벨
-		'Image3 : 버튼배경이미지 뷰
-		'Image4 : 클릭이벤트 처리 이미지 뷰
-		'-----------------------------------------------------------------------
+		 -------------------------------------------------------------------------
+		 --Label0 : 매수평균 텍스트라벨
+		 --Image3 : 버튼배경이미지 뷰
+		 --Image4 : 클릭이벤트 처리 이미지 뷰
+		 -------------------------------------------------------------------------
 		Label0.visible = true
 		Image3.visible = true
 		Image3.imgpath = "btn_line_o.9"
 		Image4.visible = true
-		Image4.bringFront("1")
+		Image4.BringFront("1")
 		
-		if Cint(szAppVer) > 246 then
-			'-----------------------------------------------------------------------
-			' 적용가능 버전
-			'-----------------------------------------------------------------------
+		if gf_Tonumber(szAppVer) > 246 then
+			 -------------------------------------------------------------------------
+			 -- 적용가능 버전
+			 -------------------------------------------------------------------------
 			g_bApplyVersion = true
 		
 			Label0.caption = "매매내역"
@@ -1474,79 +1475,79 @@ Function Check_Version()
 			Label0.caption = "매수평균"
 			g_sChartPopup = "mhcht13000_p5"
 			Apply_Use_AvgBuyPrice()
-		end if
-		'20240610 SWJ END
+		end
+		 --20240610 SWJ END
 		
-		'추후 237으로 수정필요
-'		if Cint(szAppVer) > 237 then
-'			
-'			'-----------------------------------------------------------------------
-'			' 적용가능 버전
-'			'-----------------------------------------------------------------------
-'			g_bApplyVersion = true
-'		
-'			'-----------------------------------------------------------------------
-'			'추세선 숨김처리
-'			'-----------------------------------------------------------------------
-'			BtnLine.visible = false 
-'			
-'			'-----------------------------------------------------------------------
-'			'Image5 : 매매평균가 스위치 이미지
-'			'-----------------------------------------------------------------------
-'			Image5.visible = true
-'			Image5.setMaintainingRatio("1")
-'			
-'			'-----------------------------------------------------------------------
-'			'Label0 : 매수평균 텍스트라벨
-'			'Image3 : 버튼배경이미지 뷰
-'			'Image4 : 클릭이벤트 처리 이미지 뷰
-'			'-----------------------------------------------------------------------
-'			Label0.visible = true
-'			Image3.visible = true
-'			Image3.imgpath = "btn_line_o.9"
-'			Image4.visible = true
-'			Image4.bringFront("1")
-'			
-'			'20240610 SWJ START
-'			'Apply_Use_AvgBuyPrice()
-'			'Chart_UseWhatLine()
-'			Form.SetTimerEvent2("2", 1, 0.2)
-'			'20240610 SWJ END
-'			
-'		end if
+		 --추후 237으로 수정필요
+ --		if Cint(szAppVer) > 237 then
+ --			
+ --			'-----------------------------------------------------------------------
+ --			' 적용가능 버전
+ --			'-----------------------------------------------------------------------
+ --			g_bApplyVersion = true
+ --		
+ --			'-----------------------------------------------------------------------
+ --			'추세선 숨김처리
+ --			'-----------------------------------------------------------------------
+ --			BtnLine.visible = false 
+ --			
+ --			'-----------------------------------------------------------------------
+ --			'Image5 : 매매평균가 스위치 이미지
+ --			'-----------------------------------------------------------------------
+ --			Image5.visible = true
+ --			Image5.setMaintainingRatio("1")
+ --			
+ --			'-----------------------------------------------------------------------
+ --			'Label0 : 매수평균 텍스트라벨
+ --			'Image3 : 버튼배경이미지 뷰
+ --			'Image4 : 클릭이벤트 처리 이미지 뷰
+ --			'-----------------------------------------------------------------------
+ --			Label0.visible = true
+ --			Image3.visible = true
+ --			Image3.imgpath = "btn_line_o.9"
+ --			Image4.visible = true
+ --			Image4.bringFront("1")
+ --			
+ --			'20240610 SWJ START
+ --			'Apply_Use_AvgBuyPrice()
+ --			'Chart_UseWhatLine()
+ --			Form.SetTimerEvent2("2", 1, 0.2)
+ --			'20240610 SWJ END
+ --			
+ --		end if
 	
 	elseif szOsType == "2" then
 	
-		'20240610 SWJ START: 이전 버전은 매수평균단가만
+		 --20240610 SWJ START: 이전 버전은 매수평균단가만
 	
-		'-----------------------------------------------------------------------
-		'추세선 숨김처리
-		'-----------------------------------------------------------------------
+		 -------------------------------------------------------------------------
+		 --추세선 숨김처리
+		 -------------------------------------------------------------------------
 		BtnLine.visible = false
 			
-		'-----------------------------------------------------------------------
-		'Image5 : 매매평균가 스위치 이미지
-		'-----------------------------------------------------------------------
+		 -------------------------------------------------------------------------
+		 --Image5 : 매매평균가 스위치 이미지
+		 -------------------------------------------------------------------------
 		
 		Image5.visible = true
 		Image5.left = 198
-		Image5.setMaintainingRatio("1")
+		Image5.SetMaintainingRatio("1")
 			
-		'-----------------------------------------------------------------------
-		'Label0 : 매수평균 텍스트라벨
-		'Image3 : 버튼배경이미지 뷰
-		'Image4 : 클릭이벤트 처리 이미지 뷰
-		'-----------------------------------------------------------------------
+		 -------------------------------------------------------------------------
+		 --Label0 : 매수평균 텍스트라벨
+		 --Image3 : 버튼배경이미지 뷰
+		 --Image4 : 클릭이벤트 처리 이미지 뷰
+		 -------------------------------------------------------------------------
 		Label0.visible = true
 		Image3.visible = true
 		Image3.imgpath = "btn_line_o.9"
 		Image4.visible = true
 
-		if Cint(szAppVer) > 2547 then
+		if gf_Tonumber(szAppVer) > 2547 then
 			
-			'-----------------------------------------------------------------------
-			' 적용가능 버전
-			'-----------------------------------------------------------------------
+			 -------------------------------------------------------------------------
+			 -- 적용가능 버전
+			 -------------------------------------------------------------------------
 			g_bApplyVersion = true
 			
 			Label0.caption = "매매내역"
@@ -1556,60 +1557,60 @@ Function Check_Version()
 			Label0.caption = "매수평균"
 			g_sChartPopup = "mhcht13000_p5"
 			Apply_Use_AvgBuyPrice()
-		end if
-		'20240610 SWJ END
+		end
+		 --20240610 SWJ END
 		
-		'추후 2535로 수정필요
-'		if Cint(szAppVer) > 2535 then
-'		
-'			'-----------------------------------------------------------------------
-'			' 적용가능 버전
-'			'-----------------------------------------------------------------------
-'			g_bApplyVersion = true
-'		
-'			'-----------------------------------------------------------------------
-'			'추세선 숨김처리
-'			'-----------------------------------------------------------------------
-'			BtnLine.visible = false
-'			
-'			'-----------------------------------------------------------------------
-'			'Image5 : 매매평균가 스위치 이미지
-'			'-----------------------------------------------------------------------
-'		
-'			Image5.visible = true
-'			Image5.setMaintainingRatio("1")
-'			
-'			'-----------------------------------------------------------------------
-'			'Label0 : 매수평균 텍스트라벨
-'			'Image3 : 버튼배경이미지 뷰
-'			'Image4 : 클릭이벤트 처리 이미지 뷰
-'			'-----------------------------------------------------------------------
-'			Label0.visible = true
-'			Image3.visible = true
-'			Image3.imgpath = "btn_line_o.9"
-'			Image4.visible = true
-'			
-'			'20240610 SWJ START
-'			'Apply_Use_AvgBuyPrice()
-'			'Chart_UseWhatLine()
-'			Form.SetTimerEvent2("2", 1, 1)
-			'20240610 SWJ END
+		 --추후 2535로 수정필요
+ --		if Cint(szAppVer) > 2535 then
+ --		
+ --			'-----------------------------------------------------------------------
+ --			' 적용가능 버전
+ --			'-----------------------------------------------------------------------
+ --			g_bApplyVersion = true
+ --		
+ --			'-----------------------------------------------------------------------
+ --			'추세선 숨김처리
+ --			'-----------------------------------------------------------------------
+ --			BtnLine.visible = false
+ --			
+ --			'-----------------------------------------------------------------------
+ --			'Image5 : 매매평균가 스위치 이미지
+ --			'-----------------------------------------------------------------------
+ --		
+ --			Image5.visible = true
+ --			Image5.setMaintainingRatio("1")
+ --			
+ --			'-----------------------------------------------------------------------
+ --			'Label0 : 매수평균 텍스트라벨
+ --			'Image3 : 버튼배경이미지 뷰
+ --			'Image4 : 클릭이벤트 처리 이미지 뷰
+ --			'-----------------------------------------------------------------------
+ --			Label0.visible = true
+ --			Image3.visible = true
+ --			Image3.imgpath = "btn_line_o.9"
+ --			Image4.visible = true
+ --			
+ --			'20240610 SWJ START
+ --			'Apply_Use_AvgBuyPrice()
+ --			'Chart_UseWhatLine()
+ --			Form.SetTimerEvent2("2", 1, 1)
+			 --20240610 SWJ END
 		
-'		end if
+ --		end if
 	
-	end if
+	end
 	
 	
-End Function
+end
 
-'============================================================================
-'20231016 LES END
-'============================================================================
+ --============================================================================
+ --20231016 LES END
+ --============================================================================
 
-'============================================================================
-'20231016 LES START
-'============================================================================
-Function Change_Use_AvgBuyPrice()
+ --============================================================================
+ --20231016 LES START
+ --============================================================================
+function Change_Use_AvgBuyPrice()
 
 	gUseAvgBuyPrice = Form.LoadConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "USE")
 
@@ -1625,78 +1626,78 @@ Function Change_Use_AvgBuyPrice()
 		Form.SaveConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "USE", "1")
 		Image5.imgpath = "btn_switch_o"
 	
-	end if
+	end
 	
 	Apply_Use_AvgBuyPrice()
 
-End Function
-'============================================================================
-'20231016 LES END
-'============================================================================
+end
+ --============================================================================
+ --20231016 LES END
+ --============================================================================
 
-'============================================================================
-'20231016 LES START
-'============================================================================
-Function Apply_Use_AvgBuyPrice()
+ --============================================================================
+ --20231016 LES START
+ --============================================================================
+function Apply_Use_AvgBuyPrice()
 
-	'로그인 여부 체크
-	Dim sLOGIN_TYPE  
-	sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
+	 --로그인 여부 체크
+	local sLOGIN_TYPE
+	sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 	
-	g_sUserID = Form.GetSharedData("&USER_ID", false)		'20240610 SWJ START
+	g_sUserID = Form.GetSharedData("..USER_ID", false)		 --20240610 SWJ START
 	
-	if CInt(sLOGIN_TYPE) > 1 then '로그인상태
+	if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태
 	else
 		Image5.imgpath = "btn_switch_n"
 		ChartEx0.SetAvgBuyPrice(""..";".."0")
-		Exit Function
-	end if
+		return
+	end
 
-	gUseAvgBuyPrice = Form.LoadConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "USE")	'20240610 SWJ START
+	gUseAvgBuyPrice = Form.LoadConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "USE")	 --20240610 SWJ START
 	
 	if gUseAvgBuyPrice == "1" then
 		
 		Image5.imgpath = "btn_switch_o"
-		sSettingAcnt = Form.LoadConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "ACNT")	'20240610 SWJ START
+		sSettingAcnt = Form.LoadConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "ACNT")	 --20240610 SWJ START
 		
-		if sSettingAcnt <> "" then
+		if sSettingAcnt ~= "" then
 		
-			szAcno = Left(sSettingAcnt,8)
-			szAsno = Right(sSettingAcnt,2)
+			szAcno = string.sub(sSettingAcnt, 1, 8)
+			szAsno = string.sub(sSettingAcnt, -2)
 			szItemCode = Change_ItemCode()
 
-			'20250731 YSH START
-			if szItemCode <> "" then
+			 --20250731 YSH START
+			if szItemCode ~= "" then
 				DATAMANAGER.SetDataValue(0, "obtrs_comn_430r", "InBlock1", "ACNO" , 0 , szAcno)
 				DATAMANAGER.SetDataValue(0, "obtrs_comn_430r", "InBlock1", "ASNO" , 0 , szAsno)
 				DATAMANAGER.SetDataValue(0, "obtrs_comn_430r", "InBlock1", "ISCD" , 0 , szItemCode)
 				DATAMANAGER.RequestTranData("obtrs_comn_430r")
-			end if
-			'20250731 YSH END
+			end
+			 --20250731 YSH END
 		
-		end if
+		end
 		
 	else
 		
-		'초기화
+		 --초기화
 		Image5.imgpath = "btn_switch_n"
 		
-		if g_szItemCode <> "" and g_szItemCode <> null then
+		if g_szItemCode ~= "" and g_szItemCode ~= nil then
 			ChartEx0.SetAvgBuyPrice(""..";".."0")
-		end if
+		end
 		
 		
-	end if
+	end
 	
-End Function
-'============================================================================
-'20231016 LES END
-'============================================================================
+end
+ --============================================================================
+ --20231016 LES END
+ --============================================================================
 
-'============================================================================
-'20240610 SWJ START
-'============================================================================
-Function Change_Use_OrderList()
+ --============================================================================
+ --20240610 SWJ START
+ --============================================================================
+function Change_Use_OrderList()
 
 	gUseOrderList = Form.LoadConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "USE")
 
@@ -1712,25 +1713,25 @@ Function Change_Use_OrderList()
 		Form.SaveConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "USE", "1")
 		Image5.imgpath = "btn_switch_o"
 	
-	end if
+	end
 	
 	Apply_Use_OrderList()
 
-End Function
-'============================================================================
-Function Apply_Use_OrderList()
-	'로그인 여부 체크
-	Dim sLOGIN_TYPE  
-	sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
+end
+ --============================================================================
+function Apply_Use_OrderList()
+	 --로그인 여부 체크
+	local sLOGIN_TYPE
+	sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 	
-	g_sUserID = Form.GetSharedData("&USER_ID", false)
+	g_sUserID = Form.GetSharedData("..USER_ID", false)
 	
-	if CInt(sLOGIN_TYPE) > 1 then '로그인상태
+	if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태
 	else
 		Image5.imgpath = "btn_switch_n"
 		ChartEx0.SetTradeData("")
-		Exit Function
-	end if
+		return
+	end
 
 	gUseOrderList = Form.LoadConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "USE")
 	
@@ -1739,44 +1740,44 @@ Function Apply_Use_OrderList()
 		Image5.imgpath = "btn_switch_o"
 		sSettingAcnt = Form.LoadConfigData("CHART_ORDER_LIST_OVERSTOCK".."_"..g_sUserID, "ACNT")
 		
-		if sSettingAcnt <> "" then
+		if sSettingAcnt ~= "" then
 		
-			szAcno = Left(sSettingAcnt,8)
-			szAsno = Right(sSettingAcnt,2)
+			szAcno = string.sub(sSettingAcnt, 1, 8)
+			szAsno = string.sub(sSettingAcnt, -2)
 			szItemCode = Change_ItemCode()
 			
-			'20250731 YSH START
+			 --20250731 YSH START
 			if szItemCode == "" then
-				exit function
-			end if
-			'20250731 YSH END
+				return
+			end
+			 --20250731 YSH END
 			
-			if Cint(RadioGroup0.currentindex) == 0 then
+			if gf_Tonumber(RadioGroup0.currentindex) == 0 then
 				gChartPeriod = "D"
 				
-			elseif Cint(RadioGroup0.currentindex) == 2 then
+			elseif gf_Tonumber(RadioGroup0.currentindex) == 2 then
 				
-				szTempMin = split(RadioGroup0.GetRadioCaption(2), "분")
+				szTempMin = gf_Split(RadioGroup0.GetRadioCaption(2), "분")
 				
-				if Ubound(szTempMin) > 0 then
-					if szTempMin(0) == "1" then
+				if #szTempMin > 0 then
+					if szTempMin[0+1] == "1" then
 						gChartPeriod = "1"
-					elseif szTempMin(0) == "3" then
+					elseif szTempMin[0+1] == "3" then
 						gChartPeriod = "3"
-					elseif szTempMin(0) == "5" then
+					elseif szTempMin[0+1] == "5" then
 						gChartPeriod = "5"
-					elseif szTempMin(0) == "10" then
+					elseif szTempMin[0+1] == "10" then
 						gChartPeriod = "T"
 					else
-						exit function
-					end if
-				end if
+						return
+					end
+				end
 			
 			else
-				exit function
-			end if
+				return
+			end
 			
-			'szItemCode = Change_ItemCode()
+			 --szItemCode = Change_ItemCode()
 			
 			DATAMANAGER.SetDataValue(0, "obtro_cntg_611r", "InBlock1", "IQRY_COND_CODE" , 0 , gChartPeriod)
 			DATAMANAGER.SetDataValue(0, "obtro_cntg_611r", "InBlock1", "ACNO" , 0 , szAcno)
@@ -1784,69 +1785,69 @@ Function Apply_Use_OrderList()
 			DATAMANAGER.SetDataValue(0, "obtro_cntg_611r", "InBlock1", "OVRS_STCK_MRKT_TR_CLS_CODE" , 0 , g_sMarketCode)
 			DATAMANAGER.SetDataValue(0, "obtro_cntg_611r", "InBlock1", "ISCD" , 0 , szItemCode)
 			
-			'v0001 obtro_cntg_611r 조회구분코드 추가
-			Dim szIQRY_CLS_CODE
+			 --v0001 obtro_cntg_611r 조회구분코드 추가
+			local szIQRY_CLS_CODE
 			szIQRY_CLS_CODE = "N"
 			if g_sStockMode == "1" then
 				szIQRY_CLS_CODE = "Y"
-			end if
-			DATAMANAGER.SetDataValue(0, "obtro_cntg_611r", "InBlock1", "IQRY_CLS_CODE" , 0 , szIQRY_CLS_CODE) '조회구분코드
+			end
+			DATAMANAGER.SetDataValue(0, "obtro_cntg_611r", "InBlock1", "IQRY_CLS_CODE" , 0 , szIQRY_CLS_CODE)  --조회구분코드
 			DATAMANAGER.RequestTranData("obtro_cntg_611r")
 		
-		end if
+		end
 		
 	else
 		
-		'초기화
+		 --초기화
 		Image5.imgpath = "btn_switch_n"
-		ChartEx0.setTradeData("")
+		ChartEx0.SetTradeData("")
 		
-	end if
-End Function
-'============================================================================
-'20240610 SWJ END
-'============================================================================
+	end
+end
+ --============================================================================
+ --20240610 SWJ END
+ --============================================================================
 
-'============================================================================
-'20231016 LES START
-'============================================================================
-Sub Image4_OnClick()
+ --============================================================================
+ --20231016 LES START
+ --============================================================================
+function Image4_OnClick()
 
-	'20240610 SWJ START : gUseAvgBuyPrice 분기 밖 다 수정
-	'매매내역 추가
-'	gUseAvgBuyPrice = Form.LoadConfigData("CHART_AVGBUY_PRICE_OVERSTOCK", "USE")
-'	
-'	if gUseAvgBuyPrice == "1" then
-'	
-'		'로그인 여부 체크
-'		Dim sLOGIN_TYPE  
-'		sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
-'		
-'		if CInt(sLOGIN_TYPE) > 1 then '로그인상태
-'		
-'			Change_Use_AvgBuyPrice()
-'		else
-'			Form.OpenScreen("90020" , "90022")
-'			Exit Sub 
-'		end if
-'	
-'	else
-'	
-'		'로그인 여부 체크
-'		Dim sLOGIN_TYPE  
-'		sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
-'		
-'		if CInt(sLOGIN_TYPE) > 1 then '로그인상태
-'		else
-'			Form.OpenScreen("90020" , "90022")
-'			Exit Sub 
-'		end if
-'
-'		Form.OpenPopupAnimation("mhcht13000_p5", "100,119,200" , "", "2")
-'		
-'	end if
+	 --20240610 SWJ START : gUseAvgBuyPrice 분기 밖 다 수정
+	 --매매내역 추가
+ --	gUseAvgBuyPrice = Form.LoadConfigData("CHART_AVGBUY_PRICE_OVERSTOCK", "USE")
+ --	
+ --	if gUseAvgBuyPrice == "1" then
+ --	
+ --		'로그인 여부 체크
+ --		Dim sLOGIN_TYPE  
+ --		sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
+ --		
+ --		if CInt(sLOGIN_TYPE) > 1 then '로그인상태
+ --		
+ --			Change_Use_AvgBuyPrice()
+ --		else
+ --			Form.OpenScreen("90020" , "90022")
+ --			Exit Sub 
+ --		end if
+ --	
+ --	else
+ --	
+ --		'로그인 여부 체크
+ --		Dim sLOGIN_TYPE  
+ --		sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
+ --		
+ --		if CInt(sLOGIN_TYPE) > 1 then '로그인상태
+ --		else
+ --			Form.OpenScreen("90020" , "90022")
+ --			Exit Sub 
+ --		end if
+ --
+ --		Form.OpenPopupAnimation("mhcht13000_p5", "100,119,200" , "", "2")
+ --		
+ --	end if
 	
-	'매매내역 추가
+	 --매매내역 추가
 	sLineSetting = Form.LoadConfigData( "CHART_USE_LINE_OVERSTOCK".."_"..g_sUserID,"USE")
 	
 	if sLineSetting == "AvgBuyPrice" then
@@ -1855,20 +1856,20 @@ Sub Image4_OnClick()
 		
 		if gUseAvgBuyPrice == "1" then
 		
-			'로그인 여부 체크
-			Dim sLOGIN_TYPE  
-			sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
+			 --로그인 여부 체크
+			local sLOGIN_TYPE
+			sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-			if CInt(sLOGIN_TYPE) > 1 then '로그인상태
+			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태
 				Change_Use_AvgBuyPrice()
 			else
 				Form.OpenScreen("90020" , "90022")
-				Exit Sub 
-			end if
+				return 
+			end
 		
 		else
 			LoginCheck_PopupSetting()
-		end if
+		end
 		
 		
 	elseif sLineSetting == "OrderList" then
@@ -1877,23 +1878,23 @@ Sub Image4_OnClick()
 
 		if gUseOrderList == "1" then
 		
-			'로그인 여부 체크
-			Dim sLOGIN_TYPE  
-			sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
+			 --로그인 여부 체크
+			local sLOGIN_TYPE
+			sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-			if CInt(sLOGIN_TYPE) > 1 then '로그인상태
+			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태
 				Change_Use_OrderList()
 			else
 				Form.OpenScreen("90020" , "90022")
-				Exit Sub 
-			end if
+				return 
+			end
 		else
 			
 			LoginCheck_PopupSetting()
 			
-		end if
+		end
 	
-	'둘 다
+	 --둘 다
 	elseif sLineSetting == "Both" then
 	
 		gUseAvgBuyPrice = Form.LoadConfigData("CHART_AVGBUY_PRICE_OVERSTOCK".."_"..g_sUserID, "USE")
@@ -1901,34 +1902,32 @@ Sub Image4_OnClick()
 		
 		if gUseAvgBuyPrice == "1" then
 		
-			'로그인 여부 체크
-			Dim sLOGIN_TYPE  
-			sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
+			 --로그인 여부 체크
+			local sLOGIN_TYPE
+			sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-			if CInt(sLOGIN_TYPE) > 1 then '로그인상태
+			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태
 				Change_Use_AvgBuyPrice()
 			else
 				Form.OpenScreen("90020" , "90022")
-				Exit Sub 
-			end if
+				return 
+			end
 			
-		end if
+		end
 		
 		if gUseOrderList == "1" then
 		
-			'로그인 여부 체크
-			Dim sLOGIN_TYPE  
-			sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
+			 --로그인 여부 체크
+			local sLOGIN_TYPE
+			sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-			if CInt(sLOGIN_TYPE) > 1 then '로그인상태
+			if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태
 				Change_Use_OrderList()
 			else
 				Form.OpenScreen("90020" , "90022")
-				Exit Sub 
-			end if
-			
-			exit sub
-		end if
+				return 
+			end
+		end
 
 		LoginCheck_PopupSetting()
 		
@@ -1936,39 +1935,39 @@ Sub Image4_OnClick()
 	
 		LoginCheck_PopupSetting()
 			
-	end if
-'20240610 SWJ END
+	end
+ --20240610 SWJ END
 	
 	
-End Sub
-'============================================================================
-'20231016 LES END
-'============================================================================
+end
+ --============================================================================
+ --20231016 LES END
+ --============================================================================
 
-'============================================================================
-' 20231016 LES START
-'============================================================================
-Function Change_ItemCode()
+ --============================================================================
+ -- 20231016 LES START
+ --============================================================================
+function Change_ItemCode()
 	
-	Dim sCodeData
+	local sCodeData
 	
-	'20250731 YSH START
-	if g_sCode <> "" and g_sCode <> null then
-	'if g_szItemCode == "" or g_szItemCode == null then
+	 --20250731 YSH START
+	if g_sCode ~= "" and g_sCode ~= nil then
+	 --if g_szItemCode == "" or g_szItemCode == null then
 		g_szItemCode = g_sCode
-	end if
-	'20250731 YSH END
+	end
+	 --20250731 YSH END
 	
-	if g_szItemCode <> "" and g_szItemCode <> null then
+	if g_szItemCode ~= "" and g_szItemCode ~= nil then
 	
-		sCodeData = Split( g_szItemCode, "@" )
+		sCodeData = gf_Split(g_szItemCode, "@")
 	
 		if #sCodeData > 1 then
 	
-			szExid = sCodeData[0] '시장구분
-			szCode = sCodeData[1] '종목코드 
+			szExid = sCodeData[0+1]  --시장구분
+			szCode = sCodeData[1+1]  --종목코드 
 			
-			'20240610 SWJ START
+			 --20240610 SWJ START
 			if szExid == "JP" then
 				g_sCurrency = "JPY"
 				g_sMarketCode = "05"
@@ -1984,27 +1983,27 @@ Function Change_ItemCode()
 			elseif szExid == "HK" then
 				g_sCurrency = "HKD"
 				g_sMarketCode = "02"
-			end if
-			'20240610 SWJ END
+			end
+			 --20240610 SWJ END
 			
 			return szCode.."."..szExid
 		
-		end if
+		end
 	
-	end if
+	end
 
-	'20250731 YSH START
+	 --20250731 YSH START
 	return ""
-	'20250731 YSH END
+	 --20250731 YSH END
 	
-End Function
-'============================================================================
-' 20240610 SWJ START
-'============================================================================
-Function Chart_UseWhatLine()
+end
+ --============================================================================
+ -- 20240610 SWJ START
+ --============================================================================
+function Chart_UseWhatLine()
 	
 	sLineSetting = Form.LoadConfigData( "CHART_USE_LINE_OVERSTOCK".."_"..g_sUserID,"USE")
-	g_sUserID = Form.GetSharedData("&USER_ID", false)	
+	g_sUserID = Form.GetSharedData("..USER_ID", false)	
 	
 	if sLineSetting == "AvgBuyPrice" then
 		Apply_Use_AvgBuyPrice()
@@ -2015,35 +2014,35 @@ Function Chart_UseWhatLine()
 		Apply_Use_OrderList()
 		Apply_Use_AvgBuyPrice()
 
-	end if
+	end
 	
-	'화면 첫 오픈 여부 판단
+	 --화면 첫 오픈 여부 판단
 	g_sInitFlag = False
-End Function
-'============================================================================
-Function LoginCheck_PopupSetting()
+end
+ --============================================================================
+function LoginCheck_PopupSetting()
 	
-	'로그인 여부 체크
-	Dim sLOGIN_TYPE  
-	sLOGIN_TYPE = Form.GetSharedData("&LOGIN_TYPE", false )
+	 --로그인 여부 체크
+	local sLOGIN_TYPE
+	sLOGIN_TYPE = Form.GetSharedData("..LOGIN_TYPE", false )
 			
-	if CInt(sLOGIN_TYPE) > 1 then '로그인상태
+	if gf_Tonumber(sLOGIN_TYPE) > 1 then --로그인상태
 		
 	else
 		Form.OpenScreen("90020" , "90022")
-		Exit Function
-	end if
+		return
+	end
 	
 	Form.OpenPopupAnimation(g_sChartPopup, "100,119,200" , "", "2") 
 
-End Function
+end
 
-'============================================================================
-Sub Form_OnTimerEvent(sTimerID)
+ --============================================================================
+function Form_OnTimerEvent(sTimerID)
 	
 	Form.SetTimerEvent2(sTimerID, 0, 0.2)
 	
-	if Cint(sTimerID) == 1 then
+	if gf_Tonumber(sTimerID) == 1 then
 		sLineSetting = Form.LoadConfigData( "CHART_USE_LINE_OVERSTOCK".."_"..g_sUserID,"USE")
 	
 		if sLineSetting == "OrderList" then
@@ -2052,13 +2051,13 @@ Sub Form_OnTimerEvent(sTimerID)
 		elseif sLineSetting == "Both" then
 			Apply_Use_OrderList()
 		
-		end if
-	elseif Cint(sTimerID) == 2 then
+		end
+	elseif gf_Tonumber(sTimerID) == 2 then
 		Chart_UseWhatLine()
-	end if
-End Sub
-'============================================================================
-Function SetPriceMask(nPrice)
+	end
+end
+ --============================================================================
+function SetPriceMask(nPrice)
 	
 	LblInvisible.caption = nPrice
 	
@@ -2070,25 +2069,26 @@ Function SetPriceMask(nPrice)
 		LblInvisible.mask = "0,0,,"..""..""..",1,1,4,1,0,0,0"
 	elseif g_sCurrency == "HKD" then
 		LblInvisible.mask = "0,0,,"..""..""..",1,1,3,1,0,0,0"
-	end if
+	end
 	
 	nMaskedPrice = LblInvisible.dispcaption
 	
 	return nMaskedPrice
-End Function
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
+end
+ --============================================================================
+function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	if szTranID == "obtro_cntg_611r" then
-		ChartEx0.setTradeData("")
-	end if
-End Sub
+		ChartEx0.SetTradeData("")
+	end
+end
 
-'============================================================================
-Sub Form_OnMsgBoxClose(sKeyName, sRet)
+ --============================================================================
+function Form_OnMsgBoxClose(sKeyName, sRet)
 	
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />
