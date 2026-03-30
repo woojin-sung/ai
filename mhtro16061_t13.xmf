@@ -590,10 +590,10 @@ gLinkMiCheItemInfo = ""
 local g_clsCode --검색일 구분코드 1:주문일 2:예약일
 local g_rangeDateStart --검색 시작일
 local g_rangeDateEnd --검색 종료일
- --Dim g_orderDateStart	'검색 시작일(주문일 기준)
- --Dim g_orderDateEnd	'검색 종료일(주문일 기준)
- --Dim g_reserveDateStart	'검색 시작일(예약일 기준)
- --Dim g_reserveDateEnd	'검색 종료일(예약일 기준)
+ --Dim g_orderDateStart	 --검색 시작일(주문일 기준)
+ --Dim g_orderDateEnd	 --검색 종료일(주문일 기준)
+ --Dim g_reserveDateStart	 --검색 시작일(예약일 기준)
+ --Dim g_reserveDateEnd	 --검색 종료일(예약일 기준)
 local g_checkToday --검색일 당일 체크여부
 local g_orderClsCode --검색 예약유형 0:전체 1:일반예약 2:기간잔량 3:기간예약 4:특정일 (기본값 0)
 local g_idntClcd --검색 처리구분 0:전체 1:전체(취소제외) 2:예약 (기본값 2)
@@ -605,7 +605,7 @@ local g_hostDate --호스트 일자
  --============================================================================
 function Form_OnFormInitBefore()
 
-	gOsType = Form.GetSharedData("&OS_TYPE", false)
+	gOsType = Form.GetSharedData("..OS_TYPE", false)
 
 	imgRefresh.SetMaintainingRatio("1")
 	imgNodata.SetMaintainingRatio("1")
@@ -618,16 +618,16 @@ function Form_OnFormInit()
 	
 	 --============================================================================
 	 --v1000
- --	g_clsCode = Form.GetSharedData("&mhtro16061_t13_cls_code", false)
+ --	g_clsCode = Form.GetSharedData("..mhtro16061_t13_cls_code", false)
 	g_clsCode = Form.GetEnvData("mhtro16061_t13_cls_code")
-	g_rangeDateStart = Form.GetSharedData("&mhtro16061_t13_range_date_start", false)
-	g_rangeDateEnd = Form.GetSharedData("&mhtro16061_t13_range_date_end", false)
+	g_rangeDateStart = Form.GetSharedData("..mhtro16061_t13_range_date_start", false)
+	g_rangeDateEnd = Form.GetSharedData("..mhtro16061_t13_range_date_end", false)
 	g_checkToday = Form.GetEnvData("mhtro16061_t13_check_today")
-	g_orderClsCode = Form.GetSharedData("&mhtro16061_t13_order_cls_code", false)
-	g_idntClcd = Form.GetSharedData("&mhtro16061_t13_idnt_clcd", false)
-	g_selnByovClcd = Form.GetSharedData("&mhtro16061_t13_seln_byov_clcd", false)
-	g_mangDate = Form.GetSharedData("&mhtro16061_t13_mang_date", false)
-	g_hostDate = Form.GetSharedData("&HOST_DATE", false)
+	g_orderClsCode = Form.GetSharedData("..mhtro16061_t13_order_cls_code", false)
+	g_idntClcd = Form.GetSharedData("..mhtro16061_t13_idnt_clcd", false)
+	g_selnByovClcd = Form.GetSharedData("..mhtro16061_t13_seln_byov_clcd", false)
+	g_mangDate = Form.GetSharedData("..mhtro16061_t13_mang_date", false)
+	g_hostDate = Form.GetSharedData("..HOST_DATE", false)
 	
 	if g_clsCode == "" then
 		g_clsCode = "2"
@@ -700,7 +700,7 @@ function Form_OnFormInit()
 	
 	szTextSize = Form.GetEnvData("common.textsize")
 	
-	if gf_Tonumber(szTextSize) > 0 then --큰글씨
+	if gf_Tonumber(szTextSize) > 0 then --큰글씨 end
 		chkAllCancel.fontsize = - 2 - gf_Tonumber(szTextSize)
 		cld0.fontsize = - 4 - gf_Tonumber(szTextSize)
 		cld1.fontsize = - 4 - gf_Tonumber(szTextSize)
@@ -743,7 +743,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		g_szDecimal	= arrItemInfo[5+1]
 		g_szKorName	= arrItemInfo[6+1]
 		g_szTickType	= arrItemInfo[7+1]
- --		g_szUnit		= GetHogaUnit(g_szMk, g_szCurPrice, 0)	'20250421 HSZ : 안써는 로직 삭제
+ --		g_szUnit		= GetHogaUnit(g_szMk, g_szCurPrice, 0)	 --20250421 HSZ : 안써는 로직 삭제
 		
 		 -------------------------------------------------------------------------
 		 --종목/탭 변경시 가격입력창/수량입력창 입력값 초기화 
@@ -777,12 +777,12 @@ function Form_OnTriggerEvent(sEventName, sParam)
 				 -----------------------------------------------------------------------------------
 				 --sPrice = Form.GetSharedData("PRICE", true)
 				 --
-				 --if sPrice <> "" and sPrice <> null	then
+				 --if sPrice ~= "" and sPrice ~= nil	then
 				 --	edtPrc.caption = sPrice
 				 --	
 				 --else
 				 --	
-				 --	if g_szChangeInit <> "1" then
+				 --	if g_szChangeInit ~= "1" then
 				 --		RequestAutoPrice()
 				 --	end if
 				 --
@@ -1222,7 +1222,6 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 				 --매매구분
 				 --------------------------------------------------------------
 				szType    = Grid0.GetCellData( "bd_cell6"	, i)	 --매매구분
-				-- SELECT CASE 변환 (수동 보정 필요)
 					if szType == "1" then
 						Grid0.SetCellFgColor( "bd_cell2", i, "2" )
 						Grid0.SetCellFgColor( "bd_cell20", i, "2" )
@@ -1251,7 +1250,6 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 				 --주문예약구분코드
 				 --------------------------------------------------------------
 				rSevType  = Grid0.GetCellData( "bd_cell8"	, i)
-				-- SELECT CASE 변환 (수동 보정 필요)
 					if rSevType == "1" then
 						Grid0.SetCellData( "bd_cell8", i, "일반예약")
 					elseif rSevType == "2" then
@@ -1266,7 +1264,6 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 				 --주문예약시간구분코드
 				 --------------------------------------------------------------
 				hOurType  = Grid0.GetCellData( "bd_cell18", i)	 --주문예약시간구분코드
-				-- SELECT CASE 변환 (수동 보정 필요)
 				if hOurType == "0" then
 					Grid0.SetCellData( "bd_cell18", i, "장개시")
 				elseif hOurType == "1" then
@@ -1308,7 +1305,6 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 				 --처리구분
 				 --------------------------------------------------------------
 				szResult = Grid0.GetCellData("bd_cell5", i)
-				-- SELECT CASE 변환 (수동 보정 필요)
 				if szResult == "1" then
 					Grid0.SetCellData( "bd_result", i, "예약")
 				elseif szResult == "2" then
@@ -1389,16 +1385,16 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	
 	else
 		
- --		'------------------------------------------------------------------
- --		' 해외ETP 미약정 고객
- --		'------------------------------------------------------------------
+ --		 --------------------------------------------------------------------
+ --		 -- 해외ETP 미약정 고객
+ --		 --------------------------------------------------------------------
  --		if szErrCode == "6207" then
  --			
  --			Form.MsgBox("안내", "해외ETP 거래 미신청 계좌 입니다.\n해당 화면으로 이동하시겠습니까?", "ETP_MSG", 7, "거래신청하기","취소")
  --		
- --		'------------------------------------------------------------------
- --		' 대출주문 대출일자/대출일련번호 미입력 시
- --		'------------------------------------------------------------------
+ --		 --------------------------------------------------------------------
+ --		 -- 대출주문 대출일자/대출일련번호 미입력 시
+ --		 --------------------------------------------------------------------
  --		elseif szErrCode == "1256" or szErrCode == "1258" then
  --			
  --			Form.ShowAlert("안내", "대출일자 선택 후 주문이 가능해요.\n잔고에서 매도할 종목 선택 후 매도를 진행해주세요.")
@@ -1502,7 +1498,7 @@ function Check_InputData(sGubun)
 	 --계좌번호
 	 -------------------------------------------------------------------
 	szAcnt = Form.GetTopCtlProp("acnt", "caption")
-	if string.len(szAcnt) < 10 then
+	if string.string.len(szAcnt) < 10 then
 		Form.ShowAlert(g_szTitle, "계좌번호를 확인후 다시 입력하십시오.")
 		return False
 	end
@@ -1520,31 +1516,31 @@ function Check_InputData(sGubun)
 	
  --	if sGubun == "Order" then
  --		
- --'		'-----------------------------------------------------------------
- --'		'계좌번호
- --'		'-----------------------------------------------------------------
- --'		szAcnt = Form.GetTopCtlProp("acnt", "caption")
- --'		If Len(szAcnt) < 10 Then
- --'			Form.ShowAlert(g_szTitle, "계좌번호를 확인후 다시 입력하십시오.")
- --'			return False
- --'		End If
- --'		
- --'		'-----------------------------------------------------------------
- --'		'계좌비밀번호
- --'		'-----------------------------------------------------------------
- --'		szPwd = Form.GetTopCtlProp("edtPwd", "caption")
- --'		If Trim(szPwd) = "" Then
- --'			Form.triggerEvent("#", "ShowPasswordKeyPad", "")
- --'			return False
- --'		end if
- --'		
- --'		'-----------------------------------------------------------------
- --'		'종목코드
- --'		'-----------------------------------------------------------------
- --'		if Trim(g_szCd) == "" then
- --'			Form.ShowAlert(g_szTitle, "종목코드를 입력하십시요.")
- --'			return false
- --'		end if
+ -- --		'-----------------------------------------------------------------
+ -- --		'계좌번호
+ -- --		'-----------------------------------------------------------------
+ -- --		szAcnt = Form.GetTopCtlProp("acnt", "caption")
+ -- --		If Len(szAcnt) < 10 Then
+ -- --			Form.ShowAlert(g_szTitle, "계좌번호를 확인후 다시 입력하십시오.")
+ -- --			return False
+ -- --		End If
+ -- --		
+ -- --		'-----------------------------------------------------------------
+ -- --		'계좌비밀번호
+ -- --		'-----------------------------------------------------------------
+ -- --		szPwd = Form.GetTopCtlProp("edtPwd", "caption")
+ -- --		If Trim(szPwd) = "" Then
+ -- --			Form.triggerEvent("#", "ShowPasswordKeyPad", "")
+ -- --			return False
+ -- --		end if
+ -- --		
+ -- --		'-----------------------------------------------------------------
+ -- --		'종목코드
+ -- --		'-----------------------------------------------------------------
+ -- --		if Trim(g_szCd) == "" then
+ -- --			Form.ShowAlert(g_szTitle, "종목코드를 입력하십시요.")
+ -- --			return false
+ -- --		end if
  --	
  --		return true
  --		
@@ -1865,7 +1861,7 @@ end
  -- 거래소코드(4자리) <- 거래명(2자리)
  --============================================================================
 function Transform_Exid(sValue)
-	if sValue == "0104" then -- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
@@ -2177,8 +2173,8 @@ function Grid0_OnClickUp(lRow, szCellID)
 			 --미체결그리드에서 넘어온 가격/수량이 클리어 되지 않도록해주는 변수
 			gReturnQtyPrice = true
 			
- --			'자동 수량/가격 세팅해주기 위해 일회성으로 얻어오는 값.
- --			'실제로 주문전송 시에는 컨트롤에 있는 값을 읽어와서 주문 낸다.
+ --			 --자동 수량/가격 세팅해주기 위해 일회성으로 얻어오는 값.
+ --			 --실제로 주문전송 시에는 컨트롤에 있는 값을 읽어와서 주문 낸다.
  --			sOrdMiChecQty	 = Grid0.GetCellData("bd_micheqty", lRow)
  --			sOrdPrice	 = Grid0.GetCellData("bd_orderprice", lRow)
 			
@@ -2203,7 +2199,7 @@ function SetCheckReverse(nRow,sCellD)
 		if szChk == 1 then
 			Grid0.SetCellData("bd_cell21", nRow, "0")
 		else
-			if szAble ~= "N" then --주문 불가면 체크안해줌
+			if szAble ~= "N" then --주문 불가면 체크안해줌 end
 				Grid0.SetCellData("bd_cell21", nRow, "1")
 			elseif szAble == "N" then --주문 불가면 알럿처리
  --				Form.ShowAlert("알림", "이미 주문 처리되거나 예약기간이 경과하여 취소가 불가합니다.")
@@ -2237,7 +2233,7 @@ function SetCheckExceptSelectRow(nRow,sCellID)
 				if szChk == 1 then
 					Grid0.SetCellData("bd_cell21", i, "0")
 				else
-					if szAble ~= "N" then --주문 불가면 체크안해줌
+					if szAble ~= "N" then --주문 불가면 체크안해줌 end
 						Grid0.SetCellData("bd_cell21", i, "1")
 						Grid0.toprow = nRow
 					else
@@ -2280,7 +2276,7 @@ function GetCheckNum()
 end
 
  --============================================================================
- -- 활성화 된 체크박스 개수 확인 (취소 불가 건 제외한 건수) 'v1000
+ -- 활성화 된 체크박스 개수 확인 (취소 불가 건 제외한 건수)  --v1000
  --============================================================================
 function GetCheckboxCnt()
 	
@@ -2419,18 +2415,18 @@ end
  --============================================================================
 function Grid0_OnHeaderClickUp(lRow, szCellID)
 	 --v1000 헤더클릭 주석처리
- --	if szCellID = "th_cell26" then		' 종목명 -> 종목코드
+ --	if szCellID = "th_cell26" then		 -- 종목명 -> 종목코드
  --	    Grid0.SetVisibleCol(1, 0)
  --	    Grid0.SetVisibleCol(2, 1)
  --	    
- --	elseif szCellID = "th_cell28" then	' 종목코드 -> 종목명 
+ --	elseif szCellID = "th_cell28" then	 -- 종목코드 -> 종목명 
  --	    Grid0.SetVisibleCol(1, 1)
  --	    Grid0.SetVisibleCol(2, 0)
  --	    
  --	end if
 end
 
- --============================================================================ 'v1000
+ --============================================================================  --v1000
 function lblToggle_OnClick()
 	if g_clsCode == "1" then
 		imgToggle.imgpath = "toggle_2dots_02.9.png"
@@ -2448,7 +2444,7 @@ function lblToggle_OnClick()
 	chkToday_OnChange(g_checkToday)
 end
 
- --============================================================================ 'v1000
+ --============================================================================  --v1000
 function chkToday_OnChange(sCheckState)
 
 	 -- 체크박스 직접 체크 시에만 툴팁 표시
@@ -2507,7 +2503,7 @@ function chkToday_OnChange(sCheckState)
 	RequestData()
 end
 
- --============================================================================ 'v1000
+ --============================================================================  --v1000
 function cld0_OnEditComplete()
  --	Grid0.rowcount = 0
  --	Grid0.SetClear()
@@ -2551,7 +2547,7 @@ function cld0_OnEditComplete()
 	
 end
 
- --============================================================================ 'v1000
+ --============================================================================  --v1000
 function cld1_OnEditComplete()
  --	Grid0.rowcount = 0
  --	Grid0.SetClear()
@@ -2594,22 +2590,21 @@ function cld1_OnEditComplete()
 end
 
  --============================================================================
- -- 조회조건 선택팝업 'v1000
+ -- 조회조건 선택팝업  --v1000
  --============================================================================
 function LabelFilter_OnClick()
 	Form.OpenPopupAnimation("mhtro16061_p8", g_orderClsCode  .. "★" ..  g_idntClcd .. "★" .. g_selnByovClcd, "", "2")
 end
 
- --============================================================================ 'v1000
+ --============================================================================  --v1000
 function ButtonFilter_OnClick()
 	LabelFilter_OnClick()
 end
 
- --============================================================================ 'v1000
+ --============================================================================  --v1000
 function setLabelFilterCaption()
 	local s_orderCls, s_idnt, s_selnByov
 	
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if g_orderClsCode == "0" then
 			s_orderCls = "전체"
 		elseif g_orderClsCode == "1" then
@@ -2622,7 +2617,6 @@ function setLabelFilterCaption()
 			s_orderCls = "특정일"
 	end
 	
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if g_idntClcd == "0" then
 			s_idnt = "처리전체"
 		elseif g_idntClcd == "1" then
@@ -2631,7 +2625,6 @@ function setLabelFilterCaption()
 			s_idnt = "예약"
 	end
 	
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if g_selnByovClcd == "0" then
 			s_selnByov = "매수매도"
 		elseif g_selnByovClcd == "1" then
@@ -2656,7 +2649,8 @@ function contTooltip_lblText_OnClick()
 	Form.SetTimerEvent( 999, 0, 5 )
 end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_113a" trcode="obtro_oder_113a" compress="1" encryption="1" timeout="45" inputcheck="1" digitalsign="1" />

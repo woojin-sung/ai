@@ -324,9 +324,9 @@ function AutoRule_SelectCount()
 	Form.MakeRequestData("tradeType", "2")			 -- 매도/매수 구분(1:매도, 2:매수)
 	Form.MakeRequestData("dataTargetType", "2")		 -- 국내/해외 구분(1:국내, 2:해외)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -359,9 +359,9 @@ function AutoRule_SelectByAccount()
 	Form.MakeRequestData("dataTargetType", "2")		 -- 국내/해외 구분(1:국내, 2:해외)
 	Form.MakeRequestData("pageInfo", "50")			 -- 조회 데이터 최대갯수
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -391,9 +391,9 @@ function AutoRule_SelectByAccount_Next()
 		Form.MakeRequestData("nextOrderConditionId", g_sNextKey)
 	end
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -415,9 +415,9 @@ function AutoRule_Delete(nIdx)
 	
 	Form.MakeRequestData("conditionStatusCode", "99")	 -- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -442,9 +442,9 @@ function AutoRule_AllDelete()
 	Form.MakeRequestData("tradeType", "2")			 -- 매도/매수 구분(1:매도, 2:매수)
 	Form.MakeRequestData("conditionStatusCode", "99")	 -- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 		
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -475,9 +475,9 @@ function AutoRule_UpdateStatus(nIdx)
 	
 	Form.MakeRequestData("conditionStatusCode", sStatus)	 -- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -502,9 +502,9 @@ function AutoRule_AllUpdateStatus()
 	Form.MakeRequestData("tradeType", "2")			 -- 매도/매수 구분(1:매도, 2:매수)
 	Form.MakeRequestData("conditionStatusCode", "02")	 -- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 	
-		sDev = Form.GetSharedData("&SERVER_MODE", false)
+		sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -526,9 +526,9 @@ function AutoRule_AllUpdateStatus_Stop()
 	Form.MakeRequestData("tradeType", "2")			 -- 매도/매수 구분(1:매도, 2:매수)
 	Form.MakeRequestData("conditionStatusCode", "01")	 -- 상태구분(01:감시중지, 02:감시중, 99:삭제)
 	
-		sDev = Form.GetSharedData("&SERVER_MODE", false)
+		sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -545,19 +545,19 @@ function IssueToken()
 	
 	Form.ReleaseRequestData()
 	
-	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
-	sData1  = Form.GetSharedData("&USER_ID", false )
-	sData2  = Form.GetSharedData("&MCI_SESSION_KEY", false )
-	sData3  = Form.GetSharedData("&SEMI_SSO_KEY", false )
+	sData0  = Form.GetSharedData("..MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("..USER_ID", false )
+	sData2  = Form.GetSharedData("..MCI_SESSION_KEY", false )
+	sData3  = Form.GetSharedData("..SEMI_SSO_KEY", false )
 	
 	Form.MakeRequestData("channelClsCode", 	sData0)
 	Form.MakeRequestData("userId", 			sData1)
 	Form.MakeRequestData("sessionKey", 		sData2)
 	Form.MakeRequestData("semiSsoKey", 		sData3)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -1801,9 +1801,9 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "SVCD"				, 0 	, "082" )
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "CSNO"				, 0 	, "" )
 	elseif szTranID == "obtro_oder_135a" then
-		sCsno = Form.GetSharedData("&CUST_NUM", false)
-		sDate = Form.GetSharedData("&HOST_DATE", false)
-		sMediaCode = Form.GetSharedData("&MEDIA_CODE", false)
+		sCsno = Form.GetSharedData("..CUST_NUM", false)
+		sDate = Form.GetSharedData("..HOST_DATE", false)
+		sMediaCode = Form.GetSharedData("..MEDIA_CODE", false)
 		
 		sAcno 	= g_sAcno  --Form.GetTopCtlProp("act0","total")
 		sAsno 	= g_sAsno  --Form.GetTopCtlProp("act0","sequence")
@@ -1819,7 +1819,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		
 	elseif szTranID == "obtro_oder_133r" then
 		
-		sCsno		= Form.GetSharedData("&CUST_NUM", false)
+		sCsno		= Form.GetSharedData("..CUST_NUM", false)
 		
 		DATAMANAGER.SetDataValue(0, "obtro_oder_133r", "InBlock1", "BSWR_CLCD" , 0 , 		"U1")
 		DATAMANAGER.SetDataValue(0, "obtro_oder_133r", "InBlock1", "CSNO" , 0 , 		sCsno)
@@ -1871,7 +1871,7 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	
 	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
 	
-	if string.len(gf_Trim(szSubMsg))	>	0 then
+	if string.string.len(gf_Trim(szSubMsg))	>	0 then
 		Form.ShowAlert("알림", szErrMsg .. "(" .. szSubMsg .. ")")
 	else
 		Form.ShowAlert("알림", szErrMsg )
@@ -1886,7 +1886,8 @@ function cont0_pnl0_OnScrollEnd()
 	end
 end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obpds_srvc_323r" trcode="obpds_srvc_323r" compress="1" encryption="1" inputcheck="1" />

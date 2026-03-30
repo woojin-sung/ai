@@ -49,13 +49,13 @@ dofile("scr/json.lua")
 -- OS TYPE
 -- -----------------------------------------------
 local g_szOsType
-g_szOsType = Form.GetSharedData("&OS_TYPE", false)
+g_szOsType = Form.GetSharedData("..OS_TYPE", false)
 
 -- -----------------------------------------------
 -- 설정 글자크기
 -- -----------------------------------------------
 local g_szTextSize
-g_szTextSize = Form.getEnvData("common.textsize")
+g_szTextSize = Form.GetEnvData("common.textsize")
 
 -- -----------------------------------------------
 -- 공통 이미지
@@ -249,8 +249,8 @@ function DisplaySetting_PannelRow(nIdx, szType, nDepth, szHead, szText, szSize, 
 	-- ---------------------------------------------------------------
 	
 	Pannel0.SetPropCardCell("highlight" ,"lblInfo", nIdx, "REMOVE")
---	nLen = Form.getLen(szText)
---	Pannel0.SetPropCardCell("textattr" ,"lblInfo", nIdx, "0^"&nLen&"^"&szFgColor&"^"&szSize&"^"&szBold)
+--	nLen = Form.GetLen(szText)
+--	Pannel0.SetPropCardCell("textattr" ,"lblInfo", nIdx, "0^"..nLen.."^"..szFgColor.."^"..szSize.."^"..szBold)
 	return nHeight
 end
 
@@ -693,7 +693,7 @@ function Form_OnFormInit()
 	lblTemp310.paddinginfo = "0,0,0,0"
 	lblTemp295.paddinginfo = "0,0,0,0"
 	lblTemp280.paddinginfo = "0,0,0,0"
-	Pannel0.setNotUseRecycleView(true)
+	Pannel0.SetNotUseRecycleView(true)
 	
 	-- ------------------------------------------------------------------------------
 	-- 라벨컨트롤 라인수 체크 시 OS별 동작 타이밍 다름
@@ -703,7 +703,7 @@ function Form_OnFormInit()
 	if g_szOsType == "2" then
 		Init_Control()
 	else
-		Form.setDelayEvent(1, 0.1)
+		Form.SetDelayEvent(1, 0.1)
 	end
 end
 
@@ -761,12 +761,12 @@ function Label0_OnClick()
 	end
 end
 
--- ''============================================================================
+--  --'============================================================================
 -- Sub DATAMANAGER_OnSendTranBefore(szTranID)
 -- 	if szTranID == "obtro_oder_135a" then
--- 		sCsno = Form.GetSharedData("&CUST_NUM", false)
--- 		sDate = Form.GetSharedData("&HOST_DATE", false)
--- 		sMediaCode = Form.GetSharedData("&MEDIA_CODE", false)
+-- 		sCsno = Form.GetSharedData("..CUST_NUM", false)
+-- 		sDate = Form.GetSharedData("..HOST_DATE", false)
+-- 		sMediaCode = Form.GetSharedData("..MEDIA_CODE", false)
 -- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "BSWR_CLCD" , 0 , "09")
 -- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "CSNO" , 0 , sCsno)
 -- 		DATAMANAGER.SetDataValue(0, "obtro_oder_135a", "InBlock1", "PROS_CLS_CODE" , 0 ,"" )
@@ -779,20 +779,21 @@ end
 -- 	end
 -- End Sub
 --
--- ''============================================================================
+--  --'============================================================================
 -- Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 -- 	
 -- End Sub
 --
--- ''============================================================================
+--  --'============================================================================
 -- Sub DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 -- 	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
 -- 	
--- 	if	gf_Tonumber(trim(szSubMsg))	>	0	then
--- 		Form.ShowAlert("알림", szErrMsg & "(" & szSubMsg & ")")
+-- 	if	gf_Tonumber(gf_Trim(szSubMsg))	>	0	then
+-- 		Form.ShowAlert("알림", szErrMsg .. "(" .. szSubMsg .. ")")
 -- 	else
 -- 		Form.ShowAlert("알림", szErrMsg )
 -- 	end
 -- End Sub
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

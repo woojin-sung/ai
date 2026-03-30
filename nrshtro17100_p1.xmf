@@ -172,58 +172,58 @@ function Form_OnPopupReturn(sKeyName, sRet)
         local arrRet = Convert_StrToArr(sRet, "`")
         local nArrCnt = #arrRet
         if nArrCnt > 1 then
-            local sKey = arrRet[1]
-            local sValue = arrRet[2]
+            local sKey = arrRet[1+1]
+            local sValue = arrRet[2+1]
             if sKey == "매도_기준가" then
                 DisplaySet_BasePrc(sValue, true, true)
             elseif sKey == "매도_이익실현" then
-                if isEmpty(sValue) == true or Cdbl(sValue) == 0 then
+                if isEmpty(sValue) == true or gf_Tonumber(sValue) == 0 then
                     Form.ShowAlert("알림", "이익 실현 값을 입력해 주세요.")
                     return
                 end
                 --				sKey2 = cont1.cmb1.cbkeydata
-                --				if sKey2 == "03" and Cdbl(sValue) == 0 then
+                --				if sKey2 == "03" and gf_Tonumber(sValue) == 0 then
                 --					Form.ShowAlert("알림", "이익 실현 값을 입력해 주세요.")
                 --					return
                 --				end
                 DisplaySet_Cond1(sValue, true)
             elseif sKey == "매도_이익보존" then
-                if isEmpty(sValue) == true or Cdbl(sValue) == 0 then
+                if isEmpty(sValue) == true or gf_Tonumber(sValue) == 0 then
                     Form.ShowAlert("알림", "이익 보존 값을 입력해 주세요.")
                     return
                 end
                 --				sKey2 = cont1.cmb2.cbkeydata
-                --				if sKey2 == "03" and Cdbl(sValue) == 0 then
+                --				if sKey2 == "03" and gf_Tonumber(sValue) == 0 then
                 --					Form.ShowAlert("알림", "이익 보존 값을 입력해 주세요.")
                 --					return
                 --				end
                 DisplaySet_Cond2(sValue, true)
             elseif sKey == "매도_손실제한" then
-                if isEmpty(sValue) == true or Cdbl(sValue) == 0 then
+                if isEmpty(sValue) == true or gf_Tonumber(sValue) == 0 then
                     Form.ShowAlert("알림", "손실 제한 값을 입력해 주세요.")
                     return
                 end
                 --				sKey2 = cont1.cmb3.cbkeydata
-                --				if sKey2 == "03" and Cdbl(sValue) == 0 then
+                --				if sKey2 == "03" and gf_Tonumber(sValue) == 0 then
                 --					Form.ShowAlert("알림", "손실 제한 값을 입력해 주세요.")
                 --					return
                 --				end
                 DisplaySet_Cond3(sValue, true)
             elseif sKey == "매도_주문수량" then
-                --				if isEmpty(sValue) == true or Cdbl(sValue) == 0 then
+                --				if isEmpty(sValue) == true or gf_Tonumber(sValue) == 0 then
                 --					Form.ShowAlert("알림", "주문 수량을 입력해 주세요.")
                 --					return
                 --				end
                 DisplaySet_OrderQty(sValue)
             elseif sKey == "매도_주문가격" then
-                --				if isEmpty(sValue) == true or Cdbl(sValue) == 0 then
+                --				if isEmpty(sValue) == true or gf_Tonumber(sValue) == 0 then
                 --					cont1.edtPrc0.caption = ""
                 --					Form.ShowAlert("알림", "주문 가격을 입력해 주세요.")
                 --					return
                 --				end
                 DisplaySet_OrderPrc(sValue, true)
-            elseif sKey == "매도_주문가능수량" then 
-                if isEmpty(sValue) == true or Cdbl(sValue) == 0 then
+            elseif sKey == "매도_주문가능수량" then
+                if isEmpty(sValue) == true or gf_Tonumber(sValue) == 0 then
                     Form.ShowAlert("알림", "주문 수량 비율을 입력해 주세요.")
                     return
                 end
@@ -265,40 +265,40 @@ function Form_OnPopupReturn(sKeyName, sRet)
             --			g_isModify_OneTime = true
             local orderConditionId 		= ""
             local registrationDate 		= ""
-            local accountNumber			= arrLinkData[1]
-            local accountSeqNumber		= arrLinkData[2]
-            local stockExchangeCode		= arrLinkData[3]
-            local stockCode				= arrLinkData[4]
-            local stockKoreaName			= arrLinkData[5]
-            local tradeType				= arrLinkData[6]
-            local priceTypeprofit			= arrLinkData[7]
-            local priceTypeNameprofit		= arrLinkData[8]
-            local priceTypeValueprofit		= arrLinkData[9]
-            local priceprofit			= arrLinkData[10]
-            local priceTypepreserve		= arrLinkData[11]
-            local priceTypeNamepreserve	= arrLinkData[12]
-            local priceTypeValuepreserve	= arrLinkData[13]
-            local pricepreserve			= arrLinkData[14]
-            local priceTypestopLoss		= arrLinkData[15]
-            local priceTypeNamestopLoss	= arrLinkData[16]
-            local priceTypeValuestopLoss	= arrLinkData[17]
-            local pricestopLoss 			= arrLinkData[18]
-            local orderPaymentType		= arrLinkData[19]
-            local orderClsType			= arrLinkData[20]
-            local orderClsTypeNm			= arrLinkData[21]
-            local orderPriceType			= arrLinkData[22]
-            local tickValue				= arrLinkData[23]
-            local orderPrice				= arrLinkData[24]
-            local orderQty				= arrLinkData[25]
-            local expirationDate			= arrLinkData[26]
+            local accountNumber			= arrLinkData[1+1]
+            local accountSeqNumber		= arrLinkData[2+1]
+            local stockExchangeCode		= arrLinkData[3+1]
+            local stockCode				= arrLinkData[4+1]
+            local stockKoreaName			= arrLinkData[5+1]
+            local tradeType				= arrLinkData[6+1]
+            local priceTypeprofit			= arrLinkData[7+1]
+            local priceTypeNameprofit		= arrLinkData[8+1]
+            local priceTypeValueprofit		= arrLinkData[9+1]
+            local priceprofit			= arrLinkData[10+1]
+            local priceTypepreserve		= arrLinkData[11+1]
+            local priceTypeNamepreserve	= arrLinkData[12+1]
+            local priceTypeValuepreserve	= arrLinkData[13+1]
+            local pricepreserve			= arrLinkData[14+1]
+            local priceTypestopLoss		= arrLinkData[15+1]
+            local priceTypeNamestopLoss	= arrLinkData[16+1]
+            local priceTypeValuestopLoss	= arrLinkData[17+1]
+            local pricestopLoss 			= arrLinkData[18+1]
+            local orderPaymentType		= arrLinkData[19+1]
+            local orderClsType			= arrLinkData[20+1]
+            local orderClsTypeNm			= arrLinkData[21+1]
+            local orderPriceType			= arrLinkData[22+1]
+            local tickValue				= arrLinkData[23+1]
+            local orderPrice				= arrLinkData[24+1]
+            local orderQty				= arrLinkData[25+1]
+            local expirationDate			= arrLinkData[26+1]
             local conditionStatusCode		= ""
             local conditionStatusName		= ""
-            local basePriceClsType		= arrLinkData[27]
-            local basePriceClsTypeName		= arrLinkData[28]
-            local basePrice				= arrLinkData[29]
+            local basePriceClsType		= arrLinkData[27+1]
+            local basePriceClsTypeName		= arrLinkData[28+1]
+            local basePrice				= arrLinkData[29+1]
             local sItemCode = Transform_Exid2(stockExchangeCode) .. "@" .. stockCode
             Check_ItemCode(sItemCode)
-            if isEmpty(expirationDate) == false then 
+            if isEmpty(expirationDate) == false then
                 cont1.Calendar0.caption = replace(expirationDate, "-")
             end
         end
@@ -311,9 +311,9 @@ function Form_OnPopupReturn(sKeyName, sRet)
         ----------------------------------
         if sRet ~= "" then
             local szAcnt
-            local tData = Split(sRet, "★")
-            if UBOUND(tData) > 0 then
-                g_sPwd = tData[1]
+            local tData = gf_Split(sRet, "★")
+            if #tData > 0 then
+                g_sPwd = tData[1+1]
                 Form.PostLinkData("17100_PWD_CHANGE", sRet)
             end
             DATAMANAGER.RequestTranData("obtro_oder_132r")
@@ -391,9 +391,9 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
         local nQty = 0
         
         if cont1.cmb6.cbkeydata == "01" then
-            nQty = Cint(cont1.edtQty.caption)
+            nQty = gf_Tonumber(cont1.edtQty.caption)
         elseif cont1.cmb6.cbkeydata == "02" then
-            nQty =  Cint(cont1.lblAbleQty.caption)
+            nQty =  gf_Tonumber(cont1.lblAbleQty.caption)
         end
         
         DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "ODQT"				, 0, nQty)							-- 주문수량
@@ -404,9 +404,9 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
             --			if cont1.cmb5.cbkeydata == "01" then
             --
             --				sPrc = contHidden.lblHyun.caption
-            --				nUnit = Cdbl(GetHogaUnit(g_sExid3, sPrc, 0))
+            --				nUnit = gf_Tonumber(GetHogaUnit(g_sExid3, sPrc, 0))
             --				
-            --				nResultPrc = Cdbl(sPrc) + (nUnit * Cint(cont1.Combo0.cbkeydata))
+            --				nResultPrc = gf_Tonumber(sPrc) + (nUnit * gf_Tonumber(cont1.Combo0.cbkeydata))
             --	
             --				szPrc = nResultPrc
             
@@ -478,24 +478,24 @@ function Check_OrdCond(szIdx)
 end
 
 function DATAMANAGER_OnReceiveTranComplete(szTranID)
-    local sOsType = Form.GetSharedData("&OS_TYPE", false)
+    local sOsType = Form.GetSharedData("..OS_TYPE", false)
     if szTranID == "ohhts_6000_001r_1" then
         local sBusinessName 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_BSTP_MDDV_NAME", 0)	-- 업종명
         local sEtfEtn 		= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FIDX_ETF_TYPE_CODE", 0) 	-- ETF여부
         local sLvrg 		= DATAMANAGER.GetDataValue(0, "ohhts_6000_001r_1", "OutBlock1", "FID_LVRG", 0) 			-- 레버리지
         local sData = g_sCode .. " | " .. Transform_Exid(g_sExid2)
-        local szLvrg = Form.getItemCodeInfo(g_sItemCode, "lvrgratio")
+        local szLvrg = Form.GetItemCodeInfo(g_sItemCode, "lvrgratio")
         if sEtfEtn == "001" then
-            if CInt(szLvrg) == 89 then
+            if gf_Tonumber(szLvrg) == 89 then
                 sData = sData .. " | ETF(변동)"
             else
-                sData = sData .. " | ETF(" .. FormatNumber(sLvrg,1) .. ")"
+                sData = sData .. " | ETF(" .. gf_CommaValue(sLvrg,1) .. ")"
             end
         elseif sEtfEtn == "002" then
-            if CInt(szLvrg) == 89 then
+            if gf_Tonumber(szLvrg) == 89 then
                 sData = sData .. " | ETN(변동)"
             else
-                sData = sData .. " | ETN(" .. FormatNumber(sLvrg,1) .. ")"
+                sData = sData .. " | ETN(" .. gf_CommaValue(sLvrg,1) .. ")"
             end
         else
             sData = sData .. " | " .. sBusinessName
@@ -527,7 +527,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
         --		-- 해외주식 시세조회
         --		---------------------------------
         --		Request_MktOp(g_szMktOpClsCd)
-    elseif szTranID == "obtro_acnt_174r" then	
+    elseif szTranID == "obtro_acnt_174r" then
         g_sAvrgPrc = DATAMANAGER.GetDataValue(0, "obtro_acnt_174r", "OutBlock1", "AVRG_UNPR", 0)	
         ---------------------------------
         -- 해외주식 시세조회
@@ -537,7 +537,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
         DisplaySet_CondSet(false) 
         --		if g_isModify == true then
         --			DisplayPrevSet_LinkInfo()
-        if isEmpty(basePriceClsType) == false then 
+        if isEmpty(basePriceClsType) == false then
             cont1.cmb0.cbkeydata = basePriceClsType
             if basePriceClsType == "01" then
                 basePrice = g_sAvrgPrc
@@ -548,7 +548,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
         end
         cont1_cmb0_OnEditComplete(0)
         DisplaySet_BasePrc(basePrice, false, false)
-        if isEmpty(priceTypeprofit) == false then 
+        if isEmpty(priceTypeprofit) == false then
             cont1.cmb1.cbkeydata = priceTypeprofit
         else
             cont1.cmb1.cbkeydata = g_mCond1
@@ -559,7 +559,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
         else
             DisplaySet_Cond1(priceTypeValueprofit, false)
         end
-        if isEmpty(priceTypepreserve) == false then 
+        if isEmpty(priceTypepreserve) == false then
             cont1.cmb2.cbkeydata = priceTypepreserve
         end
         cont1_cmb2_OnEditComplete(0)
@@ -568,7 +568,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
         else
             DisplaySet_Cond2(priceTypeValuepreserve, false)
         end
-        if isEmpty(priceTypestopLoss) == false then 
+        if isEmpty(priceTypestopLoss) == false then
             cont1.cmb3.cbkeydata = priceTypestopLoss
         else
             cont1.cmb3.cbkeydata = g_mCond3
@@ -579,14 +579,14 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
         else
             DisplaySet_Cond3(priceTypeValuestopLoss, false)
         end
-        if isEmpty(orderClsType) == false then 
+        if isEmpty(orderClsType) == false then
             cont1.cmb4.cbkeydata = orderClsType
         else
             cont1.cmb4.cbkeydata = g_oCondType
         end
         cont1_cmb4_OnEditComplete(0)
         if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
-            if isEmpty(orderPriceType) == false then 
+            if isEmpty(orderPriceType) == false then
                 cont1.cmb5.cbkeydata = orderPriceType
             else
                 cont1.cmb5.cbkeydata = g_oCondPrc
@@ -596,7 +596,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
         --			DisplaySet_OrderQty(orderQty)
         if isEmpty(orderQty) == false then
             DisplaySet_OrderQty(orderQty)
-        elseif isEmpty(g_oCondQty) == false then 
+        elseif isEmpty(g_oCondQty) == false then
             cont1.cmb6.cbkeydata = g_oCondQty
             cont1_cmb6_OnEditComplete(0)
         end
@@ -625,7 +625,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
         end
     elseif szTranID == "obtro_comn_006r" then
         g_sBizDate   		= DATAMANAGER.GetDataValue(0, "obtro_comn_006r", "OutBlock1", "BSOP_DATE"	, 0) -- 미국장 영업일
-        if isEmpty(expirationDate) == false then 
+        if isEmpty(expirationDate) == false then
             cont1.Calendar0.caption = string.gsub(expirationDate, "-", "")
         else
             cont1.Calendar0.caption = CalcDate("d",89)
@@ -666,7 +666,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
     end
 end
 
-function Clear_Data() 
+function Clear_Data()
     --	cont1.cmb0.cbkeydata = "01"
     --	cont1.cmb1.cbkeydata = "01"
     --	cont1.cmb2.cbkeydata = "01"
@@ -711,13 +711,13 @@ end
 
 function cont1_Calendar0_OnEditComplete()
     local sDate = cont1.Calendar0.caption
-    --	sBizDate = Form.GetSharedData("&BIZ_DT", false )
+    --	sBizDate = Form.GetSharedData("..BIZ_DT", false )
     --	
-    --	sToday = Form.GetSharedData("&HOST_DATE", false )
-    --	if cint(sToday) >  Cint(Form.GetSharedData("&BIZ_DT", false )) then
-    --		sBizDate = Form.GetSharedData("&BIZ_NXT_DT", false )
+    --	sToday = Form.GetSharedData("..HOST_DATE", false )
+    --	if gf_Tonumber(sToday) >  gf_Tonumber(Form.GetSharedData("..BIZ_DT", false)) then
+    --		sBizDate = Form.GetSharedData("..BIZ_NXT_DT", false )
     --	else	
-    --		sBizDate = Form.GetSharedData("&BIZ_DT", false )
+    --		sBizDate = Form.GetSharedData("..BIZ_DT", false )
     --	end if
     if gf_Tonumber(sDate) < gf_Tonumber(g_sBizDate) then
         Form.ShowAlert("안내", "영업일 이전 날짜로 설정 할 수 없어요.")
@@ -769,14 +769,14 @@ function cont1_btnPPlus0_OnClick()
         cont1.Combo0.cbkeydata = sPrc
         sPrc = SetPrice("AUTO", sPrc, "0", " 틱")
     elseif sKey == "09" then
-        if Cdbl(sPrevPrc) == 0 then
+        if gf_Tonumber(sPrevPrc) == 0 then
             local sPrc = Replace_Prc(contHidden.lblHyun.caption)
             sPrc  = ReSet_Prc(sPrc, 1)
         else
             local sPrc = Calc_Price2(1, 0, sPrevPrc)
-        end if
+        end
         sPrc = SetPrice("AUTO", sPrc, contHidden.lblDecimal.caption, contHidden.lblCrcd.caption)
-    end if
+    end
     cont1.edtPrc0.caption = sPrc
 end
 
@@ -788,14 +788,14 @@ function cont1_btnPMinus0_OnClick()
         cont1.Combo0.cbkeydata = sPrc
         sPrc = SetPrice("AUTO", sPrc, "0", " 틱")
     elseif sKey == "09" then
-        if Cdbl(sPrevPrc) == 0 then
+        if gf_Tonumber(sPrevPrc) == 0 then
             local sPrc = Replace_Prc(contHidden.lblHyun.caption)
             sPrc  = ReSet_Prc(sPrc, 0)
         else
             local sPrc = Calc_Price2(1, 1, sPrevPrc)
-        end if
+        end
         sPrc = SetPrice("AUTO", sPrc, contHidden.lblDecimal.caption, contHidden.lblCrcd.caption)
-    end if
+    end
     cont1.edtPrc0.caption = sPrc
 end
 
@@ -881,23 +881,23 @@ function cont1_cmb0_OnEditComplete(iIndex)
         cont1.edtPrc.visible = true
         local sPrc = SetPrice("AUTO", contHidden.lblClose.caption, contHidden.lblDecimal.caption, contHidden.lblCrcd.caption)
         cont1.edtPrc.caption = sPrc
-    end if
-    cont1.btnPrc.bringFront("1")
+    end
+    cont1.btnPrc.BringFront("1")
     if isEmpty(cont1.lblSellCond0.caption) == false and cont1.cmb1.cbkeydata ~= "01" then
         DisplaySet_Cond1(Replace_Prc(cont1.lblSellCond0.caption), false)
     else
         cont1_cmb1_OnEditComplete(0)
-    end if
+    end
     if isEmpty(cont1.lblSellCond2.caption) == false and cont1.cmb2.cbkeydata ~= "01" then
         DisplaySet_Cond2( Replace_Prc(cont1.lblSellCond2.caption), false)
     else
         cont1_cmb2_OnEditComplete(0)
-    end if
+    end
     if isEmpty(cont1.lblSellCond4.caption) == false and cont1.cmb3.cbkeydata ~= "01" then
         DisplaySet_Cond3(Replace_Prc(cont1.lblSellCond4.caption), false)
     else
         cont1_cmb3_OnEditComplete(0)
-    end if
+    end
     --	cont1.cmb1.cbkeydata = "01"
     --	cont1.cmb2.cbkeydata = "01"
     --	cont1.cmb3.cbkeydata = "01"
@@ -908,32 +908,32 @@ end
 
 function Check_InputData()
     if isEmpty(cont1.lblSellCond0.caption) == true and isEmpty(cont1.lblSellCond2.caption) == true and isEmpty(cont1.lblSellCond4.caption) == true then
-        Form.showAlert("알림", "감시 조건을 입력해 주세요.")
+        Form.ShowAlert("알림", "감시 조건을 입력해 주세요.")
         return false
-    end if
+    end
     if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
         if (cont1.cmb5.cbkeydata == "01" or cont1.cmb5.cbkeydata == "09") and isEmpty(cont1.edtPrc0.caption) == true then
-            Form.showAlert("알림", "주문 가격을 입력해 주세요.")
+            Form.ShowAlert("알림", "주문 가격을 입력해 주세요.")
             return false
-        end if
-    end if
+        end
+    end
     if (cont1.cmb6.cbkeydata == "01" and isEmpty(cont1.edtQty.caption) == true) or (cont1.cmb6.cbkeydata == "02" and isEmpty(cont1.lblAbleQty.caption) == true) then
-        Form.showAlert("알림", "주문 수량을 입력해 주세요.")
+        Form.ShowAlert("알림", "주문 수량을 입력해 주세요.")
         return false
-    end if
+    end
     return true
 end
 
 function Check_InputData2()
     if Check_Cond1() == false then
         return false
-    end if
+    end
     if Check_Cond2() == false then
         return false
-    end if
+    end
     if Check_Cond3() == false then
         return false
-    end if
+    end
     return true
 end
 
@@ -945,21 +945,21 @@ function Replace_Affix(nIdx, sAffix, sText)
         sTempAffix = "$"
     else
         sTempAffix = sAffix
-    end if
+    end
     local sResult = sText
-    if instr(sResult, sAffix) > 0 then
+    if string.find(sResult, sAffix) > 0 then
         ----------------
         -- Prefix
         ----------------
         if nIdx == 0 then
-            sResult = sTempAffix .. " " .. trim(replace(sResult, sAffix, ""))
+            sResult = sTempAffix .. " " .. gf_Trim(string.gsub(sResult, string.gsub(sAffix, "([%p])", "%%%1"), ""))
             ----------------
             -- Suffix
             ----------------
         elseif nIdx == 1 then
-            sResult = trim(replace(sResult, sAffix, "")) .. " " .. sTempAffix
-        end if
-    end if
+            sResult = gf_Trim(string.gsub(sResult, string.gsub(sAffix, "([%p])", "%%%1"), "")) .. " " .. sTempAffix
+        end
+    end
     return sResult
 end
 
@@ -967,7 +967,7 @@ function Open_Confirm()
     -------------------------------
     --계좌정보
     -------------------------------
-    local sLinkData = left(g_sAcno,4) .. "-" .. right(g_sAcno,4)  .. "-" .. g_sAsno & " " & g_sAcntNm
+    local sLinkData = string.sub(g_sAcno, 1, 4) .. "-" .. string.sub(g_sAcno, -4)  .. "-" .. g_sAsno .. " " .. g_sAcntNm
     -------------------------------
     --종목정보
     -------------------------------
@@ -1004,25 +1004,25 @@ function Open_Confirm()
             sLinkData = sLinkData .. "`" .. Replace_Affix(1, "$", cont1.edtPrc0.caption)  
         else
             sLinkData = sLinkData .. "`" .. cont1.cmb5.caption 
-        end if
+        end
     else
         sLinkData = sLinkData .. "`" .. "-"
-    end if
+    end
     if cont1.cmb6.cbkeydata == "01" then
         if isEmpty(cont1.edtQty.caption) == true then
             sLinkData = sLinkData .. "`" .. "-"
         else
-            sLinkData = sLinkData .. "`" .. FormatNumber(cont1.edtQty.caption , 0) .. " 주"
-        end if
+            sLinkData = sLinkData .. "`" .. gf_CommaValue(cont1.edtQty.caption , 0) .. " 주"
+        end
     elseif cont1.cmb6.cbkeydata == "02" then
         if isEmpty(cont1.lblAbleQty.caption) == true then
             sLinkData = sLinkData .. "`" .. "-"
         else
-            sLinkData = sLinkData .. "`" .. FormatNumber(cont1.lblAbleQty.caption , 0) .. " 주"
-        end if
-    end if
+            sLinkData = sLinkData .. "`" .. gf_CommaValue(cont1.lblAbleQty.caption , 0) .. " 주"
+        end
+    end
     local sDate = cont1.Calendar0.caption
-    local sConvDate = mid(sDate,3,2) .. "." .. mid(sDate,5,2) .. "." .. right(sDate,2) .. " 까지"
+    local sConvDate = string.sub(sDate, 3, 3 + 2 - 1) .. "." .. string.sub(sDate, 5, 5 + 2 - 1) .. "." .. string.sub(sDate, -2) .. " 까지"
     sLinkData = sLinkData .. "`" .. sConvDate
     Form.OpenPopup("nrshtro17100_pb" , sLinkData , "")
 end
@@ -1032,17 +1032,17 @@ function btnReg_OnClick()
     if Check_InputData() == false then
         btnReg.enable = true
         return
-    end if
+    end
     if Check_InputData2() == false then
         btnReg.enable = true
         return
-    end if
+    end
     --	btnReg.enable = true
     --	if g_szOdrPop == "1" then
     --		Open_Confirm()
     --	else
     --		if g_isPTP == "Y" then
-    --			szData = "90" & "|" & ""	-- 매매구분|메시지
+    --			szData = "90" .. "|" .. ""	-- 매매구분|메시지
     --			--Form.OpenPopup("mhtro16060_p15", szData , "")	--OnPopupReturn -> "PTP주문경고"
     --			Form.OpenPopupAnimation("mhtro16100_p15", szData, "", "2")
     --		else
@@ -1057,204 +1057,204 @@ function btnReg_OnClick()
     --		end if
     --	end if
     DATAMANAGER.RequestTranData("obtro_oder_132r")
-    Form.setDelayEvent(1, 0.5)
+    Form.SetDelayEvent(1, 0.5)
     --	btnReg.enable = true
 end
 
 function Form_OnDelayEvent(nID)
-    if Cint(nID) == 1 then
+    if gf_Tonumber(nID) == 1 then
         btnReg.enable = true
-    end if
+    end
 end 
 
-function AutoRule_Create() 
+function AutoRule_Create()
     g_sStep = "CREATE"
-    Form.releaseRequestData()
-    local sUserID = Form.GetSharedData("&USER_ID", false )
-    Form.makeRequestData("userId", sUserID)
-    Form.makeRequestData("accountNumber", 	g_sAcno)
-    Form.makeRequestData("accountSeqNumber", g_sAsno)
-    Form.makeRequestData("accountPassword", g_sPwd)
-    Form.makeRequestData("stockExchangeCode", g_sMarket)
-    Form.makeRequestData("stockCode", g_sCode)
-    Form.makeRequestData("tradeType", "1")
-    --	Form.makeRequestData("conditionName", "매도자동조건")
+    Form.ReleaseRequestData()
+    local sUserID = Form.GetSharedData("..USER_ID", false )
+    Form.MakeRequestData("userId", sUserID)
+    Form.MakeRequestData("accountNumber", 	g_sAcno)
+    Form.MakeRequestData("accountSeqNumber", g_sAsno)
+    Form.MakeRequestData("accountPassword", g_sPwd)
+    Form.MakeRequestData("stockExchangeCode", g_sMarket)
+    Form.MakeRequestData("stockCode", g_sCode)
+    Form.MakeRequestData("tradeType", "1")
+    --	Form.MakeRequestData("conditionName", "매도자동조건")
     local s_profitRealization = ""
     local s_profitPreservation = ""
     local s_stopLoss = ""
     if isEmpty(cont1.lblSellCond0.caption) == false then
-        Form.startBuildJson()
-        Form.putJsonData("priceType", cont1.cmb1.cbkeydata)
-        Form.putJsonData("priceTypeValue", Replace_Prc(cont1.lblSellCond0.caption))
-        Form.putJsonData("price", Replace_Prc(cont1.lblSellCond1.caption))
-        s_profitRealization = Form.endBuildJson()
-    end if
+        Form.StartBuildJson()
+        Form.PutJsonData("priceType", cont1.cmb1.cbkeydata)
+        Form.PutJsonData("priceTypeValue", Replace_Prc(cont1.lblSellCond0.caption))
+        Form.PutJsonData("price", Replace_Prc(cont1.lblSellCond1.caption))
+        s_profitRealization = Form.EndBuildJson()
+    end
     if isEmpty(cont1.lblSellCond2.caption) == false then
-        Form.startBuildJson()
-        Form.putJsonData("priceType", cont1.cmb2.cbkeydata)
-        Form.putJsonData("priceTypeValue",  Replace_Prc(cont1.lblSellCond2.caption))
-        Form.putJsonData("price", Replace_Prc(cont1.lblSellCond3.caption))
-        s_profitPreservation = Form.endBuildJson()
-    end if
+        Form.StartBuildJson()
+        Form.PutJsonData("priceType", cont1.cmb2.cbkeydata)
+        Form.PutJsonData("priceTypeValue",  Replace_Prc(cont1.lblSellCond2.caption))
+        Form.PutJsonData("price", Replace_Prc(cont1.lblSellCond3.caption))
+        s_profitPreservation = Form.EndBuildJson()
+    end
     if isEmpty(cont1.lblSellCond4.caption) == false then
-        Form.startBuildJson()
-        Form.putJsonData("priceType", cont1.cmb3.cbkeydata)
-        Form.putJsonData("priceTypeValue",  Replace_Prc(cont1.lblSellCond4.caption))
-        Form.putJsonData("price", Replace_Prc(cont1.lblSellCond5.caption))
-        s_stopLoss = Form.endBuildJson()
-    end if
-    Form.startBuildJson()
-    Form.putJsonData("basePriceClsType", cont1.cmb0.cbkeydata)
+        Form.StartBuildJson()
+        Form.PutJsonData("priceType", cont1.cmb3.cbkeydata)
+        Form.PutJsonData("priceTypeValue",  Replace_Prc(cont1.lblSellCond4.caption))
+        Form.PutJsonData("price", Replace_Prc(cont1.lblSellCond5.caption))
+        s_stopLoss = Form.EndBuildJson()
+    end
+    Form.StartBuildJson()
+    Form.PutJsonData("basePriceClsType", cont1.cmb0.cbkeydata)
     local sPrc =  Replace_Prc(cont1.edtPrc.caption)
     if isEmpty(sPrc) == true then
         sPrc = "0"
-    end if
-    Form.putJsonData("basePrice", sPrc)
+    end
+    Form.PutJsonData("basePrice", sPrc)
     if isEmpty(s_profitRealization) == false then
-        Form.putJsonData("profitRealization", s_profitRealization)
-    end if
+        Form.PutJsonData("profitRealization", s_profitRealization)
+    end
     if isEmpty(s_profitPreservation) == false then
-        Form.putJsonData("profitPreservation", s_profitPreservation)
-    end if
+        Form.PutJsonData("profitPreservation", s_profitPreservation)
+    end
     if isEmpty(s_stopLoss) == false then
-        Form.putJsonData("stopLoss", s_stopLoss)
-    end if
-    local sData = Form.endBuildJson()
-    Form.makeRequestData("sellCondition", sData)
-    Form.makeRequestData("orderPaymentType", "1")
-    Form.makeRequestData("orderClsType", cont1.cmb4.cbkeydata)
+        Form.PutJsonData("stopLoss", s_stopLoss)
+    end
+    local sData = Form.EndBuildJson()
+    Form.MakeRequestData("sellCondition", sData)
+    Form.MakeRequestData("orderPaymentType", "1")
+    Form.MakeRequestData("orderClsType", cont1.cmb4.cbkeydata)
     if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
-        Form.makeRequestData("orderPriceType", cont1.cmb5.cbkeydata)
+        Form.MakeRequestData("orderPriceType", cont1.cmb5.cbkeydata)
         if cont1.cmb5.cbkeydata == "01" then
-            Form.makeRequestData("tickValue", cont1.Combo0.cbkeydata)
-            Form.makeRequestData("orderPrice", "0")
+            Form.MakeRequestData("tickValue", cont1.Combo0.cbkeydata)
+            Form.MakeRequestData("orderPrice", "0")
             --		sPrc = contHidden.lblHyun.caption
-            --		nUnit = Cdbl(GetHogaUnit(g_sExid3, sPrc, 0))
+            --		nUnit = gf_Tonumber(GetHogaUnit(g_sExid3, sPrc, 0))
             --		
-            --		nResultPrc = Cdbl(sPrc) + (nUnit * Cint(cont1.Combo0.cbkeydata))
-            --		Form.makeRequestData("orderPrice", nResultPrc)
+            --		nResultPrc = gf_Tonumber(sPrc) + (nUnit * gf_Tonumber(cont1.Combo0.cbkeydata))
+            --		Form.MakeRequestData("orderPrice", nResultPrc)
         elseif cont1.cmb5.cbkeydata == "09" then
-            Form.makeRequestData("tickValue","0")
-            Form.makeRequestData("orderPrice", Replace_Prc(cont1.edtPrc0.caption))
+            Form.MakeRequestData("tickValue","0")
+            Form.MakeRequestData("orderPrice", Replace_Prc(cont1.edtPrc0.caption))
         else
-            Form.makeRequestData("tickValue","0")
-            Form.makeRequestData("orderPrice", "0")
-        end if
-    end if
+            Form.MakeRequestData("tickValue","0")
+            Form.MakeRequestData("orderPrice", "0")
+        end
+    end
     if cont1.cmb6.cbkeydata == "01" then
-        Form.makeRequestData("orderQty", Cint(cont1.edtQty.caption))
+        Form.MakeRequestData("orderQty", gf_Tonumber(cont1.edtQty.caption))
     elseif cont1.cmb6.cbkeydata == "02" then
-        Form.makeRequestData("orderQty", Cint(cont1.lblAbleQty.caption))
-    end if
+        Form.MakeRequestData("orderQty", gf_Tonumber(cont1.lblAbleQty.caption))
+    end
     local sMonth = cont1.Calendar0.calmonth
-    if Cint(cont1.Calendar0.calmonth) < 10 then
-        sMonth = "0"&sMonth
-    end if
+    if gf_Tonumber(cont1.Calendar0.calmonth) < 10 then
+        sMonth = "0"..sMonth
+    end
     local sDate = cont1.Calendar0.caption
-    Form.makeRequestData("expirationDate", left(sDate,4) .. "-" ..  mid(sDate,5,2)  .. "-" .. right(sDate,2))
-    Form.makeRequestData("conditionStatusCode", g_sAutoRule)
-    local sDev = Form.GetSharedData("&SERVER_MODE", false)
+    Form.MakeRequestData("expirationDate", string.sub(sDate, 1, 4) .. "-" ..  string.sub(sDate, 5, 5 + 2 - 1)  .. "-" .. string.sub(sDate, -2))
+    Form.MakeRequestData("conditionStatusCode", g_sAutoRule)
+    local sDev = Form.GetSharedData("..SERVER_MODE", false)
     local sUrl = ""
-    if sDev == "1" then	--개발기
+    if sDev == "1" then --개발기 end
         sUrl = "https://dev-api-gateway.imeritz.com:8443/"
     else
         sUrl = "https://api-gateway.imeritz.com:8443/"
-    end if
-    Form.requestRestAPI(sUrl&"api/v1/rule/create", "")
+    end
+    Form.RequestRestAPI(sUrl.."api/v1/rule/create", "")
     g_sAutoRule = "01"
 end
 
-function AutoRule_Update() 
+function AutoRule_Update()
     g_sStep = "UPDATE"
-    Form.releaseRequestData()
-    Form.makeRequestData("orderConditionId", orderConditionId)
-    Form.makeRequestData("accountPassword", g_sPwd)
-    Form.makeRequestData("stockExchangeCode", g_sMarket)
-    Form.makeRequestData("stockCode", g_sCode)
-    Form.makeRequestData("tradeType", "1")
-    --	Form.makeRequestData("conditionName", "매도자동조건")
+    Form.ReleaseRequestData()
+    Form.MakeRequestData("orderConditionId", orderConditionId)
+    Form.MakeRequestData("accountPassword", g_sPwd)
+    Form.MakeRequestData("stockExchangeCode", g_sMarket)
+    Form.MakeRequestData("stockCode", g_sCode)
+    Form.MakeRequestData("tradeType", "1")
+    --	Form.MakeRequestData("conditionName", "매도자동조건")
     local s_profitRealization = ""
     local s_profitPreservation = ""
     local s_stopLoss = ""
     if isEmpty(cont1.lblSellCond0.caption) == false then
-        Form.startBuildJson()
-        Form.putJsonData("priceType", cont1.cmb1.cbkeydata)
-        Form.putJsonData("priceTypeValue", Replace_Prc(cont1.lblSellCond0.caption))
-        Form.putJsonData("price", Replace_Prc(cont1.lblSellCond1.caption))
-        s_profitRealization = Form.endBuildJson()
-    end if
+        Form.StartBuildJson()
+        Form.PutJsonData("priceType", cont1.cmb1.cbkeydata)
+        Form.PutJsonData("priceTypeValue", Replace_Prc(cont1.lblSellCond0.caption))
+        Form.PutJsonData("price", Replace_Prc(cont1.lblSellCond1.caption))
+        s_profitRealization = Form.EndBuildJson()
+    end
     if isEmpty(cont1.lblSellCond2.caption) == false then
-        Form.startBuildJson()
-        Form.putJsonData("priceType", cont1.cmb2.cbkeydata)
-        Form.putJsonData("priceTypeValue",  Replace_Prc(cont1.lblSellCond2.caption))
-        Form.putJsonData("price", Replace_Prc(cont1.lblSellCond3.caption))
-        s_profitPreservation = Form.endBuildJson()
-    end if
+        Form.StartBuildJson()
+        Form.PutJsonData("priceType", cont1.cmb2.cbkeydata)
+        Form.PutJsonData("priceTypeValue",  Replace_Prc(cont1.lblSellCond2.caption))
+        Form.PutJsonData("price", Replace_Prc(cont1.lblSellCond3.caption))
+        s_profitPreservation = Form.EndBuildJson()
+    end
     if isEmpty(cont1.lblSellCond4.caption) == false then
-        Form.startBuildJson()
-        Form.putJsonData("priceType", cont1.cmb3.cbkeydata)
-        Form.putJsonData("priceTypeValue",  Replace_Prc(cont1.lblSellCond4.caption))
-        Form.putJsonData("price", Replace_Prc(cont1.lblSellCond5.caption))
-        s_stopLoss = Form.endBuildJson()
-    end if
-    Form.startBuildJson()
-    Form.putJsonData("basePriceClsType", cont1.cmb0.cbkeydata)
+        Form.StartBuildJson()
+        Form.PutJsonData("priceType", cont1.cmb3.cbkeydata)
+        Form.PutJsonData("priceTypeValue",  Replace_Prc(cont1.lblSellCond4.caption))
+        Form.PutJsonData("price", Replace_Prc(cont1.lblSellCond5.caption))
+        s_stopLoss = Form.EndBuildJson()
+    end
+    Form.StartBuildJson()
+    Form.PutJsonData("basePriceClsType", cont1.cmb0.cbkeydata)
     local sPrc =  Replace_Prc(cont1.edtPrc.caption)
     if isEmpty(sPrc) == true then
         sPrc = "0"
-    end if
-    Form.putJsonData("basePrice", sPrc)
+    end
+    Form.PutJsonData("basePrice", sPrc)
     if isEmpty(s_profitRealization) == false then
-        Form.putJsonData("profitRealization", s_profitRealization)
-    end if
+        Form.PutJsonData("profitRealization", s_profitRealization)
+    end
     if isEmpty(s_profitPreservation) == false then
-        Form.putJsonData("profitPreservation", s_profitPreservation)
-    end if
+        Form.PutJsonData("profitPreservation", s_profitPreservation)
+    end
     if isEmpty(s_stopLoss) == false then
-        Form.putJsonData("stopLoss", s_stopLoss)
-    end if
-    local sData = Form.endBuildJson()
-    Form.makeRequestData("sellCondition", sData)
-    Form.makeRequestData("orderPaymentType", "1")
-    Form.makeRequestData("orderClsType", cont1.cmb4.cbkeydata)
+        Form.PutJsonData("stopLoss", s_stopLoss)
+    end
+    local sData = Form.EndBuildJson()
+    Form.MakeRequestData("sellCondition", sData)
+    Form.MakeRequestData("orderPaymentType", "1")
+    Form.MakeRequestData("orderClsType", cont1.cmb4.cbkeydata)
     if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
-        Form.makeRequestData("orderPriceType", cont1.cmb5.cbkeydata)
+        Form.MakeRequestData("orderPriceType", cont1.cmb5.cbkeydata)
         if cont1.cmb5.cbkeydata == "01" then
-            Form.makeRequestData("tickValue", cont1.Combo0.cbkeydata)
-            Form.makeRequestData("orderPrice", "0")
+            Form.MakeRequestData("tickValue", cont1.Combo0.cbkeydata)
+            Form.MakeRequestData("orderPrice", "0")
             --		sPrc = contHidden.lblHyun.caption
-            --		nUnit = Cdbl(GetHogaUnit(g_sExid3, sPrc, 0))
+            --		nUnit = gf_Tonumber(GetHogaUnit(g_sExid3, sPrc, 0))
             --		
-            --		nResultPrc = Cdbl(sPrc) + (nUnit * Cint(cont1.Combo0.cbkeydata))
-            --		Form.makeRequestData("orderPrice", nResultPrc)
+            --		nResultPrc = gf_Tonumber(sPrc) + (nUnit * gf_Tonumber(cont1.Combo0.cbkeydata))
+            --		Form.MakeRequestData("orderPrice", nResultPrc)
         elseif cont1.cmb5.cbkeydata == "09" then
-            Form.makeRequestData("tickValue","0")
-            Form.makeRequestData("orderPrice", Replace_Prc(cont1.edtPrc0.caption))
+            Form.MakeRequestData("tickValue","0")
+            Form.MakeRequestData("orderPrice", Replace_Prc(cont1.edtPrc0.caption))
         else
-            Form.makeRequestData("tickValue","0")
-            Form.makeRequestData("orderPrice", "0")
-        end if
-    end if
+            Form.MakeRequestData("tickValue","0")
+            Form.MakeRequestData("orderPrice", "0")
+        end
+    end
     if cont1.cmb6.cbkeydata == "01" then
-        Form.makeRequestData("orderQty", Cint(cont1.edtQty.caption))
+        Form.MakeRequestData("orderQty", gf_Tonumber(cont1.edtQty.caption))
     elseif cont1.cmb6.cbkeydata == "02" then
-        Form.makeRequestData("orderQty", Cint(cont1.lblAbleQty.caption))
-    end if
+        Form.MakeRequestData("orderQty", gf_Tonumber(cont1.lblAbleQty.caption))
+    end
     local sMonth = cont1.Calendar0.calmonth
-    if Cint(cont1.Calendar0.calmonth) < 10 then
-        sMonth = "0"&sMonth
-    end if
+    if gf_Tonumber(cont1.Calendar0.calmonth) < 10 then
+        sMonth = "0"..sMonth
+    end
     local sDate = cont1.Calendar0.caption
-    Form.makeRequestData("expirationDate", left(sDate,4) .. "-" ..  mid(sDate,5,2)  .. "-" .. right(sDate,2))
-    Form.makeRequestData("conditionStatusCode", g_sAutoRule)
-    local sDev = Form.GetSharedData("&SERVER_MODE", false)
+    Form.MakeRequestData("expirationDate", string.sub(sDate, 1, 4) .. "-" ..  string.sub(sDate, 5, 5 + 2 - 1)  .. "-" .. string.sub(sDate, -2))
+    Form.MakeRequestData("conditionStatusCode", g_sAutoRule)
+    local sDev = Form.GetSharedData("..SERVER_MODE", false)
     local sUrl = ""
-    if sDev == "1" then	--개발기
+    if sDev == "1" then --개발기 end
         sUrl = "https://dev-api-gateway.imeritz.com:8443/"
     else
         sUrl = "https://api-gateway.imeritz.com:8443/"
-    end if
-    Form.requestRestAPI(sUrl&"api/v1/rule/update", "")
+    end
+    Form.RequestRestAPI(sUrl.."api/v1/rule/update", "")
     g_sAutoRule = "01"
 end
 
@@ -1270,27 +1270,27 @@ function Form_OnTriggerEvent(sEventName, sParam)
             -- 성공
             ------------------------------------------
             if sParam == "SUCCESS" then
-                local status = Form.responseRestAPI("DATA", 0, "status", "")
+                local status = Form.ResponseRestAPI("DATA", 0, "status", "")
                 if status == "00" then
                     Form.CloseForm()
                     Form.SendReturnToParent("COMPLETE_ORDER" , "")
-                end if
+                end
                 ------------------------------------------
                 -- 실패(ERROR or EXCEPTION)
                 ------------------------------------------
             else
-                local oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+                local oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
                 if isEmpty(oError) == false then
-                    local errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-                    local errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+                    local errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+                    local errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
                     if errorCode == "LIMIT_REACHED" then
                         Form.ShowAlert("알림", "자동 감시 주문은\n50개 까지만 등록 가능해요.")
                         return 
-                    end if
-                end if
+                    end
+                end
                 Form.ShowAlert("알림", g_sCommonErrorMsg)
                 return 
-            end if
+            end
             ------------------------------------
             -- 조건 수정
             ------------------------------------
@@ -1299,32 +1299,32 @@ function Form_OnTriggerEvent(sEventName, sParam)
             -- 성공
             ------------------------------------------
             if sParam == "SUCCESS" then
-                local status = Form.responseRestAPI("DATA", 0, "status", "")
+                local status = Form.ResponseRestAPI("DATA", 0, "status", "")
                 if status == "00" then
                     Form.CloseForm()
                     Form.SendReturnToParent("COMPLETE_MODIFY" , "")
-                end if
+                end
                 ------------------------------------------
                 -- 실패(ERROR or EXCEPTION)
                 ------------------------------------------
             else
-                local oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+                local oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
                 if isEmpty(oError) == false then
-                    local errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-                    local errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+                    local errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+                    local errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
                     if errorCode == "UNMODIFIABLE_STATUS" then
                         Form.MsgBox("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.", "DISABLE_ORDER", 6)
                         return 
                     elseif errorCode == "FORCED_STOP_STATUS" then
                         Form.ShowAlert("알림", errorMessage)
                         return 
-                    end if
-                end if
+                    end
+                end
                 Form.ShowAlert("알림", g_sCommonErrorMsg)
                 return 
-            end if
-        end if
-    end if
+            end
+        end
+    end
 end
 
 function cont1_cmb1_OnEditComplete(iIndex)
@@ -1348,11 +1348,11 @@ function cont1_cmb1_OnEditComplete(iIndex)
         cont1.img2.visible = false
         cont1.lblSellCond1.visible = false
         cont1.lbl3.left = 182
-    elseif  sKey == "02" then
+    elseif sKey == "02" then
         cont1.img2.visible = true
         cont1.lblSellCond1.visible = true
         cont1.lbl3.left = 277
-    elseif  sKey == "03" then
+    elseif sKey == "03" then
         cont1.img2.visible = true
         cont1.lblSellCond1.visible = true
         cont1.lbl3.left = 277
@@ -1360,7 +1360,7 @@ function cont1_cmb1_OnEditComplete(iIndex)
         cont1.img2.visible = false
         cont1.lblSellCond1.visible = false
         cont1.lbl3.left = 182
-    end if
+    end
 end
 
 function cont1_cmb2_OnEditComplete(iIndex)
@@ -1375,18 +1375,18 @@ function cont1_cmb2_OnEditComplete(iIndex)
     cont1.lbl6.left = 182
     if isEmpty(cont1.lblSellCond0.caption) == true then
         return
-    end if
+    end
     if sKey == "01" then
         cont1.img4.visible = false
         cont1.lblSellCond3.visible = false
         cont1.lbl6.width = 100
         cont1.lbl6.left = 182
-    elseif  sKey == "02" then
+    elseif sKey == "02" then
         cont1.img4.visible = true
         cont1.lblSellCond3.visible = true
         cont1.lbl6.width = 68
         cont1.lbl6.left = 277
-    elseif  sKey == "03" then
+    elseif sKey == "03" then
         cont1.img4.visible = true
         cont1.lblSellCond3.visible = true
         cont1.lbl6.width = 68
@@ -1396,7 +1396,7 @@ function cont1_cmb2_OnEditComplete(iIndex)
         cont1.lblSellCond3.visible = false
         cont1.lbl6.width = 100
         cont1.lbl6.left = 182
-    end if
+    end
     cont1.lbl6.caption = "도달 후 하락 시"
 end
 
@@ -1410,11 +1410,11 @@ function cont1_cmb3_OnEditComplete(iIndex)
         cont1.img5.visible = false
         cont1.lblSellCond5.visible = false
         cont1.lbl9.left = 182
-    elseif  sKey == "02" then
+    elseif sKey == "02" then
         cont1.img5.visible = true
         cont1.lblSellCond5.visible = true
         cont1.lbl9.left = 277
-    elseif  sKey == "03" then
+    elseif sKey == "03" then
         cont1.img5.visible = true
         cont1.lblSellCond5.visible = true
         cont1.lbl9.left = 277
@@ -1422,7 +1422,7 @@ function cont1_cmb3_OnEditComplete(iIndex)
         cont1.img5.visible = false
         cont1.lblSellCond5.visible = false
         cont1.lbl9.left = 182
-    end if
+    end
 end
 
 function cont1_Image0_OnClick()
@@ -1484,7 +1484,7 @@ function cont1_lblSellCond0_OnClick()
         sLinkData = sLinkData .. "`" .. "틱"							--뒷첨자 
     else
         return
-    end if
+    end
     sLinkData = sLinkData .. "`" .. "매도_이익실현"					--리턴받을 키값
     Form.OpenPopup("nrshtro17100_p0" , sLinkData, "")
 end
@@ -1525,7 +1525,7 @@ function cont1_lblSellCond2_OnClick()
         sLinkData = sLinkData .. "`" .. "틱"							--뒷첨자 
     else
         return
-    end if
+    end
     sLinkData = sLinkData .. "`" .. "매도_이익보존"					--리턴받을 키값
     Form.OpenPopup("nrshtro17100_p0" , sLinkData, "")
 end
@@ -1566,7 +1566,7 @@ function cont1_lblSellCond4_OnClick()
         sLinkData = sLinkData .. "`" .. "틱"							--뒷첨자 
     else
         return
-    end if
+    end
     sLinkData = sLinkData .. "`" .. "매도_손실제한"					--리턴받을 키값
     Form.OpenPopup("nrshtro17100_p0" , sLinkData, "")
 end
@@ -1607,25 +1607,25 @@ function cont1_cmb5_OnEditComplete(iIndex)
         cont1.btnPMinus0.visible = true
         cont1.edtPrc0.visible = true
         cont1.btnPrc0.visible = true
-    end if
+    end
     local sKey2 = cont1.cmb4.cbkeydata
-    if sKey2 == "05" or sKey2 == "34" then 
+    if sKey2 == "05" or sKey2 == "34" then
         cont1.edtPrc0.hintcaption = ""
         cont1.btnPPlus0.visible = false
         cont1.btnPMinus0.visible = false
         cont1.edtPrc0.visible = false
         cont1.btnPrc0.visible = false
-    end if
-    cont1.btnPrc0.bringFront("1")
+    end
+    cont1.btnPrc0.BringFront("1")
 end
 
 function Change_OrderType()
     local sKey = cont1.cmb5.cbkeydata
     if sKey == "01" then
         cont1.edtPrc0.hintcaption = "틱"
-        if isEmpty(trim(cont1.edtPrc0.caption)) == true then
+        if isEmpty(gf_Trim(cont1.edtPrc0.caption)) == true then
             cont1.edtPrc0.caption = "0 틱"
-        end if
+        end
         cont1.btnPPlus0.visible = true
         cont1.btnPMinus0.visible = true
         cont1.edtPrc0.visible = true
@@ -1654,15 +1654,15 @@ function Change_OrderType()
         cont1.btnPMinus0.visible = true
         cont1.edtPrc0.visible = true
         cont1.btnPrc0.visible = true
-    end if
+    end
     local sKey2 = cont1.cmb4.cbkeydata
-    if sKey2 == "05" or sKey2 == "34" then 
+    if sKey2 == "05" or sKey2 == "34" then
         cont1.btnPPlus0.visible = false
         cont1.btnPMinus0.visible = false
         cont1.edtPrc0.visible = false
         cont1.btnPrc0.visible = false
-    end if
-    cont1.btnPrc0.bringFront("1")
+    end
+    cont1.btnPrc0.BringFront("1")
 end
 
 function cont1_cmb6_OnEditComplete(iIndex)
@@ -1677,16 +1677,16 @@ function cont1_cmb6_OnEditComplete(iIndex)
         cont1.btnQMinus.visible = true
         cont1.edtQty.visible = true
         cont1.btnQty.visible = true
-        cont1.btnQty.bringFront("1")
+        cont1.btnQty.BringFront("1")
         cont1.lblAbleRatio.visible = false
         cont1.lblAbleQty.visible = false
         cont1.img8.visible = false
     elseif sKey == "02" then
         cont1.cmb6.caption = "가능수량"
         local isOpen = Form.GetEnvData("AUTO_RULE_ABLE_QTY")
-        if trim(isOpen) ~= "N"  and g_isFst == false then
+        if gf_Trim(isOpen) ~= "N"  and g_isFst == false then
             Form.MsgBox("안내", "감시 조건 설정 시점의 보유\n잔고를 기준으로 수량이 설정돼요.", "ABLEQTY", 7, "확인", "다시보지않기")
-        end if
+        end
         cont1.btnQPlus.visible = false
         cont1.btnQMinus.visible = false
         cont1.edtQty.visible = false
@@ -1696,13 +1696,13 @@ function cont1_cmb6_OnEditComplete(iIndex)
         cont1.img8.visible = true
         cont1.lblAbleRatio.caption = "100"
         DATAMANAGER.RequestTranData("obtro_oder_264r")
-    end if
+    end
 end
 
 function cont1_btnPrc0_OnClick()
-    if Cint(cont1.cmb5.currentindex) == 0 then
-        cont1.Combo0.openList()
-    elseif Cint(cont1.cmb5.currentindex) == 4 then
+    if gf_Tonumber(cont1.cmb5.currentindex) == 0 then
+        cont1.Combo0.OpenList()
+    elseif gf_Tonumber(cont1.cmb5.currentindex) == 4 then
         local sLinkData = "0"									--매도/매수 구분 (매도:0, 매수:1)
         sLinkData = sLinkData .. "`" .. "0"					--가격/수량 구분 (가격:0, 수량:1)
         sLinkData = sLinkData .. "`" .. Replace_Prc(cont1.edtPrc0.caption)		--가격/수량 값   
@@ -1711,7 +1711,7 @@ function cont1_btnPrc0_OnClick()
         sLinkData = sLinkData .. "`" .. contHidden.lblCrcd.caption	--뒷첨자 
         sLinkData = sLinkData .. "`" .. "매도_주문가격"			--리턴받을 키값
         Form.OpenPopup("nrshtro17100_p0" , sLinkData, "")
-    end if
+    end
 end
 
 function Form_OnFormInitBefore()
@@ -1731,32 +1731,32 @@ function Form_OnLinkData(sKey, sValue)
     --20250804_01 YSH START
     --해외주식 장운영 정보 조회방식 변경
     if sKey == "OVRS_MARKET_OPERATION_TRAN" then
-        --Form.ShowAlert("자동감시주문_매도_nrshtro17100_p1", "조회 성공 여부 : " & sValue)
+        --Form.ShowAlert("자동감시주문_매도_nrshtro17100_p1", "조회 성공 여부 : " .. sValue)
         if sValue == "SUCCESS" then
             if g_sExid ~= "" then
-                local sKey = "&OVRS_MARKET_OPERATION_" & Transform_Exid4(g_sExid)
+                local sKey = "..OVRS_MARKET_OPERATION_" .. Transform_Exid4(g_sExid)
                 g_szMktOpClsCd = Form.GetSharedData(sKey, false)
                 Check_ItemCode(g_sItemCode)
-            end if
-        end if
+            end
+        end
     elseif sKey == "OVRS_MARKET_OPERATION_REAL" then
-        --Form.ShowAlert("자동감시주문_매도_nrshtro17100_p1", "실시간 조회 성공 여부 : " & sValue & " / g_sExid : " & Transform_Exid4(g_sExid))
-        local arrMktData = Split(sValue, "@")
-        if arrMktData[1] == Transform_Exid4(g_sExid) and g_szMktOpClsCd ~= arrMktData[2] then
-            g_szMktOpClsCd = arrMktData[2]
+        --Form.ShowAlert("자동감시주문_매도_nrshtro17100_p1", "실시간 조회 성공 여부 : " .. sValue .. " / g_sExid : " .. Transform_Exid4(g_sExid))
+        local arrMktData = gf_Split(sValue, "@")
+        if arrMktData[1+1] == Transform_Exid4(g_sExid) and g_szMktOpClsCd ~= arrMktData[2+1] then
+            g_szMktOpClsCd = arrMktData[2+1]
             Convert_MktOpInfo(g_szMktOpClsCd)
             DisplaySetting_MktOperation(g_szMktOp, g_isMktClosed, g_szSubMktOp, g_szBaseDate, g_isHoliday)
             Cancel_Real_Total()
             --해외주식 종목 기본정보 및 주간시세 보정용
             DATAMANAGER.RequestTranData("ohhts_6000_001r_1")
-        end if
-    end if
+        end
+    end
     --20250804_01 YSH END
 end
 
 function imgBack_OnClick()
     Form.SendReturnToParent("CLOSE_FORM" , "")
-    Form.closeForm()
+    Form.CloseForm()
 end
 
 function btnReg0_OnClick()
@@ -1768,7 +1768,7 @@ function cont1_Label0_OnClick()
     if g_isModify == false then
         local sLinkData = g_sAcno .. "`" .. g_sAsno .. "`" .. "1" .. "`" .. "2"
         Form.OpenPopup("nrshtro17100_p7" , sLinkData , "")
-    end if
+    end
 end
 
 function btn3_OnClick()
@@ -1791,7 +1791,7 @@ function cont0_imgSearch_OnClick()
     if g_isModify == false then
         Form.SendReturnToParent("RESELECT_JANGO" , "")
         Form.CloseForm()
-    end if
+    end
 end
 
 function cont0_lblItemName_OnClick()
@@ -1801,23 +1801,23 @@ end
 function cont1_cmb4_OnEditComplete(iIndex)
     local sKey = cont1.cmb4.cbkeydata
     Form.SetSharedData("17100_SELL_ORDER_COND_TYPE" , sKey)
-    if sKey == "05" then 
+    if sKey == "05" then
         local bPopYN = Form.GetEnvData("OrdNotice_17100_p13_1")
         if (bPopYN == "" or bPopYN == "0") and g_isFst == false then
             local sText = "상/하한가가 없는 미국 시장의 특성 상\n해당종목의 가격이 급등락할 수 있으며 "..
             "시장가 주문 시 현재가 또는 원하는 가격보다 낮거나 불리한 가격에 체결될 수 있음을 유의하시기 바랍니다."
             Form.MsgBox("시장가 주문 유의사항 안내",sText, "MARKET_ORDER_NOTICE" ,7, "확인","다시보지않기")
             --			Form.OpenPopup("nrshtro17100_p13" , "" , "") 
-        end if
+        end
         cont1.cmb5.enable = false
         cont1.cmb5.caption = ""
-    elseif sKey == "34" then 
+    elseif sKey == "34" then
         cont1.cmb5.enable = false
         cont1.cmb5.caption = ""
     else
         cont1.cmb5.enable = true
         cont1.cmb5.cbkeydata = cont1.cmb5.cbkeydata
-    end if
+    end
     Change_OrderType()
 end
 
@@ -1836,19 +1836,19 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
                 Form.MsgBox("알림", "자동주문 설정이 불가한 종목입니다.\n(주문 제한 PTP 종목)" , "DISABLE_PTP", 7, "확인", "삭제하기")
             else
                 Form.MsgBox("알림", "자동주문 설정이 불가한 종목입니다.\n(주문 제한 PTP 종목)" , "DISABLE_PTP", 6)
-            end if
+            end
             return
         elseif szErrCode == "2438" then
-            Form.openPopupAnimation("pwdcheckpopup", g_sAcno&g_sAsno ,"","2")
+            Form.OpenPopupAnimation("pwdcheckpopup", g_sAcno..g_sAsno ,"","2")
             return
-        end if
-    end if
+        end
+    end
     local szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
-    if	len(trim(szSubMsg))	>	0	then
-        Form.ShowAlert("알림", szErrMsg & "\n(" & szSubMsg & ")")
+    if string.len(gf_Trim(szSubMsg))	>	0 then
+        Form.ShowAlert("알림", szErrMsg .. "\n(" .. szSubMsg .. ")")
     else
         Form.ShowAlert("알림", szErrMsg )
-    end	if
+    end
 end
 
 function DATAMANAGER_OnReceiveTranData(szTranID)
@@ -1857,7 +1857,7 @@ function DATAMANAGER_OnReceiveTranData(szTranID)
         ------------------------------------
         --주간시세 현재가 없는 경우 시세보정
         ------------------------------------
-        if isEmpty(sHyun) == true or CDbl(sHyun) == 0 then
+        if isEmpty(sHyun) == true or gf_Tonumber(sHyun) == 0 then
             DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR", 0 , g_sHyun)
             DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR", 0 , g_sHyun_ATTR)
             DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_UNCH_PRPR", 0 , g_sHyunEx)
@@ -1867,13 +1867,13 @@ function DATAMANAGER_OnReceiveTranData(szTranID)
             DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_VRSS", 0 , g_sClose_ATTR)
             DATAMANAGER.SetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_CTRT", 0 , g_sCloseRate)
             DATAMANAGER.SetDataAttr(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRDY_CTRT", 0 , g_sCloseRate_ATTR)
-        end if
+        end
     elseif szTranID == "ohhts_6000_023r" then
         local sHyun 	= DATAMANAGER.GetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR", 0)	--현재가
         ------------------------------------
         --애프터시세 현재가 없는 경우 시세보정
         ------------------------------------
-        if isEmpty(sHyun) == true or CDbl(sHyun) == 0 then
+        if isEmpty(sHyun) == true or gf_Tonumber(sHyun) == 0 then
             DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR", 0 , g_sHyun)
             DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRPR", 0 , g_sHyun_ATTR)
             DATAMANAGER.SetDataValue(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_UNCH_PRPR", 0 , g_sHyunEx)
@@ -1883,14 +1883,15 @@ function DATAMANAGER_OnReceiveTranData(szTranID)
             DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_VRSS", 0 , g_sClose_ATTR)
             DATAMANAGER.SetDataValue(0,"ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_CTRT" , 0 , g_sCloseRate)
             DATAMANAGER.SetDataAttr(0, "ohhts_6000_023r", "OutBlock1", "FIDX_MKT_AFT_PRDY_CTRT", 0 , g_sCloseRate_ATTR)
-        end if
-    end if
+        end
+    end
 end
 
 function cont1_Image1_OnClick()
     Form.OpenPopup("nrshtro17100_p14", "", "")
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />

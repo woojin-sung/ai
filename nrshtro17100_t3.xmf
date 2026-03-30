@@ -603,9 +603,9 @@ function AutoRule_SelectOrderHistory()
 	
 	Form.MakeRequestData("pageInfo", "20")
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -653,9 +653,9 @@ function AutoRule_SelectOrderHistory_Next()
 	
 	Form.MakeRequestData("pageInfo", "20")
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -672,19 +672,19 @@ function IssueToken()
 	
 	Form.ReleaseRequestData()
 	
-	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
-	sData1  = Form.GetSharedData("&USER_ID", false )
-	sData2  = Form.GetSharedData("&MCI_SESSION_KEY", false )
-	sData3  = Form.GetSharedData("&SEMI_SSO_KEY", false )
+	sData0  = Form.GetSharedData("..MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("..USER_ID", false )
+	sData2  = Form.GetSharedData("..MCI_SESSION_KEY", false )
+	sData3  = Form.GetSharedData("..SEMI_SSO_KEY", false )
 	
 	Form.MakeRequestData("channelClsCode", 	sData0)
 	Form.MakeRequestData("userId", 			sData1)
 	Form.MakeRequestData("sessionKey", 		sData2)
 	Form.MakeRequestData("semiSsoKey", 		sData3)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then --개발기 end
+	if sDev == "1" then --개발기 end end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -1233,7 +1233,6 @@ function Form_OnPopupReturn(sKeyName, sRet)
 end
 
 function Return_OrderCode(sCode)
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if sCode == "전체" then
 			return ""
 			
@@ -1249,7 +1248,6 @@ function Return_OrderCode(sCode)
 end
 
 function Return_OrderText(sCode)
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if sCode == "" then
 			return "전체"
 			
@@ -1265,7 +1263,6 @@ function Return_OrderText(sCode)
 end
 
 function Return_ResultCode(sCode)
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if sCode == "전체" or sCode == "전체(종료포함)" then
 			return ""
 			
@@ -1293,7 +1290,6 @@ function Return_ResultCode(sCode)
 end
 
 function Return_ResultText(sCode)
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if sCode == "" then
 			return "전체"
 			
@@ -1459,7 +1455,7 @@ end
  --============================================================================
 function CalcDate(sType,nDiff)
 	
-	sDate = Form.GetSharedData("&HOST_DATE", false )
+	sDate = Form.GetSharedData("..HOST_DATE", false )
 	sYear = string.sub(sDate, 1, 4)
 	sMonth = string.sub(sDate, 5, 5 + 2 - 1)
 	sDay = string.sub(sDate, -2)
@@ -1618,7 +1614,7 @@ function Calendar1_OnEditComplete()
 	
 	sRsltDate = string.gsub(gf_DateAdd("d", 365, sYear.."-".. sMonth .."-".. sDay), "-", "")
 	
-	sHostDate = Form.GetSharedData("&HOST_DATE", false)
+	sHostDate = Form.GetSharedData("..HOST_DATE", false)
 	
 	if gf_Tonumber(sRsltDate) > gf_Tonumber(sHostDate) then
 		if gf_Tonumber(Calendar1.caption) >  gf_Tonumber(sHostDate) then
@@ -1877,7 +1873,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		
 	elseif szTranID == "obtro_oder_268r" then
 		g_sBizDate = DATAMANAGER.GetDataValue(0, szTranID, "OutBlock1", "MANG_DATE", 0)
-		sHostDate = Form.GetSharedData("&HOST_DATE", false)
+		sHostDate = Form.GetSharedData("..HOST_DATE", false)
 		
 		Calendar0.caption = g_sBizDate
 		Calendar1.caption = sHostDate
@@ -1911,7 +1907,8 @@ function Image2_OnClick()
 		AutoRule_SelectOrderHistory()
 	end
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_comn_005r" trcode="obtro_comn_005r" compress="1" encryption="1" inputcheck="1" />

@@ -41,13 +41,13 @@ dofile("scr/json.lua")
 -- OS TYPE
 -- -----------------------------------------------
 local g_szOsType
-g_szOsType = Form.GetSharedData("&OS_TYPE", false)
+g_szOsType = Form.GetSharedData("..OS_TYPE", false)
 
 -- -----------------------------------------------
 -- 설정 글자크기
 -- -----------------------------------------------
 local g_szTextSize
-g_szTextSize = Form.getEnvData("common.textsize")
+g_szTextSize = Form.GetEnvData("common.textsize")
 
 -- -----------------------------------------------
 -- 공통 이미지
@@ -98,8 +98,8 @@ function Init_Control()
 	imgClose.SetMaintainingRatio("3")
 	imgClose.imgpath = g_szCloseImg
 	
-	cont0.FormTab0.setTabHeaderImage("img_bgcircle_black.9" , "img_bgcircle_line.9" , 5) -- 활성화/비활성화/여백
-	cont0.FormTab0.setTabHeaderFgColor("28" , "321") -- 활성화/비활성화 폰트색상
+	cont0.FormTab0.SetTabHeaderImage("img_bgcircle_black.9" , "img_bgcircle_line.9" , 5) -- 활성화/비활성화/여백
+	cont0.FormTab0.SetTabHeaderFgColor("28" , "321") -- 활성화/비활성화 폰트색상
 	cont0.cont1.SetUseScrollingEvent(true)
 end
 
@@ -117,7 +117,7 @@ end
 -- Form_OnFormInit
 -- ===============================================
 function Form_OnFormInit()
-	Form.setDelayEvent(1, 0.1)
+	Form.SetDelayEvent(1, 0.1)
 end
 
 -- ===============================================
@@ -162,23 +162,23 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		cont0.FormTab0.visible = true
 		cont0.FormTab0.top = sParam + 30
 		cont0.cont1.top = sParam + 30 + 40 + 20
-		cont0.setScrollAutoSize()
+		cont0.SetScrollAutoSize()
 		cont0.cont1.link1.linkfile = "nrshtro17100_s2"
-	elseif sEventName == "MID_1_SIZE" then	
+	elseif sEventName == "MID_1_SIZE" then
 		cont0.cont1.link1.height = sParam
 		cont0.cont1.link1.top = g_nTop_1
 		g_nTop_2 = g_nTop_1 + sParam + 20
 		cont0.cont1.link2.linkfile = "nrshtro17100_s3"
-	elseif sEventName == "MID_2_SIZE" then	
+	elseif sEventName == "MID_2_SIZE" then
 		cont0.cont1.link2.height = sParam
 		cont0.cont1.link2.top = g_nTop_2
 		g_nTop_3 = g_nTop_2 + sParam + 20
 		cont0.cont1.link3.linkfile = "nrshtro17100_s4"
-	elseif sEventName == "MID_3_SIZE" then	
+	elseif sEventName == "MID_3_SIZE" then
 		cont0.cont1.link3.height = sParam
 		cont0.cont1.link3.top = g_nTop_3
 		cont0.cont1.SetNotifyScrollPos(g_nTop_1..":"..g_nTop_2..":"..g_nTop_3)
-		cont0.cont1.setScrollAutoSize()
+		cont0.cont1.SetScrollAutoSize()
 	end
 end
 
@@ -197,5 +197,6 @@ function cont0_FormTab0_OnTabChanged(nCurrentTab)
 		cont0.cont1.scroll_pos = g_nTop_3
 	end
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

@@ -77,24 +77,25 @@
 		<BUTTON name="btnClose" caption="다시보지않기" fgcolor="334:034034034" btnimage="btn_27.9" ly_vert="-2,587,190,60,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="596" _ulen="596" >
-'============================================================================
-Sub Form_OnFormInitBefore()
-	imgClose.setMaintainingRatio("1")
-End Sub
+ --============================================================================
+function Form_OnFormInitBefore()
+	imgClose.SetMaintainingRatio("1")
+end
 
-'============================================================================
-Sub btnOK_OnClick()
+ --============================================================================
+function btnOK_OnClick()
 	Form.CloseForm()
-End Sub
-'============================================================================
-Sub imgClose_OnClick()
+end
+ --============================================================================
+function imgClose_OnClick()
 	Form.CloseForm()
-End Sub
-'============================================================================
-Sub btnClose_OnClick()
+end
+ --============================================================================
+function btnClose_OnClick()
 	Form.SetEnvData(0, "OrdNotice_16100_p14", "1")
 	Form.CloseForm()
-End Sub
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

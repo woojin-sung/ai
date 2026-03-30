@@ -53,11 +53,11 @@ gMkOpClsCd = ""
 -- 20250703 YSH END
 -- =============================================================================
 function Form_OnFormInitBefore()
-	gOsType = Form.GetSharedData("&OS_TYPE", false )
+	gOsType = Form.GetSharedData("..OS_TYPE", false )
 	-- --------------------------------------
 	-- 대비/등락률 간격 조정을 위해서 호출
 	-- --------------------------------------
-	contOvrsStock.LabelDebi.sizeAutoFit()
+	contOvrsStock.LabelDebi.SizeAutoFit()
 end
 -- =============================================================================
 function Form_OnFormInit()
@@ -77,19 +77,19 @@ function Form_OnFormInit()
 	szData = Form.GetOpenLinkData()
 	arrData = gf_Split(szData , "★")
 	if #arrData > 2 then
-		gType 		= arrData[1] 
-		gYPos 		= arrData[2]
-		gHeight 		= arrData[3]
-		gIndex 		= arrData[4]
-		gName 		= arrData[5]
-		gCode 		= arrData[6]
-		gVndrCode 	= arrData[7]
+		gType 		= arrData[1+1] 
+		gYPos 		= arrData[2+1]
+		gHeight 		= arrData[3+1]
+		gIndex 		= arrData[4+1]
+		gName 		= arrData[5+1]
+		gCode 		= arrData[6+1]
+		gVndrCode 	= arrData[7+1]
 		gMarket		= GetMarketCode(gVndrCode)
 		-- 20250703 YSH START
-		gMkOpClsCd	= Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+		gMkOpClsCd	= Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 		-- 20250703 YSH END
-		sResultCode = arrData[8]
-		gCanMod = arrData[9]
+		sResultCode = arrData[8+1]
+		gCanMod = arrData[9+1]
 		if sResultCode ~= "1" then
 			contOvrsStock.ButtonLink2.btnimage = "btn_line.9"
 			contOvrsStock.ButtonLink2.fgcolor = "333"
@@ -108,7 +108,7 @@ function Form_OnFormInit()
 		-- -----------------------------------------
 		-- 주간장 여부
 		-- -----------------------------------------
-		gDayMarket = Form.GetSharedData( "&OVRS_DAYMARKET", false ) 
+		gDayMarket = Form.GetSharedData( "..OVRS_DAYMARKET", false ) 
 		-- -----------------------------------------
 		-- 미국종목 여부
 		-- -----------------------------------------
@@ -118,7 +118,7 @@ function Form_OnFormInit()
 		-- -----------------------------------------
 		-- 실시간 시세 적용여부(해외종합잔고에서 호출시에만 시세 조회/실시간 호출)
 		-- -----------------------------------------
-		sParentScrNo = Form.GetSharedData("&SCREEN_NO", false)
+		sParentScrNo = Form.GetSharedData("..SCREEN_NO", false)
 		--		if sParentScrNo == "16070" then
 		gApplyRealSise = "Y"
 		-- -----------------------------------------------------------
@@ -224,7 +224,7 @@ end
 -- =============================================================================
 function RequestMarketInfo()
 	-- 20250703 YSH START
-	szMkOpClsCd = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+	szMkOpClsCd = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 	if szMkOpClsCd ~= "" then
 		-- 000:휴장/013:휴일
 		if szMkOpClsCd == "013" or szMkOpClsCd == "000" then
@@ -243,7 +243,7 @@ function RequestData()
 	-- ----------------------------------
 	szDelay = Form.GetSharedData("REALTIME_"..gMarket, false)
 	-- ----------------------------------------------------
-	-- 주간장 & 미국종목일 경우에만 주간현재가 조회 서비스 호출
+	-- 주간장 .. 미국종목일 경우에만 주간현재가 조회 서비스 호출
 	-- ----------------------------------------------------
 	if gDayMarket == "Y" and gUSItem == "Y" then
 		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 	, 0 , "OV" ) 		-- 해외주식 OV
@@ -326,7 +326,7 @@ end
 -- 거래소벤더코드(4자리) -> 거래소코드(2자리)
 -- =============================================================================
 function GetMarketCode(sValue)
-	if sValue == "0104" then	-- 홍콩
+	if sValue == "0104" then -- 홍콩 end
 		return "HK"
 	elseif sValue == "0215" then -- 상해
 		return "SH"
@@ -391,8 +391,8 @@ end
 -- =============================================================================
 function contOvrsStock_LabelDebi_OnSizeAutoFit()
 	if gOsType == "1" then
-		nLeftDebi = Form.calcUnResize(contOvrsStock.LabelDebi.left, "2")
-		nWidthSign = Form.calcUnResize(contOvrsStock.LabelDebiSign.width, "2")
+		nLeftDebi = Form.CalcUnResize(contOvrsStock.LabelDebi.left, "2")
+		nWidthSign = Form.CalcUnResize(contOvrsStock.LabelDebiSign.width, "2")
 	else
 		nLeftDebi = contOvrsStock.LabelDebi.left
 		nWidthSign = contOvrsStock.LabelDebiSign.width
@@ -430,8 +430,8 @@ function Form_OnLinkData(sKey, sValue)
 		end
 	elseif sKey == "OVRS_MARKET_OPERATION_REAL" then
 		arrMktData = gf_Split(sValue, "@")
-		if gUSItem == "Y" and arrMktData[1] == "US" then
-			szMkOpClsCd = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+		if gUSItem == "Y" and arrMktData[1+1] == "US" then
+			szMkOpClsCd = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 			if gMkOpClsCd ~= szMkOpClsCd then
 				RequestMarketInfo()
 			end
@@ -439,7 +439,8 @@ function Form_OnLinkData(sKey, sValue)
 	end
 	-- 20250703 YSH END
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />

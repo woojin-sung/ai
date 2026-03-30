@@ -97,5 +97,6 @@ function btnClose_OnClick()
 	Form.SetEnvData(0, "OrdNotice_16061_p14", "1")
 	Form.CloseForm()
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

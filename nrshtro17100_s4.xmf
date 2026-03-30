@@ -32,7 +32,7 @@ dofile("scr/json.lua")
 local g_sTheme
 g_sTheme = Form.GetEnvData("common.theme")
 local g_sOsType
-g_sOsType = Form.GetSharedData("&OS_TYPE", false )
+g_sOsType = Form.GetSharedData("..OS_TYPE", false )
 local nextTop
 nextTop = 0
 --============================================================================
@@ -51,15 +51,15 @@ function Form_OnFormInit()
 		img1.imgpath = "guide_tab3_img2_d"
 	end
 	sText = "주가가 손실제한 범위로 정한 가격에 도달 시 감시가 실행되어 설정한 주문 방법으로 매도 주문이 실행돼요."
-	--	nLen = gf_Tonumber(Form.getLen("하락하여, 손실 범위로 정한 손실제한가격에 도달 시"))
-	--	nStart = gf_Tonumber(Form.getLen("주가가 기준가 대비 "))
-	lblInfo0.sizeAutoFit()
+	--	nLen = gf_Tonumber(Form.GetLen("하락하여, 손실 범위로 정한 손실제한가격에 도달 시"))
+	--	nStart = gf_Tonumber(Form.GetLen("주가가 기준가 대비 "))
+	lblInfo0.SizeAutoFit()
 	lblInfo0.caption = sText
-	--	lblInfo0.changeTextAttr(nStart, nLen, 291, -2, true)
+	--	lblInfo0.ChangeTextAttr(nStart, nLen, 291, -2, true)
 end
 --============================================================================
 function lblInfo0_OnSizeAutoFit()
-	--	nH = cint(lblInfo0.height2)
+	--	nH = gf_Tonumber(lblInfo0.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblInfo0.height)
@@ -71,12 +71,12 @@ function lblInfo0_OnSizeAutoFit()
 	nextTop = nextTop + 150 + 20
 	lblSubInfo0.top = nextTop
 	sText = "예) 주가가 $450(손실제한가격) 도달 시 설정한 주문 조건으로 주문이 실행돼요."
-	lblSubInfo0.sizeAutoFit()
+	lblSubInfo0.SizeAutoFit()
 	lblSubInfo0.caption = sText
 end
 --============================================================================
 function lblSubInfo0_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo0.height2)
+	--	nH = gf_Tonumber(lblSubInfo0.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo0.height)
@@ -93,12 +93,12 @@ function lblSubInfo0_OnSizeAutoFit()
 	nextTop = nextTop + 120 + 20
 	lblSubInfo1.top = nextTop
 	sText = "① 기준가를 선택해요.(이익실현 입력 시 기준가는 동일)"
-	lblSubInfo1.sizeAutoFit()
+	lblSubInfo1.SizeAutoFit()
 	lblSubInfo1.caption = sText
 end
 --============================================================================
 function lblSubInfo1_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo1.height2)
+	--	nH = gf_Tonumber(lblSubInfo1.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo1.height)
@@ -108,12 +108,12 @@ function lblSubInfo1_OnSizeAutoFit()
 	nextTop = nextTop + nH + 8
 	lblSubInfo2.top = nextTop
 	sText = "② 손실 제한 조건(가격)을 입력해요."
-	lblSubInfo2.sizeAutoFit()
+	lblSubInfo2.SizeAutoFit()
 	lblSubInfo2.caption = sText
 end
 --============================================================================
 function lblSubInfo2_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo2.height2)
+	--	nH = gf_Tonumber(lblSubInfo2.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo2.height)
@@ -128,12 +128,12 @@ function lblSubInfo2_OnSizeAutoFit()
 	end
 	lblSubInfo3.top = nextTop
 	sText = "단위 ($, %, 틱) 선택 후 조건을 입력해요."
-	lblSubInfo3.sizeAutoFit()
+	lblSubInfo3.SizeAutoFit()
 	lblSubInfo3.caption = sText
 end
 --============================================================================
 function lblSubInfo3_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo3.height2)
+	--	nH = gf_Tonumber(lblSubInfo3.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo3.height)
@@ -148,12 +148,12 @@ function lblSubInfo3_OnSizeAutoFit()
 	end
 	lblSubInfo4.top = nextTop
 	sText = "기준가 보다 낮은 가격으로 입력해요."
-	lblSubInfo4.sizeAutoFit()
+	lblSubInfo4.SizeAutoFit()
 	lblSubInfo4.caption = sText
 end
 --============================================================================
 function lblSubInfo4_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo4.height2)
+	--	nH = gf_Tonumber(lblSubInfo4.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo4.height)
@@ -168,12 +168,12 @@ function lblSubInfo4_OnSizeAutoFit()
 	end
 	lblSubInfo5.top = nextTop
 	sText = "'%, 틱' 입력 시 감시가격이 자동 조회돼요."
-	lblSubInfo5.sizeAutoFit()
+	lblSubInfo5.SizeAutoFit()
 	lblSubInfo5.caption = sText
 end
 --============================================================================
 function lblSubInfo5_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo5.height2)
+	--	nH = gf_Tonumber(lblSubInfo5.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo5.height)
@@ -183,12 +183,12 @@ function lblSubInfo5_OnSizeAutoFit()
 	nextTop = nextTop + nH + 3
 	lblSubInfo6.top = nextTop
 	sText = "% 선택 시 감시가격 = 기준가 - (기준가×감시조건%)"
-	lblSubInfo6.sizeAutoFit()
+	lblSubInfo6.SizeAutoFit()
 	lblSubInfo6.caption = sText
 end
 --============================================================================
 function lblSubInfo6_OnSizeAutoFit()
-	--	nH = cint(lblSubInfo6.height2)
+	--	nH = gf_Tonumber(lblSubInfo6.height2)
 	nH = 0
 	if g_sOsType == "2" then
 		nH = gf_Tonumber(lblSubInfo6.height)
@@ -196,7 +196,8 @@ function lblSubInfo6_OnSizeAutoFit()
 		nH = gf_Tonumber(lblSubInfo6.height2)
 	end
 	nextTop = nextTop + nH + 20
-	Form.triggerEvent("#", "MID_3_SIZE", nextTop)
+	Form.TriggerEvent("#", "MID_3_SIZE", nextTop)
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>
