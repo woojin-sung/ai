@@ -15,7 +15,7 @@
 			<PAGE name="page4" caption="잔고" linkfile="mhtro16100_t5" loadingtype="1" />
 		</FORMTAB>
 		<EDIT name="edtPwd" fontsize="-2" halign="1" password="2" imetype="1" maxlength="8" minlength="4" hintcaption="비밀번호" des="비밀번호" imagefilepth="alpha" ly_vert="283,98,63,35,1" />
-		<ACCOUNT name="acnt" itemcodetype="100,200" etcfunctions="" accpwdctl="edtPwd" delegate="1" finaceexcept="1" benefitexcept="1" ly_vert="7,98,270,35,1" />
+		<ACCOUNT name="acnt" itemcodetype="100,200,201" etcfunctions="" accpwdctl="edtPwd" delegate="1" finaceexcept="1" benefitexcept="1" ly_vert="7,98,270,35,1" />
 		<EDIT name="edtOrgNo" imetype="0" ly_vert="500,10,235,32,1" />
 		<IMAGE name="edtPwdIcon" autosize="1" imgpath="icon_save_password_n.9" ly_vert="343,105,26,21,1" />
 		<BUTTON name="btnPwd" btnimage="alpha" ly_vert="283,98,90,35,1" />
@@ -210,7 +210,7 @@
 		<LABEL name="lblHigh" visible="0" mask="0,0,,,0,,-1,1,0,0,0" ly_vert="200,445,150,32,0" import="2,1,12" />
 		<LABEL name="lblLow" visible="0" mask="0,0,,,0,,-1,1,0,0,0" ly_vert="200,480,150,32,0" import="2,1,13" />
 	</CONTROL_INFO>
-	<SCRIPT_INFO _len="66849" _ulen="60149" >
+	<SCRIPT_INFO _len="69291" _ulen="62243" >
 '-------------------------------------------------------------------------------------------------
 '20241216 LES START - 미국장 장운영 정보 조회
 '20241216_2 LES START - 미국&주간장or애프터장 백그라운드 => 포그라운드 전환 시 시세 조회 개선
@@ -267,9 +267,14 @@ Dim gMkClsCode
 gMkClsCode = ""
 
 '---------------------------------------------
-'20251017 KSJ START 미국주식 주간거래 유의사항 팝업
+'20251017 KSJ 미국주식 주간거래 유의사항 팝업
 '---------------------------------------------
 Dim g_szPopup
+
+'---------------------------------------------
+'20260129 KSJ RIA 매도 유의사항 팝업
+'---------------------------------------------
+Dim g_szRiaPopup
 
 
 '============================================================================
@@ -434,7 +439,8 @@ Sub Form_OnFormInit()
 	'-----------------------------------------------------------------------------
 	' 해외주식 약정체크
 	'-----------------------------------------------------------------------------
-	DATAMANAGER.RequestTranData("obpds_srvc_323r")
+'	DATAMANAGER.RequestTranData("obpds_srvc_323r") '20260129 KSJ RIA 매수 탭에서만 매도 전용 알럿 확인 후 약정 체크
+	Ria_Chk()
 	
 end Sub
 
@@ -485,7 +491,11 @@ Sub Form_OnTriggerEvent(sEventName, sParam)
 		szLinkCode = arrLinkCode(0)
 		
 		if CheckMasterFile(szLinkCode) then
-			
+			' 20260320 KSJ START 해외 장운영 정보 리턴
+			tArrLinkCode = Split(szLinkCode,"@")
+			szMk = tArrLinkCode(0)
+			getOvrsMarketOperation(szMk)
+			' 20260320 KSJ END
 		else
 			Form.ShowAlert("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.")
 			Exit Sub
@@ -829,6 +839,14 @@ Sub FormTab0_OnTabChanged(nCurrentTab)
 	'매수/매도 탭
 	'-----------------------------------
 	if nCurrentTab == 0 or nCurrentTab == "0" or nCurrentTab == 1 or nCurrentTab == "1" then
+		
+		'20260129 KSJ 매도 탭에서 RIA 계좌인 경우 유의사항 팝업
+		g_szRiaPopup = Form.LoadConfigData( "mhtro16100", "mhtro16100_pc" ) '1: 다시보지않기 2: 닫기
+		
+		if g_szRiaPopup ~= "1" and (nCurrentTab == 1 or nCurrentTab == "1") and acnt.itemcodetype == "201" then
+			Form.OpenPopupAnimation("mhtro16100_pc", "", "", "2")
+		end if
+		'20260129 KSJ END
 		
 		nMaxPrc = Cdbl(tblHigh.GetCellString(0, 1))
 		nMinPrc = Cdbl(tblLow.GetCellString(0, 1))
@@ -1339,7 +1357,9 @@ Sub acnt_ChangeAccount()
 	'20220425 HWG END
 	
 	edtOrgNo.caption = ""
-	DATAMANAGER.RequestTranData("obpds_srvc_323r")
+'	DATAMANAGER.RequestTranData("obpds_srvc_323r") '20260129 KSJ RIA 매도 전용 알럿 확인 후 약정 체크
+	Ria_Chk()
+	
 End Sub
 '============================================================================
 Sub Form_OnMsgBoxClose(sKeyName, sRet)
@@ -1347,6 +1367,9 @@ Sub Form_OnMsgBoxClose(sKeyName, sRet)
 		if sRet == "ok" then
 			Form.OpenScreen("87051" , acnt.caption)
 		end if
+	'20260129 KSJ RIA 매도 전용 알럿 확인 후 약정 체크
+	elseif sKeyName == "RIA_CHK" then
+		DATAMANAGER.RequestTranData("obpds_srvc_323r")
 	end if
 End Sub
 '============================================================================
@@ -1462,6 +1485,40 @@ Sub btnPwd_OnClick()
 	Form.openPopupAnimation("pwdcheckpopup", acnt.caption ,"","2")
 End Sub
 '20220425 HWG END
+
+'============================================================================
+'20260129 KSJ RIA 계좌 변경 시 매도 전용 계좌 알럿 후 약정 체크 및 유의사항 팝업
+'============================================================================
+Function Ria_Chk()
+
+	g_szRiaPopup = Form.LoadConfigData( "mhtro16100", "mhtro16100_pc" ) '1: 다시보지않기 2: 닫기
+		
+	if acnt.itemcodetype == "201" then
+		if CInt(FormTab0.currenttab) == 0 then	' 매수 탭에서만
+			Form.MsgBox("안내", "Super RIA 계좌는\n해외주식 매도 전용계좌 입니다.", "RIA_CHK", 6)
+		else
+			if g_szRiaPopup ~= "1" and CInt(FormTab0.currenttab) == 1 then ' 매도 탭에서만
+				Form.OpenPopupAnimation("mhtro16100_pc", "", "", "2")
+			end if
+			DATAMANAGER.RequestTranData("obpds_srvc_323r")
+		end if
+	else
+		DATAMANAGER.RequestTranData("obpds_srvc_323r")
+	end if
+End Function
+
+'============================================================================
+' 20260320 KSJ 해외 장운영 정보 리턴
+'============================================================================
+Function getOvrsMarketOperation(szMk)
+
+	gMkClsCode = Form.GetSharedData("&OVRS_MARKET_OPERATION_" .. szMk, false) ' 홍콩/상해/심천/도쿄
+	
+	if gMkClsCode == "" or gMkClsCode == NULL then	' 뉴욕/아멕스/나스닥
+		gMkClsCode = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+	end if
+	
+end Function
 
 '============================================================================
 '20220510 LES START : 마스터파일에 있는 종목인지 체크

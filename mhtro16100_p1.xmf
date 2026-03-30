@@ -178,7 +178,7 @@
 		<BUTTON name="btnPrc" btnimage="alpha" ly_vert="203,160,124,38,1" />
 		<BUTTON name="btnQty" btnimage="alpha" ly_vert="203,208,124,38,1" />
 	</CONTROL_INFO>
-	<SCRIPT_INFO _len="78625" _ulen="72639" >
+	<SCRIPT_INFO _len="80351" _ulen="74195" >
 '============================================================================
 ' 20241128 LES START : 해외주식 매수 시장가 주문유형 추가
 ' 20241216 LES START : (미국)해외주식 휴일/휴장일때는 정규장종가 보여주도록 수정
@@ -219,6 +219,8 @@ gQty1000_Size = 1000
 Dim gOsType
 Dim gMaxLen
 gMaxLen = 12
+
+Dim gAcntCd '20260319 KSJ 계좌 아이템코드
 
 '============================================================================
 Sub Form_OnFormInitBefore()
@@ -295,6 +297,12 @@ Sub Form_OnFormInit()
 	gAcno				= arrData(19)
 	gAsno				= arrData(20)
 	gTotalYN				= arrData(21)
+	
+	' 20260319 KSJ START 해외주식 매도 가능수량 RIA 전용 서비스 타기 위함
+	if #arrData > 22 then
+		gAcntCd = arrData(22)	' 22 : gAcntCd = 계좌 아이템코드 (매도 탭에서만)
+	end if
+	' 20260319 KSJ END
 	
 	g_szUnit				= GetHogaUnit(gMarketCode, g_szCurPrice, 0) 
 	
@@ -2485,6 +2493,15 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 		edtQty.caption = Cint(sAbleQty)
 		Calc_OrderPrice()
 	
+	'-----------------------------------------
+	' 20260319 KSJ RIA 매도 주문가능수량 조회
+	'-----------------------------------------
+	elseif szTranID == "obtro_oder_235r" then
+	
+		sAbleQty = DATAMANAGER.GetDataValue(0, "obtro_oder_235r", "OutBlock1", "SELN_ABLE_QTY" , 0)
+		
+		edtQty.caption = Cint(sAbleQty)
+		Calc_OrderPrice()
 	end if
 	
 End Sub
@@ -2764,20 +2781,42 @@ Sub contQty_btnAble_OnClick()
 
 	elseif gMaeMaegubun == "SELL" then
 	
-		DATAMANAGER.ClearInputData(0, "obtro_oder_264r")
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IQRY_CLS_CODE" 		, 0 , "1") '조회범위(1:전체/2:주문가능수량/금액만)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ACNO" 				, 0 , gAcno)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ASNO" 				, 0 , gAsno)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "OVRS_STCK_SYMB_ISCD" 	, 0 , gCode)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "OVRS_EXCH_VNDR_IDNO" 	, 0 , gMarketCode)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "SELN_BYOV_CLCD" 		, 0 , "1") '매도(1)/매수(2)
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ODER_CRNC_PRC" 		, 0 , GetPrice())
-		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IF_INTG_MARG_IQRY_YN"	, 0 , "Y")
+		' 20260319 KSJ START 해외주식 매도 가능수량 RIA 전용 서비스 분개 (신용불가)
+		if gAcntCd == "201" then
 		
-		if gCredit == 1 or gCredit == "1" then
-			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "LOAN_DTL_TYPE_CODE" 	, 0 , "0251")
+			DATAMANAGER.ClearInputData(0, "obtro_oder_235r")
+			DATAMANAGER.SetDataValue(0, "obtro_oder_235r", "InBlock1", "ACNO" 				, 0 , gAcno)
+			DATAMANAGER.SetDataValue(0, "obtro_oder_235r", "InBlock1", "ASNO" 				, 0 , gAsno)
+			DATAMANAGER.SetDataValue(0, "obtro_oder_235r", "InBlock1", "OVRS_STCK_SYMB_ISCD" 	, 0 , gCode)
+			DATAMANAGER.SetDataValue(0, "obtro_oder_235r", "InBlock1", "OVRS_EXCH_VNDR_IDNO" 	, 0 , gMarketCode)
+			
+			'---------------------------------------------------------------------------
+			'대출탭에 있는 경우 대출불가로 0000 세팅
+			'---------------------------------------------------------------------------
+			if gCredit == 1 or gCredit == "1" then
+				DATAMANAGER.SetDataValue(0, "obtro_oder_235r", "InBlock1", "LOAN_DTL_TYPE_CODE" 	, 0 , "0000")
+			end if
+			'---------------------------------------------------------------------------
+			
+			DATAMANAGER.RequestTranData("obtro_oder_235r")
+			
+			Exit Sub
+		else
+				
+			DATAMANAGER.ClearInputData(0, "obtro_oder_264r")
+			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IQRY_CLS_CODE" 		, 0 , "1") '조회범위(1:전체/2:주문가능수량/금액만)
+			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ACNO" 				, 0 , gAcno)
+			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ASNO" 				, 0 , gAsno)
+			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "OVRS_STCK_SYMB_ISCD" 	, 0 , gCode)
+			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "OVRS_EXCH_VNDR_IDNO" 	, 0 , gMarketCode)
+			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "SELN_BYOV_CLCD" 		, 0 , "1") '매도(1)/매수(2)
+			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ODER_CRNC_PRC" 		, 0 , GetPrice())
+			DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IF_INTG_MARG_IQRY_YN"	, 0 , "Y")
+			
+			if gCredit == 1 or gCredit == "1" then
+				DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "LOAN_DTL_TYPE_CODE" 	, 0 , "0251")
+			end if
 		end if
-		
 	end if
 
 	DATAMANAGER.RequestTranData("obtro_oder_264r")	
@@ -2809,6 +2848,7 @@ End Function
 			<TRAN tranid="obtro_oder_264r" trcode="obtro_oder_264r" compress="1" encryption="1" inputcheck="1" useattr="0" />
 			<TRAN tranid="ohhts_6000_017r" trcode="ohhts_6000_017r" compress="1" encryption="1" inputcheck="1" useattr="0" />
 			<TRAN tranid="ohhts_6000_020r" trcode="ohhts_6000_020r" compress="1" encryption="1" inputcheck="1" useattr="0" />
+			<TRAN tranid="obtro_oder_235r" trcode="obtro_oder_235r" compress="1" encryption="1" inputcheck="1" useattr="0" />
 		</TRID_INFO>
 		<TRIO_INFO>
 			<TRAN name="ohhts_exst_cntg" title="해외주식체결 자동갱신" realdata="1" dessvr="4" datamode=".Func" >
@@ -3149,6 +3189,25 @@ FIDX_MKT_AFT_PRDY_VRSS_SIGN^FIDX장후전일대비부호^1^0^0^7488^1000^0^0
 FIDX_MKT_AFT_PRDY_VRSS^FIDX장후전일대비^14^4^7^7489^1000^0^0
 FIDX_MKT_AFT_PRDY_CTRT^FIDX장후전일대비율^11^2^7^7490^1000^0^0
 FIDX_ACML_VOL^FIDX누적거래량^19^0^7^14^1000^0^0
+
+				</TRBLOCK>
+			</TRAN>
+			<TRAN name="obtro_oder_235r" title="해외주식_매도가능수량" realdata="0" dessvr="9" >
+				<TRBLOCK name="InBlock1" inout="in" _len="400" _ulen="290" >
+
+ACNO^계좌번호^8^0^0^0^0^0^0
+ASNO^계좌일련번호^2^0^0^0^0^0^0
+OVRS_STCK_SYMB_ISCD^해외주식심볼종목코드^12^0^0^0^0^0^0
+OVRS_EXCH_VNDR_IDNO^해외거래소벤더식별번호^6^0^0^0^0^0^0
+ACNT_PWD^계좌비밀번호^68^0^0^0^0^0^0
+LOAN_DTL_TYPE_CODE^대출상세유형코드^4^0^0^0^0^0^0
+LOAN_DATE^대출일자^8^0^0^0^0^0^0
+LOAN_SRNO^대출일련번호^11^0^7^0^0^0^0
+
+				</TRBLOCK>
+				<TRBLOCK name="OutBlock1" inout="out" _len="55" _ulen="43" >
+
+SELN_ABLE_QTY^매도가능수량^19^0^7^0^0^0^0
 
 				</TRBLOCK>
 			</TRAN>

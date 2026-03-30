@@ -12,8 +12,8 @@
 				<LABEL name="LabelName" fontsize="-1" fontstyle="01" bgcolor="029:255212175" valign="0" multiline="1" ly_vert="10,20,200,40,1" />
 				<LABEL name="LabelPrice" visible="0" fontsize="2" fontstyle="01" mask="0,0,,,0,,-1,1,0,0,0" bgcolor="038:255255255" halign="2" valign="0" autofontsize="1" ly_vert="220,20,125,20,0" import="0,1,1;1,1,1;2,1,1" realrec="0,1,10;1,1,10;2,1,10" />
 				<LABEL name="LabelRate" visible="0" fontsize="-4" mask="0,0,,%,0,,2,1,1,0,0" bgcolor="038:255255255" halign="2" multiline="1" ly_vert="290,40,55,22,0" import="0,1,17;1,1,4;2,1,4" realrec="0,1,13;1,1,13;2,1,13" />
-				<LABEL name="LabelDebiSign" fontsize="-3" bgcolor="085:205216147" halign="1" usesign="1" autofontsize="1" ly_vert="200,40,20,22,1" import="0,1,3;1,1,2;2,1,2" realrec="0,1,11;1,1,11;2,1,11" />
-				<LABEL name="LabelDebi" visible="0" fontsize="-4" mask="0,0,, ,0,,-1,1,0,0,0" bgcolor="038:255255255" halign="2" ly_vert="220,40,70,22,0" import="0,1,16;1,1,3;2,1,3" realrec="0,1,12;1,1,12;2,1,12" />
+				<LABEL name="LabelDebiSign" fontsize="-3" bgcolor="085:205216147" halign="1" usesign="1" autofontsize="1" ly_vert="215,40,20,22,1" import="0,1,3;1,1,2;2,1,2" realrec="0,1,11;1,1,11;2,1,11" />
+				<LABEL name="LabelDebi" visible="0" fontsize="-4" mask="0,0,, ,0,,-1,1,0,0,0" bgcolor="038:255255255" ly_vert="235,40,70,22,0" import="0,1,16;1,1,3;2,1,3" realrec="0,1,12;1,1,12;2,1,12" />
 				<BUTTON name="ButtonLink0" caption="현재가" fgcolor="333:115118124" fontsize="-2" btnimage="btn_line.9" ly_vert="10,64,80,32,1" />
 				<BUTTON name="ButtonLink1" caption="차트" fgcolor="333:115118124" fontsize="-2" btnimage="btn_line.9.9" ly_vert="96,64,80,32,1" />
 				<BUTTON name="ButtonLink2" caption="매수" fontsize="-2" btnimage="btn_30.9" ly_vert="182,64,80,32,1" />
