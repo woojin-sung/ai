@@ -68,7 +68,7 @@ local g_osType
 
  --============================================================================
 function Form_OnFormInit()
-	g_osType = Form.GetSharedData("&OS_TYPE", false)
+	g_osType = Form.GetSharedData("..OS_TYPE", false)
 	
 	cont0.RadioOrderClsCode.currentindex = "0"
 	cont2.OrdGubun.currentindex = "0"
@@ -196,7 +196,6 @@ end
 
  --============================================================================
 function setInfoCaption()
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if g_idntClcd == "0" then
 			cont1.Label3.caption = "예약(미발주), 발주 완료, 취소 내역이 모두 조회돼요."
 		elseif g_idntClcd == "1" then
@@ -206,5 +205,6 @@ function setInfoCaption()
 	end
 	
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

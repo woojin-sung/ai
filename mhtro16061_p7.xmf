@@ -129,5 +129,6 @@ end
 function btnCancleClose_OnClick()
 	Form.CloseForm()
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

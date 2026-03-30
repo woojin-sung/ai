@@ -32,7 +32,7 @@ local g_isRefresh = false
 
 local g_isChangeTab = false
 
-local g_sOSType = Form.GetSharedData("&OS_TYPE", false)
+local g_sOSType = Form.GetSharedData("..OS_TYPE", false)
 
 local g_isForeigner = false
 
@@ -43,10 +43,10 @@ local g_isIssueToken_Main = false
 -- ****************************************************************************
 
 -- ===============================================
--- NULL 체크 
+-- nil 체크 
 -- ===============================================
 function IsEmpty(sData)
-	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
 		return true
 	else
 		return false
@@ -59,12 +59,12 @@ end
 function TruncateToDecimalPlaces(nVal, nDeimalPlaces)
 	nVal = gf_Tonumber(nVal)
 	nFactor = 10 ^ nDeimalPlaces
-	szNumStr = FormatNumber(nVal*nFactor,12,0,0,0,1)
-	nDecimalIdx = InStr(szNumStr, ".")
+	szNumStr = gf_CommaValue(nVal*nFactor,12,0,0,0,1)
+	nDecimalIdx = string.find(szNumStr, ".")
 	
 	nTotalData = 0
 	if gf_Tonumber(nDecimalIdx) > 0 then
-		nTotalData = gf_Tonumber(left(szNumStr, gf_Tonumber(nDecimalIdx)-1))
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, gf_Tonumber(nDecimalIdx)-1))
 	else
 		nTotalData = gf_Tonumber(szNumStr)
 	end
@@ -93,7 +93,7 @@ function Convert_StrToArr(szData, szSeperator)
 	if IsEmpty(szSeperator) then
 		-- 단일변수
 		arrData = {}
-		table.insert(arrData, szData)
+		table.Insert(arrData, szData)
 	else
 		-- 다중변수
 		arrData = gf_Split(szData, szSeperator)
@@ -106,24 +106,24 @@ end
 -- ===============================================
 -- REST API_토큰발급
 -- ===============================================
-function IssueToken() 
+function IssueToken()
 	g_sStep = "ISSUE_TOKEN"
 	
 	Form.ReleaseRequestData()
 	
-	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
-	sData1  = Form.GetSharedData("&USER_ID", false )
-	sData2  = Form.GetSharedData("&MCI_SESSION_KEY", false )
-	sData3  = Form.GetSharedData("&SEMI_SSO_KEY", false )
+	sData0  = Form.GetSharedData("..MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("..USER_ID", false )
+	sData2  = Form.GetSharedData("..MCI_SESSION_KEY", false )
+	sData3  = Form.GetSharedData("..SEMI_SSO_KEY", false )
 	
 	Form.MakeRequestData("channelClsCode", 	sData0)
 	Form.MakeRequestData("userId", 			sData1)
 	Form.MakeRequestData("sessionKey", 		sData2)
 	Form.MakeRequestData("semiSsoKey", 		sData3)
 	
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -135,22 +135,22 @@ end
 -- ===============================================
 -- REST API_토큰발급
 -- ===============================================
-function RefreshToken() 
+function RefreshToken()
 	g_sStep = "ISSUE_TOKEN"
 	
 	Form.ReleaseRequestData()
 	
-	sData0  = Form.GetSharedData("&MEDIA_CODE", false )
-	sData1  = Form.GetSharedData("&USER_ID", false )
-	sData2  = Form.GetSharedData("&REST_API_REFRESH_TOKEN", false )
+	sData0  = Form.GetSharedData("..MEDIA_CODE", false )
+	sData1  = Form.GetSharedData("..USER_ID", false )
+	sData2  = Form.GetSharedData("..REST_API_REFRESH_TOKEN", false )
 	
 	Form.MakeRequestData("channelClsCode", 	sData0)
 	Form.MakeRequestData("userId", 			sData1)
 	Form.MakeRequestData("refreshToken", 	sData2)
 
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	--개발기
+	if sDev == "1" then --개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
@@ -188,7 +188,7 @@ function Form_OnDelayEvent(nID)
 		-- ----------------------------------
 		IssueToken() 
 		
-	elseif gf_Tonumber(nID) == 4 then	
+	elseif gf_Tonumber(nID) == 4 then
 		Button0.left = 1000
 	end
 end
@@ -239,9 +239,9 @@ function Form_OnFormInit()
 			
 			nArrCnt = #arrData
 			if nArrCnt > 0 then
-				if trim(arrData[1]) == "기타" then
+				if gf_Trim(arrData[1+1]) == "기타" then
 					if nArrCnt > 2 then
-						sGbn = trim(arrData[3])
+						sGbn = gf_Trim(arrData[3+1])
 						
 						if sGbn == "OS" then
 							fmtabSearch.currenttabpageid = "page0"
@@ -346,7 +346,7 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 		-- 성공
 		-- ----------------------------------------
 		if sParam == "SUCCESS" then
-			sAccessToken = Form.GetSharedData("&REST_API_TOKEN", false)
+			sAccessToken = Form.GetSharedData("..REST_API_TOKEN", false)
 			
 			if IsEmpty(sAccessToken) == true then
 				-- ----------------------------------
@@ -405,11 +405,11 @@ function Form_OnTriggerEvent(sEventName, sParam, sParam2)
 				refreshToken = Form.ResponseRestAPI("DATA", 0, "refreshToken", data)
 				
 				if IsEmpty(accessToken) == false then
-					Form.SetSharedData("&REST_API_TOKEN", " Bearer " .. accessToken )
+					Form.SetSharedData("..REST_API_TOKEN", " Bearer " .. accessToken )
 				end
 				
 				if IsEmpty(refreshToken) == false then
-					Form.SetSharedData("&REST_API_REFRESH_TOKEN", " Bearer " .. refreshToken )
+					Form.SetSharedData("..REST_API_REFRESH_TOKEN", " Bearer " .. refreshToken )
 				end
 				
 				-- --------------------------------
@@ -466,8 +466,8 @@ function Form_OnPopupReturn(sKeyName, sRet)
 			tData = gf_Split(sRet, "★")
 			
 			if #tData > 0 then
-				edtPwd.pwdlen = tData[2]
-				edtPwd.caption = tData[1]
+				edtPwd.pwdlen = tData[2+1]
+				edtPwd.caption = tData[1+1]
 			end
 			
 		-- --------------------------------
@@ -486,7 +486,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 				szCurAcc = act0.caption
 				nCnt = gf_Tonumber(act0.accountcount)
 				for i = 1, gf_Tonumber - 1 do
-					szCompAcc = act0.getAccountByIndex(i)
+					szCompAcc = act0.GetAccountByIndex(i)
 					
 					if szCurAcc == szCompAcc then
 						act0.currentindex = i
@@ -547,11 +547,11 @@ end
 -- =============================================================================
 function DATAMANAGER_OnSendRealBefore(szTranID)
 	if szTranID == "ohhts_semi_ssor" then
-		sSemiSSO = Form.GetSharedData("&SEMI_SSO_KEY", false)
+		sSemiSSO = Form.GetSharedData("..SEMI_SSO_KEY", false)
 		DATAMANAGER.SetDataValue(1,"ohhts_semi_ssor", "InBlock1", "FID_MCI_LOGN_KEY", 0 , sSemiSSO)
 		
 	elseif szTranID == "ohhts_cntg_auto" then
-		sCsno = Form.GetSharedData("&CUST_NUM", false)
+		sCsno = Form.GetSharedData("..CUST_NUM", false)
 		DATAMANAGER.SetDataValue(1, "ohhts_cntg_auto", "InBlock1", "FIDR_CSNO", 0 , sCsno)
 	end
 end
@@ -596,7 +596,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		
 		if sNtfrClsCode == "1" then
 			
-			sAccessToken = Form.GetSharedData("&REST_API_TOKEN", false)
+			sAccessToken = Form.GetSharedData("..REST_API_TOKEN", false)
 			if IsEmpty(sAccessToken) == true then
 				-- ----------------------------------
 				-- 1. SEMI SSO 키 MCI 등록
@@ -614,7 +614,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 				-- 데이터 조회 
 				-- --------------------------------
 				sLinkData = act0.total .. "`" .. act0.sequence .. "`" .. act0.accountname .. "`" .. edtPwd.caption 
-				Form.triggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "TOKEN_SUCCESS", sLinkData)
+				Form.TriggerEvent("fmtabSearch." .. fmtabSearch.currenttabpageid, "TOKEN_SUCCESS", sLinkData)
 				
 				-- --------------------------------
 				-- 데이터 재조회 실시간 등록
@@ -647,8 +647,8 @@ function DATAMANAGER_OnReceiveRealComplete(szTranID)
 		sEvnt = DATAMANAGER.GetDataValue(1, "ohhts_cntg_auto", "OutBlock1", "FIDR_EVNT_CLS_CODE", 0)		-- 01:조건상태 변경
 		
 --		Button0.left = 0
-		-- 조건상태 변경 & 해외(미국)
-		if sEvnt == "01" and sDmab == "2"  then
+		-- 조건상태 변경 .. 해외(미국)
+		if sEvnt == "01" and sDmab == "2" then
 			sAcnoTmp = act0.total
 			sAsnoTmp = act0.sequence
 			
@@ -681,7 +681,7 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 	
 --	Form.SetDelayEvent(4, 0.2)
 	
-	if len(trim(szSubMsg))	>	0	then
+	if string.len(gf_Trim(szSubMsg))	>	0 then
 		Form.MsgBox("알림", szErrMsg .. "\n(" .. szSubMsg .. ")", "CHECK_FOREIGNER", 6)
 	else
 		Form.MsgBox("알림", szErrMsg, "CHECK_FOREIGNER", 6)
@@ -717,14 +717,15 @@ function Form_OnLinkData(sKey, sValue)
 			
 			tData = gf_Split(sValue, "★")
 			
-			if UBOUND(tData) > 0 then
-				edtPwd.pwdlen = tData[2]
-				edtPwd.caption = tData[1]
+			if #tData > 0 then
+				edtPwd.pwdlen = tData[2+1]
+				edtPwd.caption = tData[1+1]
 			end
 		end
 	end
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_semi_ssor" trcode="ohhts_semi_ssor" />

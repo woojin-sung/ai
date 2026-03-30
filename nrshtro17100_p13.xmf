@@ -81,7 +81,7 @@
 	<SCRIPT_INFO _len="606" _ulen="606" >
 --============================================================================
 function Form_OnFormInitBefore()
-	imgClose.setMaintainingRatio("1")
+	imgClose.SetMaintainingRatio("1")
 end
 
 --============================================================================
@@ -98,5 +98,6 @@ function btnClose_OnClick()
 	Form.CloseForm()
 end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

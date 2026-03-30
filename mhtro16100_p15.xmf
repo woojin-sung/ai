@@ -19,40 +19,42 @@
 		<BUTTON name="btnOrder" caption="매수하기" btnimage="btn_etc10.9" ly_vert="146,592,231,55,1" />
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="3251" _ulen="3049" >
-'-------------------------------------------------------------------------------------------
-' 01. 화 면 명 : PTP종목 경고안내
-' 02. 화면설명 : 
-' 03. 작    성 : 2022.12.06 KBC
-'-------------------------------------------------------------------------------------------
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ ---------------------------------------------------------------------------------------------
+ -- 01. 화 면 명 : PTP종목 경고안내
+ -- 02. 화면설명 : 
+ -- 03. 작    성 : 2022.12.06 KBC
+ ---------------------------------------------------------------------------------------------
 
-'****************************************************************************
-'               G  L  O  B  A  L       V  A  R  I  A  B  L  E
-'****************************************************************************
-Dim g_nCount
-Dim g_nIndex				' 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
-Dim g_szErrMsg			' 경고메세지
+ --****************************************************************************
+ --               G  L  O  B  A  L       V  A  R  I  A  B  L  E
+ --****************************************************************************
+local g_nCount
+local g_nIndex -- 매도수구분 (0:매수, 1:매도, 2:정정, 3:취소)
+local g_szErrMsg -- 경고메세지
 
 g_nCount = 0
 g_nIndex = "0"
 
-'****************************************************************************
-'            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
-'****************************************************************************
+ --****************************************************************************
+ --            P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N             
+ --****************************************************************************
 
-'============================================================================
-Function SendOrder()
-    If g_nCount = 0 Then
+ --============================================================================
+function SendOrder()
+    if g_nCount == 0 then
 	    Form.SendReturnToParent( "PTP주문경고" , "1")
 	    
 	    g_nCount = 1
 	    Form.CloseForm( )
-    End If    
-End Function
-'****************************************************************************
-'               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
-'****************************************************************************
-'============================================================================
-Sub Form_OnFormInitBefore()
+    end
+end
+ --****************************************************************************
+ --               C  O  M  M  O  N       F  U  N  C  T  I  O  N               
+ --****************************************************************************
+ --============================================================================
+function Form_OnFormInitBefore()
 	
 	Label0.paddinginfo = "0,0,0,0"
 	Label1.paddinginfo = "0,0,0,0"
@@ -63,66 +65,67 @@ Sub Form_OnFormInitBefore()
 	Label6.paddinginfo = "0,0,0,0"
 	Label7.paddinginfo = "0,0,0,0"
 	
-	Dim szData, arrData, szItemName
+	local szData, arrData, szItemName
 
 	szData = Form.GetOpenLinkData()
 	
-	arrData = Split(szData,"|")
+	arrData = gf_Split(szData,"|")
 	
-	if UBOUND(arrData) < 1 then
-	    Exit sub
-	End if	
+	if #arrData < 1 then
+	    return
+	end
 
-	g_nIndex				= arrData(0)  '매도수구분 (0:매수, 1:매도, 2:정정, 3:취소, 10:예약매수, 11:예약매도, 12:예약취소)
-	g_szErrMsg	 		= arrData(1)	'경고메세지
+	g_nIndex				= arrData[0+1]   --매도수구분 (0:매수, 1:매도, 2:정정, 3:취소, 10:예약매수, 11:예약매도, 12:예약취소)
+	g_szErrMsg	 		= arrData[1+1]	 --경고메세지
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()	
-	If g_nIndex = "0" Then
+ --============================================================================
+function Form_OnFormInit()
+	if g_nIndex == "0" then
 		lblTitle.bgcolor = "92"
 		btnOrder.btnimage = "btn_etc10.9"
 		btnOrder.caption="매수하기"
 		
-	ElseIf g_nIndex = "1" Then
+	elseif g_nIndex == "1" then
 		lblTitle.bgcolor = "91"
 		btnOrder.btnimage = "btn_etc11.9"
 		btnOrder.caption="매도하기"
 		
-	' 20250417_01 HWG START : 자동감시주문 프로젝트
-	'자동감시(매수)
-	ElseIf g_nIndex = "90" Then
+	 -- 20250417_01 HWG START : 자동감시주문 프로젝트
+	 --자동감시(매수)
+	elseif g_nIndex == "90" then
 		lblTitle.bgcolor = "92"
 		btnOrder.btnimage = "btn_etc10.9"
 		btnOrder.caption="확인"
 	
-	'자동감시(매도)
-	ElseIf g_nIndex = "91" Then
+	 --자동감시(매도)
+	elseif g_nIndex == "91" then
 		lblTitle.bgcolor = "91"
 		btnOrder.btnimage = "btn_etc11.9"
 		btnOrder.caption="확인"
-	' 20250417_01 HWG END
+	 -- 20250417_01 HWG END
 	
-	End If	
-End Sub
+	end
+end
 
-'============================================================================
-Sub btnOrder_OnClick()
+ --============================================================================
+function btnOrder_OnClick()
 	SendOrder()
-End Sub
+end
 
-'============================================================================
-Sub btnClose_OnClick()
+ --============================================================================
+function btnClose_OnClick()
 	Form.CloseForm( )	
-End Sub
+end
 
-'============================================================================
-Sub imgClose1_OnClick()
+ --============================================================================
+function imgClose1_OnClick()
 	Form.CloseForm( )
-End Sub
+end
 
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

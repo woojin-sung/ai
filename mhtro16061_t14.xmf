@@ -451,7 +451,7 @@ function Check_Accout()
 	
 	szAcctNo = Form.GetTopCtlProp("acnt", "caption")
     
-    if string.len(gf_Trim(szAcctNo)) < 10 then
+    if string.string.len(gf_Trim(szAcctNo)) < 10 then
 	    Form.ShowAlert( g_szTitle, "계좌번호를 확인후 다시 입력하십시오." )
 	    return False
 	end
@@ -547,7 +547,7 @@ function Set_Unit(szData, sDecimal)
 			sztemp = sztemp .. ".0000"	
 		end
 	else
-		szCha = gf_Tonumber(string.len(sztemp) - szChk)
+		szCha = gf_Tonumber(string.string.len(sztemp) - szChk)
 	
 	
 		if gf_Tostring(szCha) == "1" then
@@ -598,14 +598,14 @@ function Form_OnFormInit()
 	 --20200910 SWJ START
 	 --MTS메모리평문 적용유무
 	 --plain_rm = ( 0 : 미적용/ 1 : 적용)
-	 plain_rm = Form.GetSharedData("&PLAIN_RM", false)
+	 plain_rm = Form.GetSharedData("..PLAIN_RM", false)
 	 --20200910 SWJ END
 	
 	 --============================================================================
 	 --v0002
-	g_rsltCls 		= Form.GetSharedData("&mhtro16061_t14_RSLT_CLS", false)
-	g_selnByovClcd 	= Form.GetSharedData("&mhtro16061_t14_SELN_BYOV_CLCD", false)
-	g_mangDate 		= Form.GetSharedData("&mhtro16061_t13_mang_date", false)
+	g_rsltCls 		= Form.GetSharedData("..mhtro16061_t14_RSLT_CLS", false)
+	g_selnByovClcd 	= Form.GetSharedData("..mhtro16061_t14_SELN_BYOV_CLCD", false)
+	g_mangDate 		= Form.GetSharedData("..mhtro16061_t13_mang_date", false)
 	
 	if g_mangDate ~= "" then
 		cld0.caption = g_mangDate
@@ -702,14 +702,13 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			hOurType  = grd0.GetCellData( "bd_cell9", i)	 --주문예약시간구분코드 - 2019.10.14
 
  --			szOdrPrc = grd0.GetCellData("bd_cell15", i)
- --			szOdrPrc2 = Set_Unit(CDbl(szOdrPrc), szDecimal)
+ --			szOdrPrc2 = Set_Unit(gf_Tonumber(szOdrPrc), szDecimal)
  --			grd0.SetCellData("bd_cell15", i, szOdrPrc2)
 
 			
 			 --20201124 LES START 해외주식 시장가매도
 			szOrdType = grd0.GetCellData("bd_cell22", i)
 			
-			-- SELECT CASE 변환 (수동 보정 필요)
 				if szOrdType == "1" then
 					grd0.SetCellData("bd_cell26", i, "지정가")
 				elseif szOrdType == "2" then
@@ -736,7 +735,6 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 
 
 			 --주문예약구분코드 - 2019.10.14
-			-- SELECT CASE 변환 (수동 보정 필요)
 				if rSevType == "1" then
 					grd0.SetCellData( "bd_cell0", i, "일반예약")
 				elseif rSevType == "2" then
@@ -748,7 +746,6 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			end
 			
 			 --주문예약시간구분코드 - 2019.10.14
-			-- SELECT CASE 변환 (수동 보정 필요)
 				if hOurType == "0" then
 					grd0.SetCellData( "bd_cell9", i, "장개시")
 				elseif hOurType == "1" then
@@ -765,7 +762,6 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 
 
 			 --매매구분
-			-- SELECT CASE 변환 (수동 보정 필요)
 				if szType == "1" then
 					grd0.SetCellFgColor( "bd_cell2", i, "2" )
 					grd0.SetCellFgColor( "bd_cell142", i, "2" )
@@ -838,22 +834,22 @@ function btnSearch_OnClick()
 	
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function btnMove_OnClick()
 	Form.OpenScreen("16074" , "")
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function LabelFilter_OnClick()
 	Form.OpenPopupAnimation("mhtro16061_p9", g_rsltCls .. "★" .. g_selnByovClcd, "", "2")
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function ButtonFilter_OnClick()
 	LabelFilter_OnClick()
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function Form_OnPopupReturn(sKeyName, sRet)
 	if sKeyName == "mhtro16061_p9" then
 		arrData = gf_Split(sRet,"★")
@@ -869,11 +865,10 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	end
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function setLabelFilterCaption()
 	local s_rsltCls, s_selnByovClcd
 	
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if g_rsltCls == "%" then
 			s_rsltCls = "전체"
 		elseif g_rsltCls == "1" then
@@ -882,7 +877,6 @@ function setLabelFilterCaption()
 			s_rsltCls = "거부"
 	end
 	
-	-- SELECT CASE 변환 (수동 보정 필요)
 		if g_selnByovClcd == "0" then
 			s_selnByovClcd = "매수매도"
 		elseif g_selnByovClcd == "1" then
@@ -895,11 +889,12 @@ function setLabelFilterCaption()
 	
 end
 
- --============================================================================ 'v0002
+ --============================================================================  --v0002
 function cld0_OnEditComplete()
 	btnSearch_OnClick()
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_240r" trcode="obtro_oder_240r" compress="1" encryption="1" inputcheck="1" >

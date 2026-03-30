@@ -502,89 +502,91 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="74860" _ulen="68582" >
-'============================================================================
-' 수정내역
-'============================================================================
-' '20241125_01 HWG : 국가별 해당 통화 기준 외화자산 조회기능 추가
-' 20250627 HWG : v0001 : 미국주식 애프터장 실시간 시세 추가 
-' 20250703 YSH : v0002 : 해외주식 장운영 정보 조회방식 변경
-' 20250901 YSH : v0003 : 휴장일 체크 오류 수정
-' 20250924 : HWG : v20250924_02 : 물타기 계산기 신규개발
-'============================================================================
-'-------------------------
-' 서비스 조회 관련
-'-------------------------
-Dim gDataCnt
-Dim gDataReqComplete
-Dim gStockCashGubun
-Dim gWonCurrencyGubun
-Dim gFiltetGubunCode
-Dim gFiltetGubunName
-'Dim gApplyCost
-'Dim gApplyHabsan
-'Dim gApplyJonga
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --============================================================================
+ -- 수정내역
+ --============================================================================
+ -- '20241125_01 HWG : 국가별 해당 통화 기준 외화자산 조회기능 추가
+ -- 20250627 HWG : v0001 : 미국주식 애프터장 실시간 시세 추가 
+ -- 20250703 YSH : v0002 : 해외주식 장운영 정보 조회방식 변경
+ -- 20250901 YSH : v0003 : 휴장일 체크 오류 수정
+ -- 20250924 : HWG : v20250924_02 : 물타기 계산기 신규개발
+ --============================================================================
+ ---------------------------
+ -- 서비스 조회 관련
+ ---------------------------
+local gDataCnt
+local gDataReqComplete
+local gStockCashGubun
+local gWonCurrencyGubun
+local gFiltetGubunCode
+local gFiltetGubunName
+ --Dim gApplyCost
+ --Dim gApplyHabsan
+ --Dim gApplyJonga
 
 gDataCnt			= 0
 gDataReqComplete	= false
-gStockCashGubun 	= "STOCK" 'Stock:주식 / Cash:외화
-gWonCurrencyGubun = "1"	 '1:외화 / 2:원화
+gStockCashGubun 	= "STOCK"  --Stock:주식 / Cash:외화
+gWonCurrencyGubun = "1"	  --1:외화 / 2:원화
 gFiltetGubunCode	= "000"
 gFiltetGubunName	= "전체"
 
-'gApplyCost 		= "N"
-'gApplyHabsan 		= "N"
-'gApplyJonga 		= "N"
+ --gApplyCost 		= "N"
+ --gApplyHabsan 		= "N"
+ --gApplyJonga 		= "N"
 
-'20241125_01 HWG START
-Dim g_nViewMode_Tot	'0=외화 1=원화
+ --20241125_01 HWG START
+local g_nViewMode_Tot --0=외화 1=원화
 g_nViewMode_Tot = 0
-'20241125_01 HWG END
+ --20241125_01 HWG END
 
-'-------------------------
-' 컨테이너 위치 이동관련
-'-------------------------
-Dim gStockDownAble
+ ---------------------------
+ -- 컨테이너 위치 이동관련
+ ---------------------------
+local gStockDownAble
 gStockDownAble = false
 
-Dim gCashDownAble
+local gCashDownAble
 gCashDownAble = false
 
-Dim gOsType
-Dim gListClick
+local gOsType
+local gListClick
 gListClick = false
 
-'v0002 >>
-Dim gMktOpClsCd
+ --v0002 >>
+local gMktOpClsCd
 gMktOpClsCd = ""
 
-Dim gRefresh
+local gRefresh
 gRefresh = false
-'v0002 <<
+ --v0002 <<
 
-'v20250924_02 >>
-Dim g_sLinkData_Water ; g_sLinkData_Water = "" 
-'v20250924_02 <<
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --v20250924_02 >>
+local g_sLinkData_Water ; g_sLinkData_Water = ""
+ --v20250924_02 <<
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	gOsType = Form.GetSharedData("&OS_TYPE", false)
+	gOsType = Form.GetSharedData("..OS_TYPE", false)
 
-	'-----------------------------------------------
-	' 이미지 컨트롤 설정
-	'-----------------------------------------------
-	imgRight.setMaintainingRatio("1")
-	imgNodata.setMaintainingRatio("1")
-	contBody.imageFilter.setMaintainingRatio("1")
-	contBody.contStock.imgInfo.setMaintainingRatio("1")
-	contBody.contCash.ImageQuestion.setMaintainingRatio("1")
-	contToast.ImageClose.setMaintainingRatio("1")
+	 -------------------------------------------------
+	 -- 이미지 컨트롤 설정
+	 -------------------------------------------------
+	imgRight.SetMaintainingRatio("1")
+	imgNodata.SetMaintainingRatio("1")
+	contBody.imageFilter.SetMaintainingRatio("1")
+	contBody.contStock.imgInfo.SetMaintainingRatio("1")
+	contBody.contCash.ImageQuestion.SetMaintainingRatio("1")
+	contToast.ImageClose.SetMaintainingRatio("1")
 	
-	'20241125_01 HWG
+	 --20241125_01 HWG
 	imgToggle0.SetMaintainingRatio("2")
 	
-	'-----------------------------------------------
-	' 라벨 컨트롤 설정
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- 라벨 컨트롤 설정
+	 -------------------------------------------------
 	LabelValueTitle.paddinginfo = "0,0,0,0"
 	LabelValueData.paddinginfo = "0,0,0,0"
 	
@@ -593,12 +595,12 @@ Sub Form_OnFormInitBefore()
 	LabelValuPurChaseTitle.paddinginfo = "0,0,0,0"
 	LabelCurrencyDepositTitle.paddinginfo = "0,0,0,0"
 	
-	'20241125_01 HWG START
+	 --20241125_01 HWG START
 	LabelValueData0.paddinginfo = "0,0,0,0"
 	LabelValuePnLData0.paddinginfo = "0,0,0,0"
 	LabelValuPurChaseData0.paddinginfo = "0,0,0,0"
 	LabelCurrencyDepositData0.paddinginfo = "0,0,0,0"
-	'20241125_01 HWG END
+	 --20241125_01 HWG END
 	
 	LabelValuePnLData.paddinginfo = "0,0,0,0"
 	LabelValueRateData.paddinginfo = "0,0,0,0"
@@ -611,156 +613,156 @@ Sub Form_OnFormInitBefore()
 	
 	contToast.LabelText.paddinginfo = "0,0,0,0"
 	
-	'-----------------------------------------------
-	' 컨테이너 컨트롤 설정
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- 컨테이너 컨트롤 설정
+	 -------------------------------------------------
 	contBody.gesture = true
 	
-	'-----------------------------------------------
-	' 그리드 컨틀로 설정
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- 그리드 컨틀로 설정
+	 -------------------------------------------------
 	contBody.contStock.grdList.SetUseScrollingEvent(true)
 	
-	'-----------------------------------------------
-	' 버튼 컨트롤 설정
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- 버튼 컨트롤 설정
+	 -------------------------------------------------
 	contBody.contStock.btnToggleBg.singleimage = "btn_12_n.9"
 	
-	'-----------------------------------------------
-	' "추정 예수금 기준" 라벨 너비 자동조정
-	'-----------------------------------------------
-	contBody.contCash.LabelCashTitle.sizeAutoFit()
+	 -------------------------------------------------
+	 -- "추정 예수금 기준" 라벨 너비 자동조정
+	 -------------------------------------------------
+	contBody.contCash.LabelCashTitle.SizeAutoFit()
 	
-	'-----------------------------------------------
-	' 그리드 merge셀 소팅 설정 
-	'-----------------------------------------------
-	contBody.contStock.grdList.setSortCellID("th_cell24", "bd_name")
-	contBody.contStock.grdList.setSortCellID("th_cell31", "bd_sortgubun")
-	contBody.contStock.grdList.setSortCellID("th_cell1", "bd_sortcode")
+	 -------------------------------------------------
+	 -- 그리드 merge셀 소팅 설정 
+	 -------------------------------------------------
+	contBody.contStock.grdList.SetSortCellID("th_cell24", "bd_name")
+	contBody.contStock.grdList.SetSortCellID("th_cell31", "bd_sortgubun")
+	contBody.contStock.grdList.SetSortCellID("th_cell1", "bd_sortcode")
 	
 	
 
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
+ --============================================================================
+function Form_OnFormInit()
 
-	'--------------------------------------------------------------
-	'큰글씨모드 대응
-	'--------------------------------------------------------------
+	 ----------------------------------------------------------------
+	 --큰글씨모드 대응
+	 ----------------------------------------------------------------
 	szTextSize = Form.GetEnvData("common.textsize")
-	if CInt(szTextSize) > 0 then
+	if gf_Tonumber(szTextSize) > 0 then
 		
-		LabelValuePnLTitle.fontsize = - Cint((szTextSize * 3))
-		LabelValueRateTitle.fontsize = - Cint((szTextSize * 3))
-		LabelValuPurChaseTitle.fontsize = - Cint((szTextSize * 3))
-		LabelCurrencyDepositTitle.fontsize = - Cint((szTextSize * 3))
+		LabelValuePnLTitle.fontsize = - gf_Tonumber((szTextSize * 3))
+		LabelValueRateTitle.fontsize = - gf_Tonumber((szTextSize * 3))
+		LabelValuPurChaseTitle.fontsize = - gf_Tonumber((szTextSize * 3))
+		LabelCurrencyDepositTitle.fontsize = - gf_Tonumber((szTextSize * 3))
 		
-		contBody.contStock.checkCost.fontsize = - Cint((szTextSize * 2))
-		contBody.contStock.checkHabsan.fontsize = - Cint((szTextSize * 2))
-		contBody.contStock.checkJonga.fontsize = - Cint((szTextSize * 2))
+		contBody.contStock.checkCost.fontsize = - gf_Tonumber((szTextSize * 2))
+		contBody.contStock.checkHabsan.fontsize = - gf_Tonumber((szTextSize * 2))
+		contBody.contStock.checkJonga.fontsize = - gf_Tonumber((szTextSize * 2))
 		
 		contToast.LabelText.caption = "비용포함 조건을 설정 시, 평가손익과 수익률은 수수료/세금/이자를 포함한 추정치로 오차가 생길 수 있습니다."
 	
-	end if	
+	end
 	
-	'-----------------------------------------------
-	' 버튼 컨트롤 설정
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- 버튼 컨트롤 설정
+	 -------------------------------------------------
 	contBody.contStock.btnToggleBg.singleimage = "btn_12_n.9"
 	
-	'--------------------------------------------------
-	' 호가테이블 숨기기
-	'--------------------------------------------------
-	Form.triggerEvent("#", "ChangeContHoga", "3")
+	 ----------------------------------------------------
+	 -- 호가테이블 숨기기
+	 ----------------------------------------------------
+	Form.TriggerEvent("#", "ChangeContHoga", "3")
 
-	'----------------------------------------------------------
-	' 그리드컨트롤 설정
-	'----------------------------------------------------------
+	 ------------------------------------------------------------
+	 -- 그리드컨트롤 설정
+	 ------------------------------------------------------------
 	contBody.contStock.grdList.SetcellMaxLineCount("bd_name",2)
 	
-	'----------------------------------------------------------
-	'주간장 여부 확인(주간장일때만 정규종가 체크박스 보임처리)
-	'=> 이 값은 시간으로만 판단해서 내려줌. 휴일 구분이 안되서
-	'장운영정보 조회 서비스 조회로 판단(comn_010r)
-	'=> sharedData 로 값 적용 (&OVRS_MARKET_OPERATION_US)
-	'----------------------------------------------------------
-	'sDayYN = Form.GetSharedData( "&OVRS_DAYMARKET", false )
-	'
-	'if sDayYN == "Y"  then
-	'	contBody.contStock.checkJonga.visible = true
-	'else
-	'	contBody.contStock.checkJonga.visible = false
-	'end if
+	 ------------------------------------------------------------
+	 --주간장 여부 확인(주간장일때만 정규종가 체크박스 보임처리)
+	 --=> 이 값은 시간으로만 판단해서 내려줌. 휴일 구분이 안되서
+	 --장운영정보 조회 서비스 조회로 판단(comn_010r)
+	 --=> sharedData 로 값 적용 (&OVRS_MARKET_OPERATION_US)
+	 ------------------------------------------------------------
+	 --sDayYN = Form.GetSharedData( "&OVRS_DAYMARKET", false )
+	 --
+	 --if sDayYN == "Y"  then
+	 --	contBody.contStock.checkJonga.visible = true
+	 --else
+	 --	contBody.contStock.checkJonga.visible = false
+	 --end if
 	
-	'-----------------------------------------------------------------------
-	' 비용포함 마지막 선택값 가져오기
-	'-----------------------------------------------------------------------
+	 -------------------------------------------------------------------------
+	 -- 비용포함 마지막 선택값 가져오기
+	 -------------------------------------------------------------------------
 	exApplyCost = Form.LoadConfigData("NEW_OVRS_ORDER", "APPLY_COST")
 	
-	if exApplyCost <> "" then
+	if exApplyCost ~= "" then
 		
 		if exApplyCost == "1" then
 			contBody.contStock.checkCost.chksilence = "1" 
-		end if
+		end
 	
-	end if
+	end
 	
-	'-----------------------------------------------------------------------
-	' 대출합산 마지막 선택값 가져오기
-	'-----------------------------------------------------------------------
+	 -------------------------------------------------------------------------
+	 -- 대출합산 마지막 선택값 가져오기
+	 -------------------------------------------------------------------------
 	exApplyHabsan = Form.LoadConfigData("NEW_OVRS_ORDER", "APPLY_HABSAN")
 	
-	if exApplyHabsan <> "" then
+	if exApplyHabsan ~= "" then
 		
 		if exApplyHabsan == "1" then
 			contBody.contStock.checkHabsan.chksilence = "1" 
-		end if
+		end
 	
-	end if
+	end
 	
-	'-----------------------------------------------------------------------
-	' 원화/외화 마지막 선택값 가져오기
-	' 마지막 선택값이 원화였던 경우에만 컨트롤 표시/구분값 변경
-	'-----------------------------------------------------------------------
+	 -------------------------------------------------------------------------
+	 -- 원화/외화 마지막 선택값 가져오기
+	 -- 마지막 선택값이 원화였던 경우에만 컨트롤 표시/구분값 변경
+	 -------------------------------------------------------------------------
 	exWonCurrencyGubun = Form.LoadConfigData("NEW_OVRS_ORDER", "JANGO_TYPE")
 	
-	if exWonCurrencyGubun <> "" then
+	if exWonCurrencyGubun ~= "" then
 	
 		gWonCurrencyGubun = exWonCurrencyGubun
 			
-		'마지막 선택값이 원화라면
+		 --마지막 선택값이 원화라면
 		if gWonCurrencyGubun == "2" then
 			contBody.contStock.imgToggle.imgpath = "toggle_2dots_03.9"
 			contBody.contStock.LabelToggle.caption = "원화"
-		end if
+		end
 	
-	end if
+	end
 	
-	'20241125_01 HWG START
-	'--------------------------
-	'국가 필터링 저장값 로드
-	'--------------------------
+	 --20241125_01 HWG START
+	 ----------------------------
+	 --국가 필터링 저장값 로드
+	 ----------------------------
 	sGubunCode = Form.GetEnvData("OVRS_ORDER_NATION")
 	sGubunName = Form.GetEnvData("OVRS_ORDER_NATION_NM")
 	
-	if sGubunCode <> "" and sGubunName <> "" then
+	if sGubunCode ~= "" and sGubunName ~= "" then
 		gFiltetGubunCode = sGubunCode
 		gFiltetGubunName = sGubunName
 		contBody.LabelFilter.caption = gFiltetGubunName
-	end if
+	end
 	
-	'--------------------------
-	'총자산 원화/외화 구분값 로드
-	'--------------------------
+	 ----------------------------
+	 --총자산 원화/외화 구분값 로드
+	 ----------------------------
 	sViewMode_Tot = Form.GetEnvData("OVRS_ORDER_TOT")
 	
-	if sViewMode_Tot == "" then 
+	if sViewMode_Tot == "" then
 		imgToggle0.visible = false
 		g_nViewMode_Tot = 0
 		imgToggle0.imgpath = "toggle_won"
 	else
-		g_nViewMode_Tot = Cint(sViewMode_Tot)
+		g_nViewMode_Tot = gf_Tonumber(sViewMode_Tot)
 		if g_nViewMode_Tot == 1 then
 			imgToggle0.imgpath = "toggle_local"
 			
@@ -786,55 +788,55 @@ Sub Form_OnFormInit()
 			LabelValuePnLData.visible = true
 			LabelValuPurChaseData.visible = true
 			LabelCurrencyDepositData.visible = true
-		end if
+		end
 	
-	end if
-	'20241125_01 HWG END
+	end
+	 --20241125_01 HWG END
 	
-	'---------------------------------------------------------
-	' 주식/외화 초기세팅(0:주식/1:외화)
-	' => 장운영 조회 서비스 호출 완료 후 "정규종가" 버튼
-	' 보임여부 처리한다음에 주식or외화 잔고 서비스 조회 호출
-	'---------------------------------------------------------
+	 -----------------------------------------------------------
+	 -- 주식/외화 초기세팅(0:주식/1:외화)
+	 -- => 장운영 조회 서비스 호출 완료 후 "정규종가" 버튼
+	 -- 보임여부 처리한다음에 주식or외화 잔고 서비스 조회 호출
+	 -----------------------------------------------------------
 	RequestMarketInfo()
-	'SetSelectBtn(0)
+	 --SetSelectBtn(0)
 	
-	'-----------------------------------------------
-	' "추정 예수금 기준" 라벨 너비 자동조정
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 -- "추정 예수금 기준" 라벨 너비 자동조정
+	 -------------------------------------------------
 	contBody.contCash.LabelCashTitle.caption = "추정 예수금 기준"
 	
-	'-----------------------------------------------
-	' 20240812 그리드 스크롤 제어
-	'-----------------------------------------------
-	contBody.contStock.grdList.setEnableScroll(false)
-	contBody.setUseAdjustScroll(true)
-End Sub
+	 -------------------------------------------------
+	 -- 20240812 그리드 스크롤 제어
+	 -------------------------------------------------
+	contBody.contStock.grdList.SetEnableScroll(false)
+	contBody.SetUseAdjustScroll(true)
+end
 
-'============================================================================
-'v0001 >>
-Sub Form_OnDelayEvent(nID)
-	if Cint(nID) == 2 then		
-		'Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", "onDelayEvent START: RequestStockData or RequestCashData " & gStockCashGubun)
+ --============================================================================
+ --v0001 >>
+function Form_OnDelayEvent(nID)
+	if gf_Tonumber(nID) == 2 then
+		 --Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", "onDelayEvent START: RequestStockData or RequestCashData " & gStockCashGubun)
 		if gStockCashGubun == "STOCK" then
 			RequestStockData()
 		else
 			RequestCashData()
-		end if
+		end
 			
-	end if
-End Sub 
-'v0001 <<
+	end
+end
+ --v0001 <<
 
-'============================================================================
-Function RequestMarketInfo()
-	'20250703 YSH START v0002
-	szMktOpClsCd = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+ --============================================================================
+function RequestMarketInfo()
+	 --20250703 YSH START v0002
+	szMktOpClsCd = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 	
-	if szMktOpClsCd <> "" and gMktOpClsCd <> szMktOpClsCd then
-		if CheckValidMktOp(szMkOpClsCd) == false then	'v0003
+	if szMktOpClsCd ~= "" and gMktOpClsCd ~= szMktOpClsCd then
+		if CheckValidMktOp(szMkOpClsCd) == false then --v0003
 			szMkOpClsCd = "004"
-		end if
+		end
 		
 		gMktOpClsCd = szMktOpClsCd
 		
@@ -843,136 +845,136 @@ Function RequestMarketInfo()
 		else
 			contBody.contStock.checkJonga.chksilence = "0"
 			contBody.contStock.checkJonga.visible = false
-		end if
+		end
 
 		SetSelectBtn(0)
-	end if
-	'20250703 YSH END v0002
-End Function
+	end
+	 --20250703 YSH END v0002
+end
 
-'============================================================================
-Sub contBody_rdoGubun_OnClick(nIndex)
+ --============================================================================
+function contBody_rdoGubun_OnClick(nIndex)
 	
 	SetSelectBtn(nIndex)
 	
-End Sub
-'============================================================================
-Function SetSelectBtn(nIndex)
+end
+ --============================================================================
+function SetSelectBtn(nIndex)
 
 	imgNodata.visible = false
 	lblNodata.visible = false
 	
-	'-----------------------------------------------
-	'주식
-	'-----------------------------------------------
-	if nIndex = 0 then
+	 -------------------------------------------------
+	 --주식
+	 -------------------------------------------------
+	if nIndex == 0 then
 	
-		'-------------------------------------
-		'조회조건 필터 보이기
-		'-------------------------------------
+		 ---------------------------------------
+		 --조회조건 필터 보이기
+		 ---------------------------------------
 		contBody.LabelFilter.visible = true
 		contBody.imageFilter.visible = true
 		
-		'-------------------------------------
-		'주식/외화 구분값 변경
-		'-------------------------------------
+		 ---------------------------------------
+		 --주식/외화 구분값 변경
+		 ---------------------------------------
 		gStockCashGubun = "STOCK"
 		
-		'주식잔고/외화잔고 버튼으로 했을때 (현재는 라디오버튼 변경)
-		'contBody.btnStock.bringFront("1")
-		'contBody.btnStock.singleimage = "btn_radio_select_o.9"
-		'contBody.btnStock.fgcolor = 273
+		 --주식잔고/외화잔고 버튼으로 했을때 (현재는 라디오버튼 변경)
+		 --contBody.btnStock.bringFront("1")
+		 --contBody.btnStock.singleimage = "btn_radio_select_o.9"
+		 --contBody.btnStock.fgcolor = 273
 		
-		'contBody.btnCash.singleimage = "btn_radio_select_n.9"
-		'contBody.btnCash.fgcolor = 334
+		 --contBody.btnCash.singleimage = "btn_radio_select_n.9"
+		 --contBody.btnCash.fgcolor = 334
 		
-		'-------------------------------------
-		'주식잔고 컨테이너 보임처리
-		'-------------------------------------
+		 ---------------------------------------
+		 --주식잔고 컨테이너 보임처리
+		 ---------------------------------------
 		contBody.contStock.top = 40
 		contBody.contStock.left = 0
 		contBody.contStock.visible = true
 		
-		'-------------------------------------
-		'외화잔고 컨테이너 숨김처리
-		'-------------------------------------
+		 ---------------------------------------
+		 --외화잔고 컨테이너 숨김처리
+		 ---------------------------------------
 		contBody.contCash.left = 500
 		contBody.contCash.visible = false
 		
-		'-------------------------------------
-		'주식잔고관련 서비스 호출
-		'-------------------------------------
+		 ---------------------------------------
+		 --주식잔고관련 서비스 호출
+		 ---------------------------------------
 		RequestStockData()
 		
-	'-----------------------------------------------
-	'외화
-	'-----------------------------------------------
+	 -------------------------------------------------
+	 --외화
+	 -------------------------------------------------
 	else
 		
-		'-------------------------------------
-		'조회조건 필터 숨기기
-		'-------------------------------------
+		 ---------------------------------------
+		 --조회조건 필터 숨기기
+		 ---------------------------------------
 		contBody.LabelFilter.visible = false
 		contBody.imageFilter.visible = false
 		
-		'-------------------------------------
-		'토스트메시지 숨기기
-		'-------------------------------------
+		 ---------------------------------------
+		 --토스트메시지 숨기기
+		 ---------------------------------------
 		SetShowToast(false)
 		
-		'-------------------------------------
-		'주식/외화 구분값 변경
-		'-------------------------------------
+		 ---------------------------------------
+		 --주식/외화 구분값 변경
+		 ---------------------------------------
 		gStockCashGubun = "CASH"
 		
-		'주식잔고/외화잔고 버튼으로 했을때 (현재는 라디오버튼 변경)
-		'contBody.btnCash.bringFront("1")
-		'contBody.btnCash.singleimage = "btn_radio_select_o.9"
-		'contBody.btnCash.fgcolor = 273
+		 --주식잔고/외화잔고 버튼으로 했을때 (현재는 라디오버튼 변경)
+		 --contBody.btnCash.bringFront("1")
+		 --contBody.btnCash.singleimage = "btn_radio_select_o.9"
+		 --contBody.btnCash.fgcolor = 273
 		
-		'contBody.btnStock.singleimage = "btn_radio_select_n.9"
-		'contBody.btnStock.fgcolor = 334
+		 --contBody.btnStock.singleimage = "btn_radio_select_n.9"
+		 --contBody.btnStock.fgcolor = 334
 		
-		'-------------------------------------
-		'외화잔고 컨테이너 보임처리
-		'-------------------------------------
+		 ---------------------------------------
+		 --외화잔고 컨테이너 보임처리
+		 ---------------------------------------
 		contBody.contCash.top = 40
 		contBody.contCash.left = 0
 		contBody.contCash.visible = true
 		
-		'-------------------------------------
-		'주식잔고 컨테이너 숨김처리
-		'-------------------------------------
+		 ---------------------------------------
+		 --주식잔고 컨테이너 숨김처리
+		 ---------------------------------------
 		contBody.contStock.left = 500
 		contBody.contStock.visible = false
 		
-		'-------------------------------------
-		'외화잔고관련 서비스 호출
-		'-------------------------------------
+		 ---------------------------------------
+		 --외화잔고관련 서비스 호출
+		 ---------------------------------------
 		RequestCashData()
 		
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-' 주식 버튼 클릭
-'============================================================================
-Sub contBody_btnStock_OnClick()
+ --============================================================================
+ -- 주식 버튼 클릭
+ --============================================================================
+function contBody_btnStock_OnClick()
 	SetSelectBtn(0)
-End Sub
+end
 
-'============================================================================
-' 외화 버튼 클릭
-'============================================================================
-Sub contBody_btnCash_OnClick()
+ --============================================================================
+ -- 외화 버튼 클릭
+ --============================================================================
+function contBody_btnCash_OnClick()
 	SetSelectBtn(1)
-End Sub
+end
 
-'============================================================================
-' 원화/외화 버튼 클릭
-'============================================================================
-Sub contBody_contStock_LabelToggle_OnClick()
+ --============================================================================
+ -- 원화/외화 버튼 클릭
+ --============================================================================
+function contBody_contStock_LabelToggle_OnClick()
 	
 	sCurText = contBody.contStock.LabelToggle.caption
 	
@@ -984,212 +986,212 @@ Sub contBody_contStock_LabelToggle_OnClick()
 		contBody.contStock.imgToggle.imgpath = "toggle_2dots_02.9"
 		contBody.contStock.LabelToggle.caption = "외화"
 		gWonCurrencyGubun = "1"
-	end if
+	end
 	
-	'--------------------------------
-	'마지막 선택값 저장
-	'--------------------------------
+	 ----------------------------------
+	 --마지막 선택값 저장
+	 ----------------------------------
 	Form.SaveConfigData("NEW_OVRS_ORDER", "JANGO_TYPE", gWonCurrencyGubun)
 	
-	'--------------------------------
-	'주식관련 서비스 재조회
-	'--------------------------------
+	 ----------------------------------
+	 --주식관련 서비스 재조회
+	 ----------------------------------
 	RequestStockData()
 	
-End Sub
+end
 
-'================================================================================================
-' 컨테이너 스크롤에 따라 리스트 펼치기/접기
-'================================================================================================
-Sub contBody_OnGestureEvent(sParam)
+ --================================================================================================
+ -- 컨테이너 스크롤에 따라 리스트 펼치기/접기
+ --================================================================================================
+function contBody_OnGestureEvent(sParam)
 
-	'contBody.contStock.grdList.rowcount = 3
-	'contBody.contCash.Pannel0.rowcount = 4
+	 --contBody.contStock.grdList.rowcount = 3
+	 --contBody.contCash.Pannel0.rowcount = 4
 
-	'===============================================================
-	' 펼치기
-	'===============================================================
+	 --===============================================================
+	 -- 펼치기
+	 --===============================================================
 	if sParam == "Up" then
 		
 		if gStockCashGubun == "STOCK" then
 			
-			'주식잔고 : 3종목 이상 조회 시, 펼치기 가능
-			nDataCnt = Cint(contBody.contStock.grdList.rowcount)
+			 --주식잔고 : 3종목 이상 조회 시, 펼치기 가능
+			nDataCnt = gf_Tonumber(contBody.contStock.grdList.rowcount)
 			
 			if nDataCnt > 2 then
 				ChangeContainerPos("1")
 				ChangeControlSize("1")
-			end if
+			end
 		
 		else
 			
-			'외화잔고 : 3종목 이상 조회 시, 펼치기 가능
-			nDataCnt = Cint(contBody.contCash.Pannel0.rowcount)
+			 --외화잔고 : 3종목 이상 조회 시, 펼치기 가능
+			nDataCnt = gf_Tonumber(contBody.contCash.Pannel0.rowcount)
 			
 			if nDataCnt > 2 then
 				ChangeContainerPos("1")
 				ChangeControlSize("1")
-			end if
+			end
 		
-		end if
+		end
 	
-	'=========================================================================
-	' 접기 (접을때 실제 컨트롤 사이즈는 컨테이너 이동이 완료된 이후에 변경함)
-	'========================================================================
+	 --=========================================================================
+	 -- 접기 (접을때 실제 컨트롤 사이즈는 컨테이너 이동이 완료된 이후에 변경함)
+	 --========================================================================
 	else
 		
 		if gStockCashGubun == "STOCK" then
 			
-			'------------------------------------------------------------------
-			'주식잔고 : 3종목 이하 조회 시, 조건없이 접기 가능
-			'		 : 4종목 이상 조회 시, 첫번째행이 보여질때부터 접기가능
-			'------------------------------------------------------------------
-			nDataCnt = Cint(contBody.contStock.grdList.rowcount)
+			 --------------------------------------------------------------------
+			 --주식잔고 : 3종목 이하 조회 시, 조건없이 접기 가능
+			 --		 : 4종목 이상 조회 시, 첫번째행이 보여질때부터 접기가능
+			 --------------------------------------------------------------------
+			nDataCnt = gf_Tonumber(contBody.contStock.grdList.rowcount)
 			
 			if nDataCnt < 4 then
 				ChangeContainerPos("0")
-				'ChangeControlSize("0")
+				 --ChangeControlSize("0")
 			else
 				
-				nTopRow = Cint(contBody.contStock.grdList.toprow)
+				nTopRow = gf_Tonumber(contBody.contStock.grdList.toprow)
 				
 				if nTopRow < 1 then
 					ChangeContainerPos("0")
-					'ChangeControlSize("0")
-				end if
+					 --ChangeControlSize("0")
+				end
 				
-			end if
+			end
 			
 		
 		else
 		
-			'------------------------------------------------------------------
-			'외화잔고 : 3종목 이하 조회 시, 조건없이 접기 가능
-			'		 : 4종목 이상 조회 시, 첫번째행에 도달후 접기 가능
-			'------------------------------------------------------------------
-			nDataCnt = Cint(contBody.contCash.Pannel0.rowcount)
+			 --------------------------------------------------------------------
+			 --외화잔고 : 3종목 이하 조회 시, 조건없이 접기 가능
+			 --		 : 4종목 이상 조회 시, 첫번째행에 도달후 접기 가능
+			 --------------------------------------------------------------------
+			nDataCnt = gf_Tonumber(contBody.contCash.Pannel0.rowcount)
 			
 			if nDataCnt < 4 then
 				ChangeContainerPos("0")
-				'ChangeControlSize("0")
+				 --ChangeControlSize("0")
 			else
 			
 				if gCashDownAble == true then
 					ChangeContainerPos("0")
-					'ChangeControlSize("0")
-				end if
+					 --ChangeControlSize("0")
+				end
 			
-			end if
+			end
 		
-		end if
+		end
 	
 		
-	end if
+	end
 	
-End Sub
+end
 
-'================================================================================================
-Sub contBody_OnAnimationStart(sParam,sParam2)
+ --================================================================================================
+function contBody_OnAnimationStart(sParam,sParam2)
 
 	if sParam == "Down" then
 	
-		'-----------------------------------------------
-		' 20240812 그리드 스크롤 제어
-		'-----------------------------------------------
-		contBody.contStock.grdList.setEnableScroll(false)
+		 -------------------------------------------------
+		 -- 20240812 그리드 스크롤 제어
+		 -------------------------------------------------
+		contBody.contStock.grdList.SetEnableScroll(false)
 	
-		'------------------------------------------------------
-		' 현재 보고있는 리스트에 데이터가 없으면
-		' 데이터가 없다는 안내문구 위치조정 후 잠시 숨김 Complete에서 보임처리
-		'-------------------------------------------------------
+		 --------------------------------------------------------
+		 -- 현재 보고있는 리스트에 데이터가 없으면
+		 -- 데이터가 없다는 안내문구 위치조정 후 잠시 숨김 Complete에서 보임처리
+		 ---------------------------------------------------------
 		if gStockCashGubun == "STOCK" then
 			
-			nDataCnt = Cint(contBody.contStock.grdList.rowcount)
+			nDataCnt = gf_Tonumber(contBody.contStock.grdList.rowcount)
 	
 			if nDataCnt == 0 then
 				imgNodata.visible = false
 				lblNodata.visible = false
 				imgNodata.top = 260
 				lblNodata.top = 320	
-			end if
+			end
 			
 		else
 			
-			nDataCnt = Cint(contBody.contCash.Pannel.rowcount)
+			nDataCnt = gf_Tonumber(contBody.contCash.Pannel.rowcount)
 			
 			if nDataCnt == 0 then
 				imgNodata.visible = false
 				lblNodata.visible = false
 				imgNodata.top = 260
 				lblNodata.top = 320	
-			end if
+			end
 		
-		end if
+		end
 		
-	end if
+	end
 
-End Sub
+end
 
-'================================================================================================
-' 접기 시, 컨테이너 이동이 모두 끝난 후에 컨트롤 사이즈 조정
-'================================================================================================
-Sub contBody_OnAnimationComplete(sParam)
+ --================================================================================================
+ -- 접기 시, 컨테이너 이동이 모두 끝난 후에 컨트롤 사이즈 조정
+ --================================================================================================
+function contBody_OnAnimationComplete(sParam)
 
 	if sParam == "Down" then
 		
 		if gStockCashGubun == "STOCK" then
 			
-			nDataCnt = Cint(contBody.contStock.grdList.rowcount)
+			nDataCnt = gf_Tonumber(contBody.contStock.grdList.rowcount)
 	
 			if nDataCnt == 0 then
 				imgNodata.visible = true
 				lblNodata.visible = true
 			
-			end if
+			end
 			
 		else
 			
-			nDataCnt = Cint(contBody.contCash.Pannel0.rowcount)
+			nDataCnt = gf_Tonumber(contBody.contCash.Pannel0.rowcount)
 			
 			if nDataCnt == 0 then
 				imgNodata.visible = true
 				lblNodata.visible = true
-			end if
+			end
 		
-		end if
+		end
 	
 		
 		ChangeControlSize("0")
 		
 	else
 		
-		'-----------------------------------------------
-		' 20240812 그리드 스크롤 제어
-		'-----------------------------------------------
-		contBody.contStock.grdList.setEnableScroll(true)
+		 -------------------------------------------------
+		 -- 20240812 그리드 스크롤 제어
+		 -------------------------------------------------
+		contBody.contStock.grdList.SetEnableScroll(true)
 		
-	end if
+	end
 
-End Sub
+end
 
-'================================================================================================
-' 컨테이너 위치 이동 해주는 함수
-'================================================================================================
-Function ChangeContainerPos(sType)
+ --================================================================================================
+ -- 컨테이너 위치 이동 해주는 함수
+ --================================================================================================
+function ChangeContainerPos(sType)
 	
 	if sType == "1" then
-		contBody.fixTopAreaWhenScrolling("1", 10, "Up")
+		contBody.FixTopAreaWhenScrolling("1", 10, "Up")
 	elseif sType == "0" then
-		contBody.fixTopAreaWhenScrolling("1", 120, "Down")
-	end if
+		contBody.FixTopAreaWhenScrolling("1", 120, "Down")
+	end
 
-End Function
-'================================================================================================
-' 실제 컨트롤 사이즈 변경 
-'================================================================================================
-Function ChangeControlSize(sType)
+end
+ --================================================================================================
+ -- 실제 컨트롤 사이즈 변경 
+ --================================================================================================
+function ChangeControlSize(sType)
 	
-	'sType => 0:접힘(디폴트) / 1: 펼침
+	 --sType => 0:접힘(디폴트) / 1: 펼침
 	if sType == "1" then
 		
 		contBody.height = 379
@@ -1208,216 +1210,216 @@ Function ChangeControlSize(sType)
 		contBody.contCash.height = 229
 		contBody.contCash.Pannel0.height = 199
 	
-	end if
+	end
 	
 	contBody.contStock.SetScrollAutoSize()
 	contBody.contCash.SetScrollAutoSize()
 	contBody.SetScrollAutoSize()
 	
 	
-End Function
+end
 
-'================================================================================================
-' [외화]잔고 판넬 스크롤 속도 제어 & 판넬 접기 가능여부 설정
-'================================================================================================
-Sub contBody_contCash_Pannel0_OnScrollNoTop()
+ --================================================================================================
+ -- [외화]잔고 판넬 스크롤 속도 제어 & 판넬 접기 가능여부 설정
+ --================================================================================================
+function contBody_contCash_Pannel0_OnScrollNoTop()
 	
 	gCashDownAble = false
-	contBody.contCash.Pannel0.setScrollSpeed(True, 0)
+	contBody.contCash.Pannel0.SetScrollSpeed(True, 0)
 	
-End Sub
-'================================================================================================
-' [외화]잔고 판넬 접기 가능여부 설정
-'================================================================================================
-Sub contBody_contCash_Pannel0_OnScrollTop()
+end
+ --================================================================================================
+ -- [외화]잔고 판넬 접기 가능여부 설정
+ --================================================================================================
+function contBody_contCash_Pannel0_OnScrollTop()
 	
 	gCashDownAble = true
 	
-End Sub
-'================================================================================================
-' [외화]잔고 스크롤 속도 제어
-'================================================================================================
-Sub contBody_contCash_Pannel0_OnVisibleRow(nEventStartRow, nEventEndRow)
+end
+ --================================================================================================
+ -- [외화]잔고 스크롤 속도 제어
+ --================================================================================================
+function contBody_contCash_Pannel0_OnVisibleRow(nEventStartRow, nEventEndRow)
 	
-	contBody.contCash.Pannel0.setScrollSpeed(False, 0)
+	contBody.contCash.Pannel0.SetScrollSpeed(False, 0)
 	
-End Sub
+end
 
-'============================================================================
-' [주식]관련 서비스 조회 : 통합(평가금액/잔고)
-'============================================================================
-Function RequestStockData()
+ --============================================================================
+ -- [주식]관련 서비스 조회 : 통합(평가금액/잔고)
+ --============================================================================
+function RequestStockData()
 
 	RequestValue()
 	RequestBalance()
 	
-End Function
-'============================================================================
-' [주식]과련 서비스 조회 : 평가금액
-'============================================================================
-Function RequestValue()
+end
+ --============================================================================
+ -- [주식]과련 서비스 조회 : 평가금액
+ --============================================================================
+function RequestValue()
 
 	DATAMANAGER.ClearInputData(0, "obtro_oder_265r")
 	
-	'------------------------------------------------------------
-	' 계좌번호/일련번호
-	'------------------------------------------------------------
-	Dim sAcno,sAsno
+	 --------------------------------------------------------------
+	 -- 계좌번호/일련번호
+	 --------------------------------------------------------------
+	local sAcno,sAsno
 	sAcno = Form.GetTopCtlProp("acnt", "total")
 	sAsno = Form.GetTopCtlProp("acnt", "sequence")
 	
 	DATAMANAGER.SetDataValue(0, "obtro_oder_265r", "InBlock1", "ACNO", 0, sAcno)		
 	DATAMANAGER.SetDataValue(0, "obtro_oder_265r", "InBlock1", "ASNO", 0, sAsno)
 	
-	'------------------------------------------------------------
-	' 비용포함 여부(Y/N)
-	'------------------------------------------------------------
-	Dim sApplyCost
-	nCheckCost = Cint(contBody.contStock.checkCost.checkstate)
+	 --------------------------------------------------------------
+	 -- 비용포함 여부(Y/N)
+	 --------------------------------------------------------------
+	local sApplyCost
+	nCheckCost = gf_Tonumber(contBody.contStock.checkCost.checkstate)
 	
 	if nCheckCost == 1 then
 		sApplyCost = "Y"
 	else
 		sApplyCost = "N"
-	end if
+	end
 	
 	DATAMANAGER.SetDataValue(0, "obtro_oder_265r", "InBlock1", "FEE_INCU_YN"	, 0, sApplyCost)
 	
-	'------------------------------------------------------------
-	' 정규종가 적용 여부(정규종가 적용하려면 N)
-	'------------------------------------------------------------
-	Dim sApplyJonga
-	nCheckJonga = Cint(contBody.contStock.checkJonga.checkstate)
+	 --------------------------------------------------------------
+	 -- 정규종가 적용 여부(정규종가 적용하려면 N)
+	 --------------------------------------------------------------
+	local sApplyJonga
+	nCheckJonga = gf_Tonumber(contBody.contStock.checkJonga.checkstate)
 	
 	if nCheckJonga == 1 then
 		sApplyJonga = "N"
 	else
 		sApplyJonga = "Y"
-	end if
+	end
 	
 	DATAMANAGER.SetDataValue(0, "obtro_oder_265r", "InBlock1", "DYTM_TR_CLPR_APLY_YN"	, 0, sApplyJonga)
 	
-	'------------------------------------------------------------
-	' 국가구분코드(다건선택 시, 국가코드@국가코드.....)
-	'------------------------------------------------------------
+	 --------------------------------------------------------------
+	 -- 국가구분코드(다건선택 시, 국가코드@국가코드.....)
+	 --------------------------------------------------------------
 	DATAMANAGER.SetDataValue(0, "obtro_oder_265r", "InBlock1", "UI_IQRY_COND_CNTT", 0, gFiltetGubunCode)
 	
-	'------------------------------------------------------------
-	' 서비스 호출
-	'------------------------------------------------------------
+	 --------------------------------------------------------------
+	 -- 서비스 호출
+	 --------------------------------------------------------------
 	DATAMANAGER.RequestTranData("obtro_oder_265r")
 
-End Function
+end
 
-'============================================================================
-' [주식]과련 서비스 조회 : 잔고
-'============================================================================
-Function RequestBalance()
+ --============================================================================
+ -- [주식]과련 서비스 조회 : 잔고
+ --============================================================================
+function RequestBalance()
 
 	gDataCnt = 0
 	contBody.contStock.grdList.rowcount = 0
 	
 	DATAMANAGER.ClearInputData(0, "obtro_oder_267r")
 		
-	'------------------------------------------------------------
-	' 계좌번호/일련번호
-	'------------------------------------------------------------
-	Dim sAcno,sAsno
+	 --------------------------------------------------------------
+	 -- 계좌번호/일련번호
+	 --------------------------------------------------------------
+	local sAcno,sAsno
 	sAcno = Form.GetTopCtlProp("acnt", "total")
 	sAsno = Form.GetTopCtlProp("acnt", "sequence")
 	
 	DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "ACNO", 0, sAcno)		
 	DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "ASNO", 0, sAsno)
 	
-	'------------------------------------------------------------
-	' 비용포함 여부(Y/N)
-	'------------------------------------------------------------
-	Dim sApplyCost
-	nCheckCost = Cint(contBody.contStock.checkCost.checkstate)
+	 --------------------------------------------------------------
+	 -- 비용포함 여부(Y/N)
+	 --------------------------------------------------------------
+	local sApplyCost
+	nCheckCost = gf_Tonumber(contBody.contStock.checkCost.checkstate)
 	
 	if nCheckCost == 1 then
 		sApplyCost = "Y"
 	else
 		sApplyCost = "N"
-	end if
+	end
 	
 	DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "FEE_INCU_YN"	, 0, sApplyCost)
 	
-	'------------------------------------------------------------
-	' 사용자 아이디
-	'------------------------------------------------------------
-	Dim sUserID
-	sUserID = Form.GetSharedData("&USER_ID", false )
+	 --------------------------------------------------------------
+	 -- 사용자 아이디
+	 --------------------------------------------------------------
+	local sUserID
+	sUserID = Form.GetSharedData("..USER_ID", false )
 	
 	DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "ELFN_ID" , 0, sUserID)
 	
-	'------------------------------------------------------------
-	' 정규종가 적용 여부(정규종가 적용하려면 N)
-	'------------------------------------------------------------
-	Dim sApplyJonga
-	nCheckJonga = Cint(contBody.contStock.checkJonga.checkstate)
+	 --------------------------------------------------------------
+	 -- 정규종가 적용 여부(정규종가 적용하려면 N)
+	 --------------------------------------------------------------
+	local sApplyJonga
+	nCheckJonga = gf_Tonumber(contBody.contStock.checkJonga.checkstate)
 	
 	if nCheckJonga == 1 then
 		sApplyJonga = "N"
 	else
 		sApplyJonga = "Y"
-	end if
+	end
 	
 	DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "DYTM_TR_CLPR_APLY_YN"	, 0, sApplyJonga)
 	
-	'------------------------------------------------------------
-	' 대출합산여부(1:대출미합산/2:대출합산)
-	'------------------------------------------------------------
-	Dim sApplyHabsan
-	nCheckHabsan = Cint(contBody.contStock.checkHabsan.checkstate)
+	 --------------------------------------------------------------
+	 -- 대출합산여부(1:대출미합산/2:대출합산)
+	 --------------------------------------------------------------
+	local sApplyHabsan
+	nCheckHabsan = gf_Tonumber(contBody.contStock.checkHabsan.checkstate)
 	
 	if nCheckHabsan == 1 then
 		sApplyHabsan = "2"
 	else
 		sApplyHabsan = "1"
-	end if
+	end
 	
 	DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "IQRY_CLS_CODE", 0, sApplyHabsan)
 	
-	'------------------------------------------------------------
-	' 원화/외화 구분(1:외화/2:원화)
-	'------------------------------------------------------------
+	 --------------------------------------------------------------
+	 -- 원화/외화 구분(1:외화/2:원화)
+	 --------------------------------------------------------------
 	DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "PROS_CLS", 0, gWonCurrencyGubun)
 	
-	'------------------------------------------------------------
-	' 국가구분코드(다건선택 시, 국가코드@국가코드.....)
-	'------------------------------------------------------------
+	 --------------------------------------------------------------
+	 -- 국가구분코드(다건선택 시, 국가코드@국가코드.....)
+	 --------------------------------------------------------------
 	DATAMANAGER.SetDataValue(0, "obtro_oder_267r", "InBlock1", "UI_IQRY_COND_CNTT", 0, gFiltetGubunCode)
 	
-	'------------------------------------------------------------
-	' 서비스 호출
-	'------------------------------------------------------------
+	 --------------------------------------------------------------
+	 -- 서비스 호출
+	 --------------------------------------------------------------
 	DATAMANAGER.RequestTranData("obtro_oder_267r")
 
-End Function
+end
 
-'============================================================================
-' 외화관련 데이터 조회
-'============================================================================
-Function RequestCashData()
+ --============================================================================
+ -- 외화관련 데이터 조회
+ --============================================================================
+function RequestCashData()
 	
 	RequestValue()
 	RequestOvrsCashData()
 
-End Function
+end
 
-'============================================================================
-' 보유외화잔고 조회
-'============================================================================
-Function RequestOvrsCashData()
+ --============================================================================
+ -- 보유외화잔고 조회
+ --============================================================================
+function RequestOvrsCashData()
 	
 	contBody.contCash.Pannel0.rowcount = 0
 	DATAMANAGER.ClearInputData(0, "obtro_oder_266r")
 	
-	'------------------------------------------------------------
-	' 계좌번호/일련번호
-	'------------------------------------------------------------
-	Dim sAcno,sAsno
+	 --------------------------------------------------------------
+	 -- 계좌번호/일련번호
+	 --------------------------------------------------------------
+	local sAcno,sAsno
 	sAcno = Form.GetTopCtlProp("acnt", "total")
 	sAsno = Form.GetTopCtlProp("acnt", "sequence")
 	
@@ -1425,85 +1427,85 @@ Function RequestOvrsCashData()
 	DATAMANAGER.SetDataValue(0, "obtro_oder_266r", "InBlock1", "ASNO", 0, sAsno)
 	DATAMANAGER.SetDataValue(0, "obtro_oder_266r", "InBlock1", "UI_IQRY_COND_CNTT"	, 0, "000")
 	
-	'------------------------------------------------------------
-	' 서비스 호출
-	'------------------------------------------------------------
+	 --------------------------------------------------------------
+	 -- 서비스 호출
+	 --------------------------------------------------------------
 	DATAMANAGER.RequestTranData("obtro_oder_266r")
 
 
-End Function
+end
 
-'============================================================================
-' 조회 필터 설정
-'============================================================================
-Sub contBody_LabelFilter_OnClick()
+ --============================================================================
+ -- 조회 필터 설정
+ --============================================================================
+function contBody_LabelFilter_OnClick()
 	if gStockCashGubun == "STOCK" then
-		szData = gFiltetGubunCode & "★" & gFiltetGubunName
+		szData = gFiltetGubunCode .. "★" .. gFiltetGubunName
 		Form.OpenPopupAnimation("mhtro16100_p21", szData, "", "2")
 	else
 	
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 조회 필터 설정
-'============================================================================
-Sub contBody_imageFilter_OnClick()
+ --============================================================================
+ -- 조회 필터 설정
+ --============================================================================
+function contBody_imageFilter_OnClick()
 	contBody_LabelFilter_OnClick()
-End Sub
+end
 
-'============================================================================
-Sub Form_OnPopupReturn(sKeyName, sRet)
+ --============================================================================
+function Form_OnPopupReturn(sKeyName, sRet)
 	
-	'-------------------------------------------
-	' [주식] 잔고 조회 필터 설정 완료 리턴
-	'-------------------------------------------
+	 ---------------------------------------------
+	 -- [주식] 잔고 조회 필터 설정 완료 리턴
+	 ---------------------------------------------
 	if sKeyName == "STOCK_COUNTRY_SELECT" then
 		
-		arrData = Split(sRet,"★")
-		gFiltetGubunCode = arrData(0)
-		gFiltetGubunName = arrData(1)
+		arrData = gf_Split(sRet,"★")
+		gFiltetGubunCode = arrData[0+1]
+		gFiltetGubunName = arrData[1+1]
 		
 		contBody.LabelFilter.caption = gFiltetGubunName
 		
-		'20241125_01 HWG START 
+		 --20241125_01 HWG START 
 		Form.SetEnvData(1, "OVRS_ORDER_NATION", gFiltetGubunCode)
 		Form.SetEnvData(1, "OVRS_ORDER_NATION_NM", gFiltetGubunName)
-		'20241125_01 HWG END
+		 --20241125_01 HWG END
 		
 		RequestStockData()
 		
-	'-------------------------------------------
-	' 무브팝업 화면이동 버튼
-	'-------------------------------------------
+	 ---------------------------------------------
+	 -- 무브팝업 화면이동 버튼
+	 ---------------------------------------------
 	elseif sKeyName == "MOVEPOPUP_RETURN" then
 	
-		'sRet = 선택행인덱스★이동화면 구분값 
-		arrData = Split(sRet,"★")
+		 --sRet = 선택행인덱스★이동화면 구분값 
+		arrData = gf_Split(sRet,"★")
 		
-		sIndex = arrData(0)
-		sGubun = arrData(1)
+		sIndex = arrData[0+1]
+		sGubun = arrData[1+1]
 		
-		if sIndex <> "" and sGubun <> "" then
+		if sIndex ~= "" and sGubun ~= "" then
 			MoveScreen(sGubun,sIndex)
-		end if
+		end
 	
-	'-------------------------------------------
-	' 무브팝업 닫음
-	'-------------------------------------------
+	 ---------------------------------------------
+	 -- 무브팝업 닫음
+	 ---------------------------------------------
 	elseif sKeyName == "MOVEPOPUP_CLOSE" then
 		
 		gListClick = false
 		
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 비용합산 체크박스
-'============================================================================
-Sub contBody_contStock_checkCost_OnChange(sCheckState)
+ --============================================================================
+ -- 비용합산 체크박스
+ --============================================================================
+function contBody_contStock_checkCost_OnChange(sCheckState)
 	
 	Form.SaveConfigData("NEW_OVRS_ORDER", "APPLY_COST", sCheckState)
 	RequestStockData()
@@ -1512,80 +1514,80 @@ Sub contBody_contStock_checkCost_OnChange(sCheckState)
 		SetShowToast(true)
 	else
 		SetShowToast(false)
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-' 대출합산 체크박스
-'============================================================================
-Sub contBody_contStock_checkHabsan_OnChange(sCheckState)
+ --============================================================================
+ -- 대출합산 체크박스
+ --============================================================================
+function contBody_contStock_checkHabsan_OnChange(sCheckState)
 	
 	Form.SaveConfigData("NEW_OVRS_ORDER", "APPLY_HABSAN", sCheckState)
 	RequestStockData()
 	
-End Sub
+end
 
-'============================================================================
-' 정규종가 체크박스
-'============================================================================
-Sub contBody_contStock_checkJonga_OnChange(sCheckState)
+ --============================================================================
+ -- 정규종가 체크박스
+ --============================================================================
+function contBody_contStock_checkJonga_OnChange(sCheckState)
 	RequestStockData()
-End Sub
+end
 
-'============================================================================
-Sub contBody_contStock_grdList_OnScrollEnd()
+ --============================================================================
+function contBody_contStock_grdList_OnScrollEnd()
 	
 	if DATAMANAGER.IsMoreNextData("obtro_oder_267r") then
 		
-		gDataCnt = Cint(contBody.contStock.grdList.rowcount)
+		gDataCnt = gf_Tonumber(contBody.contStock.grdList.rowcount)
 		
 		if gDataReqComplete == true then
 			DATAMANAGER.RequestNextData("obtro_oder_267r")
-		end if
+		end
 		
 		gDataReqComplete = false
 		
-	end if 
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 
-	'============================================================================
-	' 주식잔고 조회 서비스
-	'============================================================================
+	 --============================================================================
+	 -- 주식잔고 조회 서비스
+	 --============================================================================
 	if szTranID == "obtro_oder_267r" then
 		
-		'--------------------------------------------------------------------------
-		'서비스 조회완료 플래그값 변경
-		'--------------------------------------------------------------------------
+		 ----------------------------------------------------------------------------
+		 --서비스 조회완료 플래그값 변경
+		 ----------------------------------------------------------------------------
 		gDataReqComplete = true
 		
-		'--------------------------------------------------------------------------
-		'데이터 건수 체크
-		'--------------------------------------------------------------------------
-		nGridDataCnt = Cint(contBody.contStock.grdList.rowcount)
+		 ----------------------------------------------------------------------------
+		 --데이터 건수 체크
+		 ----------------------------------------------------------------------------
+		nGridDataCnt = gf_Tonumber(contBody.contStock.grdList.rowcount)
 		
-		'--------------------------------------------------------------------------
-		'데이터 건수에 따른 안내메시지 표시
-		'--------------------------------------------------------------------------
+		 ----------------------------------------------------------------------------
+		 --데이터 건수에 따른 안내메시지 표시
+		 ----------------------------------------------------------------------------
 		if nGridDataCnt == 0 then
 			
-			'리스트 접힘상태
-			if Cint(contBody.top) > 50 then
+			 --리스트 접힘상태
+			if gf_Tonumber(contBody.top) > 50 then
 				
 				imgNodata.top = 260
 				lblNodata.top = 320	
 			
-			'리스트 펼침상태
+			 --리스트 펼침상태
 			else
 				
 				imgNodata.top = 190
 				lblNodata.top = 250	
 				
-			end if
+			end
 			
 			imgNodata.visible = true
 			lblNodata.visible = true
@@ -1595,49 +1597,49 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			imgNodata.visible = false
 			lblNodata.visible = false
 			
-		end if
+		end
 		
-		'--------------------------------------------------------------------------
-		'데이터 세팅
-		'--------------------------------------------------------------------------
+		 ----------------------------------------------------------------------------
+		 --데이터 세팅
+		 ----------------------------------------------------------------------------
 		nDataCnt = DATAMANAGER.GetDataCount(0, "obtro_oder_267r", "OutBlock1")
 		
-		for i = 0 to nDataCnt - 1
+		for i = 0, nDataCnt - 1 do
 			
-			'--------------------------------------------------------------------------
-			'구분값(bd_cash) : 01:현금/02:대출/03:소수점
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --구분값(bd_cash) : 01:현금/02:대출/03:소수점
+			 ----------------------------------------------------------------------------
 			sCode = contBody.contStock.grdList.GetCellData("bd_code", gDataCnt + i)
 			sData = contBody.contStock.grdList.GetCellData("bd_jangogubun", gDataCnt + i)
 			sTransData = TransData("GUBUN",sData,"","")
-			contBody.contStock.grdList.SetCellData("bd_codecash", gDataCnt + i, sTransData & " | " & sCode)
+			contBody.contStock.grdList.SetCellData("bd_codecash", gDataCnt + i, sTransData .. " | " .. sCode)
 			
-			'--------------------------------------------------------------------------
-			'보유수량(bd_qty) : 소수점잔고 소수점 처리 
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --보유수량(bd_qty) : 소수점잔고 소수점 처리 
+			 ----------------------------------------------------------------------------
 			sQty = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "RMND_DQTY" , i)
 			sTransQty = TransData("QTY",sQty,sData,"")
 			contBody.contStock.grdList.SetCellData("bd_qty", gDataCnt + i, sTransQty)
 			
-			'--------------------------------------------------------------------------
-			'매도가능수량(bd_able) : 소수점잔고 소수점 처리
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --매도가능수량(bd_able) : 소수점잔고 소수점 처리
+			 ----------------------------------------------------------------------------
 			sAbleQty = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "ODER_ABLE_DQTY" , i)
 			sTransAbleQty = TransData("QTY",sAbleQty,sData,"")
 			contBody.contStock.grdList.SetCellData("bd_able", gDataCnt + i, sTransAbleQty)
 			
-			'--------------------------------------------------------------------------
-			'현재가(bd_price) : [gWonCurrencyGubun] 외화(1) : 소수점 / 원화(2) : 정수
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --현재가(bd_price) : [gWonCurrencyGubun] 외화(1) : 소수점 / 원화(2) : 정수
+			 ----------------------------------------------------------------------------
 			sPrice = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "CLPR" , i)
 			sDecimalLen = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "DCPN_LOEQ_CIPH" , i)
 			sTransPrice = TransData("PRICE",sPrice,gWonCurrencyGubun,sDecimalLen)
 			contBody.contStock.grdList.SetCellData("bd_price", gDataCnt + i, sTransPrice)
 			
-			'--------------------------------------------------------------------------
-			'전일대비(bd_debi) : 전일대비에 따른 현재가 상승/하락/보합 글자색상 설정
-			'--------------------------------------------------------------------------
-			sDebi = Cdbl(contBody.contStock.grdList.GetCellData("bd_debi", gDataCnt + i))
+			 ----------------------------------------------------------------------------
+			 --전일대비(bd_debi) : 전일대비에 따른 현재가 상승/하락/보합 글자색상 설정
+			 ----------------------------------------------------------------------------
+			sDebi = gf_Tonumber(contBody.contStock.grdList.GetCellData("bd_debi", gDataCnt + i))
 			
 			if sDebi > 0 then
 				contBody.contStock.grdList.SetCellFgColor("bd_price", gDataCnt + i, "1")
@@ -1645,99 +1647,99 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 				contBody.contStock.grdList.SetCellFgColor("bd_price", gDataCnt + i, "2")
 			else
 				contBody.contStock.grdList.SetCellFgColor("bd_price", gDataCnt + i, "3")
-			end if
+			end
 			
-			'--------------------------------------------------------------------------
-			'매입단가(bd_buyprice) : [gWonCurrencyGubun] 외화(1) : 소수점 / 원화(2) : 정수
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --매입단가(bd_buyprice) : [gWonCurrencyGubun] 외화(1) : 소수점 / 원화(2) : 정수
+			 ----------------------------------------------------------------------------
 			sBuyPrice = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "OVRS_STCK_ODER_PRC" , i)
 			sDecimalLen = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "DCPN_LOEQ_CIPH" , i)
 			sTransBuyPrice = TransData("PRICE",sBuyPrice,gWonCurrencyGubun,sDecimalLen)
 			contBody.contStock.grdList.SetCellData("bd_buyprice", gDataCnt + i, sTransBuyPrice)
 			
-			'--------------------------------------------------------------------------
-			'평가손익(bd_pnl) : [gWonCurrencyGubun] 외화(1) : 소수점(2자리고정) / 원화(2) : 정수
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --평가손익(bd_pnl) : [gWonCurrencyGubun] 외화(1) : 소수점(2자리고정) / 원화(2) : 정수
+			 ----------------------------------------------------------------------------
 			sPnL = DATAMANAGER.GetDataValue(0,"obtro_oder_267r", "OutBlock1", "VLTN_PRLS_CAMT" , i)
 			sTransPnL = TransData("PRICE",sPnL,gWonCurrencyGubun,"2")
 			contBody.contStock.grdList.SetCellData("bd_pnl", gDataCnt + i, sTransPnL)
 			
-			'--------------------------------------------------------------------------
-			'수익률(bd_rate)
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --수익률(bd_rate)
+			 ----------------------------------------------------------------------------
 			sRate = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "VLTN_PRLS_ERT" , i)
 			contBody.contStock.grdList.SetCellData("bd_rate", gDataCnt + i, sRate)
 			
-			'--------------------------------------------------------------------------
-			'수익률에 따라 평가손익 상승/하락 글자색 적용
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --수익률에 따라 평가손익 상승/하락 글자색 적용
+			 ----------------------------------------------------------------------------
 			sData = contBody.contStock.grdList.GetCellData("bd_rate", gDataCnt + i)
-			SetUpDownFgColor("bd_pnl" , gDataCnt + i , Cdbl(sData))
+			SetUpDownFgColor("bd_pnl" , gDataCnt + i , gf_Tonumber(sData))
 			
-			'--------------------------------------------------------------------------
-			'평가금액(bd_valueamt) : [gWonCurrencyGubun] 외화(1) : 소수점 / 원화(2) : 정수
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --평가금액(bd_valueamt) : [gWonCurrencyGubun] 외화(1) : 소수점 / 원화(2) : 정수
+			 ----------------------------------------------------------------------------
 			sValueAmt = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "VLTN_CAMT" , i)
 			sDecimalLen = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "DCPN_LOEQ_CIPH" , i)
 			sTransValueAmt = TransData("PRICE",sValueAmt,gWonCurrencyGubun,sDecimalLen)
 			contBody.contStock.grdList.SetCellData("bd_valueamt", gDataCnt + i, sTransValueAmt)
 			
-			'--------------------------------------------------------------------------
-			'매입금액(bd_buyamt) : [gWonCurrencyGubun] 외화(1) : 소수점 / 원화(2) : 정수
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --매입금액(bd_buyamt) : [gWonCurrencyGubun] 외화(1) : 소수점 / 원화(2) : 정수
+			 ----------------------------------------------------------------------------
 			sBuyAmt = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "BYOV_CAMT" , i)
 			sDecimalLen = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "DCPN_LOEQ_CIPH" , i)
 			sTransBuyAmt = TransData("PRICE",sBuyAmt,gWonCurrencyGubun,sDecimalLen)
 			contBody.contStock.grdList.SetCellData("bd_buyamt", gDataCnt + i, sTransBuyAmt)
 			
-			'--------------------------------------------------------------------------
-			'국가(bd_country) : 국가코드 > 국가명으로 변환
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --국가(bd_country) : 국가코드 > 국가명으로 변환
+			 ----------------------------------------------------------------------------
 			sCountry = contBody.contStock.grdList.GetCellData("bd_country", gDataCnt + i)
 			sTransCountry = Form.GetMetaData("해외주식거래국가코드", sCountry)
 			contBody.contStock.grdList.SetCellData("bd_country", gDataCnt + i, sTransCountry)
 			
-			'--------------------------------------------------------------------------
-			'구분(bd_ordergubun) : 일반,대출(1) /  소수점(2)
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --구분(bd_ordergubun) : 일반,대출(1) /  소수점(2)
+			 ----------------------------------------------------------------------------
 			sOrderGubun = contBody.contStock.grdList.GetCellData("bd_ordergubun", gDataCnt + i)
 			sTransOrderGubun = TransData("ORDERGUBUN",sOrderGubun,"","")
 			contBody.contStock.grdList.SetCellData("bd_ordergubun", gDataCnt + i, sTransOrderGubun)
 			
-			'--------------------------------------------------------------------------
-			'매수수수료(bd_fee) : 외화/원화 상관없이 소수점 2자리 고정
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --매수수수료(bd_fee) : 외화/원화 상관없이 소수점 2자리 고정
+			 ----------------------------------------------------------------------------
 			sFee = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "ANTC_BYOV_CFEE" , i)
 			sTransFee = TransData("FEE",sFee,"","")
 			contBody.contStock.grdList.SetCellData("bd_fee", gDataCnt + i, sTransFee)
 			
-			'--------------------------------------------------------------------------
-			'매도수수료(bd_exfee) : 외화/원화 상관없이 소수점 2자리 고정
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --매도수수료(bd_exfee) : 외화/원화 상관없이 소수점 2자리 고정
+			 ----------------------------------------------------------------------------
 			sExFee = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "ANTC_SELN_CFEE" , i)
 			sTransExFee = TransData("FEE",sExFee,"","")
 			contBody.contStock.grdList.SetCellData("bd_exfee", gDataCnt + i, sTransExFee)
 			
-			'--------------------------------------------------------------------------
-			'제세금(bd_excepttax) : 외화/원화 상관없이 소수점 2자리 고정
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --제세금(bd_excepttax) : 외화/원화 상관없이 소수점 2자리 고정
+			 ----------------------------------------------------------------------------
 			sExTax = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "ACPL_TR_CTAX" , i)
 			sTransExTax = TransData("FEE",sExTax,"","")
 			contBody.contStock.grdList.SetCellData("bd_excepttax", gDataCnt + i, sTransExTax)
 			
-			'--------------------------------------------------------------------------
-			'이자(bd_exintr) : 외화/원화 상관없이 소수점 2자리 고정
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --이자(bd_exintr) : 외화/원화 상관없이 소수점 2자리 고정
+			 ----------------------------------------------------------------------------
 			sExIntr = DATAMANAGER.GetDataValue(0, "obtro_oder_267r", "OutBlock1", "CRDT_INT_AMT" , i)
 			sTransExIntr = TransData("FEE",sExIntr,"","")
 			contBody.contStock.grdList.SetCellData("bd_exintr", gDataCnt + i, sTransExIntr)
 		
-		next
+		end
 		
 	
-	'============================================================================
-	' 외화잔고 조회 서비스
-	'============================================================================
+	 --============================================================================
+	 -- 외화잔고 조회 서비스
+	 --============================================================================
 	elseif szTranID == "obtro_oder_266r" then
 		
 		if DATAMANAGER.IsMoreNextData("obtro_oder_266r") then
@@ -1745,26 +1747,26 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			
 		else
 		
-			nDataCnt = Cint(contBody.contCash.Pannel0.rowcount)
+			nDataCnt = gf_Tonumber(contBody.contCash.Pannel0.rowcount)
 			
-			'--------------------------------------------------------------------------
-			'데이터 건수에 따른 안내메시지 표시
-			'--------------------------------------------------------------------------
+			 ----------------------------------------------------------------------------
+			 --데이터 건수에 따른 안내메시지 표시
+			 ----------------------------------------------------------------------------
 			if nDataCnt == 0 then
 				
-				'리스트 접힘상태
-				if Cint(contBody.top) > 50 then
+				 --리스트 접힘상태
+				if gf_Tonumber(contBody.top) > 50 then
 					
 					imgNodata.top = 260
 					lblNodata.top = 320	
 				
-				'리스트 펼침상태
+				 --리스트 펼침상태
 				else
 					
 					imgNodata.top = 190
 					lblNodata.top = 250	
 					
-				end if
+				end
 				
 				imgNodata.visible = true
 				lblNodata.visible = true
@@ -1774,72 +1776,72 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 				imgNodata.visible = false
 				lblNodata.visible = false
 				
-			end if
+			end
 			
 			
-			'--------------------------------------------------------------------------
-			' 데이터 세팅
-			'--------------------------------------------------------------------------
-			for i = 0 to nDataCnt - 1 
+			 ----------------------------------------------------------------------------
+			 -- 데이터 세팅
+			 ----------------------------------------------------------------------------
+			for i = 0, nDataCnt - 1 do
 			
-				'----------------------------
-				' 라벨 패딩값 변경
-				'----------------------------
-				contBody.contCash.Pannel0.setPropCardCell("paddinginfo","LabelCurrencyTitle",i,"0,0,0,0")
-				contBody.contCash.Pannel0.setPropCardCell("paddinginfo","LabelCurrencyData",i,"0,0,0,0")
-				contBody.contCash.Pannel0.setPropCardCell("paddinginfo","LabelExchangeRate",i,"0,0,0,0")
-				contBody.contCash.Pannel0.setPropCardCell("paddinginfo","LabelWonData",i,"0,0,0,0")
+				 ------------------------------
+				 -- 라벨 패딩값 변경
+				 ------------------------------
+				contBody.contCash.Pannel0.SetPropCardCell("paddinginfo","LabelCurrencyTitle",i,"0,0,0,0")
+				contBody.contCash.Pannel0.SetPropCardCell("paddinginfo","LabelCurrencyData",i,"0,0,0,0")
+				contBody.contCash.Pannel0.SetPropCardCell("paddinginfo","LabelExchangeRate",i,"0,0,0,0")
+				contBody.contCash.Pannel0.SetPropCardCell("paddinginfo","LabelWonData",i,"0,0,0,0")
 			
-				'----------------------------
-				' 통화금액 세팅
-				'----------------------------
+				 ------------------------------
+				 -- 통화금액 세팅
+				 ------------------------------
 				nAmt = contBody.contCash.Pannel0.GetCellValue("LabelOrgnCurrencyData",i)
-				nAmt = FormatNumber(nAmt,2)
+				nAmt = gf_CommaValue(nAmt,2)
 				sCrcd = contBody.contCash.Pannel0.GetCellValue("LabelCrcd",i)
 				
 				sRslt = nAmt .. " " .. sCrcd
 				contBody.contCash.Pannel0.SetCellValue("LabelCurrencyData",i,sRslt)
 				
-				'----------------------------
-				' 통화명 세팅
-				'----------------------------
+				 ------------------------------
+				 -- 통화명 세팅
+				 ------------------------------
 				sName = Form.GetMetaData("통화코드", sCrcd)
 				contBody.contCash.Pannel0.SetCellValue("LabelCurrencyTitle",i,sName)
 				
-				'----------------------------
-				' 국기이미지 세팅
-				'----------------------------
+				 ------------------------------
+				 -- 국기이미지 세팅
+				 ------------------------------
 				sFlagName = GetFlagImageName(sCrcd)
-				contBody.contCash.Pannel0.setPropCardCell("maintainratio","imageFlag",i,"1")
-				contBody.contCash.Pannel0.setPropCardCell("imgpath","imageFlag",i,sFlagName)
+				contBody.contCash.Pannel0.SetPropCardCell("maintainratio","imageFlag",i,"1")
+				contBody.contCash.Pannel0.SetPropCardCell("imgpath","imageFlag",i,sFlagName)
 				
-				'----------------------------
-				' 마지막행 높이값 별도처리
-				'----------------------------
+				 ------------------------------
+				 -- 마지막행 높이값 별도처리
+				 ------------------------------
 				if i == nDataCnt - 1 then
 					contBody.contCash.Pannel0.SetCardWHAt(i,100)
-				end if
+				end
 				
 				
 			
-			next
+			end
 		
-		end if
+		end
 		
 	elseif szTranID == "obtro_oder_265r" then
-		'20241125_01 HWG START 
-		if gFiltetGubunCode <> "000" then
+		 --20241125_01 HWG START 
+		if gFiltetGubunCode ~= "000" then
 			imgToggle0.visible = true
 			
 			sData = LabelValueData0.caption 
 	
-			if instr(sData, gFiltetGubunName) == 0 then
-				LabelValueData0.caption = FormatNumber(sData,2) .. " " .. GetCrcd(gFiltetGubunName)
-			end if
+			if string.find(sData, gFiltetGubunName) == 0 then
+				LabelValueData0.caption = gf_CommaValue(sData,2) .. " " .. GetCrcd(gFiltetGubunName)
+			end
 		else
-			'-------------------------------------
-			'국가구분이 전체면 무조건 초기화 함
-			'-------------------------------------
+			 ---------------------------------------
+			 --국가구분이 전체면 무조건 초기화 함
+			 ---------------------------------------
 			imgToggle0.visible = false
 			
 			g_nViewMode_Tot = 0
@@ -1854,29 +1856,29 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			LabelValuePnLData.visible = true
 			LabelValuPurChaseData.visible = true
 			LabelCurrencyDepositData.visible = true
-		end if
-		'20241125_01 HWG END
+		end
+		 --20241125_01 HWG END
 		
-	'v20250924_02 >>
-	elseif szTranID == "obtro_acnt_175r" then	
+	 --v20250924_02 >>
+	elseif szTranID == "obtro_acnt_175r" then
 		sQty = DATAMANAGER.GetDataValue(0, "obtro_acnt_175r", "OutBlock1", "QTY" , 0)
 		sAvgPrc = DATAMANAGER.GetDataValue(0, "obtro_acnt_175r", "OutBlock1", "AVRG_UNPR" , 0)
-		g_sLinkData_Water = replace(g_sLinkData_Water, "수량교체", sQty)
-		g_sLinkData_Water = replace(g_sLinkData_Water, "가격교체", sAvgPrc)
+		g_sLinkData_Water = string.gsub(g_sLinkData_Water, string.gsub("수량교체", "([%p])", "%%%1"), sQty)
+		g_sLinkData_Water = string.gsub(g_sLinkData_Water, string.gsub("가격교체", "([%p])", "%%%1"), sAvgPrc)
 
 		Form.OpenPopup("mhtro17200", g_sLinkData_Water, "")
-	'v20250924_02 <<
-	end if
+	 --v20250924_02 <<
+	end
 	
 	
-End Sub
+end
 
-'============================================================================
-'
-'============================================================================
-Function TransData(sType,sOrgnData,sGubunData,sDecimalLen)
+ --============================================================================
+ --
+ --============================================================================
+function TransData(sType,sOrgnData,sGubunData,sDecimalLen)
 	
-	Dim sReturnData
+	local sReturnData
 	sReturnData = ""
 	
 	if sType == "GUBUN" then
@@ -1887,27 +1889,27 @@ Function TransData(sType,sOrgnData,sGubunData,sDecimalLen)
 			sReturnData = "대출"
 		elseif sOrgnData == "03" then
 			sReturnData = "소수점"
-		end if
+		end
 		
 	elseif sType == "QTY" then
 	
 		if sGubunData == "03" then
-			sReturnData = Cdbl(FormatNumber(sOrgnData, 6))
+			sReturnData = gf_Tonumber(gf_CommaValue(sOrgnData, 6))
 		else
-			sReturnData = FormatNumber(sOrgnData, 0)
-		end if
+			sReturnData = gf_CommaValue(sOrgnData, 0)
+		end
 		
 	elseif sType == "PRICE" then
 		
 		if sGubunData == "1" then
-			sReturnData = FormatNumber(sOrgnData, sDecimalLen)
+			sReturnData = gf_CommaValue(sOrgnData, sDecimalLen)
 		else
-			sReturnData = FormatNumber(sOrgnData, 0)
-		end if
+			sReturnData = gf_CommaValue(sOrgnData, 0)
+		end
 	
 	elseif sType == "FEE" then
 		
-		sReturnData = FormatNumber(sOrgnData, 2)
+		sReturnData = gf_CommaValue(sOrgnData, 2)
 	
 	elseif sType == "ORDERGUBUN" then
 	
@@ -1915,109 +1917,109 @@ Function TransData(sType,sOrgnData,sGubunData,sDecimalLen)
 			sReturnData = "일반"
 		else
 			sReturnData = "소수점"
-		end if
+		end
 		
-	end if
+	end
 
 	return sReturnData
 
-End Function
+end
 
-'============================================================================
-Sub Form_OnTriggerEvent(sEventName, sParam)
-	'Form.ShowAlert(sEventName, sParam)
+ --============================================================================
+function Form_OnTriggerEvent(sEventName, sParam)
+	 --Form.ShowAlert(sEventName, sParam)
 	
-	'============================================================================
-	' 탭 변경 시 잔고조회
-	'============================================================================
+	 --============================================================================
+	 -- 탭 변경 시 잔고조회
+	 --============================================================================
 	if sEventName == "ChangeTab" then
 	
 		if gStockCashGubun == "STOCK" then
 			RequestStockData()
 		else
 			RequestCashData()
-		end if
+		end
 	
-	'============================================================================
-	' 계좌변경 시 잔고 재조회
-	' 잔고탭 > 주문환경설정 > 백버튼 > 주문화면 > 잔고탭유지 시 잔고 재조회
-	'============================================================================
+	 --============================================================================
+	 -- 계좌변경 시 잔고 재조회
+	 -- 잔고탭 > 주문환경설정 > 백버튼 > 주문화면 > 잔고탭유지 시 잔고 재조회
+	 --============================================================================
 	elseif sEventName == "ChangeAcnt" then
 	
 		if gStockCashGubun == "STOCK" then
 			RequestStockData()
 		else
 			RequestCashData()
-		end if
+		end
 		
-	'============================================================================
-	' 약정 계좌 > 미약정 계좌로 변경 시 데이터 클리어를 위해 호출
-	'============================================================================
+	 --============================================================================
+	 -- 약정 계좌 > 미약정 계좌로 변경 시 데이터 클리어를 위해 호출
+	 --============================================================================
 	elseif sEventName == "ClearData" then
 		
 		RequestStockData()
 		RequestCashData()
 		
-	'============================================================================
-	' 백그라운드 > 포그라운드 전환 시, 데이터 재조회용으로 사용
-	'============================================================================
+	 --============================================================================
+	 -- 백그라운드 > 포그라운드 전환 시, 데이터 재조회용으로 사용
+	 --============================================================================
 	elseif sEventName == "HOGA_COMPLETE" then
 	
-		if gListClick <> true then
+		if gListClick ~= true then
 			if gStockCashGubun == "STOCK" then
 				RequestStockData()
 			else
 				RequestCashData()
-			end if
-		end if
+			end
+		end
 		
-	'============================================================================
-	' 20240715 종목 미변경 시, 필요한 데이터만 재조회(평가금액/주식,외화잔고)
-	'============================================================================
+	 --============================================================================
+	 -- 20240715 종목 미변경 시, 필요한 데이터만 재조회(평가금액/주식,외화잔고)
+	 --============================================================================
 	elseif sEventName == "RefreshData" then
 		
-'		if gListClick <> true then
-'			if gStockCashGubun == "STOCK" then
-'				RequestStockData()
-'			else
-'				RequestCashData()
-'			end if
-'		end if
+ --		if gListClick <> true then
+ --			if gStockCashGubun == "STOCK" then
+ --				RequestStockData()
+ --			else
+ --				RequestCashData()
+ --			end if
+ --		end if
 		
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub contBody_contStock_grdList_OnClickUp(lRow, szCellID)
+ --============================================================================
+function contBody_contStock_grdList_OnClickUp(lRow, szCellID)
 	
 	szOnlineYN = contBody.contStock.grdList.GetCellData("bd_online", lRow) 
 	
 	if szOnlineYN == "Y" then
 	
-		'---------------------------------------------------
-		' 그리드 데이터 개수
-		'---------------------------------------------------
-		nDataCount = Cint(contBody.contStock.grdList.rowcount)
+		 -----------------------------------------------------
+		 -- 그리드 데이터 개수
+		 -----------------------------------------------------
+		nDataCount = gf_Tonumber(contBody.contStock.grdList.rowcount)
 		
-		'---------------------------------------------------
-		'20240722 무브팝업 오픈 후 컨트롤 사이즈 변경
-		'그래야 접혀있는지 펼쳐져있는지 구분하여 접혀있는 경우 
-		'컨테이너가 위로 올라간 만큼 그리드 location값 수동으로 빼줌.
-		'---------------------------------------------------
+		 -----------------------------------------------------
+		 --20240722 무브팝업 오픈 후 컨트롤 사이즈 변경
+		 --그래야 접혀있는지 펼쳐져있는지 구분하여 접혀있는 경우 
+		 --컨테이너가 위로 올라간 만큼 그리드 location값 수동으로 빼줌.
+		 -----------------------------------------------------
 		OpenMovePopup(lRow,nDataCount)
 		
-		'--------------------------------------------
-		'20240722 그리드 데이터 1개 초과일때, 온라인주문 가능종목 선택 시, 리스트 자동펼침
-		'--------------------------------------------
+		 ----------------------------------------------
+		 --20240722 그리드 데이터 1개 초과일때, 온라인주문 가능종목 선택 시, 리스트 자동펼침
+		 ----------------------------------------------
 		if nDataCount > 1 then
 			contBody.top = 10
 			ChangeControlSize("1")
-		end if
+		end
 		
-		'----------------------------------------------
-		'현재 선택종목 부모화면에 던짐. 상단시세 변경용
-		'----------------------------------------------
+		 ------------------------------------------------
+		 --현재 선택종목 부모화면에 던짐. 상단시세 변경용
+		 ------------------------------------------------
 		gListClick = true
 		
 		sVndrCode = contBody.contStock.grdList.GetCellData("bd_vndrcode", lRow)
@@ -2025,81 +2027,81 @@ Sub contBody_contStock_grdList_OnClickUp(lRow, szCellID)
 		sCode = contBody.contStock.grdList.GetCellData("bd_code", lRow) 
 		sName = contBody.contStock.grdList.GetCellData("bd_name", lRow)
 		
-		if sMarektCode <> "" and sCode <> "" then
+		if sMarektCode ~= "" and sCode ~= "" then
 			szData = sMarektCode .. "@" .. sCode .. "★" .. sName
-			Form.triggerEvent("#", "SelectJangoItem", szData)
-		end if
+			Form.TriggerEvent("#", "SelectJangoItem", szData)
+		end
 
 	else
 		
 		Form.MsgBox("안내", "해당 종목은 온라인에서\n거래가 불가합니다.\n\n영업점 또는 해외주식 데스크로 문의해주세요.", "OnLineCheck", 6)
 	
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Function OpenMovePopup(nIndex,nDataCount)
+ --============================================================================
+function OpenMovePopup(nIndex,nDataCount)
 
-	'--------------------------------------------
-	'무브팝업 화면에 넘겨줄 데이터 가져옴
-	'--------------------------------------------
-	listLocation = Split(contBody.contStock.grdList.location,":")
+	 ----------------------------------------------
+	 --무브팝업 화면에 넘겨줄 데이터 가져옴
+	 ----------------------------------------------
+	listLocation = gf_Split(contBody.contStock.grdList.location,":")
 	
-	if Cint(contBody.top) > 50 then
+	if gf_Tonumber(contBody.top) > 50 then
 		
-		'--------------------------------------------
-		'20240722 그리드 데이터가 1개 초과일때는 위치조정
-		'--------------------------------------------
-		if Cint(nDataCount) > 1 then
-			nYPos = Int(listLocation[1]) - 110
-			nHeight = listLocation[3]
+		 ----------------------------------------------
+		 --20240722 그리드 데이터가 1개 초과일때는 위치조정
+		 ----------------------------------------------
+		if gf_Tonumber(nDataCount) > 1 then
+			nYPos = Int(listLocation[1+1]) - 110
+			nHeight = listLocation[3+1]
 		else
-			nYPos = Int(listLocation[1])
-			nHeight = listLocation[3]
-		end if
+			nYPos = Int(listLocation[1+1])
+			nHeight = listLocation[3+1]
+		end
 		
 	else
-		nYPos = Int(listLocation[1])
-		nHeight = listLocation[3]
-	end if
+		nYPos = Int(listLocation[1+1])
+		nHeight = listLocation[3+1]
+	end
 	
 	sIndex 		= nIndex
 	sName 		= contBody.contStock.grdList.GetCellData("bd_name", nIndex)
 	sCode 		= contBody.contStock.grdList.GetCellData("bd_code", nIndex)
 	sVndrCode 	= contBody.contStock.grdList.GetCellData("bd_vndrcode", nIndex)
 	
-	'v20250924_02 >>
-	sJangoGubun	= contBody.contStock.grdList.GetCellData("bd_jangogubun"	, nIndex) '01:현금/02:대출/03:소수점
+	 --v20250924_02 >>
+	sJangoGubun	= contBody.contStock.grdList.GetCellData("bd_jangogubun"	, nIndex)  --01:현금/02:대출/03:소수점
 	
 	sOrdGbn = "현금"
 	if sJangoGubun == "02" then
 		sOrdGbn = "대출"
 	elseif sJangoGubun == "03" then
 		sOrdGbn = "소수점"
-	end if
+	end
 
-	szData = "OVRS_ODER_JANGO" & "★" & nYPos & "★" & nHeight & "★" & sIndex & "★" & sName & "★" & sCode & "★" & sVndrCode & "★" & sOrdGbn 
-	'v20250924_02 <<
-	'--------------------------------------------
-	'무브팝업 오픈
-	'--------------------------------------------
+	szData = "OVRS_ODER_JANGO" .. "★" .. nYPos .. "★" .. nHeight .. "★" .. sIndex .. "★" .. sName .. "★" .. sCode .. "★" .. sVndrCode .. "★" .. sOrdGbn 
+	 --v20250924_02 <<
+	 ----------------------------------------------
+	 --무브팝업 오픈
+	 ----------------------------------------------
 	Form.OpenPopup("mhtro16100_movepopup" , szData , "")
 	
 
-End Function
+end
 
-'============================================================================
-' 무브팝업 연결화면 이동
-'============================================================================
-Function MoveScreen(sGubun,sIndex)
+ --============================================================================
+ -- 무브팝업 연결화면 이동
+ --============================================================================
+function MoveScreen(sGubun,sIndex)
 
-	Dim nIndex
-	nIndex = Cint(sIndex)
+	local nIndex
+	nIndex = gf_Tonumber(sIndex)
 
-	'------------------------------------
-	' [현재가] : 종목연동
-	'------------------------------------
+	 --------------------------------------
+	 -- [현재가] : 종목연동
+	 --------------------------------------
 	if sGubun == "MOVE_HYUN" then
 		
 		szVndrCode 	= contBody.contStock.grdList.GetCellData("bd_vndrcode", nIndex)
@@ -2107,20 +2109,20 @@ Function MoveScreen(sGubun,sIndex)
 		szItemCode 	= contBody.contStock.grdList.GetCellData("bd_code", nIndex)
 		szName 		= contBody.contStock.grdList.GetCellData("bd_name", nIndex)
 	
-		if szMk <> "" and szItemCode <> "" then
-			Form.SetSharedData( "&ITEM_CODE" , szMk.."@"..szItemCode)
-			Form.SetSharedData( "&ITEM_KORNAME" , szName  )	
-			Form.SetSharedData( "&ITEM_OVERSTOCK", szMk.."@"..szItemCode.."★"..szName.."★".."", "" )			
+		if szMk ~= "" and szItemCode ~= "" then
+			Form.SetSharedData( "..ITEM_CODE" , szMk.."@"..szItemCode)
+			Form.SetSharedData( "..ITEM_KORNAME" , szName  )	
+			Form.SetSharedData( "..ITEM_OVERSTOCK", szMk.."@"..szItemCode.."★"..szName.."★".."", "" )			
 			Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", szMk.."@"..szItemCode.."★"..szName.."★".."", "" )
 			
 			Form.SetSharedData("NEW_OVRS_CURTAB_IDNEX", "4")
 			Form.OpenScreen("16000", "")	
 			
-		end if
+		end
 	
-	'------------------------------------
-	' [차트] : 종목연동
-	'------------------------------------
+	 --------------------------------------
+	 -- [차트] : 종목연동
+	 --------------------------------------
 	elseif sGubun == "MOVE_CHART" then
 	
 		szVndrCode 	= contBody.contStock.grdList.GetCellData("bd_vndrcode", nIndex)
@@ -2128,55 +2130,55 @@ Function MoveScreen(sGubun,sIndex)
 		szItemCode 	= contBody.contStock.grdList.GetCellData("bd_code", nIndex)
 		szName 		= contBody.contStock.grdList.GetCellData("bd_name", nIndex)
 	
-		if szMk <> "" and szItemCode <> "" then
-			Form.SetSharedData( "&ITEM_CODE" , szMk.."@"..szItemCode)
-			Form.SetSharedData( "&ITEM_KORNAME" , szName  )	
-			Form.SetSharedData( "&ITEM_OVERSTOCK", szMk.."@"..szItemCode.."★"..szName.."★".."", "" )			
+		if szMk ~= "" and szItemCode ~= "" then
+			Form.SetSharedData( "..ITEM_CODE" , szMk.."@"..szItemCode)
+			Form.SetSharedData( "..ITEM_KORNAME" , szName  )	
+			Form.SetSharedData( "..ITEM_OVERSTOCK", szMk.."@"..szItemCode.."★"..szName.."★".."", "" )			
 			Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", szMk.."@"..szItemCode.."★"..szName.."★".."", "" )
 			
 			Form.SetSharedData("NEW_OVRS_CURTAB_IDNEX", "4")
 			Form.OpenScreen("16020", "")
 			
-		end if
+		end
 	
-	'------------------------------------
-	' [매수] : 종목연동
-	'------------------------------------
+	 --------------------------------------
+	 -- [매수] : 종목연동
+	 --------------------------------------
 	elseif sGubun == "MOVE_MAESU" then
 	
 		szVndrCode 	= contBody.contStock.grdList.GetCellData("bd_vndrcode", nIndex)
 		szMk 		= GetMarketCode(szVndrCode)
 		szItemCode 	= contBody.contStock.grdList.GetCellData("bd_code", nIndex)
 		szName 		= contBody.contStock.grdList.GetCellData("bd_name", nIndex)
-		sJangoGubun	= contBody.contStock.grdList.GetCellData("bd_jangogubun"	, nIndex) '01:현금/02:대출/03:소수점
+		sJangoGubun	= contBody.contStock.grdList.GetCellData("bd_jangogubun"	, nIndex)  --01:현금/02:대출/03:소수점
 		
-		'--------------------------------------------
-		'소수점 잔고일 경우 소수점 주문화면으로 연동
-		'--------------------------------------------
+		 ----------------------------------------------
+		 --소수점 잔고일 경우 소수점 주문화면으로 연동
+		 ----------------------------------------------
 		if sJangoGubun == "03" then
 			
-			if szMk <> "" and szItemCode <> "" then
-				szData = szMk & "@" & szItemCode & "★" & szName & "♥" & "0" & "♥" & "" & "♥" & "" & "♥" & "0000" & "♥" & "0" & "♥" & "00000000000"
+			if szMk ~= "" and szItemCode ~= "" then
+				szData = szMk .. "@" .. szItemCode .. "★" .. szName .. "♥" .. "0" .. "♥" .. "" .. "♥" .. "" .. "♥" .. "0000" .. "♥" .. "0" .. "♥" .. "00000000000"
 				Form.SetSharedData("NEW_OVRS_CURTAB_IDNEX", "4")
 				Form.OpenScreen("16092" , szData)
-			end if
+			end
 		
-		'--------------------------------------------
-		' 일반/대출 잔고일 경우 매수탭으로 연동
-		'--------------------------------------------
+		 ----------------------------------------------
+		 -- 일반/대출 잔고일 경우 매수탭으로 연동
+		 ----------------------------------------------
 		else
 			
-			if szMk <> "" and szItemCode <> "" then
-				szData = "MAESU" & "★" & szMk & "@" & szItemCode & "★" & szName
-				Form.triggerEvent("#", "SendJangoItem", szData)
-			end if
+			if szMk ~= "" and szItemCode ~= "" then
+				szData = "MAESU" .. "★" .. szMk .. "@" .. szItemCode .. "★" .. szName
+				Form.TriggerEvent("#", "SendJangoItem", szData)
+			end
 			
-		end if
+		end
 		
-	'v20250924_02 >>
-	'------------------------------------
-	' [물타기] : 종목연동/가격/수량연동
-	'------------------------------------	
+	 --v20250924_02 >>
+	 --------------------------------------
+	 -- [물타기] : 종목연동/가격/수량연동
+	 --------------------------------------	
 	elseif sGubun == "MOVE_WATER" then
 		szVndrCode 	= contBody.contStock.grdList.GetCellData("bd_vndrcode", nIndex)
 		szMk 		= GetMarketCode(szVndrCode)
@@ -2184,56 +2186,56 @@ Function MoveScreen(sGubun,sIndex)
 		sOrdQty 		= contBody.contStock.grdList.GetCellData("bd_qty", nIndex)
 		sAvgPrc 		= contBody.contStock.grdList.GetCellData("bd_buyprice", nIndex)
 		sRate	 	= contBody.contStock.grdList.GetCellData("bd_rate", nIndex)
-		sJangoGubun	= contBody.contStock.grdList.GetCellData("bd_jangogubun"	, nIndex) '01:현금/02:대출/03:소수점
+		sJangoGubun	= contBody.contStock.grdList.GetCellData("bd_jangogubun"	, nIndex)  --01:현금/02:대출/03:소수점
 		
-		'--------------------------------------------
-		'소수점 잔고일 경우 소수점 주문화면으로 연동
-		'--------------------------------------------
+		 ----------------------------------------------
+		 --소수점 잔고일 경우 소수점 주문화면으로 연동
+		 ----------------------------------------------
 		if sJangoGubun == "03" then
-'			if szItemCode <> "" then
-'				szData = szItemCode & "★" & szName & "♥" & "0" & "♥" & "" & "♥" & "" & "♥" & "0000" & "♥" & "0" & "♥" & "00000000000"
-'				Form.OpenScreen("16092" , szData)
-'			end if
-			'none
+ --			if szItemCode <> "" then
+ --				szData = szItemCode & "★" & szName & "♥" & "0" & "♥" & "" & "♥" & "" & "♥" & "0000" & "♥" & "0" & "♥" & "00000000000"
+ --				Form.OpenScreen("16092" , szData)
+ --			end if
+			 --none
 		
-		'--------------------------------------------
-		' 일반/대출 잔고일 경우 매수탭으로 연동
-		'--------------------------------------------
+		 ----------------------------------------------
+		 -- 일반/대출 잔고일 경우 매수탭으로 연동
+		 ----------------------------------------------
 		else
-			if szItemCode <> "" then
-				'------------------------------------------------
-				' 링크데이터 구조
-				' 국내/해외구분`종목코드`보유수량'평균단가'수익률
-				'------------------------------------------------
+			if szItemCode ~= "" then
+				 --------------------------------------------------
+				 -- 링크데이터 구조
+				 -- 국내/해외구분`종목코드`보유수량'평균단가'수익률
+				 --------------------------------------------------
 				sLinkData = "1"														
-'				sLinkData = sLinkData & "`" & szMK & "@" & szItemCode & "`" & sOrdQty & "`" & sAvgPrc & "`" & sRate
+ --				sLinkData = sLinkData & "`" & szMK & "@" & szItemCode & "`" & sOrdQty & "`" & sAvgPrc & "`" & sRate
 				
-				g_sLinkData_Water = sLinkData & "`" & szMK & "@" & szItemCode & "`" & "수량교체" & "`" & "가격교체"& "`" & sRate
+				g_sLinkData_Water = sLinkData .. "`" .. szMK .. "@" .. szItemCode .. "`" .. "수량교체" .. "`" .. "가격교체".. "`" .. sRate
 				
 				DATAMANAGER.ClearInputData(0, "obtro_acnt_175r")
 		
-				'------------------------------------------------------------
-				' 계좌번호/일련번호
-				'------------------------------------------------------------
-				Dim sAcno,sAsno
+				 --------------------------------------------------------------
+				 -- 계좌번호/일련번호
+				 --------------------------------------------------------------
+				local sAcno,sAsno
 				sAcno = Form.GetTopCtlProp("acnt", "total")
 				sAsno = Form.GetTopCtlProp("acnt", "sequence")
 				
 				DATAMANAGER.ClearInputData(0, "obtro_acnt_175r")
 				DATAMANAGER.SetDataValue(0, "obtro_acnt_175r", "InBlock1", "ACNO", 0, sAcno)		
 				DATAMANAGER.SetDataValue(0, "obtro_acnt_175r", "InBlock1", "ASNO", 0, sAsno)
-				DATAMANAGER.SetDataValue(0, "obtro_acnt_175r", "InBlock1", "ISCD", 0,   szItemCode & "." & szMK)
+				DATAMANAGER.SetDataValue(0, "obtro_acnt_175r", "InBlock1", "ISCD", 0,   szItemCode .. "." .. szMK)
 		
 				DATAMANAGER.RequestTranData("obtro_acnt_175r")
 				
-				'Form.OpenPopup("mhtro17200", sLinkData, "")
-			end if
+				 --Form.OpenPopup("mhtro17200", sLinkData, "")
+			end
 			
-		end if
-	'v20250924_02 <<	
-	'------------------------------------
-	' [매도] : 종목연동 / 매도가능수량 연동
-	'------------------------------------
+		end
+	 --v20250924_02 <<	
+	 --------------------------------------
+	 -- [매도] : 종목연동 / 매도가능수량 연동
+	 --------------------------------------
 	elseif sGubun == "MOVE_MAEDO" then
 	
 		szVndrCode 	= contBody.contStock.grdList.GetCellData("bd_vndrcode", nIndex)
@@ -2241,98 +2243,98 @@ Function MoveScreen(sGubun,sIndex)
 		szItemCode 	= contBody.contStock.grdList.GetCellData("bd_code"		, nIndex)
 		szName 		= contBody.contStock.grdList.GetCellData("bd_name"		, nIndex)
 		sOrdAbleQty 	= contBody.contStock.grdList.GetCellData("bd_able"		, nIndex)
-		sJangoGubun	= contBody.contStock.grdList.GetCellData("bd_jangogubun"	, nIndex) '01:현금/02:대출/03:소수점
+		sJangoGubun	= contBody.contStock.grdList.GetCellData("bd_jangogubun"	, nIndex)  --01:현금/02:대출/03:소수점
 		sLoanType	= contBody.contStock.grdList.GetCellData("bd_loantype"		, nIndex)
 		sLoanDate	= contBody.contStock.grdList.GetCellData("bd_loandate"		, nIndex)
 		sLoanSrno	= contBody.contStock.grdList.GetCellData("bd_loansrno"		, nIndex)
 		
-		'---------------------------------------------------------------------------------------
-		' 연동수량(주문가능수량) 천단위부호(,) 제거
-		' 그리드에 있는 주문가능수량 데이터는 일반잔고/소수점 잔고의 수량을 
-		' 표시하기 위해 문자형으로 세팅되어있음. 그대로 값을 가져오면 천단위 부호도 같이 넘어옴.
-		' 넘어온 데이터를 그대로 천단위 부호까지 같이 넘기면
-		' 안드로이드에서 천단위 부호 중복해서 보이는 현상 발생.
-		'---------------------------------------------------------------------------------------
-		sOrdAbleQty = replace(sOrdAbleQty,",","")
+		 -----------------------------------------------------------------------------------------
+		 -- 연동수량(주문가능수량) 천단위부호(,) 제거
+		 -- 그리드에 있는 주문가능수량 데이터는 일반잔고/소수점 잔고의 수량을 
+		 -- 표시하기 위해 문자형으로 세팅되어있음. 그대로 값을 가져오면 천단위 부호도 같이 넘어옴.
+		 -- 넘어온 데이터를 그대로 천단위 부호까지 같이 넘기면
+		 -- 안드로이드에서 천단위 부호 중복해서 보이는 현상 발생.
+		 -----------------------------------------------------------------------------------------
+		sOrdAbleQty = string.gsub(sOrdAbleQty, string.gsub(", "([%p])", "%%%1"), ","")
 		
-		'--------------------------------------------
-		'소수점 잔고일 경우 소수점 주문화면으로 연동
-		'--------------------------------------------
+		 ----------------------------------------------
+		 --소수점 잔고일 경우 소수점 주문화면으로 연동
+		 ----------------------------------------------
 		if sJangoGubun == "03" then
 		
-			if szMk <> "" and szItemCode <> "" then
-				szData = szMk & "@" & szItemCode & "★" & szName & "♥" & "1" & "♥" & "" & "♥" & "" & "♥" & "0000" & "♥" & "0" & "♥" & "00000000000"
+			if szMk ~= "" and szItemCode ~= "" then
+				szData = szMk .. "@" .. szItemCode .. "★" .. szName .. "♥" .. "1" .. "♥" .. "" .. "♥" .. "" .. "♥" .. "0000" .. "♥" .. "0" .. "♥" .. "00000000000"
 				Form.SetSharedData("NEW_OVRS_CURTAB_IDNEX", "4")
 				Form.OpenScreen("16092" , szData)
-			end if
+			end
 		
-		'--------------------------------------------
-		' 일반/대출 잔고일 경우 매도탭으로 연동
-		'--------------------------------------------
+		 ----------------------------------------------
+		 -- 일반/대출 잔고일 경우 매도탭으로 연동
+		 ----------------------------------------------
 		else
 			
-			if szMk <> "" and szItemCode <> "" then
-				szData = "MAEDO" & "★" & szMk & "@" & szItemCode & "★" & szName & "★" & sOrdAbleQty
-				szData = szData & "★" & sJangoGubun & "★" & sLoanType & "★" & sLoanDate & "★" & sLoanSrno
+			if szMk ~= "" and szItemCode ~= "" then
+				szData = "MAEDO" .. "★" .. szMk .. "@" .. szItemCode .. "★" .. szName .. "★" .. sOrdAbleQty
+				szData = szData .. "★" .. sJangoGubun .. "★" .. sLoanType .. "★" .. sLoanDate .. "★" .. sLoanSrno
 				
-				'--------------------------------------------
-				' 현재 해외주식 신용합산 주문이 불가하므로,
-				' 대출일 경우 대출합산 체크 여부 확인하여
-				' 체크되어있으면 주문불가 안내팝업 발생
-				'--------------------------------------------
+				 ----------------------------------------------
+				 -- 현재 해외주식 신용합산 주문이 불가하므로,
+				 -- 대출일 경우 대출합산 체크 여부 확인하여
+				 -- 체크되어있으면 주문불가 안내팝업 발생
+				 ----------------------------------------------
 				if sJangoGubun == "02" then
 				
-					nCheckHabsan = Cint(contBody.contStock.checkHabsan.checkstate)
+					nCheckHabsan = gf_Tonumber(contBody.contStock.checkHabsan.checkstate)
 					
 					if nCheckHabsan == 1 then
 						Form.MsgBox("안내", "합산 주문이 불가합니다.\n대출합산 해지 후 매도를 진행해주세요.", "MOVEPOPUP_CHECK_HABSAN", 6)
-						Exit Function
-					end if
+						return
+					end
 					
-				end if
+				end
 				
-				'--------------------------------------------
-				' 탭 이동 트리거 발생
-				'--------------------------------------------
-				Form.triggerEvent("#", "SendJangoItem", szData)
+				 ----------------------------------------------
+				 -- 탭 이동 트리거 발생
+				 ----------------------------------------------
+				Form.TriggerEvent("#", "SendJangoItem", szData)
 			
-			end if
+			end
 			
-		end if
+		end
 	
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-' 거래소벤더코드(4자리) -> 거래소코드(2자리)
-'============================================================================
-Function GetMarketCode(sValue)
+ --============================================================================
+ -- 거래소벤더코드(4자리) -> 거래소코드(2자리)
+ --============================================================================
+function GetMarketCode(sValue)
 
-	if sValue == "0104" then	' 홍콩
+	if sValue == "0104" then -- 홍콩
 		return "HK"
-	elseif sValue == "0215" then ' 상해
+	elseif sValue == "0215" then -- 상해
 		return "SH"
-	elseif sValue == "0214" then ' 심천
+	elseif sValue == "0214" then -- 심천
 		return "SZ"
-	elseif sValue == "0321" then ' 뉴욕
+	elseif sValue == "0321" then -- 뉴욕
 		return "NY"
-	elseif sValue == "0066" then ' 아멕스
+	elseif sValue == "0066" then -- 아멕스
 		return "AX"
-	elseif sValue == "0537" then ' 나스닥
+	elseif sValue == "0537" then -- 나스닥
 		return "OQ"
-	elseif sValue == "0106" then ' 도쿄
+	elseif sValue == "0106" then -- 도쿄
 		return "JP"
 	else
 		return ""
-	end if
+	end
 	
-end Function
+end
 
-'============================================================================
-' 통화코드 > 국기이미지명 반환
-'============================================================================
-Function GetFlagImageName(sCrcd)
+ --============================================================================
+ -- 통화코드 > 국기이미지명 반환
+ --============================================================================
+function GetFlagImageName(sCrcd)
 	
 	if sCrcd == "USD" then
 		return "flag_us2"
@@ -2358,16 +2360,16 @@ Function GetFlagImageName(sCrcd)
 		return "flag_vie_round"
 	else
 		return "flag_general"
-	end if
+	end
 	
 	
-End Function
+end
 
-'20241125_01 HWG START 
-'============================================================================
-' 국가명 -> 통화코드 반환
-'============================================================================
-Function GetCrcd(sCrcd)
+ --20241125_01 HWG START 
+ --============================================================================
+ -- 국가명 -> 통화코드 반환
+ --============================================================================
+function GetCrcd(sCrcd)
 
 	if sCrcd == "미국" then
 		return "USD"
@@ -2391,135 +2393,135 @@ Function GetCrcd(sCrcd)
 		return "VND"
 	else
 		return "USD"
-	end if
-End Function
-'20241125_01 HWG END
+	end
+end
+ --20241125_01 HWG END
 
-'============================================================================
-' [주식] 잔고리스트 [평가손익] 손익률에 따라 상승/하락 글자색 적용
-' [평가손익] 셀은 외화/원화에 따라 소수점 자리수가 있고 없고의 차이때문에
-' 마스킹 설정을 문자로 해두었음. 마스킹 설정을 문자로 해두었을때, 증감색 사용 시 문제가 있어
-' 수동으로 글자색상 변경해줌.
-'============================================================================
-Function SetUpDownFgColor(sChangeCellID,nIndex,nData)
+ --============================================================================
+ -- [주식] 잔고리스트 [평가손익] 손익률에 따라 상승/하락 글자색 적용
+ -- [평가손익] 셀은 외화/원화에 따라 소수점 자리수가 있고 없고의 차이때문에
+ -- 마스킹 설정을 문자로 해두었음. 마스킹 설정을 문자로 해두었을때, 증감색 사용 시 문제가 있어
+ -- 수동으로 글자색상 변경해줌.
+ --============================================================================
+function SetUpDownFgColor(sChangeCellID,nIndex,nData)
 	
 	contBody.contStock.grdList.SetCellFgColor( sChangeCellID , nIndex	, nData > 0 and "1" or ( nData < 0 and "2" or "3" ) ) 
 	
-End Function
+end
 
-'============================================================================
-' 해외주식 종합잔고 화면으로 이동
-'============================================================================
-Sub imgRight_OnClick()
+ --============================================================================
+ -- 해외주식 종합잔고 화면으로 이동
+ --============================================================================
+function imgRight_OnClick()
 	Form.OpenScreen("16070" , "")
-End Sub
-'============================================================================
-' 해외주식 종합잔고 화면으로 이동
-'============================================================================
-Sub LabelValueData_OnClick()
+end
+ --============================================================================
+ -- 해외주식 종합잔고 화면으로 이동
+ --============================================================================
+function LabelValueData_OnClick()
 	Form.OpenScreen("16070" , "")
-End Sub
-'============================================================================
-' 해외주식 종합잔고 화면으로 이동
-'============================================================================
-Sub LabelMoveScr_OnClick()
+end
+ --============================================================================
+ -- 해외주식 종합잔고 화면으로 이동
+ --============================================================================
+function LabelMoveScr_OnClick()
 	Form.OpenScreen("16070" , "")
-End Sub
+end
 
-'============================================================================
-' 해외예수금 화면으로 이동
-'============================================================================
-Sub contBody_contCash_LabelCashLink_OnClick()
+ --============================================================================
+ -- 해외예수금 화면으로 이동
+ --============================================================================
+function contBody_contCash_LabelCashLink_OnClick()
 	Form.OpenScreen("16071" , "")
-End Sub
+end
 
-'============================================================================
-' 잔고 유의사항 팝업 오픈
-'============================================================================
-Sub contBody_contStock_imgInfo_OnClick()
+ --============================================================================
+ -- 잔고 유의사항 팝업 오픈
+ --============================================================================
+function contBody_contStock_imgInfo_OnClick()
 	Form.OpenPopupAnimation("mhtro16100_p22", "", "", "2")
-End Sub
+end
 
-'============================================================================
-' 외화잔고 추정예수금 기준 툴팁
-'============================================================================
-Sub contBody_contCash_ImageQuestion_OnClick()
+ --============================================================================
+ -- 외화잔고 추정예수금 기준 툴팁
+ --============================================================================
+function contBody_contCash_ImageQuestion_OnClick()
 
 	sText = "외화예수금 + 해외주식정산금 - 미수금\n" ..
 		   "단, 미국달러는 자동투자평가금액이 포함되어 조회 돼요."
 		   
 	
-	contBody.contCash.ImageQuestion.openToolTip(sText, 300, 80, 0)
+	contBody.contCash.ImageQuestion.OpenToolTip(sText, 300, 80, 0)
 			
 	
-End Sub
+end
 
-'============================================================================
-Sub contBody_contCash_LabelCashTitle_OnClick()
+ --============================================================================
+function contBody_contCash_LabelCashTitle_OnClick()
 	contBody_contCash_ImageQuestion_OnClick()
-End Sub
+end
 
-'============================================================================
-Sub contBody_contCash_LabelCashTitle_OnSizeAutoFit()
+ --============================================================================
+function contBody_contCash_LabelCashTitle_OnSizeAutoFit()
 	
 	if gOsType == "1" then
-		nLeft = Form.calcUnResize(contBody.contCash.LabelCashTitle.left, "2")
-		nWidth = Form.calcUnResize(contBody.contCash.LabelCashTitle.width, "2")
+		nLeft = Form.CalcUnResize(contBody.contCash.LabelCashTitle.left, "2")
+		nWidth = Form.CalcUnResize(contBody.contCash.LabelCashTitle.width, "2")
 	else
 		nLeft = contBody.contCash.LabelCashTitle.left
 		nWidth = contBody.contCash.LabelCashTitle.width
-	end if
+	end
 	
 	contBody.contCash.ImageQuestion.left = nLeft + nWidth + 5
 
-End Sub
+end
 
-'============================================================================
-' 거래소코드(4자리) <- 거래명(2자리)
-'============================================================================
-Function Transform_Exid(sValue)
-	if sValue == "0104" then	  ' 홍콩
+ --============================================================================
+ -- 거래소코드(4자리) <- 거래명(2자리)
+ --============================================================================
+function Transform_Exid(sValue)
+	if sValue == "0104" then -- 홍콩
 		return "HK"
-	elseif sValue == "0215" then ' 상해
+	elseif sValue == "0215" then -- 상해
 		return "SH"
-	elseif sValue == "0214" then ' 심천
+	elseif sValue == "0214" then -- 심천
 		return "SZ"
-	elseif sValue == "0321" then ' 뉴욕
+	elseif sValue == "0321" then -- 뉴욕
 		return "NY"
-	elseif sValue == "0066" then ' 아멕스
+	elseif sValue == "0066" then -- 아멕스
 		return "AX"
-	elseif sValue == "0537" then ' 나스닥
+	elseif sValue == "0537" then -- 나스닥
 		return "OQ"
-	elseif sValue == "0106" then ' 도쿄
+	elseif sValue == "0106" then -- 도쿄
 		return "JP"
 	else
 		return ""
-	end if
-end Function
+	end
+end
 
 
-'============================================================================
-' 비용포함 체크 시, 안내메시지 닫기
-'============================================================================
-Sub contToast_LabelText_OnClick()
+ --============================================================================
+ -- 비용포함 체크 시, 안내메시지 닫기
+ --============================================================================
+function contToast_LabelText_OnClick()
 
 	SetShowToast(false)
 		
-End Sub
+end
 
-'============================================================================
-' 비용포함 체크 시, 안내메시지 닫기
-'============================================================================
-Sub contToast_ImageClose_OnClick()
+ --============================================================================
+ -- 비용포함 체크 시, 안내메시지 닫기
+ --============================================================================
+function contToast_ImageClose_OnClick()
 	
 	SetShowToast(false)
 	
-End Sub
+end
 
-'============================================================================
-' 비용포함 체크 시, 안내메시지 보임여부
-'============================================================================
-Function SetShowToast(bShow)
+ --============================================================================
+ -- 비용포함 체크 시, 안내메시지 보임여부
+ --============================================================================
+function SetShowToast(bShow)
 	
 	if bShow then
 	
@@ -2535,18 +2537,18 @@ Function SetShowToast(bShow)
 		Form.SetTimerEvent2(1, 0, 5)
 		
 		
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-Sub Form_OnTimerEvent(sTimerID)
+ --============================================================================
+function Form_OnTimerEvent(sTimerID)
 	SetShowToast(false)
-End Sub
+end
 
-'20241125_01 HWG START 
-'============================================================================
-Sub imgToggle0_OnClick()
+ --20241125_01 HWG START 
+ --============================================================================
+function imgToggle0_OnClick()
 	
 	if g_nViewMode_Tot == 0 then
 		g_nViewMode_Tot = 1 
@@ -2575,18 +2577,18 @@ Sub imgToggle0_OnClick()
 		LabelValuePnLData.visible = true
 		LabelValuPurChaseData.visible = true
 		LabelCurrencyDepositData.visible = true
-	end if
+	end
 	
 	Form.SetEnvData(1, "OVRS_ORDER_TOT", g_nViewMode_Tot)
-End Sub
-'20241125_01 HWG END
+end
+ --20241125_01 HWG END
 
-'20241125_01 HWG START 
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranData(szTranID)
+ --20241125_01 HWG START 
+ --============================================================================
+function DATAMANAGER_OnReceiveTranData(szTranID)
 	if szTranID == "obtro_oder_265r" then
-		' 평가손익, 수익률 데이터 세팅 전 글자색상 초기화
-		' 이전 데이터 색상이 그대로 남아있는 현상 수정
+		 -- 평가손익, 수익률 데이터 세팅 전 글자색상 초기화
+		 -- 이전 데이터 색상이 그대로 남아있는 현상 수정
  		LabelValuePnLData.fgcolor = "3"
 		LabelValuePnLData0.fgcolor = "3"
 		LabelValueRateData.fgcolor = "3"
@@ -2594,18 +2596,18 @@ Sub DATAMANAGER_OnReceiveTranData(szTranID)
 		LabelValuePnLData.caption = "0"
 		LabelValuePnLData0.caption = "0"
 		LabelValueRateData.caption = "0"
-	end if
-End Sub
-'20241125_01 HWG END
+	end
+end
+ --20241125_01 HWG END
 
-'============================================================================
-' Form_OnLinkData
-'============================================================================
-Sub Form_OnLinkData(sKey, sValue)
-	'Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", sKey & sValue)
+ --============================================================================
+ -- Form_OnLinkData
+ --============================================================================
+function Form_OnLinkData(sKey, sValue)
+	 --Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", sKey & sValue)
 	
-    '20250703 YSH START
-    '해외주식 장운영 정보 조회방식 변경
+     --20250703 YSH START
+     --해외주식 장운영 정보 조회방식 변경
 	if sKey == "OVRS_MARKET_OPERATION_TRAN" then
 		if sValue == "SUCCESS" then
 			RequestMarketInfo()
@@ -2613,54 +2615,55 @@ Sub Form_OnLinkData(sKey, sValue)
 			contBody.contStock.checkJonga.chksilence = "0"
 			contBody.contStock.checkJonga.visible = false
 			SetSelectBtn(0)
-		end if
+		end
 
     elseif sKey == "OVRS_MARKET_OPERATION_REAL" then
-		arrMktData = Split(sValue, "@")
-		if arrMktData(0) == "US" and gMktOpClsCd <> arrMktData(1) then
-			if arrMktData(1) == "006" then
-				'Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", "실시간 조회 성공! 애프터 장 종료 시 처리 로직 실행")
-				gMktOpClsCd = arrMktData(1)
-				Form.setDelayEvent(2, 5) '애프터 장 종료
-			end if
-		end if
+		arrMktData = gf_Split(sValue, "@")
+		if arrMktData[0+1] == "US" and gMktOpClsCd ~= arrMktData[1+1] then
+			if arrMktData[1+1] == "006" then
+				 --Form.ShowAlert("mhtro16100_t5_해외주식 주문잔고", "실시간 조회 성공! 애프터 장 종료 시 처리 로직 실행")
+				gMktOpClsCd = arrMktData[1+1]
+				Form.SetDelayEvent(2, 5)  --애프터 장 종료
+			end
+		end
 
-	end if
-    '20250703 YSH END
-End Sub
+	end
+     --20250703 YSH END
+end
 
-'==============================================
-' 장 운영 정보값 적합 여부 확인
-'==============================================
-Function CheckValidMktOp(sMktOp)
-	'---------------------------------------
-	'- 000: 휴장 (미국)
-	'- 001: 주간 시작 (미국)
-	'- 002: 주간 종료 (미국)
-	'- 003: 프리장 시작 (미국)
-	'- 004: 정규장 시작 (미국)
-	'- 005: 애프터장 시작 (미국)
-	'- 006: 애프터장 종료 (미국)
-	'- 011: 미국 외 장 시작
-	'- 012: 미국 외 장 종료
-	'- 013: 휴일 (미국/중국/홍콩/일본)
-	'---------------------------------------
+ --==============================================
+ -- 장 운영 정보값 적합 여부 확인
+ --==============================================
+function CheckValidMktOp(sMktOp)
+	 -----------------------------------------
+	 --- 000: 휴장 (미국)
+	 --- 001: 주간 시작 (미국)
+	 --- 002: 주간 종료 (미국)
+	 --- 003: 프리장 시작 (미국)
+	 --- 004: 정규장 시작 (미국)
+	 --- 005: 애프터장 시작 (미국)
+	 --- 006: 애프터장 종료 (미국)
+	 --- 011: 미국 외 장 시작
+	 --- 012: 미국 외 장 종료
+	 --- 013: 휴일 (미국/중국/홍콩/일본)
+	 -----------------------------------------
 	if sMktOp == "" then
 		return false
 	else
-		Dim nMktOp
-		nMktOp = Cint(sMktOp)
+		local nMktOp
+		nMktOp = gf_Tonumber(sMktOp)
 		
 		if nMktOp >= 0 and nMktOp <= 13 then
 			return true
 		else
 			return false
-		end if
-	end if
-End Function
+		end
+	end
+end
 
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_267r" trcode="obtro_oder_267r" compress="1" encryption="1" inputcheck="1" useattr="0" />

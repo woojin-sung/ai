@@ -84,14 +84,16 @@
 		</CONTAINER>
 	</CONTROL_INFO>
 	<SCRIPT_INFO _len="37672" _ulen="35326" >
-'================================================================================
-' 20241128 LES START : 해외주식 매수 시장가 주문유형 추가
-' 20241216 LES START : (미국)해외주식 휴일/휴장일때는 정규장종가 보여주도록 수정
-' 20250804 YSH START : 장 운영 정보 조회 방식 변경
-'===============================================================================
+dofile("scr/script.lua")
+dofile("scr/json.lua")
+ --================================================================================
+ -- 20241128 LES START : 해외주식 매수 시장가 주문유형 추가
+ -- 20241216 LES START : (미국)해외주식 휴일/휴장일때는 정규장종가 보여주도록 수정
+ -- 20250804 YSH START : 장 운영 정보 조회 방식 변경
+ --===============================================================================
 
-Dim gAcno,gAsno,gCode,gVndrCode,gLinkPrice,gCurPrice,gDecimalLen,gTickType,gHighPrice,gLowPrice,gTotalYN,gCurrency,gUnit
-Dim gOsType,gMask,gType,gOrdType
+local gAcno,gAsno,gCode,gVndrCode,gLinkPrice,gCurPrice,gDecimalLen,gTickType,gHighPrice,gLowPrice,gTotalYN,gCurrency,gUnit
+local gOsType,gMask,gType,gOrdType
 
 gAcno = ""
 gAsno = ""
@@ -110,10 +112,10 @@ gMask = ""
 gType = ""
 gOrdType = ""
 
-'============================================================================
-Sub Form_OnFormInitBefore()
+ --============================================================================
+function Form_OnFormInitBefore()
 
-	gOsType = Form.GetSharedData("&OS_TYPE", false)
+	gOsType = Form.GetSharedData("..OS_TYPE", false)
 
 	LabelDepositTitle.paddinginfo 		= "0,0,0,0"
 	LabelAbleExchangeTitle.paddinginfo 	= "0,0,0,0"
@@ -129,71 +131,71 @@ Sub Form_OnFormInitBefore()
 		edtPrc.imetype = "1"
 	else
 		edtPrc.SetOnOffImage("alpha", "alpha")
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub Form_OnFormInit()
-	'241210 HSZ START : 다크모드 적용
+ --============================================================================
+function Form_OnFormInit()
+	 --241210 HSZ START : 다크모드 적용
 	sTheme = Form.GetEnvData("common.theme")
 	if sTheme == "black" then
 		ButtonMoveExchange.exceptfgcolor 	= "1"
 		ButtonMoveExchange.fgcolor 			= "28"
-	end if
-	'241210 HSZ END
+	end
+	 --241210 HSZ END
 
-	'--------------------------------
-	' 환전하기 버튼 이미지 세팅
-	'--------------------------------
+	 ----------------------------------
+	 -- 환전하기 버튼 이미지 세팅
+	 ----------------------------------
 	ButtonMoveExchange.singleimage = "btn_radio_select_o.9"
 
-	'-----------------------------------------------------------------------------------------------------------
-	'계좌번호★계좌일련번호★종목코드★거래소코드(4자리)★연동가격★현재가★소수점자리수★틱타입
-	'★상한가★하한가★통합증거금여부★통화★호가단위★주문유형코드
-	'-----------------------------------------------------------------------------------------------------------
+	 -------------------------------------------------------------------------------------------------------------
+	 --계좌번호★계좌일련번호★종목코드★거래소코드(4자리)★연동가격★현재가★소수점자리수★틱타입
+	 --★상한가★하한가★통합증거금여부★통화★호가단위★주문유형코드
+	 -------------------------------------------------------------------------------------------------------------
 	szData = Form.GetOpenLinkData()
 	
-	arrData = Split(szData,"★")
+	arrData = gf_Split(szData,"★")
 	
 	if #arrData > 11 then
 		
-		gAcno 		= arrData(0)
-		gAsno 		= arrData(1)
-		gCode 		= arrData(2)
-		gVndrCode 	= arrData(3)
-		gLinkPrice 	= arrData(4)
-		gCurPrice 	= arrData(5)
-		gDecimalLen 	= arrData(6)
-		gTickType 	= arrData(7)
-		gHighPrice 	= arrData(8)
-		gLowPrice 	= arrData(9)
-		gTotalYN 	= arrData(10)
-		gCurrency	= arrData(11)
-		gUnit		= arrData(12)
+		gAcno 		= arrData[0+1]
+		gAsno 		= arrData[1+1]
+		gCode 		= arrData[2+1]
+		gVndrCode 	= arrData[3+1]
+		gLinkPrice 	= arrData[4+1]
+		gCurPrice 	= arrData[5+1]
+		gDecimalLen 	= arrData[6+1]
+		gTickType 	= arrData[7+1]
+		gHighPrice 	= arrData[8+1]
+		gLowPrice 	= arrData[9+1]
+		gTotalYN 	= arrData[10+1]
+		gCurrency	= arrData[11+1]
+		gUnit		= arrData[12+1]
 		
-		'20241128 LES START
-		gOrdType		= arrData(13)
+		 --20241128 LES START
+		gOrdType		= arrData[13+1]
 		
-		'------------------------------------
-		' 통합증거금 여부에 따라 컨트롤 UI변경
-		'------------------------------------
+		 --------------------------------------
+		 -- 통합증거금 여부에 따라 컨트롤 UI변경
+		 --------------------------------------
 		SetContType(gTotalYN)
 		
-		'------------------------------------
-		' 초기데이터 설정
-		'------------------------------------
-		'SetInitData()
+		 --------------------------------------
+		 -- 초기데이터 설정
+		 --------------------------------------
+		 --SetInitData()
 		RequestSiseData()
 			
-	end if
+	end
 	
 	
-End Sub
-'============================================================================
-' 통합증거금 약정여부에 따른 UI변경
-'============================================================================
-Function SetContType(sTotalYN)
+end
+ --============================================================================
+ -- 통합증거금 약정여부에 따른 UI변경
+ --============================================================================
+function SetContType(sTotalYN)
 
 	if sTotalYN == "Y" then
 	
@@ -211,150 +213,150 @@ Function SetContType(sTotalYN)
 		
 		contTotal.left = 0 
 	
-	end if
+	end
 
-End Function
+end
 
-'============================================================================
-' 해당 종목 현재가 조회(링크로 넘어온 주문가격이 없을 경우 현재가 자동 세팅)
-'============================================================================
-Function RequestSiseData()
+ --============================================================================
+ -- 해당 종목 현재가 조회(링크로 넘어온 주문가격이 없을 경우 현재가 자동 세팅)
+ --============================================================================
+function RequestSiseData()
 
 	sMarketCode = GetMarketCode(gVndrCode)
 	szDelay = Form.GetSharedData("REALTIME_"..sMarketCode, 0 )
 
-	if sMarKetCode <> "" then
+	if sMarKetCode ~= "" then
 	
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 		, 0 , "OV" ) 			' 해외주식 OV
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , gCode ) 		' 종목코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 			, 0 , sMarKetCode ) 	' 거래소코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , szDelay ) 		' 실시간구분 0 : 실시간 (Default), 1:지연
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 		, 0 , "OV" ) 			 -- 해외주식 OV
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , gCode ) 		 -- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 			, 0 , sMarKetCode ) 	 -- 거래소코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_001r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , szDelay ) 		 -- 실시간구분 0 : 실시간 (Default), 1:지연
 		DATAMANAGER.RequestTranData("ohhts_6000_001r")
 		
 	else
 		SetInitData()
-	end if
+	end
 
 
-End Function
+end
 
-'============================================================================
-' 해당 종목 주간현재가 조회(링크로 넘어온 주문가격이 없을 경우 현재가 자동 세팅)
-'============================================================================
-Function RequestDayMarketSiseData()
+ --============================================================================
+ -- 해당 종목 주간현재가 조회(링크로 넘어온 주문가격이 없을 경우 현재가 자동 세팅)
+ --============================================================================
+function RequestDayMarketSiseData()
 
 	sMarketCode = GetMarketCode(gVndrCode)
 	szDelay = Form.GetSharedData("REALTIME_"..sMarketCode, 0 )
 	
-	'-----------------------------------------
-	' 거래소코드 정상 획득시
-	'-----------------------------------------
-	if sMarKetCode <> "" then
+	 -------------------------------------------
+	 -- 거래소코드 정상 획득시
+	 -------------------------------------------
+	if sMarKetCode ~= "" then
 	
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 		, 0 , "OV" ) 			' 해외주식 OV
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , gCode ) 		' 종목코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 			, 0 , sMarKetCode ) 	' 거래소코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , szDelay ) 		' 실시간구분 0 : 실시간 (Default), 1:지연
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 		, 0 , "OV" ) 			 -- 해외주식 OV
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , gCode ) 		 -- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 			, 0 , sMarKetCode ) 	 -- 거래소코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_017r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , szDelay ) 		 -- 실시간구분 0 : 실시간 (Default), 1:지연
 		DATAMANAGER.RequestTranData("ohhts_6000_017r")
 	
-	'-----------------------------------------
-	' 거래소코드 비정상 획득 시
-	'-----------------------------------------
+	 -------------------------------------------
+	 -- 거래소코드 비정상 획득 시
+	 -------------------------------------------
 	else
 		SetInitData()
-	end if
+	end
 	
 
-End Function
+end
 
-'============================================================================
-' 해당 종목 애프터현재가 조회(링크로 넘어온 주문가격이 없을 경우 현재가 자동 세팅)
-'============================================================================
-Function RequestAfterMarketSiseData()
+ --============================================================================
+ -- 해당 종목 애프터현재가 조회(링크로 넘어온 주문가격이 없을 경우 현재가 자동 세팅)
+ --============================================================================
+function RequestAfterMarketSiseData()
 
 	sMarketCode = GetMarketCode(gVndrCode)
 	szDelay = Form.GetSharedData("REALTIME_"..sMarketCode, 0 )
 	
-	'-----------------------------------------
-	' 거래소코드 정상 획득시
-	'-----------------------------------------
-	if sMarKetCode <> "" then
+	 -------------------------------------------
+	 -- 거래소코드 정상 획득시
+	 -------------------------------------------
+	if sMarKetCode ~= "" then
 	
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 		, 0 , "OV" ) 			' 해외주식 OV
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , gCode ) 		' 종목코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 			, 0 , sMarKetCode ) 	' 거래소코드
-		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , szDelay ) 		' 실시간구분 0 : 실시간 (Default), 1:지연
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_INPUT_COND_MRKT_DIV_CODE" 		, 0 , "OV" ) 			 -- 해외주식 OV
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_INPUT_OVRS_ISCD" 			, 0 , gCode ) 		 -- 종목코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FID_COND_MRKT_CLS_CODE" 			, 0 , sMarKetCode ) 	 -- 거래소코드
+		DATAMANAGER.SetDataValue( 0, "ohhts_6000_020r", "InBlock1", "FIDX_INPUT_DELY_RLTM_CLS_CODE" 	, 0 , szDelay ) 		 -- 실시간구분 0 : 실시간 (Default), 1:지연
 		DATAMANAGER.RequestTranData("ohhts_6000_020r")
 	
-	'-----------------------------------------
-	' 거래소코드 비정상 획득 시
-	'-----------------------------------------
+	 -------------------------------------------
+	 -- 거래소코드 비정상 획득 시
+	 -------------------------------------------
 	else
 		SetInitData()
-	end if
+	end
 	
 
-End Function
+end
 
-'============================================================================
-' 초기 데이터 설정
-'============================================================================
-Function SetInitData()
+ --============================================================================
+ -- 초기 데이터 설정
+ --============================================================================
+function SetInitData()
 
-	'-----------------------------------------
-	'가격입력창 마스킹처리
-	'-----------------------------------------
-	if gCurrency <> "" then
+	 -------------------------------------------
+	 --가격입력창 마스킹처리
+	 -------------------------------------------
+	if gCurrency ~= "" then
 		gMask = "0,0,,".. " " .. gCurrency .. ",0,,"..gDecimalLen..",1,1,2,0"
 	else
 		gMask = "0,0,,,0,,"..gDecimalLen..",1,1,2,0"
-	end if
+	end
 	
 	edtPrc.mask = gMask
 
-	'-----------------------------------------
-	' 가격입력
-	'------------------------------------------
-	' 주문유형이 시장가인 경우 : 가격입력/변동 불가
-	' 연동가격이 있는 경우 : 연동가격 세팅
-	' 연동가격이 없는 경우 : 현재가 세팅
-	'------------------------------------------
-	'20241128 LES START
+	 -------------------------------------------
+	 -- 가격입력
+	 --------------------------------------------
+	 -- 주문유형이 시장가인 경우 : 가격입력/변동 불가
+	 -- 연동가격이 있는 경우 : 연동가격 세팅
+	 -- 연동가격이 없는 경우 : 현재가 세팅
+	 --------------------------------------------
+	 --20241128 LES START
 	if gOrdType == "05" then
 		edtPrc.hintcaption = "시장가"
 		edtPrc.enable = false
 		btnMinus.enable = false
 		btnPlus.enable = false
 	else
-		if Cdbl(gLinkPrice) <> 0 then
+		if gf_Tonumber(gLinkPrice) ~= 0 then
 			edtPrc.caption = gLinkPrice
 		else
 			edtPrc.caption = gCurPrice
-		end if
-	end if
+		end
+	end
 	
-	'-----------------------------------------
-	' 주문가능수량 조회
-	'-----------------------------------------
+	 -------------------------------------------
+	 -- 주문가능수량 조회
+	 -------------------------------------------
 	Request_Able("1")
 	
 
-End Function
+end
 
-'============================================================================
-' 주문가능수량 조회(통합증거금 미약정 고객)
-'============================================================================
-Function Request_Able(sType)
+ --============================================================================
+ -- 주문가능수량 조회(통합증거금 미약정 고객)
+ --============================================================================
+function Request_Able(sType)
 	
-	'-----------------------------------------------------------------------
-	' gType : 1일때는 서비스 조회가 완료되어도 금액/수량 데이터만 변경
-	'-----------------------------------------------------------------------
+	 -------------------------------------------------------------------------
+	 -- gType : 1일때는 서비스 조회가 완료되어도 금액/수량 데이터만 변경
+	 -------------------------------------------------------------------------
 	gType = sType
 
-	'------------------------------------------------------------------------------------------------------
-	'sType 1 : 전체 데이터 조회 (추정예수금/환전가능금액 포함 데이터)
-	'sType 2 : 가능금액/가능수량 데이터만 조회(+/-버튼으로 주문가격만 바꿀때 이 타입으로 조회)
-	'------------------------------------------------------------------------------------------------------
+	 --------------------------------------------------------------------------------------------------------
+	 --sType 1 : 전체 데이터 조회 (추정예수금/환전가능금액 포함 데이터)
+	 --sType 2 : 가능금액/가능수량 데이터만 조회(+/-버튼으로 주문가격만 바꿀때 이 타입으로 조회)
+	 --------------------------------------------------------------------------------------------------------
 	DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IQRY_CLS_CODE" 		, 0 , sType)
 	DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ACNO" 				, 0 , gAcno)
 	DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ASNO" 				, 0 , gAsno)
@@ -367,33 +369,33 @@ Function Request_Able(sType)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IF_INTG_MARG_IQRY_YN"	, 0 , "Y")
 	else
 		DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "IF_INTG_MARG_IQRY_YN"	, 0 , "N")
-	end if
+	end
 	
-	'20241128 LES START
+	 --20241128 LES START
 	DATAMANAGER.SetDataValue(0, "obtro_oder_264r", "InBlock1", "ODER_CLS_CODE" , 0 , gOrdType)
 	
 	DATAMANAGER.RequestTranData("obtro_oder_264r")	
 	
-End Function
+end
 
-'============================================================================
-' 주문가능수량 데이터 세팅
-'============================================================================
-Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
+ --============================================================================
+ -- 주문가능수량 데이터 세팅
+ --============================================================================
+function DATAMANAGER_OnReceiveTranComplete(szTranID)
 	
-	'-----------------------------------------
-	' 정규장 현재가 조회
-	'-----------------------------------------
+	 -------------------------------------------
+	 -- 정규장 현재가 조회
+	 -------------------------------------------
 	if szTranID == "ohhts_6000_001r" then
 	
 		gCurPrice = DATAMANAGER.GetDataValue(0, "ohhts_6000_001r", "OutBlock1", "FIDX_PRPR" , 0)
 		
-		sDayYN = Form.GetSharedData( "&OVRS_DAYMARKET", false )
+		sDayYN = Form.GetSharedData( "..OVRS_DAYMARKET", false )
 		sAfterYN = Form.GetSharedData("OVRS_AFTER_MARKET_ORDER", false )
 		
-		'-----------------------------------------
-		' 주간장일 경우 주간장 현재가 조회 서비스 호출
-		'-----------------------------------------
+		 -------------------------------------------
+		 -- 주간장일 경우 주간장 현재가 조회 서비스 호출
+		 -------------------------------------------
 		if sDayYN == "Y" then
 			RequestDayMarketSiseData()
 		
@@ -402,66 +404,66 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 		
 		else
 			SetInitData()
-		end if
+		end
 	
-	'-----------------------------------------
-	' 주간장 현재가 조회
-	'-----------------------------------------
+	 -------------------------------------------
+	 -- 주간장 현재가 조회
+	 -------------------------------------------
 	elseif szTranID == "ohhts_6000_017r" then
 	
-		szDayPrc = Cdbl(DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0))
+		szDayPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_017r", "OutBlock1", "FIDX_DYTM_PRPR" , 0))
 		
-		'20241216 LES START
+		 --20241216 LES START
 		
-		'20250804 YSH START
-		'sMarketClsCode = Form.GetSharedData("OVRS_MARKET_CLS_CODE", false )
-		sMarketClsCode = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
-		'20250804 YSH END
+		 --20250804 YSH START
+		 --sMarketClsCode = Form.GetSharedData("OVRS_MARKET_CLS_CODE", false )
+		sMarketClsCode = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
+		 --20250804 YSH END
 		
-		'-----------------------------------------
-		' 주간장 현재가가 있을 경우 현재가 대체
-		'-----------------------------------------
-		if szDayPrc <> 0 then
+		 -------------------------------------------
+		 -- 주간장 현재가가 있을 경우 현재가 대체
+		 -------------------------------------------
+		if szDayPrc ~= 0 then
 			
-			'20241216 LES START - 휴장(000)/휴일(013)일때는 주간장 현재가 적용X
-			if sMarketClsCode <> "000" and sMarketClsCode <> "013" then
+			 --20241216 LES START - 휴장(000)/휴일(013)일때는 주간장 현재가 적용X
+			if sMarketClsCode ~= "000" and sMarketClsCode ~= "013" then
 				gCurPrice = szDayPrc
-			end if
-			'20241216 LES END
+			end
+			 --20241216 LES END
 			
 			SetInitData()
 			
 		else
 			SetInitData()
-		end if
+		end
 		
-	'-----------------------------------------
-	' 애프터 현재가 조회
-	'-----------------------------------------
+	 -------------------------------------------
+	 -- 애프터 현재가 조회
+	 -------------------------------------------
 	elseif szTranID == "ohhts_6000_020r" then
 	
-		szAfterPrc = Cdbl(DATAMANAGER.GetDataValue(0, "ohhts_6000_020r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0))
+		szAfterPrc = gf_Tonumber(DATAMANAGER.GetDataValue(0, "ohhts_6000_020r", "OutBlock1", "FIDX_MKT_AFT_PRPR" , 0))
 		
-		'-----------------------------------------
-		' 애프터 현재가가 있을 경우 현재가 대체
-		'-----------------------------------------
-		if szAfterPrc <> 0 then
+		 -------------------------------------------
+		 -- 애프터 현재가가 있을 경우 현재가 대체
+		 -------------------------------------------
+		if szAfterPrc ~= 0 then
 			gCurPrice = szAfterPrc
 			SetInitData()
 		else
 			SetInitData()
-		end if
+		end
 		
 		
 	elseif szTranID == "obtro_oder_264r" then
 	
 		if gTotalYN == "Y" then
 			
-			'-------------------------------------------------
-			' 해당통화 주문가능 금액/수량
-			'-------------------------------------------------
-			'contTotal.tblAbleTotal.SetCellMaskInfo(0, 2, gMask)
-			sMask = "0,0,, " & gCurrency & ",0,,".."2"..",1,1,2,0"
+			 ---------------------------------------------------
+			 -- 해당통화 주문가능 금액/수량
+			 ---------------------------------------------------
+			 --contTotal.tblAbleTotal.SetCellMaskInfo(0, 2, gMask)
+			sMask = "0,0,, " .. gCurrency .. ",0,,".."2"..",1,1,2,0"
 			contTotal.tblAbleTotal.SetCellMaskInfo(0, 2, sMask)
 			
 			
@@ -472,11 +474,11 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			contTotal.LabelAbleTotalQtyData1.caption = sOrdAbleQty
 			
 			
-			'-------------------------------------------------
-			' 통합 주문가능 금액/수량
-			'-------------------------------------------------
-			'contTotal.tblAbleTotal.SetCellMaskInfo(2, 2, gMask)
-			sMask = "0,0,, " & gCurrency & ",0,,".."2"..",1,1,2,0"
+			 ---------------------------------------------------
+			 -- 통합 주문가능 금액/수량
+			 ---------------------------------------------------
+			 --contTotal.tblAbleTotal.SetCellMaskInfo(2, 2, gMask)
+			sMask = "0,0,, " .. gCurrency .. ",0,,".."2"..",1,1,2,0"
 			contTotal.tblAbleTotal.SetCellMaskInfo(2, 2, sMask)
 			
 			sOrdTotalAblePrc = DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock1", "INTG_MARG_ODER_ABLE_CAMT" , 0)
@@ -487,12 +489,12 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			
 			if gType == "1" then
 				
-				'-------------------------------------------------
-				' 통화별 가능금액
-				'-------------------------------------------------
+				 ---------------------------------------------------
+				 -- 통화별 가능금액
+				 ---------------------------------------------------
 				sCurrencyCnt = DATAMANAGER.GetDataCount(0, "obtro_oder_264r", "OutBlock3")
 				
-				for i = 0 to Cint(sCurrencyCnt) - 1
+				for i = 0, gf_Tonumber(sCurrencyCnt) - 1 do
 					
 					sCrcd = DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock3", "CRCD" , i)
 					contTotal.tblAbleTotalCurrency.SetCellString(i+1, 0, sCrcd)
@@ -502,7 +504,7 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 						sMask = "0,0,,,0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 1, sMask)
 						
-						sMask = "0,0,, " & gCurrency & ",0,,".."2"..",1,1,2,0"
+						sMask = "0,0,, " .. gCurrency .. ",0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 2, sMask)
 					
 					elseif sCrcd == "KRW" then
@@ -510,7 +512,7 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 						sMask = "0,0,,,0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 1, sMask)
 						
-						sMask = "0,0,, " & gCurrency & ",0,,".."2"..",1,1,2,0"
+						sMask = "0,0,, " .. gCurrency .. ",0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 2, sMask)
 					
 					elseif sCrcd == "CNY" then
@@ -518,7 +520,7 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 						sMask = "0,0,,,0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 1, sMask)
 						
-						sMask = "0,0,, " & gCurrency & ",0,,".."2"..",1,1,2,0"
+						sMask = "0,0,, " .. gCurrency .. ",0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 2, sMask)
 					
 					elseif sCrcd == "HKD" then
@@ -526,7 +528,7 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 						sMask = "0,0,,,0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 1, sMask)
 						
-						sMask = "0,0,, " & gCurrency & ",0,,".."2"..",1,1,2,0"
+						sMask = "0,0,, " .. gCurrency .. ",0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 2, sMask)
 					
 					elseif sCrcd == "JPY" then
@@ -534,23 +536,23 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 						sMask = "0,0,,,0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 1, sMask)
 						
-						sMask = "0,0,, " & gCurrency & ",0,,".."2"..",1,1,2,0"
+						sMask = "0,0,, " .. gCurrency .. ",0,,".."2"..",1,1,2,0"
 						contTotal.tblAbleTotalCurrency.SetCellMaskInfo(i+1, 2, sMask)
 						
-					end if
+					end
 					
-					'-------------------------------------------------
-					'추정예수금/통합주문가능금액 세팅
-					'-------------------------------------------------
+					 ---------------------------------------------------
+					 --추정예수금/통합주문가능금액 세팅
+					 ---------------------------------------------------
 					sDeposit 	= DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock3", "FRCR_AMT" , i)
 					sTotalAblePrc = DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock3", "ODER_CRNC_ODER_ABLE_CAMT" , i)
 					
 					contTotal.tblAbleTotalCurrency.SetCellString(i+1, 1, sDeposit)
 					contTotal.tblAbleTotalCurrency.SetCellString(i+1, 2, sTotalAblePrc)
 				
-				next
+				end
 				
-			end if
+			end
 			
 					
 		else
@@ -560,60 +562,60 @@ Sub DATAMANAGER_OnReceiveTranComplete(szTranID)
 			sDeposit 		= DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock2", "FRCR_AMT" 		, 0)
 			sAbleExChange 	= DATAMANAGER.GetDataValue(0, "obtro_oder_264r", "OutBlock2", "UI_MNEC_ABLE_AMT" 	, 0)
 			
-			'-------------------------------------------------
-			' 주문가능금액
-			'-------------------------------------------------
-			'tblAble.SetCellMaskInfo(0, 1, gMask)
-			sMask = "0,0,, " & gCurrency & ",0,,".."2"..",1,1,2,0"
+			 ---------------------------------------------------
+			 -- 주문가능금액
+			 ---------------------------------------------------
+			 --tblAble.SetCellMaskInfo(0, 1, gMask)
+			sMask = "0,0,, " .. gCurrency .. ",0,,".."2"..",1,1,2,0"
 			tblAble.SetCellMaskInfo(0, 1, sMask)
 			
 			tblAble.SetCellString(0, 1, sOrdAblePrc)
 			
 			
-			'-------------------------------------------------
-			' 주문가능수량
-			'-------------------------------------------------
+			 ---------------------------------------------------
+			 -- 주문가능수량
+			 ---------------------------------------------------
 			LabelAbleQtyData.caption = sOrdAbleQty
 			
 			if gType == "1" then
 			
-				'-------------------------------------------------
-				' 외화추정예수금
-				'-------------------------------------------------
-				'LabelDepositData.mask = gMask
-				sMask = "0,0,, " & gCurrency & ",0,,".."2"..",1,1,2,0"
+				 ---------------------------------------------------
+				 -- 외화추정예수금
+				 ---------------------------------------------------
+				 --LabelDepositData.mask = gMask
+				sMask = "0,0,, " .. gCurrency .. ",0,,".."2"..",1,1,2,0"
 				LabelDepositData.mask = sMask
 				
 				LabelDepositData.caption = sDeposit
 				
-				'-------------------------------------------------
-				' 원화환전가능금액
-				'-------------------------------------------------
+				 ---------------------------------------------------
+				 -- 원화환전가능금액
+				 ---------------------------------------------------
 				LabelAbleExchangeData.caption = sAbleExChange
 				
-			end if
+			end
 			
 		
-		end if
+		end
 	
 	
-	end if
+	end
 	
-End Sub
+end
 
-'============================================================================
-Sub imgBg_OnClick()
+ --============================================================================
+function imgBg_OnClick()
 	
-	'20241128 LES START
+	 --20241128 LES START
 	Form.SendReturnToParent("OrderAble_Popup_Close" , "")
 	Form.CloseForm()
 	
-End Sub
+end
 
-'============================================================================
-' Calc_Price : +, - 버튼클릭시 호가단위로 가격계산
-'============================================================================
-Function Calc_Price(nGbn)
+ --============================================================================
+ -- Calc_Price : +, - 버튼클릭시 호가단위로 가격계산
+ --============================================================================
+function Calc_Price(nGbn)
 
 	szEditPrice = edtPrc.caption
 	szPrc  = ReSet_Prc(szEditPrice, nGbn)
@@ -623,148 +625,148 @@ Function Calc_Price(nGbn)
 	gUnit = GetHogaUnit(gVndrCode, szPrc, nGbn)
 	szUnit = gUnit
 	
-	if Trim(szPrc) == "" or CDbl(szPrc) == 0 then
-		if gCurPrice == "" or CDbl(gCurPrice) == 0 then
+	if gf_Trim(szPrc) == "" or gf_Tonumber(szPrc) == 0 then
+		if gCurPrice == "" or gf_Tonumber(gCurPrice) == 0 then
 			szPrc = 0
 		else
 			szPrc = gCurPrice
-		end if
+		end
 	else
 		
-		'------------------------------------------------
-		' + 버튼 클릭
-		'------------------------------------------------
-		if nGbn == 0 then							
-			if CDbl(szPrc) >= CDbl(szHigh) then		' 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
-				if szHigh <> "0" then
-					szPrc = CDbl(szHigh)
+		 --------------------------------------------------
+		 -- + 버튼 클릭
+		 --------------------------------------------------
+		if nGbn == 0 then
+			if gf_Tonumber(szPrc) >= gf_Tonumber(szHigh) then -- 상한가와 같거나 높은가격에서 +버튼 클릭시 상한가로 복귀
+				if szHigh ~= "0" then
+					szPrc = gf_Tonumber(szHigh)
 				else
-					szPrc = CDbl(szPrc) + CDbl(szUnit)
-				end if 
-			elseif CDbl(szPrc) < CDbl(szLow) then	' 하한가보다 낮은가격에서 +버튼 클릭시 하한가로 복귀
-				if szLow <> "0" then
-					szPrc = CDbl(szLow)
+					szPrc = gf_Tonumber(szPrc) + gf_Tonumber(szUnit)
+				end
+			elseif gf_Tonumber(szPrc) < gf_Tonumber(szLow) then -- 하한가보다 낮은가격에서 +버튼 클릭시 하한가로 복귀
+				if szLow ~= "0" then
+					szPrc = gf_Tonumber(szLow)
 				else
-					szPrc = CDbl(szPrc) + CDbl(szUnit)
-				end if 
+					szPrc = gf_Tonumber(szPrc) + gf_Tonumber(szUnit)
+				end
 			else
-				szPrc = CDbl(szPrc) + CDbl(szUnit)
-			end if
+				szPrc = gf_Tonumber(szPrc) + gf_Tonumber(szUnit)
+			end
 		
-		'------------------------------------------------
-		' - 버튼 클릭 
-		'------------------------------------------------
-		elseif nGbn == 1 then						
-			if CDbl(szPrc) > CDbl(szHigh) then		' 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
-				if szHigh <> "0" then
-					szPrc = CDbl(szHigh)
+		 --------------------------------------------------
+		 -- - 버튼 클릭 
+		 --------------------------------------------------
+		elseif nGbn == 1 then
+			if gf_Tonumber(szPrc) > gf_Tonumber(szHigh) then -- 상한가보다 높은가격에서 -버튼 클릭시 상한가로 복귀
+				if szHigh ~= "0" then
+					szPrc = gf_Tonumber(szHigh)
 				else
-					szPrc = CDbl(szPrc) - CDbl(szUnit)
-				end if 		
-			elseif CDbl(szPrc) <= CDbl(szLow) then	' 하한가와 같거나 낮은가격에서 -버튼 클릭시 하한가로 복귀
-				if szLow <> "0" then
-					szPrc = CDbl(szLow)
+					szPrc = gf_Tonumber(szPrc) - gf_Tonumber(szUnit)
+				end
+			elseif gf_Tonumber(szPrc) <= gf_Tonumber(szLow) then -- 하한가와 같거나 낮은가격에서 -버튼 클릭시 하한가로 복귀
+				if szLow ~= "0" then
+					szPrc = gf_Tonumber(szLow)
 				else
-					szPrc = CDbl(szPrc) - CDbl(szUnit)
-				end if 
+					szPrc = gf_Tonumber(szPrc) - gf_Tonumber(szUnit)
+				end
 			else
-				szPrc = CDbl(szPrc) - CDbl(szUnit)
-			end if
-		end if
-	end if
+				szPrc = gf_Tonumber(szPrc) - gf_Tonumber(szUnit)
+			end
+		end
+	end
 	
-	if CDbl(szPrc) < 0 then
+	if gf_Tonumber(szPrc) < 0 then
 		szPrc = 0
-	end if
+	end
 	
 	edtPrc.caption = szPrc
 	Request_Able("2")
 		
-End Function
+end
 
-'============================================================================
-' 가격 호가단위 맞추기 
-'============================================================================
-Function ReSet_Prc(szData, nGbn)	
+ --============================================================================
+ -- 가격 호가단위 맞추기 
+ --============================================================================
+function ReSet_Prc(szData, nGbn)
 
 	if nGbn == 0 then
-		nResult = Round(CDbl(szData) Mod CDbl(gUnit), CInt(gDecimalLen))
+		nResult = gf_Round(gf_Tonumber(szData) % gf_Tonumber(gUnit), gf_Tonumber(gDecimalLen))
 
-		if nResult <> 0 and nResult <> CDbl(gUnit) then
-			return CDbl(szData) - nResult
+		if nResult ~= 0 and nResult ~= gf_Tonumber(gUnit) then
+			return gf_Tonumber(szData) - nResult
 		else
 			return szData
-		end if
+		end
 	else
-		nResult = Round(CDbl(szData) Mod CDbl(gUnit), CInt(gDecimalLen))
+		nResult = gf_Round(gf_Tonumber(szData) % gf_Tonumber(gUnit), gf_Tonumber(gDecimalLen))
 	
-		if nResult <> 0 then
-			return CDbl(szData) + (CDbl(gUnit) - nResult)
+		if nResult ~= 0 then
+			return gf_Tonumber(szData) + (gf_Tonumber(gUnit) - nResult)
 		else
 			return szData
-		end if
-	end if
+		end
+	end
 	
-End Function
+end
 
-'============================================================================
-' 거래소 호가단위 설정
-'============================================================================
-Function GetHogaUnit(szMk, szPrc, nGbn) 
+ --============================================================================
+ -- 거래소 호가단위 설정
+ --============================================================================
+function GetHogaUnit(szMk, szPrc, nGbn)
 	
-	'-----------------------------------------------------------------------
-	' 호가단위 초기화
-	'-----------------------------------------------------------------------
-	szOrdPrc = CDbl(szPrc)
+	 -------------------------------------------------------------------------
+	 -- 호가단위 초기화
+	 -------------------------------------------------------------------------
+	szOrdPrc = gf_Tonumber(szPrc)
 	
 	if szOrdPrc == "" then
-		if gCurPrice = "" or CDbl(gCurPrice) == 0 then
+		if gCurPrice == "" or gf_Tonumber(gCurPrice) == 0 then
 			szOrdPrc = 0		
 		else
-			szOrdPrc = CDbl(gCurPrice)
-		end if	
-	end if
+			szOrdPrc = gf_Tonumber(gCurPrice)
+		end
+	end
 	
 	szUnit = "1.000"
 	
-	'-----------------------------------------------------------------------
-	' 틱타입 확인
-	'-----------------------------------------------------------------------
-	szTtype = Cint(gTickType)
+	 -------------------------------------------------------------------------
+	 -- 틱타입 확인
+	 -------------------------------------------------------------------------
+	szTtype = gf_Tonumber(gTickType)
 
 	if szTtype == 0 or szTtype == "" then
 		szTtype = "0"
-	end if
+	end
 	
-	'-----------------------------------------------------------------------
-	' 중국(상해/심천) 호가단위 설정
-	'-----------------------------------------------------------------------
-	if szMk == "0215" then '상해
+	 -------------------------------------------------------------------------
+	 -- 중국(상해/심천) 호가단위 설정
+	 -------------------------------------------------------------------------
+	if szMk == "0215" then --상해
 		
-		'20240613 LES START 틱단위 수정
-		if szTtype = 2 then 'ETF
+		 --20240613 LES START 틱단위 수정
+		if szTtype == 2 then --ETF
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
-		end if
-		'20240613 LES END
+		end
+		 --20240613 LES END
 		
-	elseif szMk == "0214" then '심천
+	elseif szMk == "0214" then --심천
 		
-		'20240613 LES START 틱단위 수정
-		if szTtype = 2 then 'ETF
+		 --20240613 LES START 틱단위 수정
+		if szTtype == 2 then --ETF
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
-		end if
-		'20240613 LES END
+		end
+		 --20240613 LES END
 		
-	'-----------------------------------------------------------------------
-	' 미국(뉴욕/나스닥/아멕스) 호가단위 설정
-	'-----------------------------------------------------------------------
-	elseif szMk == "0321" or szMk == "0537" or szMk == "0066" then '뉴욕, 나스닥, 아멕스
+	 -------------------------------------------------------------------------
+	 -- 미국(뉴욕/나스닥/아멕스) 호가단위 설정
+	 -------------------------------------------------------------------------
+	elseif szMk == "0321" or szMk == "0537" or szMk == "0066" then --뉴욕, 나스닥, 아멕스
 		
-		'20240702 LES START - 1달러미만 종목 0.0001단위
+		 --20240702 LES START - 1달러미만 종목 0.0001단위
 		if szOrdPrc < 1.00 then
 			szUnit = "0.0001" 
 		else
@@ -782,20 +784,20 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				
 			else
 				szUnit = "0.010"
-			end if
-		end if
+			end
+		end
 	
-	'-----------------------------------------------------------------------
-	' 홍콩 호가단위 설정, (홍콩ETF종목 호가단위 변경)
-	'-----------------------------------------------------------------------
-	elseif szMk == "0104" then '홍콩
+	 -------------------------------------------------------------------------
+	 -- 홍콩 호가단위 설정, (홍콩ETF종목 호가단위 변경)
+	 -------------------------------------------------------------------------
+	elseif szMk == "0104" then --홍콩
 		
 		if szTtype == 3 then
 			szUnit = "0.050"
 			
-		'홍콩 ETF종목 호가단위 변경
-		'type = 5 (ETF종목) 추가
-		'20250728 MSH START 홍콩거래소 틱사이즈 변경 및 추가 
+		 --홍콩 ETF종목 호가단위 변경
+		 --type = 5 (ETF종목) 추가
+		 --20250728 MSH START 홍콩거래소 틱사이즈 변경 및 추가 
 		elseif szTtype == 5 then
 			
 			if nGbn == 0 then
@@ -819,7 +821,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "0.500"
 				else
 					szUnit = "1.000"
-				end if
+				end
 			
 			else
 				if szOrdPrc <= 1.00 then
@@ -842,11 +844,11 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "0.500"
 				else
 					szUnit = "1.000"
-				end if
+				end
 			
-			end if
+			end
 			
-		elseif szTtype == 6 then '20250728 MSH 사이즈 6 추가 
+		elseif szTtype == 6 then --20250728 MSH 사이즈 6 추가 
 			
 			if nGbn == 0 then
 				if szOrdPrc < 0.25 then
@@ -861,7 +863,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 20.00 then
 					szUnit = "0.020"
 					
-				elseif szOrdPrc < 50.00 then	
+				elseif szOrdPrc < 50.00 then
 					szUnit = "0.050"					
 		
 				elseif szOrdPrc < 100.00 then
@@ -882,10 +884,10 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000.00 then
 					szUnit = "2.000"
 		
-				else 
+				else
 					szUnit = "5.000"
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 0.25 then
 					szUnit = "0.001"
@@ -899,7 +901,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 20.00 then
 					szUnit = "0.020"
 					
-				elseif szOrdPrc <= 50.00 then	
+				elseif szOrdPrc <= 50.00 then
 					szUnit = "0.050"					
 		
 				elseif szOrdPrc <= 100.00 then
@@ -920,14 +922,14 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 5000.00 then
 					szUnit = "2.000"
 		
-				else 
+				else
 					szUnit = "5.000"
 		
-				end if
+				end
 			
-			end if		
+			end
 		
-		else ' 사이즈 1 
+		else -- 사이즈 1 
 			if nGbn == 0 then
 				if szOrdPrc < 0.25 then
 					szUnit = "0.001"
@@ -938,7 +940,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 20.00 then
 					szUnit = "0.010"
 		
-				elseif szOrdPrc < 50.00 then	
+				elseif szOrdPrc < 50.00 then
 					szUnit = "0.020"					
 		
 				elseif szOrdPrc < 100.00 then
@@ -959,10 +961,10 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000.00 then
 					szUnit = "2.000"
 		
-				else 
+				else
 					szUnit = "5.000"
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 0.25 then
 					szUnit = "0.001"
@@ -973,7 +975,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 20.00 then
 					szUnit = "0.010"
 		
-				elseif szOrdPrc <= 50.00 then	
+				elseif szOrdPrc <= 50.00 then
 					szUnit = "0.020"
 		
 				elseif szOrdPrc <= 100.00 then
@@ -997,17 +999,17 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				else
 					szUnit = "5.000"
 		
-				end if
+				end
 			
-			end if
+			end
 			
-		end if
-		'20250728 MSH END 
+		end
+		 --20250728 MSH END 
 	
-	'-----------------------------------------------------------------------
-	' 해외주식 일본시장(도쿄거래소) 추가
-	'-----------------------------------------------------------------------
-	elseif szMk == "0106" then '도쿄
+	 -------------------------------------------------------------------------
+	 -- 해외주식 일본시장(도쿄거래소) 추가
+	 -------------------------------------------------------------------------
+	elseif szMk == "0106" then --도쿄
 		if szTtype == 3 then
 			if nGbn == 0 then
 				if szOrdPrc < 1000 then
@@ -1019,7 +1021,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000 then
 					szUnit = "1"
 		
-				elseif szOrdPrc < 10000 then	
+				elseif szOrdPrc < 10000 then
 					szUnit = "1"
 		
 				elseif szOrdPrc < 30000 then
@@ -1052,10 +1054,10 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 30000000 then
 					szUnit = "5000"
 		
-				else 
+				else
 					szUnit = "10000"
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 1000 then
 					szUnit = "0.1"
@@ -1066,7 +1068,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 5000 then
 					szUnit = "1"
 		
-				elseif szOrdPrc <= 10000 then	
+				elseif szOrdPrc <= 10000 then
 					szUnit = "1"
 		
 				elseif szOrdPrc <= 30000 then
@@ -1099,15 +1101,15 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 30000000 then
 					szUnit = "5000"
 		
-				else 
+				else
 					szUnit = "10000"
 		
-				end if
+				end
 			
-			end if	
+			end
 		
-		'20250425 SWJ START
-		'틱타입 4 추가
+		 --20250425 SWJ START
+		 --틱타입 4 추가
 		elseif szTtype == 4 then
 			
 			if nGbn == 0 then
@@ -1120,7 +1122,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000 then
 					szUnit = "1"
 		
-				elseif szOrdPrc < 10000 then	
+				elseif szOrdPrc < 10000 then
 					szUnit = "1"
 		
 				elseif szOrdPrc < 30000 then
@@ -1153,10 +1155,10 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 30000000 then
 					szUnit = "5000"
 		
-				else 
+				else
 					szUnit = "10000"
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 1000 then
 					szUnit = "1"
@@ -1167,7 +1169,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 5000 then
 					szUnit = "1"
 		
-				elseif szOrdPrc <= 10000 then	
+				elseif szOrdPrc <= 10000 then
 					szUnit = "1"
 		
 				elseif szOrdPrc <= 30000 then
@@ -1200,14 +1202,14 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 30000000 then
 					szUnit = "5000"
 		
-				else 
+				else
 					szUnit = "10000"
 		
-				end if
+				end
 			
-			end if	
+			end
 		
-		'20250425 SWJ END
+		 --20250425 SWJ END
 		
 		else
 			if nGbn == 0 then
@@ -1220,7 +1222,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 5000 then
 					szUnit = "5"
 		
-				elseif szOrdPrc < 10000 then	
+				elseif szOrdPrc < 10000 then
 					szUnit = "10"
 		
 				elseif szOrdPrc < 30000 then
@@ -1253,17 +1255,17 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc < 30000000 then
 					szUnit = "10000"
 		
-				'20250425 SWJ START
-				elseif szOrdPrc < 50000000 then 
+				 --20250425 SWJ START
+				elseif szOrdPrc < 50000000 then
 					
 					szUnit = "50000"
 				
-				else 
+				else
 					szUnit = "100000"
 				
-				'20250425 SWJ END
+				 --20250425 SWJ END
 		
-				end if
+				end
 			else
 				if szOrdPrc <= 1000 then
 					szUnit = "1"
@@ -1274,7 +1276,7 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 5000 then
 					szUnit = "5"
 		
-				elseif szOrdPrc <= 10000 then	
+				elseif szOrdPrc <= 10000 then
 					szUnit = "10"
 		
 				elseif szOrdPrc <= 30000 then
@@ -1307,123 +1309,123 @@ Function GetHogaUnit(szMk, szPrc, nGbn)
 				elseif szOrdPrc <= 30000000 then
 					szUnit = "10000"
 		
-				'20250425 SWJ START
-				elseif szOrdPrc <= 50000000 then 
+				 --20250425 SWJ START
+				elseif szOrdPrc <= 50000000 then
 					
 					szUnit = "50000"
 				
-				else 
+				else
 					szUnit = "100000"
 				
-				'20250425 SWJ END
+				 --20250425 SWJ END
 				
-				end if
+				end
 			
-			end if
+			end
 		
-		end if
+		end
 	
-	end if
+	end
 	
 	return szUnit
 	
-End Function
+end
 
-'============================================================================
-Sub btnMinus_OnClick()
+ --============================================================================
+function btnMinus_OnClick()
 	Calc_Price(1)
-End Sub
+end
 
-'============================================================================
-Sub btnPlus_OnClick()
+ --============================================================================
+function btnPlus_OnClick()
 	Calc_Price(0)
-End Sub
+end
 
-'============================================================================
-' (일반 약정) 주문가능수량 라벨 클릭 이벤트
-'============================================================================
-Sub LabelAbleQtyData_OnClick()
+ --============================================================================
+ -- (일반 약정) 주문가능수량 라벨 클릭 이벤트
+ --============================================================================
+function LabelAbleQtyData_OnClick()
 
-	Dim sPrice,sQty
+	local sPrice,sQty
 	sPrice = edtPrc.caption
 	sQty = LabelAbleQtyData.caption
 	
-	szData = sPrice & "★" & sQty
+	szData = sPrice .. "★" .. sQty
 	Form.SendReturnToParent("OrderAble_Popup" , szData)
 	Form.CloseForm()
 	
 	
-End Sub
+end
 
-'============================================================================
-' (통합증거금 약정) 해당통화 주문가능수량 라벨 클릭 이벤트
-'============================================================================
-Sub contTotal_LabelAbleTotalQtyData1_OnClick()
+ --============================================================================
+ -- (통합증거금 약정) 해당통화 주문가능수량 라벨 클릭 이벤트
+ --============================================================================
+function contTotal_LabelAbleTotalQtyData1_OnClick()
 
-	Dim sPrice,sQty
+	local sPrice,sQty
 	sPrice = edtPrc.caption
 	sQty = contTotal.LabelAbleTotalQtyData1.caption
 	
-	szData = sPrice & "★" & sQty
+	szData = sPrice .. "★" .. sQty
 	Form.SendReturnToParent("OrderAble_Popup" , szData)
 	Form.CloseForm()
 	
-End Sub
+end
 
-'============================================================================
-' (통합증거금 약정) 통합(최대) 주문가능수량 라벨 클릭 이벤트
-'============================================================================
-Sub contTotal_LabelAbleTotalQtyData2_OnClick()
+ --============================================================================
+ -- (통합증거금 약정) 통합(최대) 주문가능수량 라벨 클릭 이벤트
+ --============================================================================
+function contTotal_LabelAbleTotalQtyData2_OnClick()
 
-	Dim sPrice,sQty
+	local sPrice,sQty
 	sPrice = edtPrc.caption
 	sQty = contTotal.LabelAbleTotalQtyData2.caption
 	
-	szData = sPrice & "★" & sQty
+	szData = sPrice .. "★" .. sQty
 	Form.SendReturnToParent("OrderAble_Popup" , szData)
 	Form.CloseForm()
 	
-End Sub
+end
 
-'============================================================================
-Sub Button0_OnClick()
+ --============================================================================
+function Button0_OnClick()
 	
-	'20241128 LES START
+	 --20241128 LES START
 	Form.SendReturnToParent("OrderAble_Popup_Close" , "")
 	Form.CloseForm()
 	
-End Sub
+end
 
-'============================================================================
-Sub edtPrc_OnEditComplete()
+ --============================================================================
+function edtPrc_OnEditComplete()
 	Request_Able("2")
-End Sub
+end
 
-'============================================================================
-' 해외주식 주문가능금액 화면으로 이동
-'============================================================================
-Sub contTotal_LabelCurrencyMoveScreen_OnClick()
+ --============================================================================
+ -- 해외주식 주문가능금액 화면으로 이동
+ --============================================================================
+function contTotal_LabelCurrencyMoveScreen_OnClick()
 	
-	'주문가능금액 화면에서 현재보고 있는 시장으로 자동 세팅될 수 있도록 거래소벤더코드 같이 넘김.
+	 --주문가능금액 화면에서 현재보고 있는 시장으로 자동 세팅될 수 있도록 거래소벤더코드 같이 넘김.
 	Form.OpenScreen("16076" , gVndrCode)
 	
-End Sub
+end
 
-'============================================================================
-' 환전신청화면으로 이동
-'============================================================================
-Sub ButtonMoveExchange_OnClick()
+ --============================================================================
+ -- 환전신청화면으로 이동
+ --============================================================================
+function ButtonMoveExchange_OnClick()
 	
-	scrNo = Form.GetSharedData("&SCREEN_NO", false)
-	szData = "매수통화" & "`" &  gCurrency & "`" & scrNo & "`" & "0" 
+	scrNo = Form.GetSharedData("..SCREEN_NO", false)
+	szData = "매수통화" .. "`" ..  gCurrency .. "`" .. scrNo .. "`" .. "0" 
 	Form.OpenScreen("65000" , szData)
 	
-End Sub
+end
 
-'============================================================================
-' 거래소벤더코드(4자리) => 거래소코드(2자리)
-'============================================================================
-Function GetMarketCode(sVndrCode)
+ --============================================================================
+ -- 거래소벤더코드(4자리) => 거래소코드(2자리)
+ --============================================================================
+function GetMarketCode(sVndrCode)
 
 	if sVndrCode == "0321" then
 		return "NY"
@@ -1441,11 +1443,12 @@ Function GetMarketCode(sVndrCode)
 		return "JP"
 	else
 		return ""
-	end if
+	end
 
-End Function
+end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="obtro_oder_264r" trcode="obtro_oder_264r" compress="1" encryption="1" inputcheck="1" useattr="0" />

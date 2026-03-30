@@ -288,10 +288,10 @@ g_sCommonErrorMsg = "현재 자동감시주문 실행이\n불가합니다.\n고�
 --             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
 -- ****************************************************************************
 -- ===============================================
--- NULL 체크 
+-- nil 체크 
 -- ===============================================
 function isEmpty(sData)
-	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
 		return true
 	else
 		return false
@@ -304,10 +304,10 @@ function truncateToDecimalPlaces(nVal, nDeimalPlaces)
 	nVal = gf_Tonumber(nVal)
 	nFactor = 10 ^ nDeimalPlaces
 	szNumStr = gf_CommaValue(nVal*nFactor,12,0,0,0,1)
-	nDecimalIdx = Instr(szNumStr, ".")
+	nDecimalIdx = string.find(szNumStr, ".")
 	nTotalData = 0
 	if gf_Tonumber(nDecimalIdx) > 0 then
-		nTotalData = gf_Tonumber(Left(szNumStr, gf_Tonumber(nDecimalIdx)-1))
+		nTotalData = gf_Tonumber(string.sub(szNumStr, 1, gf_Tonumber(nDecimalIdx)-1))
 	else
 		nTotalData = gf_Tonumber(szNumStr)
 	end
@@ -331,7 +331,7 @@ function Convert_StrToArr(szData, szSeperator)
 	if isEmpty(szSeperator) then
 		-- 단일변수
 		arrData = {}
-		table.insert(arrData, szData)
+		table.Insert(arrData, szData)
 	else
 		-- 다중변수
 		arrData = gf_Split(szData, szSeperator)
@@ -349,8 +349,8 @@ function CheckMasterFile(szCode)
 	if #arrCode < 2 then
 		return false
 	end
-	szTransExidCode = Transform_Exid2(arrCode[1])
-	szTransItemCode = szTransExidCode .. "@" .. arrCode[2]
+	szTransExidCode = Transform_Exid2(arrCode[1+1])
+	szTransItemCode = szTransExidCode .. "@" .. arrCode[2+1]
 	szCheckData = Form.GetItemCodeInfo(szTransItemCode, "exchid")
 	if isEmpty(szCheckData) == true then
 		return false
@@ -360,7 +360,7 @@ end
 -- =============================================================================
 -- 거래소 호가단위 설정
 -- =============================================================================
-function GetHogaUnit(szMk, szPrc, nGbn) 
+function GetHogaUnit(szMk, szPrc, nGbn)
 	-- -----------------------------------------------------------------------
 	-- 호가단위 초기화
 	-- -----------------------------------------------------------------------
@@ -376,9 +376,9 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 	-- -----------------------------------------------------------------------
 	-- 중국(상해/심천) 호가단위 설정
 	-- -----------------------------------------------------------------------
-	if szMk == "0215" then -- 상해
+	if szMk == "0215" then -- 상해 end
 		-- 20240613 LES START 틱단위 수정
-		if szTtype == 2 then -- ETF
+		if szTtype == 2 then -- ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -386,7 +386,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 		-- 20240613 LES END
 	elseif szMk == "0214" then -- 심천
 		-- 20240613 LES START 틱단위 수정
-		if szTtype == 2 then -- ETF
+		if szTtype == 2 then -- ETF end
 			szUnit = "0.001"
 		else
 			szUnit = "0.010"
@@ -474,7 +474,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "0.005"
 				elseif szOrdPrc < 10.00 then
 					szUnit = "0.010"
-				elseif szOrdPrc < 20.00 then	
+				elseif szOrdPrc < 20.00 then
 					szUnit = "0.020"
 				elseif szOrdPrc < 100.00 then
 					szUnit = "0.050"
@@ -488,7 +488,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "1.000"
 				elseif szOrdPrc < 5000.00 then
 					szUnit = "2.000"
-				else 
+				else
 					szUnit = "5.000"
 				end
 			else
@@ -498,7 +498,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "0.005"
 				elseif szOrdPrc <= 10.00 then
 					szUnit = "0.010"
-				elseif szOrdPrc <= 20.00 then	
+				elseif szOrdPrc <= 20.00 then
 					szUnit = "0.020"
 				elseif szOrdPrc <= 100.00 then
 					szUnit = "0.050"
@@ -529,7 +529,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "0.5"
 				elseif szOrdPrc < 5000 then
 					szUnit = "1"
-				elseif szOrdPrc < 10000 then	
+				elseif szOrdPrc < 10000 then
 					szUnit = "1"
 				elseif szOrdPrc < 30000 then
 					szUnit = "5"
@@ -551,7 +551,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "1000"
 				elseif szOrdPrc < 30000000 then
 					szUnit = "5000"
-				else 
+				else
 					szUnit = "10000"
 				end
 			else
@@ -561,7 +561,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "0.5"
 				elseif szOrdPrc <= 5000 then
 					szUnit = "1"
-				elseif szOrdPrc <= 10000 then	
+				elseif szOrdPrc <= 10000 then
 					szUnit = "1"
 				elseif szOrdPrc <= 30000 then
 					szUnit = "5"
@@ -583,7 +583,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "1000"
 				elseif szOrdPrc <= 30000000 then
 					szUnit = "5000"
-				else 
+				else
 					szUnit = "10000"
 				end
 			end	
@@ -595,7 +595,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "1"
 				elseif szOrdPrc < 5000 then
 					szUnit = "5"
-				elseif szOrdPrc < 10000 then	
+				elseif szOrdPrc < 10000 then
 					szUnit = "10"
 				elseif szOrdPrc < 30000 then
 					szUnit = "10"
@@ -617,7 +617,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "10000"
 				elseif szOrdPrc < 30000000 then
 					szUnit = "10000"
-				else 
+				else
 					szUnit = "50000"
 				end
 			else
@@ -627,7 +627,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "1"
 				elseif szOrdPrc <= 5000 then
 					szUnit = "5"
-				elseif szOrdPrc <= 10000 then	
+				elseif szOrdPrc <= 10000 then
 					szUnit = "10"
 				elseif szOrdPrc <= 30000 then
 					szUnit = "10"
@@ -649,7 +649,7 @@ function GetHogaUnit(szMk, szPrc, nGbn)
 					szUnit = "10000"
 				elseif szOrdPrc <= 30000000 then
 					szUnit = "10000"
-				else 
+				else
 					szUnit = "50000"
 				end
 			end
@@ -661,7 +661,7 @@ end
 -- 거래소코드 -> 거래소명 변환 
 -- ==============================================
 function Transform_Exid(sValue)
-	if sValue == "HKS" then	-- 104
+	if sValue == "HKS" then -- 104 end
 		return "홍콩"
 	elseif sValue == "HSI" then -- 529
 		return "항셍 지수"
@@ -678,7 +678,7 @@ function Transform_Exid(sValue)
 	elseif sValue == "NAO" then -- 130
 		return "미국"
 	elseif sValue == "SPI" then -- 625
-		return "미국 S&P"
+		return "미국 S..P"
 	elseif sValue == "DJI" then -- 310
 		return "미국 다우존스"
 	elseif sValue == "TSE" then -- 106
@@ -706,21 +706,21 @@ end
 function Transform_Exid2(sValue)
     local Transform_Exid2 = ""
 	if sValue == "HKS" then
-		Transform_Exid2 = "HK"
+		return "HK"
 	elseif sValue == "SHS" then
-		Transform_Exid2 = "SH"
+		return "SH"
 	elseif sValue == "SZS" then
-		Transform_Exid2 = "SZ"
+		return "SZ"
 	elseif sValue == "NYS" then
-		Transform_Exid2 = "NY"
+		return "NY"
 	elseif sValue == "AMX" then
-		Transform_Exid2 = "AX"
+		return "AX"
 	elseif sValue == "NAS" then
-		Transform_Exid2 = "OQ"
+		return "OQ"
 	elseif sValue == "TSE" then
-		Transform_Exid2 = "JP"
+		return "JP"
 	else
-		Transform_Exid2 = sValue
+		return sValue
 	end
 	
 	return Transform_Exid2
@@ -728,21 +728,21 @@ end
 function Transform_Exid3(sValue)
      local Transform_Exid3 = ""
 	if sValue == "HK" then
-		Transform_Exid3 = "HKS"
+		return "HKS"
 	elseif sValue == "SH" then
-		Transform_Exid3 = "SHS"
+		return "SHS"
 	elseif sValue == "SZ" then
-		Transform_Exid3 = "SZS"
+		return "SZS"
 	elseif sValue == "NY" then
-		Transform_Exid3 = "NYS"
+		return "NYS"
 	elseif sValue == "AX" then
-		Transform_Exid3 = "AMX"
+		return "AMX"
 	elseif sValue == "OQ" then
-		Transform_Exid3 = "NAS"
+		return "NAS"
 	elseif sValue == "JP" then
-		Transform_Exid3 = "TSE"
+		return "TSE"
 	else
-		Transform_Exid3 = sValue
+		return sValue
 	end
 	
 	return Transform_Exid3
@@ -754,21 +754,21 @@ function Transform_Exid4(sValue)
      local Transform_Exid4 = ""
 	-- 20250804_01 YSH START
 	if sValue == "HK" or sValue == "HKS" then
-		Transform_Exid4 = "HK"
+		return "HK"
 	elseif sValue == "SH" or sValue == "SHS" then
-		Transform_Exid4 = "SH"
+		return "SH"
 	elseif sValue == "SZ" or sValue == "SZS" then
-		Transform_Exid4 = "SZ"
+		return "SZ"
 	elseif sValue == "JP" or sValue == "TSE" then
-		Transform_Exid4 = "JP"
+		return "JP"
 	elseif sValue == "NY" or sValue == "NYS" then
-		Transform_Exid4 = "US"
+		return "US"
 	elseif sValue == "AX" or sValue == "AMX" then
-		Transform_Exid4 = "US"
+		return "US"
 	elseif sValue == "OQ" or sValue == "NAS" then
-		Transform_Exid4 = "US"
+		return "US"
 	else
-		Transform_Exid4 = "US"
+		return "US"
 	end
 	-- 20250804_01 YSH END
 	
@@ -783,9 +783,9 @@ function Check_ItemCode(szCode)
 		tempCode = "OQ@AAPL"
 		tempName = Form.GetItemCodeInfo(tempCode, "name")
 		-- 최근조회 종목 설정
-		Form.SetSharedData( "&ITEM_CODE" , tempCode )
-		Form.SetSharedData( "&ITEM_KORNAME" , tempName  )
-		Form.SetSharedData( "&ITEM_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
+		Form.SetSharedData( "..ITEM_CODE" , tempCode )
+		Form.SetSharedData( "..ITEM_KORNAME" , tempName  )
+		Form.SetSharedData( "..ITEM_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
 		Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
 		-- 종목세팅 재시작
 		Check_ItemCode(tempCode)
@@ -794,13 +794,13 @@ function Check_ItemCode(szCode)
 	-- ------------------------------------------------------
 	-- 종목정보 확인
 	-- ------------------------------------------------------
-	if CheckMasterFile(arrLinkCode[1]) == false then
+	if CheckMasterFile(arrLinkCode[1+1]) == false then
 		tempCode = "OQ@AAPL"
 		tempName = Form.GetItemCodeInfo(tempCode, "name")
 		-- 최근조회 종목 설정
-		Form.SetSharedData( "&ITEM_CODE" , tempCode )
-		Form.SetSharedData( "&ITEM_KORNAME" , tempName  )
-		Form.SetSharedData( "&ITEM_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
+		Form.SetSharedData( "..ITEM_CODE" , tempCode )
+		Form.SetSharedData( "..ITEM_KORNAME" , tempName  )
+		Form.SetSharedData( "..ITEM_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
 		Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
 		-- 종목세팅 재시작
 		Check_ItemCode(tempCode)
@@ -809,15 +809,15 @@ function Check_ItemCode(szCode)
 	-- ------------------------------------------------------
 	-- 종목코드 분리 (거래소코드@종목코드)
 	-- ------------------------------------------------------
-	arrCode = gf_Split(arrLinkCode[1], "@")
-	if #arrCode > 1 then 
+	arrCode = gf_Split(arrLinkCode[1+1], "@")
+	if #arrCode > 1 then
 		Button0.left = 1000
-		g_sCode 		= arrCode[2]							-- 종목코드		
-		g_sExid 		= Transform_Exid2(arrCode[1])				-- 거래소 구분(영문 2자리)
+		g_sCode 		= arrCode[2+1]							-- 종목코드		
+		g_sExid 		= Transform_Exid2(arrCode[1+1])				-- 거래소 구분(영문 2자리)
 		g_sItemCode 	= g_sExid .. "@" .. g_sCode					-- 거래소@종목코드
 		g_sItemName 	= Form.GetItemCodeInfo(g_sItemCode, "name")	-- 종목명
 		-- 20250804_01 YSH START
-		sKey = "&OVRS_MARKET_OPERATION_" .. Transform_Exid4(g_sExid)
+		sKey = "..OVRS_MARKET_OPERATION_" .. Transform_Exid4(g_sExid)
 		g_szMktOpClsCd = Form.GetSharedData(sKey, false)
 		-- 20250804_01 YSH END
 		-- -----------------------------------------------------
@@ -827,9 +827,9 @@ function Check_ItemCode(szCode)
 			tempCode = "OQ@AAPL"
 			tempName = Form.GetItemCodeInfo(tempCode, "name")
 			-- 최근조회 종목 설정
-			Form.SetSharedData( "&ITEM_CODE" , tempCode )
-			Form.SetSharedData( "&ITEM_KORNAME" , tempName  )
-			Form.SetSharedData( "&ITEM_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
+			Form.SetSharedData( "..ITEM_CODE" , tempCode )
+			Form.SetSharedData( "..ITEM_KORNAME" , tempName  )
+			Form.SetSharedData( "..ITEM_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
 			Form.SendMessageToMain( "CHANGE_ITEMCODE_OVERSTOCK", tempCode.."★"..tempName.."★".."", "" )
 			-- 종목세팅 재시작
 			Check_ItemCode(tempCode)
@@ -841,7 +841,7 @@ function Check_ItemCode(szCode)
 		g_rtChk 		= Form.GetSharedData( "REALTIME_"..g_sExid, false )	-- 실시간 여부(서비스호출)
 		g_sExid2 		= Form.GetItemCodeInfo(g_sItemCode, "exchcode3") 	-- 거래소 구분값(영문 3자리)
 		g_sExid3		= Form.GetItemCodeInfo(g_sItemCode, "exchid")		-- 거래소 구분값(숫자 4자리)
-		g_sMarket 		= Transform_Exid3(arrCode[1]) 					-- 거래소 구분값(영문 3자리, 국내와 혼용)
+		g_sMarket 		= Transform_Exid3(arrCode[1+1]) 					-- 거래소 구분값(영문 3자리, 국내와 혼용)
 		-- -----------------------------------------------------
 		-- 종목명 세팅
 		-- -----------------------------------------------------
@@ -860,7 +860,7 @@ end
 -- ==============================================
 function Request_MktOp(szMkOpClsCd)
 	Cancel_Real_Total()
-	if szMkOpClsCd == "001" then	-- 주간장 개시
+	if szMkOpClsCd == "001" then -- 주간장 개시 end
 		DATAMANAGER.RequestTranData("ohhts_6000_017r")
 	elseif szMkOpClsCd == "002" then	-- 주간장 종료
 		DATAMANAGER.RequestTranData("ohhts_6000_001r")
@@ -925,17 +925,17 @@ function Convert_MktOpInfo(szMkOpClsCd)
 		g_szMktOp = "After"
 		g_isMktClosed = "Y"
 		g_szSubMktOp = "After"
-	elseif szMkOpClsCd == "011" then 
+	elseif szMkOpClsCd == "011" then
 		-- 미국 외 장시작
 		g_szMktOp = "정규장"
 		g_isMktClosed = "N"
 		g_szSubMktOp = ""
-	elseif szMkOpClsCd == "012" then 
+	elseif szMkOpClsCd == "012" then
 		-- 미국 외 장종료
 		g_szMktOp = "정규장"
 		g_isMktClosed = "Y"
 		g_szSubMktOp = ""
-	elseif szMkOpClsCd == "013" then 
+	elseif szMkOpClsCd == "013" then
 		-- 휴일
 		g_szMktOp = "정규장"
 		g_isMktClosed = "Y"
@@ -988,7 +988,7 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
 	if isEmpty(nDecimalLen) == true or isEmpty(nPrc) == true then
 		return ""
 	end
-	sChk = Instr(gf_Tostring(nPrc), ".")
+	sChk = string.find(gf_Tostring(nPrc), ".")
 	-- =================================================================
 	-- 소수점(dot)이 있는 경우
 	-- =================================================================
@@ -996,13 +996,13 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
 		-- ------------------------------
 		-- 소수점영역 길이
 		-- ------------------------------
-		sCha = gf_Tonumber(string.len(nPrc) - sChk)
+		sCha = gf_Tonumber(string.string.len(nPrc) - sChk)
 		-- -------------------------------------------------------
 		-- 소수점영역의 길이가 국가별 소수점 자리수를 다 채운 경우
 		-- -------------------------------------------------------
 		if sCha >= gf_Tonumber(nDecimalLen) then
 			if sCha >= gf_Tonumber(nDecimalLen) then
-				sResult = sPreFix.." "..gf_CommaValue(nPrc, nDecimalLen).." " .. sPostFix
+				sResult = sPreFix.." "..Gf_CommaValue(nPrc, nDecimalLen).." " .. sPostFix
 				return sResult
 			else
 				return ""
@@ -1016,7 +1016,7 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
 			-- 국가별 소수점 자리수로 가격을 다시 맞춰준다.
 			-- -------------------------------------------------------------------
 			if sType == "AUTO" then
-				sResult = sPreFix.." "..gf_CommaValue(nPrc,nDecimalLen).." " .. sPostFix
+				sResult = sPreFix.." "..Gf_CommaValue(nPrc,nDecimalLen).." " .. sPostFix
 				return sResult
 			-- -------------------------------------------------------------------
 			-- 가격이 수동으로 입력되는 경우(키패드 입력)에는 입력받은대로 표시
@@ -1031,10 +1031,10 @@ function SetPrice(sType, nPrc, nDecimalLen, sPostFix)
 	-- =================================================================
 	else
 		if sType == "AUTO" then
-			sResult = sPreFix.." "..gf_CommaValue(nPrc,nDecimalLen) .." " .. sPostFix
+			sResult = sPreFix.." "..Gf_CommaValue(nPrc,nDecimalLen) .." " .. sPostFix
 			return sResult
 		else
-			sResult = sPreFix.." "..gf_CommaValue(nPrc,0) .." " .. sPostFix
+			sResult = sPreFix.." "..Gf_CommaValue(nPrc,0) .." " .. sPostFix
 			return sResult
 		end
 	end
@@ -1049,14 +1049,14 @@ function ReSet_Prc(szData, nGbn)
 	nDecimal = gf_Tonumber(contHidden.Label8.caption)
 	szUnit = GetHogaUnit(g_sExid3, szData, nGbn)
 	if nGbn == 0 then
-		nResult = Round(gf_Tonumber(szData) % gf_Tonumber(szUnit), gf_Tonumber(nDecimal))
+		nResult = gf_Round(gf_Tonumber(szData) % gf_Tonumber(szUnit), gf_Tonumber(nDecimal))
 		if nResult ~= 0 and nResult ~= gf_Tonumber(szUnit) then
 			return gf_Tonumber(szData) - nResult
 		else
 			return szData
 		end
 	else
-		nResult = Round(gf_Tonumber(szData) % gf_Tonumber(szUnit), gf_Tonumber(nDecimal))
+		nResult = gf_Round(gf_Tonumber(szData) % gf_Tonumber(szUnit), gf_Tonumber(nDecimal))
 		if nResult ~= 0 then
 			return gf_Tonumber(szData) + (gf_Tonumber(szUnit) - nResult)
 		else
@@ -1076,12 +1076,12 @@ function Calc_Price2(nType, nGbn, sValue)
 		-- ------------------------------------------------
 		-- + 버튼 클릭
 		-- ------------------------------------------------
-		if nGbn == 0 then							
+		if nGbn == 0 then
 			nValue = nValue + 1
 		-- ------------------------------------------------
 		-- - 버튼 클릭 
 		-- ------------------------------------------------
-		elseif nGbn == 1 then						
+		elseif nGbn == 1 then
 			nValue = nValue - 1
 		end
 		if nValue > 10 then
@@ -1100,11 +1100,11 @@ function Calc_Price2(nType, nGbn, sValue)
 		--		-- ---------------------------------------------
 		--		-- 가격데이터가 없는 경우
 		--		-- ---------------------------------------------
-		--		if isEmpty(sPrc) == true or CDbl(sPrc) == 0 then
-		--			if isEmpty(Form.getTopCtlProp("contHidden.lblItemSellHoga","caption")) == true or CDbl(Form.getTopCtlProp("contHidden.lblItemSellHoga","caption")) == 0 then
+		--		if isEmpty(sPrc) == true or gf_Tonumber(sPrc) == 0 then
+		--			if isEmpty(Form.GetTopCtlProp("contHidden.lblItemSellHoga","caption")) == true or gf_Tonumber(Form.GetTopCtlProp("contHidden.lblItemSellHoga","caption")) == 0 then
 		--				sPrc = 0
 		--			else
-		--				sPrc = Form.getTopCtlProp("contHidden.lblItemSellHoga","caption")
+		--				sPrc = Form.GetTopCtlProp("contHidden.lblItemSellHoga","caption")
 		--			end
 		--			
 		--		-- ---------------------------------------------
@@ -1114,12 +1114,12 @@ function Calc_Price2(nType, nGbn, sValue)
 		-- ------------------------------------------------
 		-- + 버튼 클릭
 		-- ------------------------------------------------
-		if nGbn == 0 then							
+		if nGbn == 0 then
 			sPrc = gf_Tonumber(sPrc) + gf_Tonumber(szUnit)
 		-- ------------------------------------------------
 		-- - 버튼 클릭 
 		-- ------------------------------------------------
-		elseif nGbn == 1 then						
+		elseif nGbn == 1 then
 			sPrc = gf_Tonumber(sPrc) - gf_Tonumber(szUnit)
 		end
 		--		end if
@@ -1160,7 +1160,7 @@ function Calc_Qty2(nGbn)
 			if nResult ~= 0 then
 				sQty = gf_Tonumber(sQty) - nResult
 			end
-		--			if CDbl(sQty) < CDbl(g_sDefQty) then
+		--			if gf_Tonumber(sQty) < gf_Tonumber(g_sDefQty) then
 		--				sQty = contHidden.Label10.caption
 		--			end if
 		-- ---------------------------------------------------------
@@ -1169,10 +1169,10 @@ function Calc_Qty2(nGbn)
 		elseif nGbn == 1 then
 			if gf_Tonumber(sQty) == 0 then
 				return
-			else		
+			else
 				sQty = sQty - gf_Tonumber(g_sQtyUnit)
 				nResult = gf_Tonumber(sQty) % gf_Tonumber(g_sQtyUnit)
-				--				if Cdbl(sQty) < Cdbl(g_sDefQty) then
+				--				if gf_Tonumber(sQty) < gf_Tonumber(g_sDefQty) then
 				--					sQty = 0
 				--				end if
 			end
@@ -1181,7 +1181,7 @@ function Calc_Qty2(nGbn)
 	-- ---------------------------------------------------------
 	-- 입력값 자리수 체크
 	-- ---------------------------------------------------------
-	--	if Len(szQty) <= gMaxLen then		
+	--	if string.len(szQty) <= gMaxLen then		
 	if isEmpty(sQty) == true or gf_Tonumber(sQty) == 0 then
 		cont1.edtQty.caption = ""
 	else
@@ -1193,40 +1193,40 @@ end
 -- From일로부터 + @일/개월 가져오기
 -- =============================================================================
 function CalcDate(sType,nDiff)
-	--	sDate = Form.GetSharedData("&BIZ_DT", false )
+	--	sDate = Form.GetSharedData("..BIZ_DT", false )
 	--	
-	--	sToday = Form.GetSharedData("&HOST_DATE", false )
-	--	if cint(sToday) >  Cint(Form.GetSharedData("&BIZ_DT", false )) then
-	--		sDate = Form.GetSharedData("&BIZ_NXT_DT", false )
+	--	sToday = Form.GetSharedData("..HOST_DATE", false )
+	--	if gf_Tonumber(sToday) >  gf_Tonumber(Form.GetSharedData("..BIZ_DT", false)) then
+	--		sDate = Form.GetSharedData("..BIZ_NXT_DT", false )
 	--	else	
-	--		sDate = Form.GetSharedData("&BIZ_DT", false )
+	--		sDate = Form.GetSharedData("..BIZ_DT", false )
 	--	end if
 	sDate = g_sBizDate
-	sYear = Left(sDate, 4)
-	sMonth = Mid(sDate, 5, 2)
-	sDay = Right(sDate, 2)
-	sRsltDate = string.gsub(DateAdd (sType, nDiff,  sYear.."-".. sMonth .."-".. sDay), "-", "")
+	sYear = string.sub(sDate, 1, 4)
+	sMonth = string.sub(sDate, 5, 5 + 2 - 1)
+	sDay = string.sub(sDate, -2)
+	sRsltDate = string.gsub(gf_DateAdd(sType, nDiff,  sYear.."-".. sMonth .."-".. sDay), "-", "")
 	return sRsltDate
 end
 function DisplayPrevSet_LinkInfo()
 	--	Form.ShowAlert("TEST", g_mCondType .. "|" .. g_mCondBound .. "|" .. g_oCondType .. "|" .. g_oCondPrc)
 	--	Form.ShowAlert("TEST", watchConditionType .. "|" .. watchType .. "|" .. orderClsType .. "|" .. orderPriceType)
-	if isEmpty(watchConditionType) == false then 
+	if isEmpty(watchConditionType) == false then
 		cont1.cmb6.cbkeydata = watchConditionType
 	else
 		cont1.cmb6.cbkeydata = g_mCondType
 	end
-	if isEmpty(watchType) == false then 
+	if isEmpty(watchType) == false then
 		cont1.cmb1.cbkeydata = watchType
 	else
 		cont1.cmb1.cbkeydata = g_mCondBound
 	end
-	if isEmpty(orderClsType) == false then 
+	if isEmpty(orderClsType) == false then
 		cont1.cmb4.cbkeydata = orderClsType
 	else
 		cont1.cmb4.cbkeydata = g_oCondType
 	end
-	if isEmpty(orderPriceType) == false then 
+	if isEmpty(orderPriceType) == false then
 		cont1.cmb5.cbkeydata = orderPriceType
 	else
 		cont1.cmb5.cbkeydata = g_oCondPrc
@@ -1240,13 +1240,13 @@ function Check_HogaUnit(sValue, isChk)
 		return true
 	end
 	szUnit = GetHogaUnit(g_sExid3, sValue, 0)
-	--	nMod = CDbl(sValue) % CDbl(szUnit)
+	--	nMod = gf_Tonumber(sValue) % gf_Tonumber(szUnit)
 	nDiv = gf_Tonumber(sValue) / gf_Tonumber(szUnit)
 	sDiv = gf_CommaValue(nDiv,4,1,0,0,1)
-	nDecimalIdx = Instr(sDiv, ".")
+	nDecimalIdx = string.find(sDiv, ".")
 	nTotalLen = Form.GetLen(sDiv)
-	nMod = gf_Tonumber(right(sDiv, gf_Tonumber(nTotalLen) - gf_Tonumber(nDecimalIdx)))
-	--	msgbox CDBL(sValue) .. "|" .. cDBL(szUnit) .. "|" .. Cdbl(nMod)
+	nMod = gf_Tonumber(string.sub(sDiv, -gf_Tonumber(nTotalLen) - gf_Tonumber(nDecimalIdx)))
+	--	msgbox gf_Tonumber(sValue) .. "|" .. gf_Tonumber(szUnit) .. "|" .. gf_Tonumber(nMod)
 	if gf_Tonumber(sValue) >= 1 and nMod > 0 then
 		Form.ShowAlert("알림", "호가 단위를 확인해주세요.\n(호가 단위 : " .. gf_Tonumber(szUnit) .. " " .. contHidden.Label7.caption..")")
 		return false
@@ -1289,7 +1289,7 @@ function SetOrderTypeList()
 		"04`저가(당일 정규장 기준)`설정 가격이 저가에 도달 시 감시가 실행돼요.\r\n" ..
 		"05`전일종가대비`전일 종가 대비 설정 가격 만큼 상승하거나 하락 시 감시가 실행돼요.     \r\n" ..
 		"06`등락률(전일종가대비)`설정한 등락률 만큼 상승하거나 하락 시 감시가 실행돼요.     \r\n"
-	sOsType = Form.GetSharedData("&OS_TYPE", false)
+	sOsType = Form.GetSharedData("..OS_TYPE", false)
 	if sOsType == "2" then
 		cont1.cmb6.SetPopupHeight(470)
 	else
@@ -1314,49 +1314,49 @@ function Form_OnFormInit()
 	arrLinkData = Convert_StrToArr(sLinkData, "`")
 	nArrCnt = #arrLinkData
 	if nArrCnt >= 28 then
-		g_sGbn = arrLinkData[1]
-		g_sAcno = arrLinkData[2]
-		g_sAsno = arrLinkData[3]
-		g_sPwd = arrLinkData[4]
-		g_sAcntNm = arrLinkData[5]
-		orderConditionId	= arrLinkData[6]
-		registrationDate	= arrLinkData[7]
-		accountNumber		= arrLinkData[8]
-		accountSeqNumber	= arrLinkData[9]	
-		stockExchangeCode	= arrLinkData[10]
-		stockCode			= arrLinkData[11]
-		stockKoreaName		= arrLinkData[12]
-		tradeType			= arrLinkData[13]
-		watchConditionType 	= arrLinkData[14]
-		watchConditionTypeNm	= arrLinkData[15]
-		watchType			= arrLinkData[16]
-		watchTypeNm		= arrLinkData[17]
-		price			= arrLinkData[18]
-		orderPaymentType	= arrLinkData[19]
-		orderClsType		= arrLinkData[20]
-		orderClsTypeNm		= arrLinkData[21]
-		orderPriceType		= arrLinkData[22]
-		tickValue			= arrLinkData[23]
-		orderPrice			= arrLinkData[24]
-		orderQty			= arrLinkData[25]
-		expirationDate		= arrLinkData[26]	
-		conditionStatusCode	= arrLinkData[27]
-		conditionStatusName	= arrLinkData[28]
+		g_sGbn = arrLinkData[1+1]
+		g_sAcno = arrLinkData[2+1]
+		g_sAsno = arrLinkData[3+1]
+		g_sPwd = arrLinkData[4+1]
+		g_sAcntNm = arrLinkData[5+1]
+		orderConditionId	= arrLinkData[6+1]
+		registrationDate	= arrLinkData[7+1]
+		accountNumber		= arrLinkData[8+1]
+		accountSeqNumber	= arrLinkData[9+1]	
+		stockExchangeCode	= arrLinkData[10+1]
+		stockCode			= arrLinkData[11+1]
+		stockKoreaName		= arrLinkData[12+1]
+		tradeType			= arrLinkData[13+1]
+		watchConditionType 	= arrLinkData[14+1]
+		watchConditionTypeNm	= arrLinkData[15+1]
+		watchType			= arrLinkData[16+1]
+		watchTypeNm		= arrLinkData[17+1]
+		price			= arrLinkData[18+1]
+		orderPaymentType	= arrLinkData[19+1]
+		orderClsType		= arrLinkData[20+1]
+		orderClsTypeNm		= arrLinkData[21+1]
+		orderPriceType		= arrLinkData[22+1]
+		tickValue			= arrLinkData[23+1]
+		orderPrice			= arrLinkData[24+1]
+		orderQty			= arrLinkData[25+1]
+		expirationDate		= arrLinkData[26+1]	
+		conditionStatusCode	= arrLinkData[27+1]
+		conditionStatusName	= arrLinkData[28+1]
 		sItemCode = Transform_Exid2(stockExchangeCode) .. "@" .. stockCode
 		Check_ItemCode(sItemCode)
-		if isEmpty(expirationDate) == false then 
+		if isEmpty(expirationDate) == false then
 			cont1.Calendar0.caption = string.gsub(expirationDate, "-", "")
 		end
 		g_isModify = true
 		--		g_isModify_OneTime = true
 	elseif nArrCnt >= 5 then
-		sItemCode = Form.GetSharedData("&ITEM_OVERSTOCK", 0)
+		sItemCode = Form.GetSharedData("..ITEM_OVERSTOCK", 0)
 		Check_ItemCode(sItemCode)
-		g_sGbn = arrLinkData[1]
-		g_sAcno = arrLinkData[2]
-		g_sAsno = arrLinkData[3]
-		g_sPwd = arrLinkData[4]
-		g_sAcntNm = arrLinkData[5]
+		g_sGbn = arrLinkData[1+1]
+		g_sAcno = arrLinkData[2+1]
+		g_sAsno = arrLinkData[3+1]
+		g_sPwd = arrLinkData[4+1]
+		g_sAcntNm = arrLinkData[5+1]
 		cont1_cmb4_OnEditComplete(0)
 	end
 end
@@ -1430,8 +1430,8 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		arrRet = Convert_StrToArr(sRet, "`")
 		nArrCnt = #arrRet
 		if nArrCnt > 1 then
-			sKey = arrRet[1]
-			sValue = arrRet[2]
+			sKey = arrRet[1+1]
+			sValue = arrRet[2+1]
 			if sKey == "매수_주문수량" then
 				DisplaySet_OrderQty(sValue)
 			elseif sKey == "매수_감시가격" then
@@ -1476,30 +1476,30 @@ function Form_OnPopupReturn(sKeyName, sRet)
 			--			g_isModify_OneTime = false
 			orderConditionId	= ""
 			registrationDate	= ""
-			accountNumber		= arrLinkData[1]
-			accountSeqNumber	= arrLinkData[2]	
-			stockExchangeCode	= arrLinkData[3]
-			stockCode			= arrLinkData[4]
-			stockKoreaName		= arrLinkData[5]
-			tradeType			= arrLinkData[6]
-			watchConditionType 	= arrLinkData[7]
-			watchConditionTypeNm	= arrLinkData[8]
-			watchType			= arrLinkData[9]
-			watchTypeNm		= arrLinkData[10]
-			price			= arrLinkData[11]
-			orderPaymentType	= arrLinkData[12]
-			orderClsType		= arrLinkData[13]
-			orderClsTypeNm		= arrLinkData[14]
-			orderPriceType		= arrLinkData[15]
-			tickValue			= arrLinkData[16]
-			orderPrice			= arrLinkData[17]
-			orderQty			= arrLinkData[18]
-			expirationDate		= arrLinkData[19]	
+			accountNumber		= arrLinkData[1+1]
+			accountSeqNumber	= arrLinkData[2+1]	
+			stockExchangeCode	= arrLinkData[3+1]
+			stockCode			= arrLinkData[4+1]
+			stockKoreaName		= arrLinkData[5+1]
+			tradeType			= arrLinkData[6+1]
+			watchConditionType 	= arrLinkData[7+1]
+			watchConditionTypeNm	= arrLinkData[8+1]
+			watchType			= arrLinkData[9+1]
+			watchTypeNm		= arrLinkData[10+1]
+			price			= arrLinkData[11+1]
+			orderPaymentType	= arrLinkData[12+1]
+			orderClsType		= arrLinkData[13+1]
+			orderClsTypeNm		= arrLinkData[14+1]
+			orderPriceType		= arrLinkData[15+1]
+			tickValue			= arrLinkData[16+1]
+			orderPrice			= arrLinkData[17+1]
+			orderQty			= arrLinkData[18+1]
+			expirationDate		= arrLinkData[19+1]	
 			conditionStatusCode	= ""
 			conditionStatusName	= ""
 			sItemCode = Transform_Exid2(stockExchangeCode) .. "@" .. stockCode
 			Check_ItemCode(sItemCode)
-			if isEmpty(expirationDate) == false then 
+			if isEmpty(expirationDate) == false then
 				cont1.Calendar0.caption = string.gsub(expirationDate, "-")
 			end
 		end
@@ -1513,8 +1513,8 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		if sRet ~= "" then
 			local szAcnt
 			tData = gf_Split(sRet, "★")
-			if UBOUND(tData) > 0 then
-				g_sPwd = tData[1]
+			if #tData > 0 then
+				g_sPwd = tData[1+1]
 				Form.PostLinkData("17100_PWD_CHANGE", sRet)
 			end
 			DATAMANAGER.RequestTranData("obtro_oder_132r")
@@ -1539,18 +1539,18 @@ function Form_OnMsgBoxClose(sKeyName, sRet)
 			Form.OpenScreen("87051" , g_sAcno..g_sAsno)
 		elseif sRet == "no" then
 			--			Button0.left = 0
-			--			Form.closeForm()
+			--			Form.CloseForm()
 		end
-	elseif sKeyName == "CLEAR_DATA" then 
+	elseif sKeyName == "CLEAR_DATA" then
 		if sRet == "ok" then
 			Clear_Data()
 		end
-	elseif sKeyName == "DISABLE_PTP" then 
+	elseif sKeyName == "DISABLE_PTP" then
 		if sRet == "no" then
 			Form.SendReturnToParent("DELETE_ITEM" , "")
 		end
 		Form.CloseForm()
-	elseif sKeyName == "DISABLE_ORDER" then 	
+	elseif sKeyName == "DISABLE_ORDER" then
 		Form.CloseForm()
 	end
 end
@@ -1618,9 +1618,9 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 			--			if cont1.cmb5.cbkeydata = "01" then
 			--
 			--				sPrc = contHidden.lblHyun.caption
-			--				nUnit = Cdbl(GetHogaUnit(g_sExid3, sPrc, 0))
+			--				nUnit = gf_Tonumber(GetHogaUnit(g_sExid3, sPrc, 0))
 			--				
-			--				nResultPrc = Cdbl(sPrc) + (nUnit * Cint(cont1.Combo0.cbkeydata))
+			--				nResultPrc = gf_Tonumber(sPrc) + (nUnit * gf_Tonumber(cont1.Combo0.cbkeydata))
 			--	
 			--				szPrc = nResultPrc
 			if cont1.cmb5.cbkeydata == "09" then
@@ -1634,7 +1634,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "ODER_OCRN_TYPE_CODE"	, 0, "01")									-- 주문발생유형코드(01:일반주문)
 		DATAMANAGER.SetDataValue(0, "obtro_oder_132r", "InBlock1", "WARN_CNFR_YN"		, 0, g_szWarnFlag)	
 	elseif szTranID == "obpds_srvc_323r" then
-		sCsno = Form.GetSharedData("&CUST_NUM", false)
+		sCsno = Form.GetSharedData("..CUST_NUM", false)
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "ACNO" 				, 0 	, "" )
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "ASNO"				, 0 	, "" )
 		DATAMANAGER.SetDataValue(0, "obpds_srvc_323r", "InBlock1", "SVCD"				, 0 	, "083" )
@@ -1702,8 +1702,8 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		sData = g_sCode .. " | " .. Transform_Exid(g_sExid2)
 		g_szYakCd = ""
 		local szLvrg
-		szLvrg = Form.getItemCodeInfo(g_sItemCode, "lvrgratio")
-		if sEtfEtn == "001" then			
+		szLvrg = Form.GetItemCodeInfo(g_sItemCode, "lvrgratio")
+		if sEtfEtn == "001" then
 			if gf_Tonumber(szLvrg) == 89 then
 				sData = sData .. " | ETF(변동)"
 			else
@@ -1749,23 +1749,23 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		Request_MktOp(g_szMktOpClsCd)
 	elseif szTranID == "ohhts_6000_001r" or szTranID == "ohhts_6000_017r" or szTranID == "ohhts_6000_023r" then
 		--		DisplayPrevSet_LinkInfo()
-		if isEmpty(watchConditionType) == false then 
+		if isEmpty(watchConditionType) == false then
 			cont1.cmb6.cbkeydata = watchConditionType
 		else
 			cont1.cmb6.cbkeydata = g_mCondType
 		end
 		cont1_cmb6_OnEditComplete(0)
-		if isEmpty(watchType) == false then 
+		if isEmpty(watchType) == false then
 			cont1.cmb1.cbkeydata = watchType
 		else
 			cont1.cmb1.cbkeydata = g_mCondBound
 		end
-		if isEmpty(orderClsType) == false then 
+		if isEmpty(orderClsType) == false then
 			cont1.cmb4.cbkeydata = orderClsType
 		else
 			cont1.cmb4.cbkeydata = g_oCondType
 		end
-		if isEmpty(orderPriceType) == false then 
+		if isEmpty(orderPriceType) == false then
 			cont1.cmb5.cbkeydata = orderPriceType
 		else
 			cont1.cmb5.cbkeydata = g_oCondPrc
@@ -1793,7 +1793,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		end
 	elseif szTranID == "obtro_comn_006r" then
 		g_sBizDate   		= DATAMANAGER.GetDataValue(0, "obtro_comn_006r", "OutBlock1", "BSOP_DATE"	, 0) -- 미국장 영업일
-		if isEmpty(expirationDate) == false then 
+		if isEmpty(expirationDate) == false then
 			cont1.Calendar0.caption = string.gsub(expirationDate, "-", "")
 		else
 			cont1.Calendar0.caption = CalcDate("d",89)
@@ -1846,25 +1846,25 @@ function Check_InputData()
 	sPrc = Replace_Prc(cont1.Label6.caption)
 	if isEmpty(sPrc) == true or gf_Tonumber(sPrc) == 0 then
 		if cont1.cmb6.cbkeydata ~= "06" then
-			Form.showAlert("알림", "감시가격을 입력해 주세요.")
+			Form.ShowAlert("알림", "감시가격을 입력해 주세요.")
 		else
-			Form.showAlert("알림", "감시기준 등락률을 입력해 주세요.")
+			Form.ShowAlert("알림", "감시기준 등락률을 입력해 주세요.")
 		end
 		return false
 	end
 	if cont1.cmb4.cbkeydata ~= "05" and cont1.cmb4.cbkeydata ~= "34" then
 		if (cont1.cmb5.cbkeydata == "01" or cont1.cmb5.cbkeydata == "09") and isEmpty(cont1.edtPrc0.caption) == true then
-			Form.showAlert("알림", "주문 가격을 입력해 주세요.")
+			Form.ShowAlert("알림", "주문 가격을 입력해 주세요.")
 			return false
 		end
 	end
 	if isEmpty(cont1.edtQty.caption) == true then
-		Form.showAlert("알림", "주문 수량을 입력해 주세요.")
+		Form.ShowAlert("알림", "주문 수량을 입력해 주세요.")
 		return false
 	end
 	return true
 end
-function Clear_Data() 
+function Clear_Data()
 	--	cont1.cmb6.cbkeydata = "01"
 	--	cont1.cmb1.cbkeydata = "2"
 	--	cont1.cmb4.cbkeydata = "01"
@@ -2000,7 +2000,7 @@ function cont1_btnQty_OnClick()
 end
 function cont1_btnPrc0_OnClick()
 	if gf_Tonumber(cont1.cmb5.currentindex) == 0 then
-		cont1.Combo0.openList()
+		cont1.Combo0.OpenList()
 	elseif gf_Tonumber(cont1.cmb5.currentindex) == 4 then
 		sLinkData = "1"									-- 매도/매수 구분 (매도:0, 매수:1)
 		sLinkData = sLinkData .. "`" .. "0"					-- 가격/수량 구분 (가격:0, 수량:1)
@@ -2055,7 +2055,7 @@ function cont1_cmb5_OnEditComplete(iIndex)
 		cont1.btnPrc0.visible = true
 	end
 	sKey2 = cont1.cmb4.cbkeydata
-	if sKey2 == "05" or sKey2 == "34" then 
+	if sKey2 == "05" or sKey2 == "34" then
 		cont1.edtPrc0.hintcaption = ""
 		cont1.edtPrc0.caption = ""
 		cont1.btnPPlus0.visible = false
@@ -2063,7 +2063,7 @@ function cont1_cmb5_OnEditComplete(iIndex)
 		cont1.edtPrc0.visible = false
 		cont1.btnPrc0.visible = false
 	end
-	cont1.btnPrc0.bringFront("1")
+	cont1.btnPrc0.BringFront("1")
 end
 function Change_OrderType()
 	sKey = cont1.cmb5.cbkeydata
@@ -2102,13 +2102,13 @@ function Change_OrderType()
 		cont1.btnPrc0.visible = true
 	end
 	sKey2 = cont1.cmb4.cbkeydata
-	if sKey2 == "05" or sKey2 == "34" then 
+	if sKey2 == "05" or sKey2 == "34" then
 		cont1.btnPPlus0.visible = false
 		cont1.btnPMinus0.visible = false
 		cont1.edtPrc0.visible = false
 		cont1.btnPrc0.visible = false
 	end
-	cont1.btnPrc0.bringFront("1")
+	cont1.btnPrc0.BringFront("1")
 end
 -- =============================================================================
 function cont1_Combo0_OnEditComplete(iIndex)
@@ -2159,7 +2159,7 @@ function Replace_Affix(nIdx, sAffix, sText)
 		sTempAffix = sAffix
 	end
 	sResult = sText
-	if Instr(sResult, sAffix) > 0 then
+	if string.find(sResult, sAffix) > 0 then
 		-- --------------
 		-- Prefix
 		-- --------------
@@ -2178,7 +2178,7 @@ end
 -- REST API 통신처리
 -- ======================================================================================
 function Open_Confirm()
-	sLinkData = Left(g_sAcno,4) .. "-" .. Right(g_sAcno,4)  .. "-" .. g_sAsno .. " " .. g_sAcntNm
+	sLinkData = string.sub(g_sAcno, 1, 4) .. "-" .. string.sub(g_sAcno, -4)  .. "-" .. g_sAsno .. " " .. g_sAcntNm
 	sLinkData = sLinkData .. "`" .. g_sCode
 	sLinkData = sLinkData .. "`" .. g_sItemName
 	sLinkData = sLinkData .. "`" .. cont1.cmb6.caption
@@ -2201,7 +2201,7 @@ function Open_Confirm()
 		sLinkData = sLinkData .. "`" .. gf_CommaValue(cont1.edtQty.caption , 0) .. " 주"
 	end
 	sDate = cont1.Calendar0.caption
-	sConvDate = Mid(sDate,3,2) .. "." .. Mid(sDate,5,2) .. "." .. Right(sDate,2) .. " 까지"
+	sConvDate = string.sub(sDate, 3, 3 + 2 - 1) .. "." .. string.sub(sDate, 5, 5 + 2 - 1) .. "." .. string.sub(sDate, -2) .. " 까지"
 	sLinkData = sLinkData .. "`" .. sConvDate
 	Form.OpenPopup("nrshtro17100_pa" , sLinkData , "")
 end
@@ -2222,7 +2222,7 @@ function cont1_btnReg_OnClick()
 	--		Open_Confirm()
 	--	else
 	--		if g_isPTP == "Y" then
-	--			szData = "90" & "|" & ""	-- 매매구분|메시지
+	--			szData = "90" .. "|" .. ""	-- 매매구분|메시지
 	--			-- Form.OpenPopup("mhtro16060_p15", szData , "")	-- OnPopupReturn -> "PTP주문경고"
 	--			Form.OpenPopupAnimation("mhtro16100_p15", szData, "", "2")
 	--		else
@@ -2237,7 +2237,7 @@ function cont1_btnReg_OnClick()
 	--		end if
 	--	end if
 	DATAMANAGER.RequestTranData("obtro_oder_132r")
-	Form.setDelayEvent(1, 0.5)
+	Form.SetDelayEvent(1, 0.5)
 	-- cont1.btnReg.enable = true	
 end
 function Form_OnDelayEvent(nID)
@@ -2245,10 +2245,10 @@ function Form_OnDelayEvent(nID)
 		cont1.btnReg.enable = true
 	end
 end
-function AutoRule_Create() 
+function AutoRule_Create()
 	g_sStep = "CREATE"
-	Form.releaseRequestData()
-	sUserID = Form.GetSharedData("&USER_ID", false )
+	Form.ReleaseRequestData()
+	sUserID = Form.GetSharedData("..USER_ID", false )
 	Form.MakeRequestData("userId", sUserID)
 	Form.MakeRequestData("accountNumber", 	g_sAcno)
 	Form.MakeRequestData("accountSeqNumber", g_sAsno)
@@ -2257,11 +2257,11 @@ function AutoRule_Create()
 	Form.MakeRequestData("stockCode", g_sCode)
 	Form.MakeRequestData("tradeType", "2")
 	Form.MakeRequestData("conditionName", "매수자동조건")
-	Form.startBuildJson()
-	Form.putJsonData("watchConditionType", cont1.cmb6.cbkeydata)
-	Form.putJsonData("watchType", cont1.cmb1.cbkeydata)
-	Form.putJsonData("price", Replace_Prc(cont1.Label6.caption))
-	sData = Form.endBuildJson()
+	Form.StartBuildJson()
+	Form.PutJsonData("watchConditionType", cont1.cmb6.cbkeydata)
+	Form.PutJsonData("watchType", cont1.cmb1.cbkeydata)
+	Form.PutJsonData("price", Replace_Prc(cont1.Label6.caption))
+	sData = Form.EndBuildJson()
 	Form.MakeRequestData("buyCondition", sData)
 	Form.MakeRequestData("orderPaymentType", "1")
 	Form.MakeRequestData("orderClsType", cont1.cmb4.cbkeydata)
@@ -2271,9 +2271,9 @@ function AutoRule_Create()
 			Form.MakeRequestData("tickValue", cont1.Combo0.cbkeydata)
 			Form.MakeRequestData("orderPrice", "0")
 			--		sPrc = contHidden.lblHyun.caption
-			--		nUnit = Cdbl(GetHogaUnit(g_sExid3, sPrc, 0))
+			--		nUnit = gf_Tonumber(GetHogaUnit(g_sExid3, sPrc, 0))
 			--		
-			--		nResultPrc = Cdbl(sPrc) + (nUnit * Cint(cont1.Combo0.cbkeydata))
+			--		nResultPrc = gf_Tonumber(sPrc) + (nUnit * gf_Tonumber(cont1.Combo0.cbkeydata))
 			--		Form.MakeRequestData("orderPrice", nResultPrc)
 		elseif cont1.cmb5.cbkeydata == "09" then
 			Form.MakeRequestData("tickValue","0")
@@ -2289,31 +2289,31 @@ function AutoRule_Create()
 		sMonth = "0"..sMonth
 	end
 	sDate = cont1.Calendar0.caption
-	Form.MakeRequestData("expirationDate", Left(sDate,4) .. "-" ..  Mid(sDate,5,2)  .. "-" .. Right(sDate,2))
+	Form.MakeRequestData("expirationDate", string.sub(sDate, 1, 4) .. "-" ..  string.sub(sDate, 5, 5 + 2 - 1)  .. "-" .. string.sub(sDate, -2))
 	Form.MakeRequestData("conditionStatusCode", g_sAutoRule)
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	-- 개발기
+	if sDev == "1" then -- 개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
-	Form.requestRestAPI(sUrl.."api/v1/rule/create", "")
+	Form.RequestRestAPI(sUrl.."api/v1/rule/create", "")
 	g_sAutoRule = "01"
 end
-function AutoRule_Update() 
+function AutoRule_Update()
 	g_sStep = "UPDATE"
-	Form.releaseRequestData()
+	Form.ReleaseRequestData()
 	Form.MakeRequestData("orderConditionId", orderConditionId)
 	Form.MakeRequestData("accountPassword", g_sPwd)
 	Form.MakeRequestData("stockExchangeCode", g_sMarket)
 	Form.MakeRequestData("stockCode", g_sCode)
 	Form.MakeRequestData("tradeType", "2")
-	Form.startBuildJson()
-	Form.putJsonData("watchConditionType", cont1.cmb6.cbkeydata)
-	Form.putJsonData("watchType", cont1.cmb1.cbkeydata)
-	Form.putJsonData("price", Replace_Prc(cont1.Label6.caption))
-	sData = Form.endBuildJson()
+	Form.StartBuildJson()
+	Form.PutJsonData("watchConditionType", cont1.cmb6.cbkeydata)
+	Form.PutJsonData("watchType", cont1.cmb1.cbkeydata)
+	Form.PutJsonData("price", Replace_Prc(cont1.Label6.caption))
+	sData = Form.EndBuildJson()
 	Form.MakeRequestData("buyCondition", sData)
 	Form.MakeRequestData("orderPaymentType", "1")
 	Form.MakeRequestData("orderClsType", cont1.cmb4.cbkeydata)
@@ -2323,9 +2323,9 @@ function AutoRule_Update()
 			Form.MakeRequestData("tickValue", cont1.Combo0.cbkeydata)
 			Form.MakeRequestData("orderPrice", "0")
 			--		sPrc = contHidden.lblHyun.caption
-			--		nUnit = Cdbl(GetHogaUnit(g_sExid3, sPrc, 0))
+			--		nUnit = gf_Tonumber(GetHogaUnit(g_sExid3, sPrc, 0))
 			--		
-			--		nResultPrc = Cdbl(sPrc) + (nUnit * Cint(cont1.Combo0.cbkeydata))
+			--		nResultPrc = gf_Tonumber(sPrc) + (nUnit * gf_Tonumber(cont1.Combo0.cbkeydata))
 			--		Form.MakeRequestData("orderPrice", nResultPrc)
 		elseif cont1.cmb5.cbkeydata == "09" then
 			Form.MakeRequestData("tickValue","0")
@@ -2342,15 +2342,15 @@ function AutoRule_Update()
 	end
 	Form.MakeRequestData("conditionStatusCode", g_sAutoRule)
 	sDate = cont1.Calendar0.caption
-	Form.MakeRequestData("expirationDate", Left(sDate,4) .. "-" ..  Mid(sDate,5,2)  .. "-" .. Right(sDate,2))
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	Form.MakeRequestData("expirationDate", string.sub(sDate, 1, 4) .. "-" ..  string.sub(sDate, 5, 5 + 2 - 1)  .. "-" .. string.sub(sDate, -2))
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	-- 개발기
+	if sDev == "1" then -- 개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
-	Form.requestRestAPI(sUrl.."api/v1/rule/update", "")
+	Form.RequestRestAPI(sUrl.."api/v1/rule/update", "")
 	g_sAutoRule = "01"
 end
 -- =============================================================================
@@ -2366,7 +2366,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 			-- 성공
 			-- ----------------------------------------
 			if sParam == "SUCCESS" then
-				status = Form.responseRestAPI("DATA", 0, "status", "")
+				status = Form.ResponseRestAPI("DATA", 0, "status", "")
 				if status == "00" then
 					Form.CloseForm()
 					Form.SendReturnToParent("COMPLETE_ORDER" , "")
@@ -2375,10 +2375,10 @@ function Form_OnTriggerEvent(sEventName, sParam)
 			-- 실패(ERROR or EXCEPTION)
 			-- ----------------------------------------
 			else
-				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
 				if isEmpty(oError) == false then
-					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
 					if errorCode == "LIMIT_REACHED" then
 						Form.ShowAlert("알림", "자동 감시 주문은\n50개 까지만 등록 가능해요.")
 						return 
@@ -2395,7 +2395,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 			-- 성공
 			-- ----------------------------------------
 			if sParam == "SUCCESS" then
-				status = Form.responseRestAPI("DATA", 0, "status", "")
+				status = Form.ResponseRestAPI("DATA", 0, "status", "")
 				if status == "00" then
 					Form.CloseForm()
 					Form.SendReturnToParent("COMPLETE_MODIFY" , "")
@@ -2404,10 +2404,10 @@ function Form_OnTriggerEvent(sEventName, sParam)
 			-- 실패(ERROR or EXCEPTION)
 			-- ----------------------------------------
 			else
-				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
 				if isEmpty(oError) == false then
-					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
 					if errorCode == "UNMODIFIABLE_STATUS" then
 						Form.MsgBox("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.", "DISABLE_ORDER", 6)
 						return 
@@ -2434,19 +2434,19 @@ function Form_OnLinkData(sKey, sValue)
 	-- 20250804_01 YSH START
 	-- 해외주식 장운영 정보 조회방식 변경
 	if sKey == "OVRS_MARKET_OPERATION_TRAN" then
-		-- Form.ShowAlert("자동감시주문_매수_nrshtro17100_p2", "조회 성공 여부 : " & sValue)
+		-- Form.ShowAlert("자동감시주문_매수_nrshtro17100_p2", "조회 성공 여부 : " .. sValue)
 		if sValue == "SUCCESS" then
 			if g_sExid ~= "" then
-				sKey = "&OVRS_MARKET_OPERATION_" .. Transform_Exid4(g_sExid)
+				sKey = "..OVRS_MARKET_OPERATION_" .. Transform_Exid4(g_sExid)
 				g_szMktOpClsCd = Form.GetSharedData(sKey, false)
 				Check_ItemCode(g_sItemCode)
 			end
 		end
 	elseif sKey == "OVRS_MARKET_OPERATION_REAL" then
-		-- Form.ShowAlert("자동감시주문_매수_nrshtro17100_p2", "실시간 조회 성공 여부 : " & sValue & " / g_sExid : " & Transform_Exid4(g_sExid))
+		-- Form.ShowAlert("자동감시주문_매수_nrshtro17100_p2", "실시간 조회 성공 여부 : " .. sValue .. " / g_sExid : " .. Transform_Exid4(g_sExid))
 		arrMktData = gf_Split(sValue, "@")
-		if arrMktData[1] == Transform_Exid4(g_sExid) and g_szMktOpClsCd ~= arrMktData[2] then
-			g_szMktOpClsCd = arrMktData[2]
+		if arrMktData[1+1] == Transform_Exid4(g_sExid) and g_szMktOpClsCd ~= arrMktData[2+1] then
+			g_szMktOpClsCd = arrMktData[2+1]
 			Convert_MktOpInfo(g_szMktOpClsCd)
 			DisplaySetting_MktOperation(g_szMktOp, g_isMktClosed, g_szSubMktOp, g_szBaseDate, g_isHoliday)
 			Cancel_Real_Total()
@@ -2459,7 +2459,7 @@ end
 -- =============================================================================
 function imgBack_OnClick()
 	Form.SendReturnToParent("CLOSE_FORM" , "")
-	Form.closeForm()
+	Form.CloseForm()
 end
 -- =============================================================================
 function cont1_btnReg0_OnClick()
@@ -2492,7 +2492,7 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 			end
 			return
 		elseif szErrCode == "2438" then
-			Form.openPopupAnimation("pwdcheckpopup", g_sAcno..g_sAsno ,"","2")
+			Form.OpenPopupAnimation("pwdcheckpopup", g_sAcno..g_sAsno ,"","2")
 			return
 		end
 	end
@@ -2503,12 +2503,12 @@ function DATAMANAGER_OnReceiveTranError(szTranID , szErrCode , szErrMsg)
 			return
 		end
 	end
-	if szTranID == "obsim_oscm_306r" then	
+	if szTranID == "obsim_oscm_306r" then
 		DATAMANAGER.RequestTranData("obpds_srvc_323r")
 		return
 	end
 	szSubMsg = DATAMANAGER.GetDataMsgSubText(szTranID)
-	if	string.len(gf_Trim(szSubMsg))	>	0	then
+	if string.string.len(gf_Trim(szSubMsg))	>	0 then
 		Form.ShowAlert("알림", szErrMsg .. "(" .. szSubMsg .. ")")
 	else
 		Form.ShowAlert("알림", szErrMsg )
@@ -2559,9 +2559,9 @@ function cont1_cmb4_OnEditComplete(iIndex)
 	sKey = cont1.cmb4.cbkeydata
 	Form.SetSharedData("17100_BUY_ORDER_COND_TYPE" , sKey)
 	sKey2 = cont1.cmb4.cbkeydata
-	if sKey2 == "05" or sKey2 == "34" then 
+	if sKey2 == "05" or sKey2 == "34" then
 		bPopYN = Form.GetEnvData("OrdNotice_17100_p13")
-		if (bPopYN == "" or bPopYN == "0") and g_isFst == false  then
+		if (bPopYN == "" or bPopYN == "0") and g_isFst == false then
 			-- sText = "상/하한가가 없는 미국 시장의 특성 상\n해당종목의 가격이 급등락할 수 있으며 "..
 			--	   "시장가 주문 시 현재가 또는 원하는 가격보다 낮거나 불리한 가격에 체결될 수 있음을 유의하시기 바랍니다."
 			--
@@ -2590,7 +2590,7 @@ function cont1_cmb1_OnEditComplete(iIndex)
 		if isEmpty(sPrc) == false then
 			if sKey2 == "06" then
 				sPrc = SetPrice("AUTO", sPrc, "2", "%")
-			elseif sKey2 == "05" then	
+			elseif sKey2 == "05" then
 				sPrc = SetPrice("AUTO", sTmpPrc, contHidden.Label8.caption, contHidden.Label7.caption)
 			end
 			if sKey == "2" then
@@ -2600,7 +2600,8 @@ function cont1_cmb1_OnEditComplete(iIndex)
 		end
 	end
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_cntg" trcode="ohhts_exst_cntg" />

@@ -117,5 +117,6 @@ end
 function cont1_OrdGubun_OnClick(nIndex)
 	g_selnByovClcd = nIndex
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>

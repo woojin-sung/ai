@@ -372,13 +372,13 @@ end
  --============================================================================
 function Form_OnFormInit()
 	 --20250703 YSH : 해외주식 장운영 정보 조회방식 변경
-	gMkClsCode = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+	gMkClsCode = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 	if gMkClsCode == "" then
 		g_NoSendItemInfo = true
 		g_NoSendHogaData = true
 	end
 	
-	gOsType = Form.GetSharedData("&OS_TYPE", false)
+	gOsType = Form.GetSharedData("..OS_TYPE", false)
 
 	 -------------------------------------------------------------------------------
 	 -- 20240617 LES START - 돋보기버튼 눌렀을때, 메인쪽에서 TITLE_CLICK으로 내려줄수 있도록 서치타입 설정
@@ -426,7 +426,7 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	 -- 타 화면 연동
 	 -------------------------------------------------------------------------------
-	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end end
+	if Form.GetOpenLinkData( ) == "0" or Form.GetOpenLinkData( ) == 0 then --매수 end end end
 	
 		FormTab0.currenttabpageid = "page0"
 	
@@ -468,9 +468,9 @@ function Form_OnFormInit()
 	 -------------------------------------------------------------------------------
 	 -- 초기종목 세팅
 	 -------------------------------------------------------------------------------
-	ItemCode0.code = Form.GetSharedData("&ITEM_CODE", false)
+	ItemCode0.code = Form.GetSharedData("..ITEM_CODE", false)
 	
-	if string.len(ItemCode0.code) > 0 then
+	if string.string.len(ItemCode0.code) > 0 then
 		Form.TriggerEvent( "FormTab0." .. FormTab0.currenttabpageid, "InitCode", ItemCode0.code )
 		Form.TriggerEvent( "LinkFormTop", "RequestData", ItemCode0.code)
 	end
@@ -516,7 +516,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		
 	elseif sEventName == "SCREEN_MENU" then -- 연결정보(상단 ...)
 		
-		if sParam == "REG_INTR" then -- 관심종목등록 end end
+		if sParam == "REG_INTR" then -- 관심종목등록 end end end
  --			Form.OpenPopup( "mhtro16010_p5" , ItemCode0.code , "" )
 			szCode = ItemCode0.code
 			isIntrItem = Form.IsIntrItemList(szCode)
@@ -733,7 +733,7 @@ function Form_OnLinkData(sKey, sValue)
 	 --20240617 LES START - 해외/국내 종목선택창 통합
 	if "&ITEM_CODE" == sKey then
 		
-		if CheckMasterFile(sValue) then --20240621 end end
+		if CheckMasterFile(sValue) then --20240621 end end end
 			edtOrgNo.caption = ""
 			ItemCode0_OnEditComplete(sValue)
 		end
@@ -745,7 +745,7 @@ function Form_OnLinkData(sKey, sValue)
 		 --20250707 YSH TEST
 		 --Form.ShowAlert("mhtro16110_해외주식 예약주문", "최초 조회 정상 확인 : " .. sKey .. sValue)
 		if sValue == "SUCCESS" then
-			gMkClsCode = Form.GetSharedData("&OVRS_MARKET_OPERATION_US", false)
+			gMkClsCode = Form.GetSharedData("..OVRS_MARKET_OPERATION_US", false)
 		end
 		
 		if g_NoSendItemInfo == true and g_NoSendHogaData == true then
@@ -786,7 +786,7 @@ function FormTab0_OnTabChanged(nCurrentTab)
 	 --======================================================================
 	 --종목연동 및 주문설정값 연동
 	 --======================================================================
-	if string.len(ItemCode0.code) > 0 then
+	if string.string.len(ItemCode0.code) > 0 then
 		
 		if nCurrentTab == 2 or nCurrentTab == "2" then
 			
@@ -925,7 +925,7 @@ function DATAMANAGER_OnSendTranBefore(szTranID)
 	 ---------------------------------------------------------------------------
 	 --elseif szTranID == "obtro_acnt_900r" then
 	 --
-	 --	szCustNum = Form.GetSharedData("&CUST_NUM", false)
+	 --	szCustNum = Form.GetSharedData("..CUST_NUM", false)
 	 --
 	 --	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "BSWR_CLCD" 			, 0 , "08")
 	 --	DATAMANAGER.SetDataValue(0, "obtro_acnt_900r", "InBlock1", "CSNO" 				, 0 , szCustNum)
@@ -994,7 +994,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 			 ---------------------------------------------------------------------------
 			 -- 액면분할/권리선반영 시 사용하는 로직 
 			 ---------------------------------------------------------------------------
-			 --szToday = Form.GetSharedData("&HOST_DATE", false )
+			 --szToday = Form.GetSharedData("..HOST_DATE", false )
 			 --
 			 --if gf_Tonumber(szToday) >= 20240311 and gf_Tonumber(szToday) <= 20240318 then
 			 --	DATAMANAGER.RequestTranData("obtro_acnt_900r")
@@ -1012,7 +1012,7 @@ function DATAMANAGER_OnReceiveTranComplete(szTranID)
 		nCLPrice = gf_Tonumber(DATAMANAGER.GetDataValue(0, szTranID , "OutBlock1", "FIDX_PRDY_CLPR" 	, 0))
 		nPoint 	= gf_Tonumber(DATAMANAGER.GetDataValue(0, szTranID , "OutBlock1", "FIDX_DCPN_CNT" 	, 0))
 		
-		contCntg.tblPrice.SetCellString(3, 1, string.gsub(FormatNumber(nCLPrice, nPoint), ",", "") )
+		contCntg.tblPrice.SetCellString(3, 1, string.gsub(gf_CommaValue(nCLPrice, nPoint), ",", "") )
 		
 		Table_Color_Setting()
 		
@@ -1280,7 +1280,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 	 --20200827 LES START 애플/테슬라 액면분할 관련 고객유의사항
 	if sKeyName == "16060_p9" then
 		if sRet == "cancel" then
-			szPrevScr = Form.GetSharedData("&PREV_SCREEN_NO", false )
+			szPrevScr = Form.GetSharedData("..PREV_SCREEN_NO", false )
 			
 			if szPrevScr == "" or szPrevScr == nil or szPrevScr == "16060" then
 				szPrevScr = "41000"
@@ -1362,7 +1362,7 @@ function Form_OnPopupReturn(sKeyName, sRet)
 		if #arrRetData > 2 then
 			sItemCd = arrRetData[0+1]
 			
-			if CheckMasterFile(sItemCd) then --20240621 end end
+			if CheckMasterFile(sItemCd) then --20240621 end end end
 				sItemName = Form.GetItemCodeInfo(sItemCd, "name")
 				Form.SetOverStockItemCode(sItemCd.."★"..sItemName)
 				ItemCode0_OnEditComplete(sItemCd)
@@ -1495,7 +1495,7 @@ function Request_Hoga(sCode)
 	 -- 주간장/애프터장이면 주간장/애프터 현재가 조회 서비스 호출
 	 -- 가격자동입력이 현재가로 되어있는 경우, 주간장/애프터 현재가 세팅을 위해
 	 ------------------------------------------------------------
-	sDayYN = Form.GetSharedData("&OVRS_DAYMARKET", false )
+	sDayYN = Form.GetSharedData("..OVRS_DAYMARKET", false )
 	sAfterYN = Form.GetSharedData("OVRS_AFTER_MARKET_ORDER", false )
 	
 	if sDayYN == "Y" and g_NoSendHogaData == false then
@@ -1811,7 +1811,7 @@ function Form_OnTriggerEventSCREEN(sEventName,sParam)
 	
 	if sEventName == "PREV" then
 	
-		nPrevScrNo = Form.GetSharedData("&PREV_SCREEN_NO", false)
+		nPrevScrNo = Form.GetSharedData("..PREV_SCREEN_NO", false)
 		
 		 --90000 : 환경설정 / 16000 : 해외주식 현재가
 		if nPrevScrNo == "90000" or nPrevScrNo == "16000" then
@@ -1904,7 +1904,7 @@ end
  --============================================================================
 function RequestTranData_Intr()
 	DATAMANAGER.ClearInputData(0, "ohhts_intr_006r")
-	DATAMANAGER.SetDataValue(0, "ohhts_intr_006r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("&USER_ID", false))
+	DATAMANAGER.SetDataValue(0, "ohhts_intr_006r", "InBlock1", "FID_USER_ID", 0, Form.GetSharedData("..USER_ID", false))
 	DATAMANAGER.RequestTranData("ohhts_intr_006r")
 end
 
@@ -1913,7 +1913,8 @@ function ResponseTranData_Intr()
 	g_szIntrGrpCnt = DATAMANAGER.GetDataCount(0, "ohhts_intr_006r" , "OutBlock1")
 end
 
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 	<DATAIO_INFO>
 		<TRID_INFO>
 			<TRAN tranid="ohhts_exst_aspr" trcode="ohhts_exst_aspr" />

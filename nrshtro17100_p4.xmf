@@ -85,10 +85,10 @@ g_sCommonErrorMsg = "현재 자동감시주문 실행이\n불가합니다.\n고�
 --             P  E  R  S  O  N  A  L       F  U  N  C  T  I  O  N              
 -- ****************************************************************************
 -- ===============================================
--- NULL 체크 
+-- nil 체크 
 -- ===============================================
 function isEmpty(sData)
-	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "null" then
+	if gf_Trim(sData) == "" or sData == nil or gf_Trim(sData) == "nil" then
 		return true
 	else
 		return false
@@ -128,7 +128,7 @@ function Convert_StrToArr(szData, szSeperator)
 	if isEmpty(szSeperator) then
 		-- 단일변수
 		arrData = {}
-		table.insert(arrData, szData)
+		table.Insert(arrData, szData)
 	else
 		-- 다중변수
 		arrData = gf_Split(szData, szSeperator)
@@ -141,29 +141,21 @@ end
 -- ==============================================
 function Transform_Exid2(sValue)
 	if sValue == "HKS" then
-		Transform_Exid2 = "HK"
-		return
+		return "HK"
 	elseif sValue == "SHS" then
-		Transform_Exid2 = "SH"
-		return
+		return "SH"
 	elseif sValue == "SZS" then
-		Transform_Exid2 = "SZ"
-		return
+		return "SZ"
 	elseif sValue == "NYS" then
-		Transform_Exid2 = "NY"
-		return
+		return "NY"
 	elseif sValue == "AMX" then
-		Transform_Exid2 = "AX"
-		return
+		return "AX"
 	elseif sValue == "NAS" then
-		Transform_Exid2 = "OQ"
-		return
+		return "OQ"
 	elseif sValue == "TSE" then
-		Transform_Exid2 = "JP"
-		return
+		return "JP"
 	else
-		Transform_Exid2 = sValue
-		return
+		return sValue
 	end
 end
 function Get_Currency(sValue)
@@ -207,7 +199,7 @@ function DisplaySet_CondInfo()
 	sPrc = ""
 	if watchConditionType == "06" then
 		sPrc = FormatNumber_Currency("%", price)
-	else	
+	else
 		sPrc = FormatNumber_Currency(Transform_Exid2(stockExchangeCode), price)
 	end
 	tblBuyInfo.SetCellString(4, 1, sPrc .. " " .. watchTypeNm)
@@ -248,41 +240,41 @@ function DisplaySet_CondInfo()
 		Image3.imgpath = "icon_watch_pause"
 	end
 end
-function AutoRule_Delete() 
+function AutoRule_Delete()
 	--	btnBlock.left = 0
 	g_sStep = "DELETE"
-	Form.releaseRequestData()
-	Form.makeRequestData("orderConditionId", orderConditionId)
-	Form.makeRequestData("conditionStatusCode", "99")
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	Form.ReleaseRequestData()
+	Form.MakeRequestData("orderConditionId", orderConditionId)
+	Form.MakeRequestData("conditionStatusCode", "99")
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	-- 개발기
+	if sDev == "1" then -- 개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
-	Form.requestRestAPI(sUrl.."api/v1/rule/update-status", "")
+	Form.RequestRestAPI(sUrl.."api/v1/rule/update-status", "")
 end
-function AutoRule_UpdateStatus() 
+function AutoRule_UpdateStatus()
 	--	btnBlock.left = 0
 	g_sStep = "UPDATE_STATUS"
-	Form.releaseRequestData()
-	Form.makeRequestData("orderConditionId", orderConditionId)
+	Form.ReleaseRequestData()
+	Form.MakeRequestData("orderConditionId", orderConditionId)
 	sStatus = conditionStatusCode
 	if conditionStatusCode == "01" then
 		sStatus = "02" 
 	elseif conditionStatusCode == "02" then
 		sStatus = "01" 
 	end
-	Form.makeRequestData("conditionStatusCode", sStatus)
-	sDev = Form.GetSharedData("&SERVER_MODE", false)
+	Form.MakeRequestData("conditionStatusCode", sStatus)
+	sDev = Form.GetSharedData("..SERVER_MODE", false)
 	sUrl = ""
-	if sDev == "1" then	-- 개발기
+	if sDev == "1" then -- 개발기 end
 		sUrl = "https://dev-api-gateway.imeritz.com:8443/"
 	else
 		sUrl = "https://api-gateway.imeritz.com:8443/"
 	end
-	Form.requestRestAPI(sUrl.."api/v1/rule/update-status", "")
+	Form.RequestRestAPI(sUrl.."api/v1/rule/update-status", "")
 end
 -- ****************************************************************************
 --                C  O  M  M  O  N       F  U  N  C  T  I  O  N               
@@ -293,29 +285,29 @@ function Form_OnFormInit()
 	arrLinkData = Convert_StrToArr(g_sLinkData, "`")
 	nArrCnt = #arrLinkData
 	if nArrCnt >= 23 then
-		orderConditionId	= arrLinkData[1]
-		registrationDate	= arrLinkData[2]
-		accountNumber		= arrLinkData[3]
-		accountSeqNumber	= arrLinkData[4]
-		stockExchangeCode	= arrLinkData[5]
-		stockCode			= arrLinkData[6]
-		stockKoreaName		= arrLinkData[7]
-		tradeType			= arrLinkData[8]
-		watchConditionType	= arrLinkData[9]
-		watchConditionTypeNm	= arrLinkData[10]
-		watchType			= arrLinkData[11]
-		watchTypeNm		= arrLinkData[12]
-		price			= arrLinkData[13]
-		orderPaymentType	= arrLinkData[14]
-		orderClsType		= arrLinkData[15]
-		orderClsTypeNm		= arrLinkData[16]
-		orderPriceType		= arrLinkData[17]
-		tickValue			= arrLinkData[18]
-		orderPrice			= arrLinkData[19]
-		orderQty			= arrLinkData[20]
-		expirationDate		= arrLinkData[21]
-		conditionStatusCode	= arrLinkData[22]
-		conditionStatusName	= arrLinkData[23]
+		orderConditionId	= arrLinkData[1+1]
+		registrationDate	= arrLinkData[2+1]
+		accountNumber		= arrLinkData[3+1]
+		accountSeqNumber	= arrLinkData[4+1]
+		stockExchangeCode	= arrLinkData[5+1]
+		stockCode			= arrLinkData[6+1]
+		stockKoreaName		= arrLinkData[7+1]
+		tradeType			= arrLinkData[8+1]
+		watchConditionType	= arrLinkData[9+1]
+		watchConditionTypeNm	= arrLinkData[10+1]
+		watchType			= arrLinkData[11+1]
+		watchTypeNm		= arrLinkData[12+1]
+		price			= arrLinkData[13+1]
+		orderPaymentType	= arrLinkData[14+1]
+		orderClsType		= arrLinkData[15+1]
+		orderClsTypeNm		= arrLinkData[16+1]
+		orderPriceType		= arrLinkData[17+1]
+		tickValue			= arrLinkData[18+1]
+		orderPrice			= arrLinkData[19+1]
+		orderQty			= arrLinkData[20+1]
+		expirationDate		= arrLinkData[21+1]
+		conditionStatusCode	= arrLinkData[22+1]
+		conditionStatusName	= arrLinkData[23+1]
 		DisplaySet_CondInfo()
 		return
 	end
@@ -369,7 +361,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 		-- ----------------------------------
 		-- 조건 단건 삭제
 		-- ----------------------------------
-		if g_sStep == "DELETE"  then
+		if g_sStep == "DELETE" then
 			-- ----------------------------------------
 			-- 성공
 			-- ----------------------------------------
@@ -380,17 +372,17 @@ function Form_OnTriggerEvent(sEventName, sParam)
 				-- 실패(ERROR or EXCEPTION)
 				-- ----------------------------------------
 			else
-				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
 				if isEmpty(oError) == false then
-					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
 					if errorCode == "UNMODIFIABLE_STATUS" then
 						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
-						Form.setDelayEvent(1, 0.2)
+						Form.SetDelayEvent(1, 0.2)
 						return 
 					elseif errorCode == "FORCED_STOP_STATUS" then
 						Form.OpenPopup("nrshtro17100_p10", "", "")
-						Form.setDelayEvent(1, 0.2)
+						Form.SetDelayEvent(1, 0.2)
 						return
 					end
 				end
@@ -400,14 +392,14 @@ function Form_OnTriggerEvent(sEventName, sParam)
 			-- ----------------------------------
 			-- 조건 단건 감시여부 변경
 			-- ----------------------------------
-		elseif g_sStep == "UPDATE_STATUS"  then	
+		elseif g_sStep == "UPDATE_STATUS" then
 			-- ----------------------------------------
 			-- 성공
 			-- ----------------------------------------
 			if sParam == "SUCCESS" then
-				oData = Form.responseRestAPI("JSONOBJ", 0, "data", "")
-				conditionStatusCode	= Form.responseRestAPI("DATA", 0, "conditionStatusCode", oData)
-				conditionStatusName	= Form.responseRestAPI("DATA", 0, "conditionStatusName", oData)
+				oData = Form.ResponseRestAPI("JSONOBJ", 0, "data", "")
+				conditionStatusCode	= Form.ResponseRestAPI("DATA", 0, "conditionStatusCode", oData)
+				conditionStatusName	= Form.ResponseRestAPI("DATA", 0, "conditionStatusName", oData)
 				lblData1.caption = conditionStatusName
 				if conditionStatusCode == "02" then
 					lblData1.fgcolor = 290
@@ -421,17 +413,17 @@ function Form_OnTriggerEvent(sEventName, sParam)
 				-- 실패(ERROR or EXCEPTION)
 				-- ----------------------------------------
 			else
-				oError = Form.responseRestAPI("JSONOBJ", 0, "error", "")
+				oError = Form.ResponseRestAPI("JSONOBJ", 0, "error", "")
 				if isEmpty(oError) == false then
-					errorCode = Form.responseRestAPI("DATA", 0, "errorCode", oError)
-					errorMessage = Form.responseRestAPI("DATA", 0, "errorMessage", oError)
+					errorCode = Form.ResponseRestAPI("DATA", 0, "errorCode", oError)
+					errorMessage = Form.ResponseRestAPI("DATA", 0, "errorMessage", oError)
 					if errorCode == "UNMODIFIABLE_STATUS" then
 						Form.ShowAlert("알림", "감시가 실행되어 수정이 불가해요.\n내역조회에서 확인해 주세요.")
-						Form.setDelayEvent(1, 0.2)
+						Form.SetDelayEvent(1, 0.2)
 						return 
 					elseif errorCode == "FORCED_STOP_STATUS" then
 						Form.OpenPopup("nrshtro17100_p10", "", "")
-						Form.setDelayEvent(1, 0.2)
+						Form.SetDelayEvent(1, 0.2)
 						return
 					end
 				end
@@ -439,7 +431,7 @@ function Form_OnTriggerEvent(sEventName, sParam)
 				return 
 			end
 		end
-		Form.setDelayEvent(1, 0.2)
+		Form.SetDelayEvent(1, 0.2)
 	end
 end
 -- =============================================================================
@@ -459,5 +451,6 @@ end
 function Image3_OnClick()
 	lblData1_OnClick()
 end
-	</SCRIPT_INFO>
+	
+</SCRIPT_INFO>
 </ROOT>
